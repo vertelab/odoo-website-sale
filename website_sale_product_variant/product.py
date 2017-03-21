@@ -33,7 +33,7 @@ class product_product(models.Model):
 
 class website_sale(website_sale):
     @http.route([
-        '/shop/<model("product.template"):template>/variant/<model("product.product"):product>'
+        '/shop/variant/<model("product.product"):product>'
     ], type='http', auth="public", website=True)
     def dn_product_variant(self, template=None, product=None, **post):
-        return request.website.render('website_sale.product', {'product': template, 'product_product': product})
+        return request.website.render('website_sale.product', {'product': product.product_tmpl_id, 'product_product': product})
