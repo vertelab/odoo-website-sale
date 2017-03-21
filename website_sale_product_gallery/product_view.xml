@@ -9,14 +9,23 @@
                     <div class="image_zoom"/>
                     <div id="image_big" class="tab-content">
                         <span itemprop="image" t-field="product.image" t-field-options='{"widget": "image", "class": "product_detail_img hidden", "alt-field": "name"}'/>
-                        <t t-foreach="product.image_ids" t-as="i">
+                        <t t-if="not product_product">
+                            <t t-set="product_variants" t-value="product.product_variant_ids.filtered(lambda v: v.default_variant == True)"/>
+                            <t t-if="len(product_variants) &gt; 0">
+                                <t t-set="product_product" t-value="product_variants[0]"/>
+                            </t>
+                            <t t-if="len(product_variants) == 0">
+                                <t t-set="product_product" t-value="product.product_variant_ids[0]"/>
+                            </t>
+                        </t>
+                        <t t-foreach="product_product.image_ids" t-as="i">
                             <div t-att-id="i.id" t-att-class="'tab-pane fade %s' %('in active' if i_index == 0 else '')">
                                 <img class="img img-responsive" style="margin: auto;" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_detail')"/>
                             </div>
                         </t>
                     </div>
                     <ul id="image_nav" class="nav nav-pills">
-                        <t t-foreach="product.image_ids" t-as="i">
+                        <t t-foreach="product_product.image_ids" t-as="i">
                             <li class="'active' if i_index == 0 else ''">
                                 <a data-toggle="tab" t-att-href="'#%s' %i.id">
                                     <img class="img img-responsive" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_thumbnail')"/>
