@@ -11,7 +11,7 @@
                         <span itemprop="image" t-field="product.image" t-field-options='{"widget": "image", "class": "product_detail_img hidden", "alt-field": "name"}'/>
                         <t t-foreach="product.image_ids" t-as="i">
                             <div t-att-id="i.id" t-att-class="'tab-pane fade %s' %('in active' if i_index == 0 else '')">
-                                <img class="img img-responsive" style="margin: auto;" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'product_gallery.img_product_detail')"/>
+                                <img class="img img-responsive" style="margin: auto;" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_detail')"/>
                             </div>
                         </t>
                     </div>
@@ -19,7 +19,7 @@
                         <t t-foreach="product.image_ids" t-as="i">
                             <li class="'active' if i_index == 0 else ''">
                                 <a data-toggle="tab" t-att-href="'#%s' %i.id">
-                                    <img class="img img-responsive" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'product_gallery.img_product_thumbnail')"/>
+                                    <img class="img img-responsive" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_thumbnail')"/>
                                 </a>
                             </li>
                         </t>
