@@ -20,13 +20,13 @@ res = bg
         <record id="img_product_thumbnail_param_canvas" model="image.recipe.param">
             <field name="name">canvas_size</field>
             <field name="value">100</field>
-            <field name="recipe_id" ref="product_gallery.img_product_thumbnail"/>
+            <field name="recipe_id" ref="website_sale_product_gallery.img_product_thumbnail"/>
         </record>
 
         <record id="img_product_thumbnail_param_bg_color" model="image.recipe.param">
             <field name="name">bg_color</field>
             <field name="value">#ffffff</field>
-            <field name="recipe_id" ref="product_gallery.img_product_thumbnail"/>
+            <field name="recipe_id" ref="website_sale_product_gallery.img_product_thumbnail"/>
         </record>
 
         <record id="img_product_detail" model="image.recipe">
@@ -47,13 +47,13 @@ res = bg
         <record id="img_product_detail_param_canvas" model="image.recipe.param">
             <field name="name">canvas_size</field>
             <field name="value">500</field>
-            <field name="recipe_id" ref="product_gallery.img_product_detail"/>
+            <field name="recipe_id" ref="website_sale_product_gallery.img_product_detail"/>
         </record>
 
         <record id="img_product_detail_param_bg_color" model="image.recipe.param">
             <field name="name">bg_color</field>
             <field name="value">#ffffff</field>
-            <field name="recipe_id" ref="product_gallery.img_product_detail"/>
+            <field name="recipe_id" ref="website_sale_product_gallery.img_product_detail"/>
         </record>
 
     </data>
