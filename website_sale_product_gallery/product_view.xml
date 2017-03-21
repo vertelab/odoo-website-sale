@@ -20,7 +20,7 @@
                         </t>
                         <t t-foreach="product_product.image_ids" t-as="i">
                             <div t-att-id="i.id" t-att-class="'tab-pane fade %s' %('in active' if i_index == 0 else '')">
-                                <img class="img img-responsive" style="margin: auto;" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_detail')"/>
+                                <img class="img img-responsive product_detail_img" style="margin: auto;" t-att-src="'/imagefield/base_multi_image.image/file_db_store/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_detail')"/>
                             </div>
                         </t>
                     </div>
@@ -44,12 +44,9 @@
             <xpath expr="//t[@t-foreach='variant_id.value_ids']/option[@t-att-value='value_id.id']" position="attributes">
                 <attribute name="t-att">{'selected': 'checked'} if value_id.id in variant_list else {}</attribute>
             </xpath>
-<!--
-            TODO: other widget
             <xpath expr="//t[@t-foreach='variant_id.value_ids']/li[@class='form-group js_attribute_value']/label/input[@type='radio']" position="attributes">
-                <attribute name="t-att">{'selected': 'checked'} if value_id.id in variant_list else {}</attribute>
+                <attribute name="t-att">{'checked': 'checked'} if value_id.id in variant_list else {}</attribute>
             </xpath>
--->
         </template>
 
         <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website assets - Product Gallery">
