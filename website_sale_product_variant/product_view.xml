@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
-        <template id="product" inherit_id="website_sale.product">
-            <xpath expr="//div[@id='image_big']/t[@t-foreach='product.image_ids']" position="attributes">
-                <attribute name="t-foreach">product_product.image_ids</attribute>
-            </xpath>
-            <xpath expr="//ul[@id='image_nav']/t[@t-foreach='product.image_ids']" position="attributes">
-                <attribute name="t-foreach">product_product.image_ids</attribute>
-            </xpath>
-        </template>
-    </data>
 
     <data>
 
