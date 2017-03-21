@@ -37,6 +37,21 @@
             </xpath>
         </template>
 
+        <template id="variants" inherit_id="website_sale.variants">
+            <xpath expr="//t[@t-set='attribute_value_ids']" position="after">
+                <t t-set="variant_list" t-value="product_product.attribute_value_ids.mapped('id')"/>
+            </xpath>
+            <xpath expr="//t[@t-foreach='variant_id.value_ids']/option[@t-att-value='value_id.id']" position="attributes">
+                <attribute name="t-att">{'selected': 'checked'} if value_id.id in variant_list else {}</attribute>
+            </xpath>
+<!--
+            TODO: other widget
+            <xpath expr="//t[@t-foreach='variant_id.value_ids']/li[@class='form-group js_attribute_value']/label/input[@type='radio']" position="attributes">
+                <attribute name="t-att">{'selected': 'checked'} if value_id.id in variant_list else {}</attribute>
+            </xpath>
+-->
+        </template>
+
         <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website assets - Product Gallery">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/website_sale_product_gallery/static/src/css/gallery.css" t-ignore="true"/>
