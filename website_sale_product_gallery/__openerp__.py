@@ -30,7 +30,7 @@ A simple gallery for product detail
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale_product_variant', 'website_imagemagick', 'base_multi_image'],
+    'depends': ['website_sale_product_variant', 'website_imagemagick', 'product_multi_image'],
     'data': ['product_view.xml', 'product_data.xml'],
     'application': False,
     'installable': True,
