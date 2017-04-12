@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record model="ir.config_parameter" id="param_search_fields">
+            <field name="key">alt.product.search.fields</field>
+            <field name="value">name description description_sale product_variant_ids.default_code product_variant_ids.default_code attribute_line_ids.value_ids.name public_categ_ids.name website_style_ids.name</field>
+        </record>
+        
+        <record model="ir.config_parameter" id="param_use_category">
+            <field name="key">alt.product.search.use_category</field>
+            <field name="value">0</field>
+        </record>
+
+    </data>
+</openerp>
