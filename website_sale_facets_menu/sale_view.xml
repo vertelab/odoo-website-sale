@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="menu_filter" model="website.menu">
+            <field name="name">Filter</field>
+            <field name="url"></field>
+            <field name="sequence">35</field>
+            <field name="parent_id" ref="website.main_menu"/>
+        </record>
+        
+        <template id="layout" inherit_id="website.layout" name="Facets Menu Call">
+            <xpath expr="//t[@t-foreach='website.menu_id.child_id']" position="replace">
+                <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                    <t t-if="submenu == website.env.ref('website_sale_facets_menu.menu_filter')">
+                        <t t-call="website_sale_facets_menu.facets_menu"/>
+                    </t>
+                    <t t-if="submenu != website.env.ref('website_sale_facets_menu.menu_filter')">
+                        <t t-call="website.submenu"/>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+        
+        <template id="facets_menu" name="Facets Menu">
+            <t t-if="attributes">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span t-field="submenu.name"/> <span class="caret" t-ignore="true"/>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <t t-foreach="attributes" t-as="a">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span t-field="a.name"/> <span class="caret" t-ignore="true"/>
+                                </a>
+                                <ul role="menu">
+                                    <t t-foreach="a.value_ids" t-as="item">
+                                        <t t-call="website_sale_facets_menu.facets_menu_item"/>
+                                    </t>
+                                </ul>
+                            </li>
+                        </t>
+<!--
+                        <t t-foreach="facets" t-as="facet">
+                            <t t-call="website_sale_facets_menu.facets_menu_item"/>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span t-field="facet.name"/> <span class="caret" t-ignore="true"/>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <t t-foreach="facet.value_ids" t-as="item">
+                                        <t t-call="website_sale_facets_menu.facets_menu_item"/>
+                                    </t>
+                                </ul>
+                            </li>
+                        </t>
+-->
+                    </ul>
+                </li>
+            </t>
+        </template>
+        
+        <template id="facets_menu_item" name="Facets Menu Item">
+            <li>
+                <a href="#" t-ignore="true">
+                    <span t-field="item.name"/>
+                </a>
+            </li>
+        </template>
+        
+    </data>
+</openerp>
