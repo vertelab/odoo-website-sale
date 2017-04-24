@@ -2,6 +2,7 @@
 <openerp>
     <data>
 
+<!--
         <record id="menu_filter" model="website.menu">
             <field name="name">Filter</field>
             <field name="url"></field>
@@ -42,7 +43,6 @@
                                 </ul>
                             </li>
                         </t>
-<!--
                         <t t-foreach="facets" t-as="facet">
                             <t t-call="website_sale_facets_menu.facets_menu_item"/>
                             <li class="dropdown">
@@ -56,7 +56,6 @@
                                 </ul>
                             </li>
                         </t>
--->
                     </ul>
                 </li>
             </t>
@@ -69,6 +68,7 @@
                 </a>
             </li>
         </template>
+-->
 
         <template id="main_filter_layout" inherit_id="website.layout">
             <xpath expr="//div[@id='wrapwrap']/main" position="inside">
@@ -120,8 +120,42 @@
                         </div>
                     </div>
                 </div>
+                <div id="sort_modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog" style="margin: 0px;">
+                        <div class="modal-content">
+                            <div class="modal-header hidden"/>
+                            <div class="modal-body">
+                                <form action="/dn_shop" method="post">
+                                    <div class="container">
+                                        <ul>
+                                            <li>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="order" value="name asc"/> Name Ascending
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="order" value="name desc"/> Name Descending
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <button class="mt32 dn_btn dn_primary" type="submit">OK</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer hidden">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="bottom_div" class="container">
                     <h4 id="filter-btn-modal" data-toggle="modal" data-target="#filter_modal" class="pull-left"><i class="fa fa-filter"/> Filter</h4>
+                    <h4 id="sort-btn-modal" data-toggle="modal" data-target="#sort_modal" class="pull-right"><i class="fa fa-sort"/> Sort</h4>
                 </div>
             </xpath>
         </template>

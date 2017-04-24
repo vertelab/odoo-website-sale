@@ -21,6 +21,10 @@
     padding: 15px;
 }
 
+#sort_modal ul{
+    list-style-type: none;
+}
+
 #bottom_div {
     width: 100%;
     position: fixed;
