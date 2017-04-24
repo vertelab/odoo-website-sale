@@ -99,7 +99,7 @@
                                                                     <div class="checkbox">
                                                                         <h5>
                                                                             <label>
-                                                                                <input type="checkbox" t-att-name="facet_value.name" t-att-value="facet_value.id"/><t t-esc="facet_value.name"/>
+                                                                                <input type="checkbox" t-att-name="'facet_%s' %facet_value.id" t-att-value="facet_value.id"/><t t-esc="facet_value.name"/>
                                                                             </label>
                                                                         </h5>
                                                                     </div>

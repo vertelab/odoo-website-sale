@@ -30,24 +30,40 @@ PPR = 4  # Products Per Row
 
 class website_sale(website_sale):
 
+    def facet_search(self):
+        pass
+
     @http.route([
         '/dn_shop_filtered',
         '/dn_shop_filtered/page/<int:page>',
     ], type='http', auth="public", website=True)
     def dn_shop_filtered(self, page=0, category=None, search='', **post):
-        facet_ids = map(int, post.values())
-        products_with_facets = request.env['product.template'].search([('facet_line_ids', '!=', None)])
+        facet_ids = []
+        for k, v in post.iteritems():
+            if k.split('_')[0] == 'facet':
+                facet_ids.append(int(v))
         facets = request.env['product.facet.value'].search([('id', 'in', facet_ids)])
-        products = request.env['product.template'].browse([])
-        for product in products_with_facets:
-            facet_value_ids = request.env['product.facet.value'].browse([])
-            for facet_line in product.facet_line_ids:
-                facet_value_ids |= facet_line.value_ids
-            for facet in facets:
-                if facet in facet_value_ids:
-                    products |= product
-        extra_domain = ('id', 'in', products.mapped('id')) if len(products) != 0 else None
-        return self.get_products(page=page, category=category, search=search, domain_append=extra_domain, **post)
+        facet = {}
+        for f in facets:
+            if facet.get(f.name):
+                facet[f.name].append(f.id)
+            else:
+                facet[f.name] = [f.id]
+        domain = []
+        for f, r in facet.iteritems():
+            domain.append(('facet_line_ids.value_ids', 'in', r))
+        #~ facet_ids = map(int, post.values())
+        #~ products_with_facets = request.env['product.template'].search([('facet_line_ids', '!=', None)])
+        #~ products = request.env['product.template'].browse([])
+        #~ for product in products_with_facets:
+            #~ facet_value_ids = request.env['product.facet.value'].browse([])
+            #~ for facet_line in product.facet_line_ids:
+                #~ facet_value_ids |= facet_line.value_ids
+            #~ for facet in facets:
+                #~ if facet in facet_value_ids:
+                    #~ products |= product
+        #~ extra_domain = ('id', 'in', products.mapped('id')) if len(products) != 0 else None
+        return self.get_products(page=page, category=category, search=search, domain_append=domain, **post)
 
     def get_products(self, page=0, category=None, search='', domain_append=None, **post):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
@@ -58,7 +74,7 @@ class website_sale(website_sale):
 
         domain = self._get_search_domain(search, category, attrib_values)
         if domain_append:
-            domain.append(domain_append)
+            domain += domain_append
 
         keep = QueryURL('/dn_shop', category=category and int(category), search=search, attrib=attrib_list)
 
