@@ -25,54 +25,96 @@ from openerp.addons.website_sale.controllers.main import website_sale, QueryURL,
 import logging
 _logger = logging.getLogger(__name__)
 
-#~ class website_sale(website_sale):
-    
-    #~ @http.route([
-        #~ '/shop/variant/<model("product.product"):variant>'
-    #~ ], type='http', auth="public", website=True)
-    #~ def dn_product_variant(self, variant, category='', search='', **kwargs):
-        #~ cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
-        #~ category_obj = pool['product.public.category']
-        #~ template_obj = pool['product.template']
+PPG = 20 # Products Per Page
+PPR = 4  # Products Per Row
 
-        #~ context.update(active_id=variant.product_tmpl_id.id)
+class website_sale(website_sale):
 
-        #~ if category:
-            #~ category = category_obj.browse(cr, uid, int(category), context=context)
-            #~ category = category if category.exists() else False
+    @http.route([
+        '/dn_shop_filtered',
+        '/dn_shop_filtered/page/<int:page>',
+    ], type='http', auth="public", website=True)
+    def dn_shop_filtered(self, page=0, category=None, search='', **post):
+        facet_ids = map(int, post.values())
+        products_with_facets = request.env['product.template'].search([('facet_line_ids', '!=', None)])
+        facets = request.env['product.facet.value'].search([('id', 'in', facet_ids)])
+        products = request.env['product.template'].browse([])
+        for product in products_with_facets:
+            facet_value_ids = request.env['product.facet.value'].browse([])
+            for facet_line in product.facet_line_ids:
+                facet_value_ids |= facet_line.value_ids
+            for facet in facets:
+                if facet in facet_value_ids:
+                    products |= product
+        extra_domain = ('id', 'in', products.mapped('id')) if len(products) != 0 else None
+        return self.get_products(page=0, category=None, search='', domain_append=extra_domain, **post)
 
-        #~ attrib_list = request.httprequest.args.getlist('attrib')
-        #~ attrib_values = [map(int,v.split("-")) for v in attrib_list if v]
-        #~ attrib_set = set([v[1] for v in attrib_values])
+    def get_products(self, page=0, category=None, search='', domain_append=None, **post):
+        cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
 
-        #~ keep = QueryURL('/shop', category=category and category.id, search=search, attrib=attrib_list)
+        attrib_list = request.httprequest.args.getlist('attrib')
+        attrib_values = [map(int, v.split("-")) for v in attrib_list if v]
+        attrib_set = set([v[1] for v in attrib_values])
 
-        #~ category_ids = category_obj.search(cr, uid, [], context=context)
-        #~ category_list = category_obj.name_get(cr, uid, category_ids, context=context)
-        #~ category_list = sorted(category_list, key=lambda category: category[1])
+        domain = self._get_search_domain(search, category, attrib_values)
+        if domain_append:
+            domain.append(domain_append)
 
-        #~ pricelist = self.get_pricelist()
+        keep = QueryURL('/dn_shop', category=category and int(category), search=search, attrib=attrib_list)
 
-        #~ from_currency = pool.get('product.price.type')._get_field_currency(cr, uid, 'list_price', context)
-        #~ to_currency = pricelist.currency_id
-        #~ compute_currency = lambda price: pool['res.currency']._compute(cr, uid, from_currency, to_currency, price, context=context)
+        if not context.get('pricelist'):
+            pricelist = self.get_pricelist()
+            context['pricelist'] = int(pricelist)
+        else:
+            pricelist = pool.get('product.pricelist').browse(cr, uid, context['pricelist'], context)
 
-        #~ if not context.get('pricelist'):
-            #~ context['pricelist'] = int(self.get_pricelist())
-            #~ product = template_obj.browse(cr, uid, variant.product_tmpl_id.id, context=context)
+        product_obj = pool.get('product.template')
 
-        #~ values = {
-            #~ 'search': search,
-            #~ 'category': category,
-            #~ 'pricelist': pricelist,
-            #~ 'attrib_values': attrib_values,
-            #~ 'compute_currency': compute_currency,
-            #~ 'attrib_set': attrib_set,
-            #~ 'keep': keep,
-            #~ 'category_list': category_list,
-            #~ 'main_object': product,
-            #~ 'product': product,
-            #~ 'product_product': variant,
-            #~ 'get_attribute_value_ids': self.get_attribute_value_ids
-        #~ }
-        #~ return request.website.render("website_sale.product", values)
+        url = "/dn_shop"
+        product_count = product_obj.search_count(cr, uid, domain, context=context)
+        if search:
+            post["search"] = search
+        if category:
+            category = pool['product.public.category'].browse(cr, uid, int(category), context=context)
+            url = "/shop/category/%s" % slug(category)
+        if attrib_list:
+            post['attrib'] = attrib_list
+        pager = request.website.pager(url=url, total=product_count, page=page, step=PPG, scope=7, url_args=post)
+        product_ids = product_obj.search(cr, uid, domain, limit=PPG, offset=pager['offset'], order=self._get_search_order(post), context=context)
+        products = product_obj.browse(cr, uid, product_ids, context=context)
+
+        style_obj = pool['product.style']
+        style_ids = style_obj.search(cr, uid, [], context=context)
+        styles = style_obj.browse(cr, uid, style_ids, context=context)
+
+        category_obj = pool['product.public.category']
+        category_ids = category_obj.search(cr, uid, [('parent_id', '=', False)], context=context)
+        categs = category_obj.browse(cr, uid, category_ids, context=context)
+
+        attributes_obj = request.registry['product.attribute']
+        attributes_ids = attributes_obj.search(cr, uid, [], context=context)
+        attributes = attributes_obj.browse(cr, uid, attributes_ids, context=context)
+
+        from_currency = pool.get('product.price.type')._get_field_currency(cr, uid, 'list_price', context)
+        to_currency = pricelist.currency_id
+        compute_currency = lambda price: pool['res.currency']._compute(cr, uid, from_currency, to_currency, price, context=context)
+
+        values = {
+            'search': search,
+            'category': category,
+            'attrib_values': attrib_values,
+            'attrib_set': attrib_set,
+            'pager': pager,
+            'pricelist': pricelist,
+            'products': products,
+            'bins': table_compute().process(products),
+            'rows': PPR,
+            'styles': styles,
+            'categories': categs,
+            'attributes': attributes,
+            'compute_currency': compute_currency,
+            'keep': keep,
+            'style_in_product': lambda style, product: style.id in [s.id for s in product.website_style_ids],
+            'attrib_encode': lambda attribs: werkzeug.url_encode([('attrib',i) for i in attribs]),
+        }
+        return request.website.render("webshop_dermanord.products", values)
