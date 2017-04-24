@@ -47,7 +47,7 @@ class website_sale(website_sale):
                 if facet in facet_value_ids:
                     products |= product
         extra_domain = ('id', 'in', products.mapped('id')) if len(products) != 0 else None
-        return self.get_products(page=0, category=None, search='', domain_append=extra_domain, **post)
+        return self.get_products(page=pager, category=category, search=search, domain_append=extra_domain, **post)
 
     def get_products(self, page=0, category=None, search='', domain_append=None, **post):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
