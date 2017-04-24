@@ -125,7 +125,7 @@
                         <div class="modal-content">
                             <div class="modal-header hidden"/>
                             <div class="modal-body">
-                                <form action="/dn_shop" method="post">
+                                <form action="?" method="post">
                                     <div class="container">
                                         <ul>
                                             <li>
