@@ -132,5 +132,6 @@ class website_sale(website_sale):
             'keep': keep,
             'style_in_product': lambda style, product: style.id in [s.id for s in product.website_style_ids],
             'attrib_encode': lambda attribs: werkzeug.url_encode([('attrib',i) for i in attribs]),
+            'form_values': {'facet_1': True, 'order': 'name asc'},
         }
         return request.website.render("webshop_dermanord.products", values)
