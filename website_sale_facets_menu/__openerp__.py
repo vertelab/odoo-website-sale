@@ -20,18 +20,16 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale Product Gallery',
+    'name': 'Website Sale Facet Menu',
     'version': '0.1',
     'category': 'website_sale',
     'summary': '',
     'description': """
-A simple gallery for product detail
-===================================
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale_product_variant', 'website_imagemagick', 'product_multi_image'],
-    'data': ['product_view.xml', 'product_data.xml'],
+    'depends': ['website_sale', 'product_facets'],
+    'data': ['sale_view.xml',],
     'application': False,
     'installable': True,
 }

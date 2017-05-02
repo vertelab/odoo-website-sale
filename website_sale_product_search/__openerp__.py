@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 2004-2017 Vertel AB (<http://vertel.se>).
+#    Copyright (C) 2004-2016 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,19 +20,20 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale Product Gallery',
+    'name': 'Alternative Product Search',
     'version': '0.1',
-    'category': 'website_sale',
-    'summary': '',
+    'category': '',
+    'summary': "Modifies the product search.",
     'description': """
-A simple gallery for product detail
-===================================
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale_product_variant', 'website_imagemagick', 'product_multi_image'],
-    'data': ['product_view.xml', 'product_data.xml'],
+    'depends': ['website_sale'],
+    'data': [
+        'website_sale_data.xml',
+    ],
     'application': False,
     'installable': True,
 }
+
 # vim:expandtab:smartindent:tabstop=4s:softtabstop=4:shiftwidth=4:
