@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="product" inherit_id="website_sale.product" customize_show="True" active="False" name="Show Share Buttons" priority="99">
+            <xpath expr="//p[@class='text-muted']" position="before">
+                <t t-set="product_url" t-value="'%s/shop/product/%s' %(request.env['ir.config_parameter'].get_param('web.base.url'), product.id)"/>
+                <ul class="list-inline">
+                    <li>
+                        <a href="mailto:">
+                            <i class="fa fa-envelope fa-2x" title="Send an email"/>
+                        </a>
+                    </li>
+                    <li t-if="website.share_facebook">
+                        <a t-att-href="'https://www.facebook.com/sharer/sharer.php?u=%s' %product_url">
+                            <i class="fa fa-facebook-square fa-2x" title="Share this product on Facebook" style="color: #3B5998;"/>
+                        </a>
+                    </li>
+                    <li t-if="website.share_twitter">
+                        <a t-att-href="'https://twitter.com/intent/tweet?text=%s' %product_url">
+                            <i class="fa fa-twitter fa-2x" title="Share this product on Twitter" style="color: #1DA1F2;"/>
+                        </a>
+                    </li>
+                    <li t-if="website.share_googleplus">
+                        <a t-att-href="'https://plus.google.com/share?url=%s' %product_url">
+                            <i class="fa fa-google-plus-square fa-2x" title="Share this product on Google Plus" style="color: #DC4A38;"/>
+                        </a>
+                    </li>
+                </ul>
+            </xpath>
+        </template>
+
+        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Social Media Assets Frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/website_sale_social_media/static/src/css/main.css" t-ignore="true"/>
+                <script type="text/javascript" src="/website_sale_social_media/static/src/js/main.js"/>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>
