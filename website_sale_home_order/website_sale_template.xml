@@ -3,10 +3,12 @@
     <data>
 
         <template id="home_page_order" inherit_id="website_sale_home.home_page" name="Home Page Order">
-            <xpath expr="//div[@class='col-lg-3 col-md-3 col-sm-3 col-xs-3 home_tab_menu']/div[@class='list-group']" position="inside">
-                <a href="#orders" data-toggle="tab" class="list-group-item text-center">
-                    <h4><i class="fa fa-dollar"/></h4><h4 class="hidden-xs">Orders</h4>
-                </a>
+            <xpath expr="//div[@class='col-lg-3 col-md-3 col-sm-3 col-xs-3 home_tab_menu']/ul[@class='list-group nav nav-pills nav-stacked']" position="inside">
+                <li>
+                    <a href="#orders" data-toggle="tab" class="list-group-item text-center">
+                        <h4><i class="fa fa-dollar"/></h4><h4 class="hidden-xs">Orders</h4>
+                    </a>
+                </li>
             </xpath>
             <xpath expr="//div[@class='col-lg-9 col-md-9 col-sm-9 col-xs-9 tab-content home_tab_content']" position="inside">
                 <div id="orders" class="tab-pane">
