@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="home_page" name="Home Page">
+            <t t-call="website.layout">
+                <section>
+                    <div class="container">
+                        <div class="row">
+                            <div id="main_div" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt32 mb32">
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 home_tab_menu">
+                                    <div class="list-group">
+                                        <a href="#settings" data-toggle="tab" class="list-group-item active text-center">
+                                            <h4><i class="fa fa-cogs"/></h4><h4 class="hidden-xs">Settings</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 tab-content home_tab_content">
+                                    <div id="settings" class="tab-pane active">
+                                        <div id="info_div">
+                                            <h4 class="text-center">(* = Required)</h4>
+                                            <form id="info_form" t-att-action="'/home/%s/info_update' %user_id.id" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
+
+                                                <h2 class="text-center">Login Information</h2>
+                                                <div t-attf-class="form-group #{error and 'email' in error and 'has-error' or ''}">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="email">Email *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="email" class="form-control" name="email" required="True" t-att-value="user_id.partner_id.email"/>
+                                                    </div>
+                                                </div>
+                                                <div t-attf-class="form-group #{error and 'login' in error and 'has-error' or ''}">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="login">Name *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="login" required="True" t-att-value="user_id.login"/>
+                                                    </div>
+                                                </div>
+                                                <div t-attf-class="form-group #{error and 'password' in error and 'has-error' or ''}">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="password">New Password *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input id="password" type="password" class="form-control" name="password" required="True" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div t-attf-class="form-group #{error and 'password' in error and 'has-error' or ''}">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="confirm_password">Confirm Password *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input id="confirm_password" type="password" class="form-control" name="confirm_password" required="True" value=""/>
+                                                    </div>
+                                                </div>
+
+                                                <h2 class="text-center">Payment Information</h2>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="company">Company</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="company" t-att-value="user_id.partner_id.parent_id.name if user_id.partner_id.parent_id else ''"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="vat">Organisations Number</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="vat" t-att-value="user_id.partner_id.parent_id.vat if user_id.partner_id.parent_id else ''"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="ref">Customer Number</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="ref" t-att-value="user_id.partner_id.parent_id.ref if user_id.partner_id.parent_id else ''"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="name">First Name *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="name" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="last_name">Last Name *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="last_name" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="street">Street 1 *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="street" t-att-value="user_id.partner_id.parent_id.street"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="street2">Street 2</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="street2" t-att-value="user_id.partner_id.parent_id.street"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="city">City *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="city" t-att-value="user_id.partner_id.parent_id.city"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="zip">Zip *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="zip" t-att-value="user_id.partner_id.parent_id.zip"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="country_id">Country *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <select class="form-control" name="country_id">
+                                                            <t t-foreach="request.env['res.country'].search([])" t-as="country">
+                                                                <option t-att-value="country.id" t-att="{'selected': 'checked'} if user_id.partner_id.parent_id.country_id == country else {}"><t t-esc="country.name"/></option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="phone">Phone *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="phone" t-att-value="user_id.partner_id.parent_id.phone"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="mobile">Mobile</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="mobile" t-att-value="user_id.partner_id.parent_id.mobile"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="fax">Fax</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="fax" t-att-value="user_id.partner_id.parent_id.fax"/>
+                                                    </div>
+                                                </div>
+
+                                                <h2 class="text-center">Bank Information</h2>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="account_holder">Account Holder</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="account_holder" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="account_number">Account Number</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="account_number" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="account_sort_code">Account Sort Code</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="account_sort_code" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="bank_name">Bank Name</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="bank_name" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="bank_type">Bank Type</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <select name="bank_type">
+                                                            <option value="type1">type1</option>
+                                                            <option value="type2">type2</option>
+                                                            <option value="type3">type3</option>
+                                                            <option value="type4">type4</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="iban">IBAN</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="iban" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="other_info">School, eduation</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="textarea" class="form-control" name="other_info" value=""/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                                                        <button id="submit_btn" class="btn btn-primary btn-lg">Send</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+
+        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Home Assets Frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/website_sale_home/static/src/css/main.css" t-ignore="true"/>
+                <script type="text/javascript" src="/website_sale_home/static/src/js/main.js"/>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>

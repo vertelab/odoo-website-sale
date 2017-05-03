@@ -20,20 +20,19 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale Social Media',
+    'name': 'Website My Home Page',
     'version': '0.1',
     'category': 'website_sale',
     'description': """
-Share products to social medias
-===============================
+A home page for logged in user
+==============================
 
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
     'depends': ['website_sale'],
     'data': [
-        'res_config_view.xml',
-        'website_template.xml',
+        'website_sale_template.xml',
     ],
     'installable': True,
 }

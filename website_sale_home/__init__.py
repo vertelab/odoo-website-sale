@@ -1,2 +1,1 @@
-#import res_config
-import res_users
+import website_sale
