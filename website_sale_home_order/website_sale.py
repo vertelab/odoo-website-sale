@@ -31,14 +31,18 @@ _logger = logging.getLogger(__name__)
 
 class website_sale_home(website_sale_home):
 
-    @http.route(['/home','/home/<model("res.users"):user>', ], type='http', auth="user", website=True)
-    def home_page(self, user=None ,**post):
-        if request.uid == request.env.ref('base.public_user').id:
-            return request.website.render('website.403')
-        if not user:
-            return werkzeug.utils.redirect("/home/%s" % request.uid)
-
+    @http.route(['/home','/home/<model("res.users"):user>',], type='http', auth="user", website=True)
+    def home_page(self, user=None, **post):
+        self.validate_user(user)
         return request.render('website_sale_home.home_page', {
             'user': user if user else request.env['res.users'].browse(request.uid),
             'orders': request.env['sale.order'].search([('partner_id', '=', user.partner_id.id)]),
+        })
+
+    @http.route(['/home/<model("res.users"):user>/order/<model("sale.order"):order>',], type='http', auth="user", website=True)
+    def home_page_order(self, user=None, order=None, **post):
+        self.validate_user(user)
+        return request.render('website_sale_home_order.page_order', {
+            'user': user if user else request.env['res.users'].browse(request.uid),
+            'order': request.env['sale.order'].browse(order.id),
         })

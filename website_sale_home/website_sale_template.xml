@@ -199,6 +199,12 @@
             </t>
         </template>
 
+        <template id="layout" inherit_id="website.layout">
+            <xpath expr="//a[@href='/web']" position="replace">
+                <a t-att-href="'/home/%s' %user_id.id" role="menuitem">My Account</a>
+            </xpath>
+        </template>
+
         <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Home Assets Frontend">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/website_sale_home/static/src/css/main.css" t-ignore="true"/>

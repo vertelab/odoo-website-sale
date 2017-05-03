@@ -30,19 +30,22 @@ _logger = logging.getLogger(__name__)
 
 class website_sale_home(http.Controller):
 
-    @http.route(['/home','/home/<model("res.users"):user>', ], type='http', auth="user", website=True)
-    def home_page(self, user=None ,**post):
+    def validate_user(self, user):
         if request.uid == request.env.ref('base.public_user').id:
             return request.website.render('website.403')
         if not user:
             return werkzeug.utils.redirect("/home/%s" % request.uid)
 
+    @http.route(['/home','/home/<model("res.users"):user>',], type='http', auth="user", website=True)
+    def home_page(self, user=None, **post):
+        self.validate_user(user)
         return request.render('website_sale_home.home_page', {
             'user': user if user else request.env['res.users'].browse(request.uid)
         })
 
-    @http.route(['/home/<model("res.users"):user>/info_update', ], type='http', auth="user", website=True)
-    def info_update(self, user=None ,**post):
+    @http.route(['/home/<model("res.users"):user>/info_update',], type='http', auth="user", website=True)
+    def info_update(self, user=None, **post):
+        self.validate_user(user)
         if post.get('user_id') == str(user.id):
             user.sudo().email = post.get('email')
             user.sudo().login = post.get('login')
