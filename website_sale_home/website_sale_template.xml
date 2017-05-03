@@ -20,6 +20,7 @@
                                         <div id="info_div">
                                             <h4 class="text-center">(* = Required)</h4>
                                             <form id="info_form" t-att-action="'/home/%s/info_update' %user_id.id" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
+                                                <input type="hidden" name="user_id" t-att-value="user_id.id" required="True" readonly="True"/>
 
                                                 <h2 class="text-center">Login Information</h2>
                                                 <div t-attf-class="form-group #{error and 'email' in error and 'has-error' or ''}">
@@ -51,63 +52,63 @@
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="company">Company</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="company" t-att-value="user_id.partner_id.parent_id.name if user_id.partner_id.parent_id else ''"/>
+                                                        <input type="text" class="form-control" name="company" t-att-value="user_id.partner_id.name if user_id.partner_id else ''"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="vat">Organisations Number</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="vat" t-att-value="user_id.partner_id.parent_id.vat if user_id.partner_id.parent_id else ''"/>
+                                                        <input type="text" class="form-control" name="vat" t-att-value="user_id.partner_id.vat if user_id.partner_id else ''"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="ref">Customer Number</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="ref" t-att-value="user_id.partner_id.parent_id.ref if user_id.partner_id.parent_id else ''"/>
+                                                        <input type="text" class="form-control" name="ref" t-att-value="user_id.partner_id.ref if user_id.partner_id else ''"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="name">First Name *</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="name" value=""/>
+                                                        <input type="text" class="form-control" name="name" value="" required="True"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="last_name">Last Name *</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="last_name" value=""/>
+                                                        <input type="text" class="form-control" name="last_name" value="" required="True"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="street">Street 1 *</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="street" t-att-value="user_id.partner_id.parent_id.street"/>
+                                                        <input type="text" class="form-control" name="street" t-att-value="user_id.partner_id.street" required="True"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="street2">Street 2</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="street2" t-att-value="user_id.partner_id.parent_id.street"/>
+                                                        <input type="text" class="form-control" name="street2" t-att-value="user_id.partner_id.street2"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="city">City *</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="city" t-att-value="user_id.partner_id.parent_id.city"/>
+                                                        <input type="text" class="form-control" name="city" t-att-value="user_id.partner_id.city" required="True"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="zip">Zip *</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="zip" t-att-value="user_id.partner_id.parent_id.zip"/>
+                                                        <input type="text" class="form-control" name="zip" t-att-value="user_id.partner_id.zip" required="True"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="country_id">Country *</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <select class="form-control" name="country_id">
+                                                        <select class="form-control" name="country_id" required="True">
                                                             <t t-foreach="request.env['res.country'].search([])" t-as="country">
-                                                                <option t-att-value="country.id" t-att="{'selected': 'checked'} if user_id.partner_id.parent_id.country_id == country else {}"><t t-esc="country.name"/></option>
+                                                                <option t-att-value="country.id" t-att="{'selected': 'checked'} if user_id.partner_id.country_id == country else {}"><t t-esc="country.name"/></option>
                                                             </t>
                                                         </select>
                                                     </div>
@@ -115,19 +116,19 @@
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="phone">Phone *</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="phone" t-att-value="user_id.partner_id.parent_id.phone"/>
+                                                        <input type="text" class="form-control" name="phone" required="True" t-att-value="user_id.partner_id.phone"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="mobile">Mobile</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="mobile" t-att-value="user_id.partner_id.parent_id.mobile"/>
+                                                        <input type="text" class="form-control" name="mobile" t-att-value="user_id.partner_id.mobile"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="fax">Fax</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="fax" t-att-value="user_id.partner_id.parent_id.fax"/>
+                                                        <input type="text" class="form-control" name="fax" t-att-value="user_id.partner_id.fax"/>
                                                     </div>
                                                 </div>
 

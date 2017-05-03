@@ -5,8 +5,6 @@ $(document).ready(function() {
         $(this).addClass("active");
         var index = $(this).index();
     });
-
-
 });
 
 function formValidate() {
