@@ -74,7 +74,6 @@
                                     <p><label>Mobile:</label> <t t-esc="order.partner_shipping_id.mobile"/></p>
                                     <p><label>Fax:</label> <t t-esc="order.partner_shipping_id.fax"/></p>
                                 </div>
-                                <h4>Total: <t t-esc="order.amount_total"/> <t t-esc="order.currency_id.name"/></h4>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <h4 class="text-center"><strong>Shipping Information</strong></h4>
                                     <p><label>Company:</label> <t t-esc="order.sudo().carrier_id.partner_id.name"/></p>
@@ -97,25 +96,27 @@
                                                     <td><t t-esc="line.product_uom_qty"/></td>
                                                     <td><t t-esc="line.product_id.name"/></td>
                                                     <td class="hidden-xs"><t t-esc="line.product_id.default_code"/></td>
-                                                    <td class="hidden-xs"><t t-esc="line.price_unit"/></td>
-                                                    <td><t t-esc="line.price_subtotal"/></td>
+                                                    <td class="hidden-xs"><t t-esc="line.price_unit"/> <t t-esc="order.currency_id.name"/></td>
+                                                    <td><t t-esc="line.price_subtotal"/> <t t-esc="order.currency_id.name"/></td>
                                                 </tr>
                                             </t>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="pull-right">
-                                        <p><label>Sum:</label> <t t-esc="order.amount_untaxed"/></p>
-                                        <p><label>Shipping:</label> <t t-esc="order.carrier_id.normal_price"/></p>
-                                        <p><label>Tax:</label> <t t-esc="order.amount_tax"/></p>
+                                        <p><label>Sum:</label> <t t-esc="order.amount_untaxed"/> <t t-esc="order.currency_id.name"/></p>
+                                        <p><label>Shipping:</label> <t t-esc="order.carrier_id.normal_price"/> <t t-esc="order.currency_id.name"/></p>
+                                        <p><label>Tax:</label> <t t-esc="order.amount_tax"/> <t t-esc="order.currency_id.name"/></p>
                                         <hr/>
-                                        <h4><label>Total:</label> <t t-esc="order.amount_total"/></h4>
+                                        <h4><label>Total:</label> <t t-esc="order.amount_total"/> <t t-esc="order.currency_id.name"/></h4>
                                         <hr/>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <h4 class="text-center"><strong>Payment Information</strong></h4>
-                                    <p><label>Payment Term:</label> <t t-esc="order.payment_term.name"/></p>
-                                    <p><label>Fiscal Position:</label> <t t-esc="order.fiscal_position.name"/></p>
+                                    <p><label>Payment Term:</label> <t t-esc="order.sudo().payment_term.name"/></p>
+                                    <p><label>Fiscal Position:</label> <t t-esc="order.sudo().fiscal_position.name"/></p>
                                 </div>
                             </div>
                         </div>
