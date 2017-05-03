@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="home_page_order" inherit_id="website_sale_home.home_page" name="Home Page Order">
+            <xpath expr="//div[@class='col-lg-3 col-md-3 col-sm-3 col-xs-3 home_tab_menu']/div[@class='list-group']" position="inside">
+                <a href="#orders" data-toggle="tab" class="list-group-item text-center">
+                    <h4><i class="fa fa-dollar"/></h4><h4 class="hidden-xs">Orders</h4>
+                </a>
+            </xpath>
+            <xpath expr="//div[@class='col-lg-9 col-md-9 col-sm-9 col-xs-9 tab-content home_tab_content']" position="inside">
+                <div id="orders" class="tab-pane">
+                    <div id="order_div">
+                        <t t-if="orders">
+                            <t t-foreach="orders" t-as="order">
+                                <t t-esc="order.name"/>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Home Assets Frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/website_sale_home_order/static/src/css/main.css" t-ignore="true"/>
+                <script type="text/javascript" src="/website_sale_home_order/static/src/js/main.js"/>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>
