@@ -182,7 +182,7 @@
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="other_info">School, eduation</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="textarea" class="form-control" name="other_info" value=""/>
+                                                        <textarea type="text" class="form-control" name="other_info"></textarea>
                                                     </div>
                                                 </div>
 
