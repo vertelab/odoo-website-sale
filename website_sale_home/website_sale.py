@@ -45,14 +45,22 @@ class website_sale_home(http.Controller):
 
     @http.route(['/home/<model("res.users"):user>/info_update',], type='http', auth="user", website=True)
     def info_update(self, user=None, **post):
+        _logger.warn(post)
         self.validate_user(user)
         if post.get('user_id') == str(user.id):
+            #~ if post.get('is_company') == '1':
+                #~ try:
+                    #~ partner.vat = post.get('vat')
+                #~ except:
+                    #~ raise Warning('VAT number is not valid!')
+
             user.sudo().email = post.get('email')
             user.sudo().login = post.get('login')
             user.sudo().password = post.get('password')
 
             partner = user.sudo().partner_id
-            partner.name = post.get('name') + ' ' + post.get('last_name')
+            partner.name = post.get('name')
+            partner.is_company = True if post.get('is_company') == '1' else False
             partner.street = post.get('street')
             partner.streets = post.get('street2')
             partner.city = post.get('city')
@@ -61,11 +69,8 @@ class website_sale_home(http.Controller):
             partner.mobile = post.get('mobile')
             partner.fax = post.get('fax')
             partner.country_id = int(post.get('country_id'))
-            partner.ref = post.get('ref')
 
-            if partner.parent_id:
-                partner.parent_id = post.get('company')
-                partner.vat = post.get('vat')
+            #~ partner.parent_id = post.get('company')
 
             #~ post.get('account_holder')
             #~ post.get('account_number')

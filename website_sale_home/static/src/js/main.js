@@ -17,3 +17,17 @@ function formValidate() {
         return false;
     }
 }
+
+$("#is_company").live("change",function(){
+    if($(this).is(":checked")) {
+        $("#is_company_number").removeClass("hidden");
+        $("#label_company_name").removeClass("hidden");
+        $("#label_name").addClass("hidden");
+    }
+    if(!$(this).is(":checked")) {
+        $("#is_company_number").addClass("hidden");
+        $("#label_name").removeClass("hidden");
+        $("#label_company_name").addClass("hidden");
+    }
+});
+
