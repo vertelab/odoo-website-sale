@@ -180,7 +180,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="other_info">School, eduation</label>
+                                                    <label class="col-md-3 col-sm-4 control-label" for="other_info">School, education</label>
                                                     <div class="col-md-7 col-sm-8">
                                                         <textarea type="text" class="form-control" name="other_info"></textarea>
                                                     </div>
