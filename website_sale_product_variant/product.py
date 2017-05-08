@@ -35,7 +35,7 @@ class website_sale(website_sale):
     @http.route([
         '/shop/variant/<model("product.product"):variant>'
     ], type='http', auth="public", website=True)
-    def dn_product_variant(self, variant, category='', search='', **kwargs):
+    def shop_product_variant(self, variant, category='', search='', **kwargs):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
         category_obj = pool['product.public.category']
         template_obj = pool['product.template']
