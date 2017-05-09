@@ -17,63 +17,51 @@
           <div id="orders_div">
             <div class="row" style="width: 100%;">
               <form t-att-action="'/home/%s/order_search#orders' % (home_user.id)" method="post" class="pagination form-inline col-md-3">
-               <div class="container">
-               
-               
-                <div class="input-group">
-                  <input name="search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search_domain" />
-                  <span class="input-group-btn" >
-                    <button type="submit" class="btn btn-default">
-                      <i class="fa fa-search"  />
-                    </button>
-                  </span>
+                <div class="container">
+                  <div class="input-group">
+                    <input name="search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search_domain" />
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fa fa-search" />
+                      </button>
+                    </span>
+                  </div>
                 </div>
-            </div>
               </form>
-            
             </div>
-              <t t-foreach="website.sale_home_order_get(home_user,order_search_domain or None)" t-as="order">
-                <div class="order_div">
-                  <h3>
-                    <a t-att-href="'/home/%s/order/%s' %(home_user.id, order.id)">
-                      <t t-esc="order.name" />
-                    </a>
-                  </h3>
-                  
-                  <h4>
-                    Total:
-                    <t t-esc="order.amount_total" />
-                    <t t-esc="order.currency_id.name" />
-                  </h4>
-                  <p>
-                    Date:
-                    <t t-esc="order.date_order[:10]" />
-                  </p>
-                  <p>
-                    Salesman:
-                    <t t-esc="order.user_id.name" />
-                  </p>
-                  <p>
-                    Partner:
-                    <t t-esc="order.partner_id.name" />
-                    <t t-esc="order.partner_invoice_id.name" />
-                    <t t-esc="order.partner_shipping_id.name" />
-                  </p>
-
-                  <t t-set="invoice" t-value="website.sale_home_order_get_invoice(order)"/>
-                  
-                  <div t-att-class="'order_state state_%s' %order.state" t-if="not invoice">
-                    <t t-esc="order.state" />
-                  </div>
-                  
-                  <t t-if="invoice">
-                  <div t-att-class="'invoice_state state_%s' %invoice[1]">
-                    <a t-att-href="invoice[0]">Invoice  <t t-esc="invoice[1]" /></a>
-                  </div>
-                  
-                  </t>
-
+            <t t-foreach="website.sale_home_order_get(home_user,order_search_domain or None)" t-as="order">
+              <div class="order_div">
+                <h3>
+                  <a t-att-href="'/home/%s/order/%s' %(home_user.id, order.id)">
+                    <t t-esc="order.name" />
+                  </a>
+                </h3>
+                <h4>
+                  Total:
+                  <t t-esc="order.amount_total" />
+                  <t t-esc="order.currency_id.name" />
+                </h4>
+                <p>
+                  Date:
+                  <t t-esc="order.date_order[:10]" />
+                </p>
+                <p>
+                  Salesman:
+                  <t t-esc="order.user_id.name" />
+                </p>
+                <t t-set="invoice" t-value="website.sale_home_order_get_invoice(order)" />
+                <div t-att-class="'order_state state_%s' %order.state" t-if="not invoice">
+                  <t t-esc="order.state" />
                 </div>
+                <t t-if="invoice">
+                  <div t-att-class="'invoice_state state_%s' %invoice[1]">
+                    <a t-att-href="invoice[0]">
+                      Invoice
+                      <t t-esc="invoice[1]" />
+                    </a>
+                  </div>
+                </t>
+              </div>
             </t>
           </div>
         </div>
@@ -312,6 +300,17 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div>
+            <form t-att-action="'/home/%s/order/%s/copy' % (home_user.id,order.id)" method="post" class="pagination form-inline col-md-3">
+              <div class="container">
+                <div class="form-group">
+                  <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                    <button id="submit_btn" class="btn btn-primary btn-lg">Copy Order</button>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </section>
       </t>

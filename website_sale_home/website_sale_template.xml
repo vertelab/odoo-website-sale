@@ -206,7 +206,7 @@
 
         <template id="layout" inherit_id="website.layout">
             <xpath expr="//a[@href='/web']" position="replace">
-                <a t-att-href="'/home/%s' %home_user.id" role="menuitem">My Account</a>
+                <a t-att-href="'/home/%s' %user_id.id" role="menuitem">My Account</a>
             </xpath>
         </template>
 

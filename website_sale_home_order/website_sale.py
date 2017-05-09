@@ -82,3 +82,14 @@ class website_sale_home(website_sale_home):
             'home_user': home_user if home_user else request.env['res.users'].browse(request.uid),
             'order': request.env['sale.order'].browse(order.id),
         })
+
+
+    @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
+    def home_page_order_copy(self, home_user=None,order=None, **post):
+        sale_order = request.website.sale_get_order()
+        if not sale_order:
+            sale_order = request.website.sale_get_order(force_create=True)
+        sale_order.order_line |= order.order_line
+        #~ for line in order.order_line:
+            #~ sale_order.order_line = [(0,0,{'product_id': line.product_id.id, 'product_uom_qty': line.product_uom_qty})]
+        return werkzeug.utils.redirect("/shop/cart")
