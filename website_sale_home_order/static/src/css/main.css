@@ -16,6 +16,20 @@
     padding: 5px 10px;
 }
 
+.invoice_state {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 10px;
+}
+
+
+.state_open {
+    background-color: #DD3333;
+    color: #000;
+}
+
+
 .state_draft {
     background-color: #F7F7F7;
     color: #000;
@@ -55,6 +69,12 @@
     background-color: #5CB85C;
     color: #000;
 }
+
+.state_paid {
+    background-color: #5CB85C;
+    color: #000;
+}
+
 
 .state_progress {
     background-color: #0275D8;
