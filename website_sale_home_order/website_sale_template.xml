@@ -254,6 +254,7 @@
                             <t t-esc="line.price_subtotal" />
                             <t t-esc="order.currency_id.name" />
                           </td>
+                           <td class="order_line_buttons"/>
                         </tr>
                       </t>
                     </tbody>
@@ -301,7 +302,8 @@
               </div>
             </div>
           </div>
-          <div>
+          <div id="order_buttons">
+        
             <form t-att-action="'/home/%s/order/%s/copy' % (home_user.id,order.id)" method="post" class="pagination form-inline col-md-3">
               <div class="container">
                 <div class="form-group">

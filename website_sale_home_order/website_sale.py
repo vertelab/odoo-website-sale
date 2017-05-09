@@ -45,7 +45,7 @@ class website(models.Model):
         
     @api.model
     def sale_home_order_get_invoice(self,order):
-        invoice = order.invoice_ids.mapped('id')
+        invoice = order.invoice_ids.mapped('id') if order else []
         #~ raise Warning(invoice,len(invoice))
         if len(invoice)>0:
             document = self.env['ir.attachment'].search([('res_id','=',invoice[0]),('res_model','=','account.invoice')]).mapped('id') 
