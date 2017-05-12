@@ -21,6 +21,11 @@
                             <i class="fa fa-twitter fa-2x" title="Share this product on Twitter" style="color: #1DA1F2;"/>
                         </a>
                     </li>
+                    <li t-if="website.share_linkedin">
+                        <a t-att-href="'https://www.linkedin.com/shareArticle?mini=true&amp;url=%s' %product_url">
+                            <i class="fa fa-linkedin fa-2x" title="Share this product on LinkedIn" style="color: #0177B5;"/>
+                        </a>
+                    </li>
                     <li t-if="website.share_googleplus">
                         <a t-att-href="'https://plus.google.com/share?url=%s' %product_url">
                             <i class="fa fa-google-plus-square fa-2x" title="Share this product on Google Plus" style="color: #DC4A38;"/>

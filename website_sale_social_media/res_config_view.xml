@@ -14,6 +14,8 @@
                             <label for="share_twitter"/>
                             <field name="share_facebook"/>
                             <label for="share_facebook"/>
+                            <field name="share_linkedin"/>
+                            <label for="share_linkedin"/>
                             <field name="share_googleplus"/>
                             <label for="share_googleplus"/>
                         </div>
