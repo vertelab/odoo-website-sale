@@ -20,17 +20,17 @@
 ##############################################################################
 
 {
-    'name': 'Website My Home Page',
-    'version': '0.2',
+    'name': 'Website My Home Page Claim',
+    'version': '0.1',
     'category': 'website_sale',
     'description': """
-A home page for logged in user
-==============================
+Form for claims
+===============
 
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale'],
+    'depends': ['website_sale_home',],
     'data': [
         'website_sale_template.xml',
     ],

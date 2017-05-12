@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <template id="home_page_claim" inherit_id="website_sale_home.home_page" name="Home Page Order">
+      <xpath expr="//ul[@id='home_tab_nav']" position="inside">
+        <li>
+          <a href="#claim" data-toggle="tab" class="list-group-item text-center">
+            <h4>
+              <i class="fa fa-dollar" />
+            </h4>
+            <h4 class="hidden-xs">Claims</h4>
+          </a>
+        </li>
+      </xpath>
+      <xpath expr="//div[@id='home_tab_content']" position="inside">
+        <div id="claim" class="tab-pane">
+          <div id="claims_div">
+            <t t-foreach="website.sale_home_claim_get(home_user,claim_search_domain or None)" t-as="claim">
+              <div class="claim_div">
+                <h3>
+                  <a t-att-href="'/home/%s/claim/%s' %(home_user.id, claim.id)">
+                    <t t-esc="claim.name" />
+                  </a>
+                </h3>
+     
+                <p>
+                  Date:
+                  <t t-esc="claim.date[:10]" />
+                </p>
+                <p>
+                  Responsible:
+                  <t t-esc="claim.user_id.name" />
+                </p>
+                <t t-set="invoice" t-value="website.sale_home_order_get_invoice(order)" />
+                <div t-att-class="'claim_state state_%s' %claim.stage_id.name" t-if="not invoice">
+                  <t t-esc="claim.stage_id.name" />
+                </div>
+                <t t-if="invoice">
+                  <div t-att-class="'invoice_state state_%s' %invoice[1]">
+                    <a t-att-href="invoice[0]">
+                      Invoice
+                      <t t-esc="invoice[1]" />
+                    </a>
+                  </div>
+                </t>
+              </div>
+            </t>
+          </div>
+        </div>
+      </xpath>
+    </template>
+    <template id="page_claim" name="Page Claim">
+      <t t-call="website.layout">
+        <section>
+          <div class="container claim_detail mt32 mb32" t-if="order">
+            <div class="row">
+              <a t-att-href="'/home/%s' %home_user.id">
+                <button class="btn btn-default" style="margin-left: 15px;">
+                  <i class="fa fa-angle-left" />
+                  Back To My Account
+                </button>
+              </a>
+              <div>
+                <h1 class="text-center">
+                  <t t-esc="claim.name" />
+                </h1>
+                <p class="text-center">
+                  Date:
+                  <t t-esc="claim.date_order" />
+                </p>
+                <p class="text-center">
+                  State:
+                  <t t-esc="claim.state" />
+                </p>
+              </div>
+            </div>
+            <div>
+              <form t-att-action="'/home/%s/claim/%s/copy' % (home_user.id,order.id)" method="post" class="pagination form-inline col-md-3">
+                <div class="container">
+                  <div class="form-group">
+                    <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                      <button id="submit_btn" class="btn btn-primary btn-lg">Copy Order</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </t>
+    </template>
+    <template id="home_page_order_claim" inherit_id="website_sale_home_order.page_order">
+      <xpath expr="//div[@id='order_buttons']" position="inside">
+        <form t-att-action="'/home/%s/order/%s/claim' % (home_user.id,order.id)" method="post" class="pagination form-inline col-md-3">
+          <div class="container">
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                <button id="submit_btn" class="btn btn-primary btn-lg">File Complaint on Order</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </xpath>
+      <xpath expr="//td[@class='order_line_buttons']" position="inside">
+        <form t-att-action="'/home/%s/line/%s/claim' % (home_user.id,line.id)" method="post" class="pagination form-inline col-md-3">
+          <div class="container">
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                <button id="submit_btn" class="btn btn-primary btn-lg">File Complaint on Product</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </xpath>
+    </template>
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Home Assets Frontend">
+      <xpath expr="." position="inside">
+        <link rel="stylesheet" href="/website_sale_home_claim/static/src/css/main.css" t-ignore="true" />
+        <script type="text/javascript" src="/website_sale_home_claim/static/src/js/main.js" />
+      </xpath>
+    </template>
+  </data>
+</openerp>
