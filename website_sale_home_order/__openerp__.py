@@ -30,7 +30,7 @@ List sale order history
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale_home','website_document'],
+    'depends': ['website_sale_home','website_document','account','sale_stock'],
     'data': [
         'website_sale_template.xml',
     ],

@@ -32,16 +32,27 @@ _logger = logging.getLogger(__name__)
 
 class website(models.Model):
     _inherit="website"
+
+
+    @api.model
+    def sale_home_order_search_domain(self,user,search=None):
+        domain = [('partner_id','child_of',user.partner_id.parent_id.id if user.partner_id.parent_id else user.partner_id.id)]
+        if search:
+            search = search.strip()
+            # invoices and picking
+            invoice_ids = self.env['sale.order'].sudo().search(domain).mapped('invoice_ids').filtered(lambda i: search in i.name or search in i.number or search in i.date_invoice).mapped('id')
+            picking_ids = self.env['sale.order'].sudo().search(domain).mapped('picking_ids').filtered(lambda p: search in p.name).mapped('group_id').mapped('id')
+            #~ _logger.warn('invoice_ids: %s picking_ids: %s' % (invoice_ids,picking_ids))
+            for s in ['|',('invoice_ids','in',invoice_ids),'|',('procurement_group_id','in',picking_ids),'|',('name','ilike', search),'|',('date_order','ilike', search),'|',('client_order_ref','ilike',search),('user_id','ilike',search)]:
+                domain.append(s)
+        _logger.debug('search_domain: %s' % (domain))
+        return domain
+
     
     @api.model
-    def sale_home_order_get(self,user,domain):
-        _logger.warn('partner %s' % user.partner_id.name)
-        if not domain:
-            domain = [('partner_id','child_of',user.partner_id.parent_id.id if user.partner_id.parent_id else user.partner_id.id)]
-            #~ if user.partner_id.parent_id:
-                #~ domain.append(('partner_id','child_of',user.partner_id.parent_id.id))
-        _logger.warn('%s %s' % (domain,self.env['sale.order'].sudo().search(domain)))
-        return self.env['sale.order'].sudo().search(domain)
+    def sale_home_order_get(self,user,search):
+        #~ _logger.warn('domain: %s result: ' % (search,self.env['sale.order'].sudo().search(self.sale_home_order_search_domain(user,search))))
+        return self.env['sale.order'].sudo().search(self.sale_home_order_search_domain(user,search))
         
     @api.model
     def sale_home_order_get_invoice(self,order):
@@ -57,22 +68,11 @@ class website(models.Model):
 class website_sale_home(website_sale_home):
 
     @http.route(['/home/<model("res.users"):user>/order_search',], type='http', auth="user", website=True)
-    def home_page_order_search(self, user=None,search=None, **post):
-        self.validate_user(user)
-        _logger.warn('partner %s' % user.partner_id.name)
-        search_domain = [('partner_id','child_of',user.partner_id.parent_id.id if user.partner_id.parent_id else user.partner_id.id)]
-        #~ if user.partner_id.parent_id:
-            #~ search_domain.append(('partner_id','child_of',user.partner_id.parent_id.id))
-        if search:
-            for s in ['|',('name','ilike', search),'|',('date_order','ilike', search),('client_order_ref','ilike',search)]:
-                search_domain.append(s)
-        
-       # raise Warning(search_domain,post)
-        _logger.warn('search %s | domain %s | post %s',(search,search_domain,post))
-        
+    def home_page_order_search(self, user=None,order_search=None, **post):
         return request.render('website_sale_home.home_page', {
             'home_user': user if user else request.env['res.users'].browse(request.uid),
-            'order_search_domain': search,
+            'order_search_domain': request.website.sale_home_order_search_domain(user,order_search),
+            'order_search': order_search,
         })
 
     @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>',], type='http', auth="user", website=True)
@@ -80,7 +80,7 @@ class website_sale_home(website_sale_home):
         self.validate_user(home_user)
         return request.render('website_sale_home_order.page_order', {
             'home_user': home_user if home_user else request.env['res.users'].browse(request.uid),
-            'order': request.env['sale.order'].browse(order.id),
+            'order': request.env['sale.order'].sudo().browse(order.id),
         })
 
 

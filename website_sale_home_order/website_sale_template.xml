@@ -19,7 +19,7 @@
               <form t-att-action="'/home/%s/order_search#orders' % (home_user.id)" method="post" class="pagination form-inline col-md-3">
                 <div class="container">
                   <div class="input-group">
-                    <input name="search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search_domain" />
+                    <input name="order_search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search" />
                     <span class="input-group-btn">
                       <button type="submit" class="btn btn-default">
                         <i class="fa fa-search" />
@@ -29,7 +29,7 @@
                 </div>
               </form>
             </div>
-            <t t-foreach="website.sale_home_order_get(home_user,order_search_domain or None)" t-as="order">
+            <t t-foreach="website.sale_home_order_get(home_user,order_search or None)" t-as="order">
               <div class="order_div">
                 <h3>
                   <a t-att-href="'/home/%s/order/%s' %(home_user.id, order.id)">
