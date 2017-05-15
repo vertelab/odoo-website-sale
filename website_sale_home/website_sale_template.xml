@@ -159,7 +159,7 @@
                                                         <label class="col-md-3 col-sm-4 control-label" for="bank_name">Bank Name</label>
                                                         <div class="col-md-7 col-sm-8">
                                                             <t t-set="banks" t-value="request.env['res.bank'].search([])"/>
-                                                            <select name="bank_name" class="selectpicker">
+                                                            <select name="bank_name" class="form-control">
                                                                 <t t-foreach="banks" t-as="bank">
                                                                     <option t-att-value="bank.id" t-att="({'selected': '1'} if bank_id.bank.id == bank.id else {}) if bank_id else {}"><t t-esc="bank.name"/></option>
                                                                 </t>
@@ -169,7 +169,7 @@
                                                     <div class="form-group">
                                                         <label class="col-md-3 col-sm-4 control-label" for="bank_type">Bank Account Type</label>
                                                         <div class="col-md-7 col-sm-8">
-                                                            <select name="bank_type" readonly="1">
+                                                            <select name="bank_type" class="form-control" readonly="1">
 <!--
                                                                 <option value="bank">Bank Account</option>
 -->
