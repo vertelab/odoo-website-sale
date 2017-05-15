@@ -35,3 +35,7 @@ div.home_tab_menu{
 .nav-pills > li.active > a {
     border-color: #CB683F;
 }
+
+.input_readonly {
+    padding-top: 7px;
+}

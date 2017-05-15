@@ -58,11 +58,11 @@ class website_sale_home(http.Controller):
 
         home_user.sudo().email = post.get('email')
         home_user.sudo().login = post.get('login')
-        home_user.sudo().password = post.get('password')
+        if post.get('confirm_password'):
+            home_user.sudo().password = post.get('password')
 
         partner = home_user.sudo().partner_id
         partner.name = post.get('name')
-        partner.is_company = True if post.get('is_company') == '1' else False
         partner.street = post.get('street')
         partner.streets = post.get('street2')
         partner.city = post.get('city')
@@ -72,7 +72,25 @@ class website_sale_home(http.Controller):
         partner.fax = post.get('fax')
         partner.country_id = int(post.get('country_id'))
 
-        #~ partner.parent_id = post.get('company')
+        if home_user.partner_id.is_company and post.get('account_number') != '':
+            res_partner_bank_obj = request.env['res.partner.bank']
+            if len(home_user.partner_id.bank_ids) > 0:
+                bank_id = home_user.partner_id.bank_ids[0]
+                bank_id.state = post.get('bank_type')
+                bank_id.acc_number = post.get('account_number')
+                bank_id.bank = int(post.get('bank_name'))
+                bank_id.bank_name = res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_name', False)
+                bank_id.bank_bic = res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_bic', False)
+            else:
+                res_partner_bank_obj.create({
+                    'state': post.get('bank_type'),
+                    'acc_number': post.get('account_number'),
+                    'partner_id': home_user.partner_id.id,
+                    'bank': int(post.get('bank_name')),
+                    'bank_name': res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_name', False),
+                    'bank_bic': res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_bic', False),
+                    'owner_name': home_user.partner_id.name,
+                })
 
         #~ post.get('account_holder')
         #~ post.get('account_number')

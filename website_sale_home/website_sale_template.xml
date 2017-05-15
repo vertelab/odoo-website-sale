@@ -53,24 +53,16 @@
                                                 </div>
 
                                                 <h2 class="text-center">Payment Information</h2>
-<!--
-                                                <div id="is_company_company" class="form-group hidden">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="company">Company</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="company" t-att-value="home_user.partner_id.parent_id.name if home_user.partner_id.parent_id else ''"/>
-                                                    </div>
-                                                </div>
--->
                                                 <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="ref">Customer Number</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <p style="padding-top: 7px;"><t t-esc="home_user.partner_id.ref"/></p>
+                                                        <p class="input_readonly"><t t-esc="home_user.partner_id.ref"/></p>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group" t-if="home_user.partner_id.is_company">
                                                     <label class="col-md-3 col-sm-4 control-label" for="company">Is Company</label>
-                                                    <div class="col-md-7 col-sm-8" style="padding-top: 7px;">
-                                                        <input id="is_company" type="checkbox" name="is_company" value="1" t-att="{'checked': '1'} if home_user.partner_id.is_company else {}"/>
+                                                    <div class="col-md-7 col-sm-8 input_readonly">
+                                                        <input id="is_company" type="checkbox" name="is_company" value="1" t-att="{'checked': '1'} if home_user.partner_id.is_company else {}" disabled="1"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -80,10 +72,10 @@
                                                         <input type="text" class="form-control" name="name" t-att-value="home_user.partner_id.name" required="True"/>
                                                     </div>
                                                 </div>
-                                                <div id="is_company_number" class="form-group hidden">
+                                                <div id="is_company_number" class="form-group" t-if="home_user.partner_id.is_company">
                                                     <label class="col-md-3 col-sm-4 control-label" for="vat">Organisations Number</label>
                                                     <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="vat" t-att-value="home_user.partner_id.vat if home_user.partner_id else ''"/>
+                                                        <p class="input_readonly"><t t-esc="home_user.partner_id.vat"/></p>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -139,54 +131,69 @@
                                                     </div>
                                                 </div>
 
-                                                <h2 class="text-center">Bank Information</h2>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="account_holder">Account Holder</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="account_holder" value=""/>
+                                                <t t-if="home_user.partner_id.is_company">
+                                                    <h2 class="text-center">Bank Information</h2>
+                                                    <t t-set="bank_id" t-value="None"/>
+                                                    <t t-if="len(home_user.partner_id.bank_ids) &gt; 0">
+                                                        <t t-set="bank_id" t-value="home_user.partner_id.bank_ids[0]"/>
+                                                    </t>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="account_holder">Account Holder</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <input type="text" class="form-control" name="account_holder" t-att-value="bank_id.partner_id.name if bank_id else ''" disabled="1"/>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="account_number">Account Number</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="account_number" value=""/>
+                                                    <div id="bank_account" class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="account_number">Account Number *</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <input type="text" class="form-control" name="account_number" t-att-value="bank_id.acc_number if bank_id else ''"/>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="account_sort_code">Account Sort Code</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="account_sort_code" value=""/>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="account_sort_code">Account Sort Code</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <input type="text" class="form-control" name="account_sort_code" t-att-value="bank_id.bank_bic if bank_id else ''" disabled="1"/>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="bank_name">Bank Name</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="bank_name" value=""/>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="bank_name">Bank Name</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <t t-set="banks" t-value="request.env['res.bank'].search([])"/>
+                                                            <select name="bank_name" class="selectpicker">
+                                                                <t t-foreach="banks" t-as="bank">
+                                                                    <option t-att-value="bank.id" t-att="({'selected': '1'} if bank_id.bank.id == bank.id else {}) if bank_id else {}"><t t-esc="bank.name"/></option>
+                                                                </t>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="bank_type">Bank Type</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <select name="bank_type">
-                                                            <option value="type1">type1</option>
-                                                            <option value="type2">type2</option>
-                                                            <option value="type3">type3</option>
-                                                            <option value="type4">type4</option>
-                                                        </select>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="bank_type">Bank Account Type</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <select name="bank_type" readonly="1">
+<!--
+                                                                <option value="bank">Bank Account</option>
+-->
+                                                                <option value="bg" selected="1">Bankgiro</option>
+<!--
+                                                                <option value="iban">IBAN Account</option>
+                                                                <option value="pg">Plusgiro</option>
+-->
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="iban">IBAN</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="iban" value=""/>
+                                                    <div id="iban_account" class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="iban">IBAN</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <input type="text" class="form-control" name="iban" value="" disabled="1"/>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="other_info">School, education</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <textarea type="text" class="form-control" name="other_info"></textarea>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="other_info">School, education</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <textarea type="text" class="form-control" name="other_info"></textarea>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </t>
 
                                                 <div class="form-group">
                                                     <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
