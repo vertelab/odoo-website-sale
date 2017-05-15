@@ -301,10 +301,10 @@
                 </div>
               </div>
             </div>
+            <div id="order_buttons" class="mt32 mb32">
           </div>
-          <div id="order_buttons">
-        
-            <form t-att-action="'/home/%s/order/%s/copy' % (home_user.id,order.id)" method="post" class="pagination form-inline col-md-3">
+
+            <form t-att-action="'/home/%s/order/%s/copy' % (home_user.id,order.id)" method="post" class="form-inline col-md-6 text-center">
               <div class="container">
                 <div class="form-group">
                   <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">

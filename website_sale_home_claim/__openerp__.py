@@ -30,7 +30,7 @@ Form for claims
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale_home',],
+    'depends': ['website_sale_home', 'sale_customer_no'],
     'data': [
         'website_sale_template.xml',
     ],

@@ -22,7 +22,7 @@
                     <t t-esc="claim.name" />
                   </a>
                 </h3>
-     
+
                 <p>
                   Date:
                   <t t-esc="claim.date[:10]" />
@@ -52,7 +52,7 @@
     <template id="page_claim" name="Page Claim">
       <t t-call="website.layout">
         <section>
-          <div class="container claim_detail mt32 mb32" t-if="order">
+          <div class="container claim_detail mt32 mb32">
             <div class="row">
               <a t-att-href="'/home/%s' %home_user.id">
                 <button class="btn btn-default" style="margin-left: 15px;">
@@ -66,47 +66,127 @@
                 </h1>
                 <p class="text-center">
                   Date:
-                  <t t-esc="claim.date_order" />
+                  <t t-esc="claim.date" />
                 </p>
                 <p class="text-center">
                   State:
-                  <t t-esc="claim.state" />
+                  <t t-esc="claim.stage_id.name" />
                 </p>
               </div>
-            </div>
-            <div>
-              <form t-att-action="'/home/%s/claim/%s/copy' % (home_user.id,order.id)" method="post" class="pagination form-inline col-md-3">
-                <div class="container">
-                  <div class="form-group">
-                    <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
-                      <button id="submit_btn" class="btn btn-primary btn-lg">Copy Order</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
             </div>
           </div>
         </section>
       </t>
     </template>
+    <template id="claim_form" name="Claim Modal">
+        <t t-call="website.layout">
+            <section>
+                <div class="container mt32 mb32">
+                    <div class="row">
+                        <t t-if="claim_line">
+                            <h1 class="text-center">Claim for product</h1>
+                            <form t-att-action="'/home/%s/line_claim/%s/send' %(home_user.id, claim_line.id)" method="post" class="form-horizontal mt32">
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="customer_no">Customer Number</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control" name="customer_no" required="True" t-att-value="home_user.partner_id.customer_no" disabled="1"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="product_id">Product</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <select class="form-control" name="product_id" required="True" disabled="1">
+                                            <option t-att-value="claim_line.product_id.id" checked="1"><t t-esc="claim_line.product_id.name"/></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="name">Subject</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control" name="name" required="True" t-att-value="claim_line.product_id.name" disabled="1"/>
+                                    </div>
+                                </div>
+    <!--
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="batch_number">Batch Number</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control" name="batch_number" required="True"/>
+                                    </div>
+                                </div>
+    -->
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="description">Description</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <textarea type="text" class="form-control" name="description"/>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button class="mt32 btn btn-lg btn-default" onclick="history.go(-1); return false;">Cancel</button>
+                                    <button class="mt32 btn btn-lg btn-primary" name="send" value="send" type="submit">Send</button>
+                                </div>
+                            </form>
+                        </t>
+                        <t t-if="claim_order">
+                            <h1 class="text-center">Claim for order</h1>
+                            <form t-att-action="'/home/%s/order_claim/%s/send' %(home_user.id, claim_order.id)" method="post" t-if="claim_order" class="form-horizontal mt32">
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="customer_no">Customer Number</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control" name="customer_no" required="True" t-att-value="home_user.partner_id.customer_no" disabled="1"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="order_id">Order</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <select class="form-control" name="product_id" required="True" disabled="1">
+                                            <option t-att-value="claim_order.id" checked="1"><t t-esc="claim_order.name"/></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="name">Subject</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control" name="name" required="True" t-att-value="claim_order.name" disabled="1"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-4 control-label" for="description">Description</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <textarea type="text" class="form-control" name="description"/>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button class="mt32 btn btn-lg btn-default" onclick="history.go(-1); return false;">Cancel</button>
+                                    <button class="mt32 btn btn-lg btn-primary" name="send" value="send" type="submit">Send</button>
+                                </div>
+                            </form>
+                        </t>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
     <template id="home_page_order_claim" inherit_id="website_sale_home_order.page_order">
+        <xpath expr="//thead" position="inside">
+            <th/>
+        </xpath>
       <xpath expr="//div[@id='order_buttons']" position="inside">
-        <form t-att-action="'/home/%s/order/%s/claim' % (home_user.id,order.id)" method="post" class="pagination form-inline col-md-3">
+        <form t-att-action="'/home/%s/order/%s/claim' % (home_user.id, order.id)" method="post" class="form-inline col-md-6 text-center">
           <div class="container">
             <div class="form-group">
-              <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
-                <button id="submit_btn" class="btn btn-primary btn-lg">File Complaint on Order</button>
+              <div>
+                <button type="submit" class="btn btn-primary btn-lg">File Complaint on Order</button>
               </div>
             </div>
           </div>
         </form>
       </xpath>
       <xpath expr="//td[@class='order_line_buttons']" position="inside">
-        <form t-att-action="'/home/%s/line/%s/claim' % (home_user.id,line.id)" method="post" class="pagination form-inline col-md-3">
+        <form t-att-action="'/home/%s/line/%s/claim' % (home_user.id, line.id)" method="post" class="form-inline">
           <div class="container">
             <div class="form-group">
-              <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
-                <button id="submit_btn" class="btn btn-primary btn-lg">File Complaint on Product</button>
+              <div>
+                <button type="submit" class="btn btn-primary btn-sm">File Complaint on Product</button>
               </div>
             </div>
           </div>
