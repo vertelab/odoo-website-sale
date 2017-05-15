@@ -29,13 +29,14 @@ class website(models.Model):
     share_twitter = fields.Boolean(string='Twitter')
     share_facebook = fields.Boolean(string='Facebook')
     share_googleplus = fields.Boolean(string='GooglePlus')
+    share_linkedin = fields.Boolean(string='LinkedIn')
     #~ share_youtube = fields.Boolean(string='YouTube')
-    #~ share_linkedin = fields.Boolean()
 
 
 class website_config_settings(models.TransientModel):
     _inherit = 'website.config.settings'
 
     share_twitter = fields.Boolean(related='website_id.share_twitter', string='Twitter')
+    share_linkedin = fields.Boolean(related='website_id.share_linkedin', string='LinkedIn')
     share_facebook = fields.Boolean(related='website_id.share_facebook', string='Facebook')
     share_googleplus = fields.Boolean(related='website_id.share_googleplus', string='GooglePlus')
