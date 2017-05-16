@@ -6,7 +6,7 @@
         <li>
           <a href="#claim" data-toggle="tab" class="list-group-item text-center">
             <h4>
-              <i class="fa fa-dollar" />
+              <i class="fa fa-gavel " />
             </h4>
             <h4 class="hidden-xs">Claims</h4>
           </a>
