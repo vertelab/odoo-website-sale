@@ -23,7 +23,7 @@ from datetime import timedelta,date
 import logging
 _logger = logging.getLogger(__name__)
 import timeit
-route_warehouse0_mto
+
 class product_template(models.Model):
     _inherit = 'product.template'
     @api.one

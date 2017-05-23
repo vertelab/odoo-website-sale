@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="dermanord_product_detail" inherit_id="website_sale.product">
+    <template id="product" inherit_id="website_sale.product">
       <xpath expr="//form[@class='js_add_cart_variants']" position="after">
         <div>
-          <h3>Lagerstatus</h3>
+          <h3>Stock Status</h3>
           <t esc="product.rout_ids.mapped('name')" />
-          <span t-if="product.is_mto_route">Beställningsartikel</span>
+          <span t-if="product.is_mto_route">Order article</span>
           <t t-if="not product.is_mto_route">
-            <span t-if="product.instock_percent &gt; 100.0">I lager</span>
-            <span t-if="product.instock_percent &gt; 50.0 and self.instock_percent &lt; 100.0">Få i lager</span>
-            <span t-if="product.instock_percent &lt; 50.0">Slut</span>
+            <span t-if="product.instock_percent &gt; 100.0">In stock</span>
+            <span t-if="product.instock_percent &gt; 50.0 and self.instock_percent &lt; 100.0">Few in stock</span>
+            <span t-if="product.instock_percent &lt; 50.0">Shortage</span>
           </t>
         </div>
       </xpath>
