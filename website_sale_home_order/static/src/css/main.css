@@ -1,5 +1,5 @@
 #orders_div {
-    padding: 15px;
+    padding: 15px 0px;
 }
 
 .order_div {
@@ -27,6 +27,10 @@
 .state_open {
     background-color: #DD3333;
     color: #000;
+}
+
+.state_open a {
+    color: #fff;
 }
 
 
@@ -73,6 +77,10 @@
 .state_paid {
     background-color: #5CB85C;
     color: #000;
+}
+
+.state_paid a {
+    color: #fff;
 }
 
 
