@@ -48,16 +48,18 @@ class website_sale_home(website_sale_home):
 
 
     @http.route(['/home/<model("res.users"):home_user>/claim/<model("crm.claim"):claim>','/home/<model("res.users"):home_user>/claims'], type='http', auth="user", website=True)
-    def home_page_claim(self, home_user=None, claim=None, **post):
+    def home_page_claim(self, home_user=None, claim=None, tab='claims', **post):
         self.validate_user(home_user)
         if claim:
             return request.website.render('website_sale_home_claim.page_claim', {
             'home_user': home_user,
             'claim': claim,
+            'tab': tab,
         })
         return request.website.render('website_sale_home_claim.page_claims', {
             'home_user': home_user,
             'claims': request.env['crm.claim'].search([('partner_id', '=', home_user.partner_id.id)]),
+            'tab': tab,
         })
 
     @http.route([
@@ -80,7 +82,7 @@ class website_sale_home(website_sale_home):
             return request.website.render('website_sale_home_claim.claim_form', {})
 
     @http.route(['/home/<model("res.users"):home_user>/order_claim/<model("sale.order"):order>/send'], type='http', auth="user", website=True)
-    def claim_order_send(self, home_user=None, order=None, **post):
+    def claim_order_send(self, home_user=None, order=None, tab='claims', **post):
         claim = request.env['crm.claim'].sudo().create({
             'name': order.name,
             'partner_id': order.partner_id.id,
@@ -92,10 +94,11 @@ class website_sale_home(website_sale_home):
         return request.website.render('website_sale_home_claim.page_claim', {
             'home_user': home_user,
             'claim': request.env['crm.claim'].browse(claim.id) if claim else None,
+            'tab': tab,
         })
 
     @http.route(['/home/<model("res.users"):home_user>/line_claim/<model("sale.order.line"):line>/send'], type='http', auth="user", website=True)
-    def claim_line_send(self, home_user=None, line=None, **post):
+    def claim_line_send(self, home_user=None, line=None, tab='claims', **post):
         claim = request.env['crm.claim'].sudo().create({
             'name': line.product_id.name,
             'partner_id': line.order_id.partner_id.id,
@@ -107,4 +110,5 @@ class website_sale_home(website_sale_home):
         return request.website.render('website_sale_home_claim.page_claim', {
             'home_user': home_user,
             'claim': request.env['crm.claim'].browse(claim.id) if claim else None,
+            'tab': tab,
         })

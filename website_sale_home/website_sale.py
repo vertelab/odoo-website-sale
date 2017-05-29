@@ -37,25 +37,18 @@ class website_sale_home(http.Controller):
             return werkzeug.utils.redirect("/home/%s" % request.uid)
 
     @http.route(['/home','/home/<model("res.users"):home_user>',], type='http', auth="user", website=True)
-    def home_page(self, home_user=None, **post):
+    def home_page(self, home_user=None, tab='settings', **post):
         self.validate_user(home_user)
         _logger.warn('User %s' % home_user.name if home_user else None)
         return request.render('website_sale_home.home_page', {
             'home_user': home_user,
+            'tab': post.get('tab') if post.get('tab') else tab,
             #~ 'user': user if user else request.env['res.users'].browse(request.uid)
         })
 
     @http.route(['/home/<model("res.users"):home_user>/info_update',], type='http', auth="user", website=True)
     def info_update(self, home_user=None, **post):
-        _logger.warn(post)
         self.validate_user(home_user)
-        #~ if post.get('user_id') == str(user.id):
-            #~ if post.get('is_company') == '1':
-                #~ try:
-                    #~ partner.vat = post.get('vat')
-                #~ except:
-                    #~ raise Warning('VAT number is not valid!')
-
         home_user.sudo().email = post.get('email')
         home_user.sudo().login = post.get('login')
         if post.get('confirm_password'):

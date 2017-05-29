@@ -48,44 +48,46 @@ class website(models.Model):
         _logger.debug('search_domain: %s' % (domain))
         return domain
 
-    
+
     @api.model
     def sale_home_order_get(self,user,search):
         #~ _logger.warn('domain: %s result: ' % (search,self.env['sale.order'].sudo().search(self.sale_home_order_search_domain(user,search))))
         return self.env['sale.order'].sudo().search(self.sale_home_order_search_domain(user,search))
-        
+
     @api.model
     def sale_home_order_get_invoice(self,order):
         invoice = order.invoice_ids.mapped('id') if order else []
         #~ raise Warning(invoice,len(invoice))
         if len(invoice)>0:
-            document = self.env['ir.attachment'].search([('res_id','=',invoice[0]),('res_model','=','account.invoice')]).mapped('id') 
+            document = self.env['ir.attachment'].search([('res_id','=',invoice[0]),('res_model','=','account.invoice')]).mapped('id')
             if len(document)>0:
                 return ("/attachment/%s/%s.pdf" % (document[0],order.invoice_ids[0].origin),order.invoice_ids[0].state)
         return None
-            
+
 
 class website_sale_home(website_sale_home):
 
     @http.route(['/home/<model("res.users"):user>/order_search',], type='http', auth="user", website=True)
-    def home_page_order_search(self, user=None,order_search=None, **post):
+    def home_page_order_search(self, user=None, order_search=None, tab='orders', **post):
         return request.render('website_sale_home.home_page', {
             'home_user': user if user else request.env['res.users'].browse(request.uid),
             'order_search_domain': request.website.sale_home_order_search_domain(user,order_search),
             'order_search': order_search,
+            'tab': tab,
         })
 
     @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>',], type='http', auth="user", website=True)
-    def home_page_order(self, home_user=None, order=None, **post):
+    def home_page_order(self, home_user=None, order=None, tab='orders', **post):
         self.validate_user(home_user)
         return request.render('website_sale_home_order.page_order', {
             'home_user': home_user if home_user else request.env['res.users'].browse(request.uid),
             'order': request.env['sale.order'].sudo().browse(order.id),
+            'tab': tab,
         })
 
 
     @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
-    def home_page_order_copy(self, home_user=None,order=None, **post):
+    def home_page_order_copy(self, home_user=None, order=None, **post):
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)

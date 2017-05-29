@@ -3,7 +3,7 @@
   <data>
     <template id="home_page_order" inherit_id="website_sale_home.home_page" name="Home Page Order">
       <xpath expr="//ul[@id='home_tab_nav']" position="inside">
-        <li>
+        <li t-att-class="'active' if tab == 'orders' else ''">
           <a href="#orders" data-toggle="tab" class="list-group-item text-center">
             <h4>
               <i class="fa fa-dollar" />
@@ -13,7 +13,7 @@
         </li>
       </xpath>
       <xpath expr="//div[@id='home_tab_content']" position="inside">
-        <div id="orders" class="tab-pane">
+        <div id="orders" t-att-class="'tab-pane %s' %('active' if tab == 'orders' else '')">
           <div id="orders_div">
             <div class="row" style="width: 100%; padding-left: 15px;">
               <form t-att-action="'/home/%s/order_search#orders' % (home_user.id)" method="post" class="pagination form-inline col-md-3">
@@ -72,12 +72,14 @@
         <section>
           <div class="container order_detail mt32 mb32" t-if="order">
             <div class="row">
-              <a t-att-href="'/home/%s' %home_user.id">
-                <button class="btn btn-default" style="margin-left: 15px;">
+              <form t-att-action="'/home/%s' %home_user.id" method="post">
+                <input type="hidden" name="tab" value="orders"/>
+                <button type="submit" class="btn btn-default" style="margin-left: 15px;">
                   <i class="fa fa-angle-left" />
+                  <t t-set="tab" t-value="'orders'"/>
                   Back To My Account
                 </button>
-              </a>
+              </form>
               <div>
                 <h1 class="text-center">
                   <t t-esc="order.name" />

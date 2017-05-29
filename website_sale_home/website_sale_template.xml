@@ -10,7 +10,7 @@
                             <div id="main_div" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt32 mb32">
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 home_tab_menu">
                                     <ul id="home_tab_nav" class="list-group nav nav-pills nav-stacked">
-                                        <li class="active">
+                                        <li t-att-class="'active' if tab == 'settings' else ''">
                                             <a href="#settings" data-toggle="tab" class="list-group-item text-center">
                                                 <h4><i class="fa fa-user"/></h4><h4 class="hidden-xs">Settings</h4>
                                             </a>
@@ -18,7 +18,7 @@
                                     </ul>
                                 </div>
                                 <div id="home_tab_content" class="col-lg-9 col-md-9 col-sm-9 col-xs-9 tab-content home_tab_content mt16 mb16">
-                                    <div id="settings" class="tab-pane active">
+                                    <div id="settings" t-att-class="'tab-pane %s' %('active' if tab == 'settings' else '')">
                                         <div id="info_div">
 <!--
                                             <h4 class="text-center">(* = Required)</h4>
