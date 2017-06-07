@@ -9,7 +9,7 @@
           <span t-if="product.is_mto_route">Order article</span>
           <t t-if="not product.is_mto_route">
             <span t-if="product.instock_percent &gt; 100.0">In stock</span>
-            <span t-if="product.instock_percent &gt; 50.0 and self.instock_percent &lt; 100.0">Few in stock</span>
+            <span t-if="product.instock_percent &gt; 50.0 and product.instock_percent &lt; 100.0">Few in stock</span>
             <span t-if="product.instock_percent &lt; 50.0">Shortage</span>
           </t>
         </div>
