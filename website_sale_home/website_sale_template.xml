@@ -91,15 +91,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-md-3 col-sm-4 control-label" for="city">City *</label>
-                                                    <div class="col-md-7 col-sm-8">
-                                                        <input type="text" class="form-control" name="city" t-att-value="home_user.partner_id.city" required="True"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
                                                     <label class="col-md-3 col-sm-4 control-label" for="zip">Zip *</label>
                                                     <div class="col-md-7 col-sm-8">
                                                         <input type="text" class="form-control" name="zip" t-att-value="home_user.partner_id.zip" required="True"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-4 control-label" for="city">City *</label>
+                                                    <div class="col-md-7 col-sm-8">
+                                                        <input type="text" class="form-control" name="city" t-att-value="home_user.partner_id.city" required="True"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -130,6 +130,9 @@
                                                         <input type="text" class="form-control" name="fax" t-att-value="home_user.partner_id.fax"/>
                                                     </div>
                                                 </div>
+                                                <t t-if="home_user.partner_id.is_company and len(home_user.partner_id.child_ids) &gt; 0">
+                                                    <t t-call="website_sale_home.children_info"/>
+                                                </t>
 
                                                 <t t-if="home_user.partner_id.is_company">
                                                     <h2 class="text-center">Bank Information</h2>
@@ -203,6 +206,103 @@
                     </div>
                 </section>
             </t>
+        </template>
+
+        <template id="children_info">
+            <div class="container">
+                <ul class="nav nav-pills">
+                    <t t-foreach="home_user.partner_id.child_ids" t-as="child">
+                        <li t-att-class="'active' if child_index == 0 else ''">
+                            <a t-att-href="'#child_%s' %child.id" data-toggle="tab" class="list-group-item text-center">
+                                <span t-esc="child.name" class="hidden-xs"/><span t-esc="child.name[0]" class="hidden-lg hidden-md hidden-sm"/>
+                            </a>
+                        </li>
+                    </t>
+                </ul>
+                <div class="tab-content">
+                    <t t-foreach="home_user.partner_id.child_ids" t-as="child">
+                        <div t-att-id="'child_%s' %child.id" t-att-class="'mt16 tab-pane fade %s' %('in active' if child_index == 0 else '')">
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_function' %child.id">Job Position</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="text" class="form-control" t-att-name="'%s_function' %child.id" t-att-value="child.function"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_email' %child.id">Email</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="email" class="form-control" t-att-name="'%s_email' %child.id" t-att-value="child.email"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_phone' %child.id">Phone</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="text" class="form-control" t-att-name="'%s_phone' %child.id" t-att-value="child.phone"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_mobile' %child.id">Mobile</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="text" class="form-control" t-att-name="'%s_mobile' %child.id" t-att-value="child.mobile"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_use_parent_address' %child.id">Use Company Address</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input id="use_parent_address" type="checkbox" t-att-name="'%s_use_parent_address' %child.id" value="1" t-att="{'checked': '1'} if child.use_parent_address else {}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_type' %child.id">Address Type</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <select class="form-control" t-att-name="'%s_type' %child.id">
+                                        <option value="default" t-att="{'selected': 'checked'} if child.type == 'default' else {}">Default</option>
+                                        <option value="invoice" t-att="{'selected': 'checked'} if child.type == 'invoice' else {}">Invoice</option>
+                                        <option value="delivery" t-att="{'selected': 'checked'} if child.type == 'delivery' else {}">Delivery</option>
+                                        <option value="contact" t-att="{'selected': 'checked'} if child.type == 'contact' else {}">Contact</option>
+                                        <option value="other" t-att="{'selected': 'checked'} if child.type == 'other' else {}">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- this fileds should hide if child use parent address -->
+                            <div t-att-id="'child_street_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_street' %child.id">Street 1</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="text" class="form-control" t-att-name="'%s_street' %child.id" t-att-value="child.street"/>
+                                </div>
+                            </div>
+                            <div t-att-id="'child_street2_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_street2' %child.id">Street 2</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="text" class="form-control" t-att-name="'%s_street2' %child.id" t-att-value="child.street2"/>
+                                </div>
+                            </div>
+                            <div t-att-id="'child_zip_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_zip' %child.id">Zip</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="text" class="form-control" t-att-name="'%s_zip' %child.id" t-att-value="child.zip"/>
+                                </div>
+                            </div>
+                            <div t-att-id="'child_city_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_city' %child.id">City</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <input type="text" class="form-control" t-att-name="'%s_city' %child.id" t-att-value="child.city"/>
+                                </div>
+                            </div>
+                            <div t-att-id="'child_country_id_%s' %child_id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_country_id' %child.id">Country</label>
+                                <div class="col-md-7 col-sm-8">
+                                    <select class="form-control" t-att-name="'%s_country_id' %child.id">
+                                        <t t-foreach="request.env['res.country'].search([])" t-as="country">
+                                            <option t-att-value="country.id" t-att="{'selected': 'checked'} if child.country_id == country else {}"><t t-esc="country.name"/></option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
         </template>
 
         <template id="layout" inherit_id="website.layout">
