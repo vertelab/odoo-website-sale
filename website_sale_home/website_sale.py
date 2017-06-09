@@ -48,12 +48,12 @@ class website_sale_home(http.Controller):
 
     @http.route(['/home/<model("res.users"):home_user>/info_update',], type='http', auth="user", website=True)
     def info_update(self, home_user=None, **post):
+        # update data for main partner
         self.validate_user(home_user)
         home_user.sudo().email = post.get('email')
         home_user.sudo().login = post.get('login')
         if post.get('confirm_password'):
             home_user.sudo().password = post.get('password')
-
         partner = home_user.sudo().partner_id
         partner.name = post.get('name')
         partner.street = post.get('street')
@@ -64,6 +64,22 @@ class website_sale_home(http.Controller):
         partner.mobile = post.get('mobile')
         partner.fax = post.get('fax')
         partner.country_id = int(post.get('country_id'))
+
+        if home_user.partner_id.is_company and len(home_user.partner_id.child_ids) > 0:
+            # child partner data format: mainpartnerid_childpartnerid_filedname
+            for child in home_user.partner_id.child_ids:
+                child.sudo().function = post.get('%s_function' %child.id)
+                child.sudo().email = post.get('%s_email' %child.id)
+                child.sudo().phone = post.get('%s_phone' %child.id)
+                child.sudo().mobile = post.get('%s_mobile' %child.id)
+                child.sudo().use_parent_address = post.get('%s_use_parent_address' %child.id)
+                child.sudo().type = post.get('%s_type' %child.id)
+                if post.get('%s_use_parent_address' %child.id) != 1:
+                    child.sudo().street = post.get('%s_street' %child.id)
+                    child.sudo().street2 = post.get('%s_street2' %child.id)
+                    child.sudo().city = post.get('%s_city' %child.id)
+                    child.sudo().zip = post.get('%s_zip' %child.id)
+                    child.sudo().country_id = int(post.get('%s_country_id' %child.id))
 
         if home_user.partner_id.is_company and post.get('account_number') != '':
             res_partner_bank_obj = request.env['res.partner.bank']

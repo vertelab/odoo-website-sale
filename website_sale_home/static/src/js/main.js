@@ -25,16 +25,20 @@ $("select[name='bank_type']").live("change",function(){
     }
 });
 
-//~ $("#is_company").live("change",function(){
-    //~ if($(this).is(":checked")) {
-        //~ $("#is_company_number").removeClass("hidden");
-        //~ $("#label_company_name").removeClass("hidden");
-        //~ $("#label_name").addClass("hidden");
-    //~ }
-    //~ if(!$(this).is(":checked")) {
-        //~ $("#is_company_number").addClass("hidden");
-        //~ $("#label_name").removeClass("hidden");
-        //~ $("#label_company_name").addClass("hidden");
-    //~ }
-//~ });
+$("#use_parent_address").live("change",function(){
+    if($(this).is(":checked")) {
+        $(this).closest('.tab-pane.fade').find("div[id^='child_street_']").addClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_street2_']").addClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_zip_']").addClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_city_']").addClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_country_id_']").addClass("hidden");
+    }
+    if(!$(this).is(":checked")) {
+        $(this).closest('.tab-pane.fade').find("div[id^='child_street_']").removeClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_street2_']").removeClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_zip_']").removeClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_city_']").removeClass("hidden");
+        $(this).closest('.tab-pane.fade').find("div[id^='child_country_id_']").removeClass("hidden");
+    }
+});
 
