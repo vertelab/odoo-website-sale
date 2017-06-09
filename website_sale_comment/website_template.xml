@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+      
+      
+          <template id="assets_frontend" inherit_id="website.assets_frontend" name="Order Note">
+      <xpath expr="." position="inside">
+        <script type="text/javascript" src="/website_sale_comment/static/src/js/main.js"></script>
+      </xpath>
+    </template>
+      
+<!--
+    <template id="payment_delivery" name="Order Comment" inherit_id="website_sale_delivery.payment_delivery">
+-->
+    <template id="payment" name="Order Comment" inherit_id="website_sale.payment">
+      <xpath expr="//div[@id='payment_method']" position="before">
+<!--
+      <xpath expr="//div[@id='delivery_carrier']" position="before">
+-->
+        <div class="row form-group" id="order_comment">
+          <label for="note">Comment:</label>
+          <textarea class="form-control" rows="5" name='note' t-esc='order.note' />
+        </div>
+      </xpath>
+    </template>
+    
+  </data>
+</openerp>
