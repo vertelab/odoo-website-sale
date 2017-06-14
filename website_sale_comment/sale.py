@@ -23,7 +23,6 @@ from openerp import models, fields, api, _
 import openerp
 from openerp import http
 from openerp.http import request
-import openerp.addons.website_sale.controllers.main
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -31,9 +30,8 @@ _logger = logging.getLogger(__name__)
 
 class website_sale(http.Controller):
 
-    @http.route(['/shop/delivery/carrier_data'], type='json', auth="user", website=True)
-    def order_note(self, note,**post):
-        _logger.error('here i am %s' % post)
+    @http.route(['/shop/order/note'], type='json', auth="public", website=True)
+    def order_note(self, note, **post):
         order = request.website.sale_get_order()
         if order:
             order.note = note

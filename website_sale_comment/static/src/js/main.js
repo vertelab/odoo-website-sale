@@ -1,8 +1,7 @@
 $(document).ready(function () {
-    $comment.find("[name='note']").change(function (ev) {
-        var note = $(ev.currentTarget).val();
+    $("#order_comment").find("[name='note']").on('change', function () {
         openerp.jsonRpc("/shop/order/note", 'call', {
-            'note': note,
-        })
+            'note': $(this).val(),
+        });
     });
 });
