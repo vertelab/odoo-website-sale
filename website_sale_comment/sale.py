@@ -32,7 +32,7 @@ class website_sale(http.Controller):
 
     @http.route(['/shop/order/note'], type='json', auth="public", website=True)
     def order_note(self, note, **post):
-        order = request.website.sale_get_order()
+        order = request.website.sudo().sale_get_order()
         if order:
-            order.note = note
+            order.sudo().note = note
 
