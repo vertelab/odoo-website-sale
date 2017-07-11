@@ -83,7 +83,7 @@
                   </form>
                   <div>
                     <h1 class="text-center">
-                      <t t-esc="order.name" />
+                      <a t-att-href="'/report/pdf/sale.report_saleorder/%s' %order.id" target="_blank"><t t-esc="order.name" /></a>
                     </h1>
                     <p class="text-center">
                       Date:
@@ -110,6 +110,23 @@
                       <h4 class="text-center">
                         <strong>Invoice to</strong>
                       </h4>
+                      <p>
+                        <label>Invoice(s):</label>
+                        <t t-if="len(order.invoice_ids) &gt; 0">
+                            <t t-foreach="order.invoice_ids" t-as="invoice">
+                                <t t-if="invoice.state == 'open'">
+                                    <a t-att-href="'/report/pdf/account.report_invoice/%s' %invoice.id" target="_blank"><t t-esc="invoice.number"/> (Unpaid)</a>
+                                </t>
+                                <t t-if="invoice.state == 'paid'">
+                                    <a t-att-href="'/report/pdf/account.report_invoice/%s' %invoice.id" target="_blank"><t t-esc="invoice.number"/> (Paid)</a>
+                                </t>
+                                <t t-if="invoice_index != len(order.invoice_ids)-1">, </t>
+                            </t>
+                        </t>
+                        <t t-if="len(order.invoice_ids) == 0">
+                            In Progress...
+                        </t>
+                      </p>
                       <p>
                         <label>Email:</label>
                         <t t-esc="order.partner_invoice_id.email" />
@@ -167,6 +184,23 @@
                       <h4 class="text-center">
                         <strong>Delivery to</strong>
                       </h4>
+                      <p>
+                        <label>Picking(s):</label>
+                        <t t-if="len(order.picking_ids) &gt; 0">
+                            <t t-foreach="order.picking_ids" t-as="picking">
+                                <t t-if="picking.state == 'assigned'">
+                                    <a t-att-href="'/report/pdf/stock_delivery_slip.stock_delivery_slip/%s' %picking.id" target="_blank"><t t-esc="picking.name"/> (In Progress)</a>
+                                </t>
+                                <t t-if="picking.state == 'done'">
+                                    <a t-att-href="'/report/pdf/stock_delivery_slip.stock_delivery_slip/%s' %picking.id" target="_blank"><t t-esc="picking.name"/> (Done)</a>
+                                </t>
+                                <t t-if="picking_index != len(order.picking_ids)-1">, </t>
+                            </t>
+                        </t>
+                        <t t-if="len(order.picking_ids) == 0">
+                            In Progress...
+                        </t>
+                      </p>
                       <p>
                         <label>Company Name:</label>
                         <t t-if="order.partner_shipping_id.parent_id and order.partner_shipping_id.parent_id.company_id" t-esc="order.partner_shipping_id.parent_id.company_id.name" />

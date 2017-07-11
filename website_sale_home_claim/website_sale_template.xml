@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <template id="home_page_claim" inherit_id="website_sale_home.home_page" name="Home Page Order">
+    <template id="home_page_claim" inherit_id="website_sale_home.home_page" name="Home Page Claim">
       <xpath expr="//ul[@id='home_tab_nav']" position="inside">
         <li t-att-class="'active' if tab == 'claims' else ''">
           <a href="#claim" data-toggle="tab" class="list-group-item text-center">
