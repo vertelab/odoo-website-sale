@@ -69,254 +69,256 @@
     </template>
     <template id="page_order" name="Page Order">
       <t t-call="website.layout">
-        <section>
-          <div class="container order_detail mt32 mb32" t-if="order">
-            <div class="row">
-              <form t-att-action="'/home/%s' %home_user.id" method="post">
-                <input type="hidden" name="tab" value="orders"/>
-                <button type="submit" class="btn btn-default" style="margin-left: 15px;">
-                  <i class="fa fa-angle-left" />
-                  <t t-set="tab" t-value="'orders'"/>
-                  Back To My Account
-                </button>
-              </form>
-              <div>
-                <h1 class="text-center">
-                  <t t-esc="order.name" />
-                </h1>
-                <p class="text-center">
-                  Date:
-                  <t t-esc="order.date_order" />
-                </p>
-                <p class="text-center">
-                  State:
-                  <t t-esc="order.state" />
-                </p>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <p>
-                    Customer:
-                    <t t-esc="order.partner_id.name" />
-                  </p>
-                  <p>
-                    Address:
-                    <t t-esc="order.partner_id.street" />
-                    <t t-esc="order.partner_id.zip" />
-                    <t t-esc="order.partner_id.city" />
-                    <t t-esc="order.partner_id.country_id.name" />
-                  </p>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                  <h4 class="text-center">
-                    <strong>Invoice to</strong>
-                  </h4>
-                  <p>
-                    <label>Email:</label>
-                    <t t-esc="order.partner_invoice_id.email" />
-                  </p>
-                  <p>
-                    <label>Company Name:</label>
-                    <t t-if="order.partner_invoice_id.parent_id and order.partner_invoice_id.parent_id.company_id" t-esc="order.partner_invoice_id.parent_id.company_id.name" />
-                  </p>
-                  <p>
-                    <label>Organisation Number:</label>
-                    <t t-if="order.partner_invoice_id.parent_id and order.partner_invoice_id.parent_id.company_id" t-esc="order.partner_invoice_id.parent_id.company_id.company_registry" />
-                  </p>
-                  <p>
-                    <label>Customer Number:</label>
-                    <t t-esc="order.partner_invoice_id.ref" />
-                  </p>
-                  <p>
-                    <label>Name:</label>
-                    <t t-esc="order.partner_invoice_id.name" />
-                  </p>
-                  <p>
-                    <label>Address 1:</label>
-                    <t t-esc="order.partner_invoice_id.street" />
-                  </p>
-                  <p>
-                    <label>Address 2:</label>
-                    <t t-esc="order.partner_invoice_id.street2" />
-                  </p>
-                  <p>
-                    <label>Zip:</label>
-                    <t t-esc="order.partner_invoice_id.zip" />
-                  </p>
-                  <p>
-                    <label>City:</label>
-                    <t t-esc="order.partner_invoice_id.city" />
-                  </p>
-                  <p>
-                    <label>Country:</label>
-                    <t t-esc="order.partner_invoice_id.country_id.name" />
-                  </p>
-                  <p>
-                    <label>Telephone:</label>
-                    <t t-esc="order.partner_invoice_id.phone" />
-                  </p>
-                  <p>
-                    <label>Mobile:</label>
-                    <t t-esc="order.partner_invoice_id.mobile" />
-                  </p>
-                  <p>
-                    <label>Fax:</label>
-                    <t t-esc="order.partner_invoice_id.fax" />
-                  </p>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                  <h4 class="text-center">
-                    <strong>Delivery to</strong>
-                  </h4>
-                  <p>
-                    <label>Company Name:</label>
-                    <t t-if="order.partner_shipping_id.parent_id and order.partner_shipping_id.parent_id.company_id" t-esc="order.partner_shipping_id.parent_id.company_id.name" />
-                  </p>
-                  <p>
-                    <label>Name:</label>
-                    <t t-esc="order.partner_shipping_id.name" />
-                  </p>
-                  <p>
-                    <label>Address 1:</label>
-                    <t t-esc="order.partner_shipping_id.street" />
-                  </p>
-                  <p>
-                    <label>Address 2:</label>
-                    <t t-esc="order.partner_shipping_id.street2" />
-                  </p>
-                  <p>
-                    <label>Zip:</label>
-                    <t t-esc="order.partner_shipping_id.zip" />
-                  </p>
-                  <p>
-                    <label>City:</label>
-                    <t t-esc="order.partner_shipping_id.city" />
-                  </p>
-                  <p>
-                    <label>Country:</label>
-                    <t t-esc="order.partner_shipping_id.country_id.name" />
-                  </p>
-                  <p>
-                    <label>Telephone:</label>
-                    <t t-esc="order.partner_shipping_id.phone" />
-                  </p>
-                  <p>
-                    <label>Mobile:</label>
-                    <t t-esc="order.partner_shipping_id.mobile" />
-                  </p>
-                  <p>
-                    <label>Fax:</label>
-                    <t t-esc="order.partner_shipping_id.fax" />
-                  </p>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <h4 class="text-center">
-                    <strong>Shipping Information</strong>
-                  </h4>
-                  <p>
-                    <label>Company:</label>
-                    <t t-esc="order.sudo().carrier_id.partner_id.name" />
-                  </p>
-                  <p>
-                    <label>Method:</label>
-                    <t t-esc="order.sudo().carrier_id.product_id.name" />
-                  </p>
-                  <p>
-                    <label>Price:</label>
-                    <t t-esc="order.carrier_id.normal_price" />
-                  </p>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <h4 class="text-center">
-                    <strong>Products</strong>
-                  </h4>
-                  <table class="table">
-                    <thead>
-                      <th>Quantity</th>
-                      <th>Name</th>
-                      <th class="hidden-xs">Artical number</th>
-                      <th class="hidden-xs">Price</th>
-                      <th>Total</th>
-                    </thead>
-                    <tbody>
-                      <t t-foreach="order.order_line" t-as="line">
-                        <tr>
-                          <td>
-                            <t t-esc="line.product_uom_qty" />
-                          </td>
-                          <td>
-                            <t t-esc="line.product_id.name" />
-                          </td>
-                          <td class="hidden-xs">
-                            <t t-esc="line.product_id.default_code" />
-                          </td>
-                          <td class="hidden-xs">
-                            <t t-esc="line.price_unit" />
-                            <t t-esc="order.currency_id.name" />
-                          </td>
-                          <td>
-                            <t t-esc="line.price_subtotal" />
-                            <t t-esc="order.currency_id.name" />
-                          </td>
-                           <td class="order_line_buttons"/>
-                        </tr>
-                      </t>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="pull-right">
-                    <p>
-                      <label>Sum:</label>
-                      <t t-esc="order.amount_untaxed" />
-                      <t t-esc="order.currency_id.name" />
+          <div id="wrap" class="oe_structure oe_empty">
+            <section>
+              <div class="container order_detail mt32 mb32" t-if="order">
+                <div class="row">
+                  <form t-att-action="'/home/%s' %home_user.id" method="post">
+                    <input type="hidden" name="tab" value="orders"/>
+                    <button type="submit" class="btn btn-default" style="margin-left: 15px;">
+                      <i class="fa fa-angle-left" />
+                      <t t-set="tab" t-value="'orders'"/>
+                      Back To My Account
+                    </button>
+                  </form>
+                  <div>
+                    <h1 class="text-center">
+                      <t t-esc="order.name" />
+                    </h1>
+                    <p class="text-center">
+                      Date:
+                      <t t-esc="order.date_order" />
                     </p>
-                    <p>
-                      <label>Shipping:</label>
-                      <t t-esc="order.carrier_id.normal_price" />
-                      <t t-esc="order.currency_id.name" />
+                    <p class="text-center">
+                      State:
+                      <t t-esc="order.state" />
                     </p>
-                    <p>
-                      <label>Tax:</label>
-                      <t t-esc="order.amount_tax" />
-                      <t t-esc="order.currency_id.name" />
-                    </p>
-                    <hr />
-                    <h4>
-                      <label>Total:</label>
-                      <t t-esc="order.amount_total" />
-                      <t t-esc="order.currency_id.name" />
-                    </h4>
-                    <hr />
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <p>
+                        Customer:
+                        <t t-esc="order.partner_id.name" />
+                      </p>
+                      <p>
+                        Address:
+                        <t t-esc="order.partner_id.street" />
+                        <t t-esc="order.partner_id.zip" />
+                        <t t-esc="order.partner_id.city" />
+                        <t t-esc="order.partner_id.country_id.name" />
+                      </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                      <h4 class="text-center">
+                        <strong>Invoice to</strong>
+                      </h4>
+                      <p>
+                        <label>Email:</label>
+                        <t t-esc="order.partner_invoice_id.email" />
+                      </p>
+                      <p>
+                        <label>Company Name:</label>
+                        <t t-if="order.partner_invoice_id.parent_id and order.partner_invoice_id.parent_id.company_id" t-esc="order.partner_invoice_id.parent_id.company_id.name" />
+                      </p>
+                      <p>
+                        <label>Organisation Number:</label>
+                        <t t-if="order.partner_invoice_id.parent_id and order.partner_invoice_id.parent_id.company_id" t-esc="order.partner_invoice_id.parent_id.company_id.company_registry" />
+                      </p>
+                      <p>
+                        <label>Customer Number:</label>
+                        <t t-esc="order.partner_invoice_id.ref" />
+                      </p>
+                      <p>
+                        <label>Name:</label>
+                        <t t-esc="order.partner_invoice_id.name" />
+                      </p>
+                      <p>
+                        <label>Address 1:</label>
+                        <t t-esc="order.partner_invoice_id.street" />
+                      </p>
+                      <p>
+                        <label>Address 2:</label>
+                        <t t-esc="order.partner_invoice_id.street2" />
+                      </p>
+                      <p>
+                        <label>Zip:</label>
+                        <t t-esc="order.partner_invoice_id.zip" />
+                      </p>
+                      <p>
+                        <label>City:</label>
+                        <t t-esc="order.partner_invoice_id.city" />
+                      </p>
+                      <p>
+                        <label>Country:</label>
+                        <t t-esc="order.partner_invoice_id.country_id.name" />
+                      </p>
+                      <p>
+                        <label>Telephone:</label>
+                        <t t-esc="order.partner_invoice_id.phone" />
+                      </p>
+                      <p>
+                        <label>Mobile:</label>
+                        <t t-esc="order.partner_invoice_id.mobile" />
+                      </p>
+                      <p>
+                        <label>Fax:</label>
+                        <t t-esc="order.partner_invoice_id.fax" />
+                      </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                      <h4 class="text-center">
+                        <strong>Delivery to</strong>
+                      </h4>
+                      <p>
+                        <label>Company Name:</label>
+                        <t t-if="order.partner_shipping_id.parent_id and order.partner_shipping_id.parent_id.company_id" t-esc="order.partner_shipping_id.parent_id.company_id.name" />
+                      </p>
+                      <p>
+                        <label>Name:</label>
+                        <t t-esc="order.partner_shipping_id.name" />
+                      </p>
+                      <p>
+                        <label>Address 1:</label>
+                        <t t-esc="order.partner_shipping_id.street" />
+                      </p>
+                      <p>
+                        <label>Address 2:</label>
+                        <t t-esc="order.partner_shipping_id.street2" />
+                      </p>
+                      <p>
+                        <label>Zip:</label>
+                        <t t-esc="order.partner_shipping_id.zip" />
+                      </p>
+                      <p>
+                        <label>City:</label>
+                        <t t-esc="order.partner_shipping_id.city" />
+                      </p>
+                      <p>
+                        <label>Country:</label>
+                        <t t-esc="order.partner_shipping_id.country_id.name" />
+                      </p>
+                      <p>
+                        <label>Telephone:</label>
+                        <t t-esc="order.partner_shipping_id.phone" />
+                      </p>
+                      <p>
+                        <label>Mobile:</label>
+                        <t t-esc="order.partner_shipping_id.mobile" />
+                      </p>
+                      <p>
+                        <label>Fax:</label>
+                        <t t-esc="order.partner_shipping_id.fax" />
+                      </p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <h4 class="text-center">
+                        <strong>Shipping Information</strong>
+                      </h4>
+                      <p>
+                        <label>Company:</label>
+                        <t t-esc="order.sudo().carrier_id.partner_id.name" />
+                      </p>
+                      <p>
+                        <label>Method:</label>
+                        <t t-esc="order.sudo().carrier_id.product_id.name" />
+                      </p>
+                      <p>
+                        <label>Price:</label>
+                        <t t-esc="order.carrier_id.normal_price" />
+                      </p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <h4 class="text-center">
+                        <strong>Products</strong>
+                      </h4>
+                      <table class="table">
+                        <thead>
+                          <th>Quantity</th>
+                          <th>Name</th>
+                          <th class="hidden-xs">Artical number</th>
+                          <th class="hidden-xs">Price</th>
+                          <th>Total</th>
+                        </thead>
+                        <tbody>
+                          <t t-foreach="order.order_line" t-as="line">
+                            <tr>
+                              <td>
+                                <t t-esc="line.product_uom_qty" />
+                              </td>
+                              <td>
+                                <t t-esc="line.product_id.name" />
+                              </td>
+                              <td class="hidden-xs">
+                                <t t-esc="line.product_id.default_code" />
+                              </td>
+                              <td class="hidden-xs">
+                                <t t-esc="line.price_unit" />
+                                <t t-esc="order.currency_id.name" />
+                              </td>
+                              <td>
+                                <t t-esc="line.price_subtotal" />
+                                <t t-esc="order.currency_id.name" />
+                              </td>
+                               <td class="order_line_buttons"/>
+                            </tr>
+                          </t>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="pull-right">
+                        <p>
+                          <label>Sum:</label>
+                          <t t-esc="order.amount_untaxed" />
+                          <t t-esc="order.currency_id.name" />
+                        </p>
+                        <p>
+                          <label>Shipping:</label>
+                          <t t-esc="order.carrier_id.normal_price" />
+                          <t t-esc="order.currency_id.name" />
+                        </p>
+                        <p>
+                          <label>Tax:</label>
+                          <t t-esc="order.amount_tax" />
+                          <t t-esc="order.currency_id.name" />
+                        </p>
+                        <hr />
+                        <h4>
+                          <label>Total:</label>
+                          <t t-esc="order.amount_total" />
+                          <t t-esc="order.currency_id.name" />
+                        </h4>
+                        <hr />
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <h4 class="text-center">
+                        <strong>Payment Information</strong>
+                      </h4>
+                      <p>
+                        <label>Payment Term:</label>
+                        <t t-esc="order.sudo().payment_term.name" />
+                      </p>
+                      <p>
+                        <label>Fiscal Position:</label>
+                        <t t-esc="order.sudo().fiscal_position.name" />
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <h4 class="text-center">
-                    <strong>Payment Information</strong>
-                  </h4>
-                  <p>
-                    <label>Payment Term:</label>
-                    <t t-esc="order.sudo().payment_term.name" />
-                  </p>
-                  <p>
-                    <label>Fiscal Position:</label>
-                    <t t-esc="order.sudo().fiscal_position.name" />
-                  </p>
-                </div>
+                <div id="order_buttons" class="mt32 mb32">
               </div>
-            </div>
-            <div id="order_buttons" class="mt32 mb32">
-          </div>
 
-            <form t-att-action="'/home/%s/order/%s/copy' % (home_user.id,order.id)" method="post" class="form-inline col-md-6 text-center">
-              <div class="container">
-                <div class="form-group">
-                  <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
-                    <button id="submit_btn" class="btn btn-primary btn-lg">Copy Order</button>
+                <form t-att-action="'/home/%s/order/%s/copy' % (home_user.id,order.id)" method="post" class="form-inline col-md-6 text-center">
+                  <div class="container">
+                    <div class="form-group">
+                      <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                        <button id="submit_btn" class="btn btn-primary btn-lg">Copy Order</button>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </form>
               </div>
-            </form>
-          </div>
-        </section>
+            </section>
+        </div>
       </t>
     </template>
     <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Home Assets Frontend">
