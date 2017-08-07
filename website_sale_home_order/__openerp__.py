@@ -32,6 +32,7 @@ List sale order history
     'website': 'http://www.vertel.se',
     'depends': ['website_sale_home','website_document','account','sale_stock'],
     'data': [
+	'security/ir.model.access.csv',
         'website_sale_template.xml',
     ],
     'installable': True,
