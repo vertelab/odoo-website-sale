@@ -50,17 +50,19 @@
                   <t t-esc="order.user_id.name" />
                 </p>
                 <t t-set="invoice" t-value="website.sale_home_order_get_invoice(order)" />
-                <div t-att-class="'order_state state_%s' %order.state" t-if="not invoice">
-                  <t t-esc="order.state" />
+                <div t-att-class="'order_state state_%s' %order.state">
+                 Order <t t-esc="order.state" />
                 </div>
-                <t t-if="invoice">
-                  <div t-att-class="'invoice_state state_%s' %invoice[1]">
-                    <a t-att-href="invoice[0]">
-                      Invoice
-                      <t t-esc="invoice[1]" />
-                    </a>
+
+                  <div t-att-class="'picking_state state_%s' % website.sale_home_order_get_picking(order)[2]">
+                    <a t-att-href="website.sale_home_order_get_picking(order)[0]" target="_blank">Picking <t t-esc="website.sale_home_order_get_picking(order)[1]"/> <t t-esc="website.sale_home_order_get_picking(order)[2]"/></a>
                   </div>
-                </t>
+
+                  <div t-att-class="'invoice_state state_%s' % website.sale_home_order_get_invoice(order)[2]">
+                    <a t-att-href="website.sale_home_order_get_invoice(order)[0]" target="_blank">Invoice <t t-esc="website.sale_home_order_get_invoice(order)[1]"/> <t t-esc="website.sale_home_order_get_invoice(order)[2]"/></a>
+                  </div>
+
+
               </div>
             </t>
           </div>

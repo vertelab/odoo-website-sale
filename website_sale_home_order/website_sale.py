@@ -56,13 +56,47 @@ class website(models.Model):
 
     @api.model
     def sale_home_order_get_invoice(self,order):
-        invoice = order.invoice_ids.mapped('id') if order else []
+        invoice = order.invoice_ids[-1] if order and order.invoice_ids else None
+        if invoice:
+            document = self.env['ir.attachment'].search([('res_id','=',invoice.id),('res_model','=','account.invoice')]).mapped('id')
+
+            #~ return ('/report/pdf/account.report_invoice/%s' %invoice.id, invoice.number, invoice.state)
+            if document:
+                return ('/attachment/%s/invoice.pdf' % document[-1], invoice.number, invoice.state)
+            return ('',invoice.number,invoice.state)
+        else:
+            return ('','in progress...','')
+        #~ .mapped('id') if order else []
+                                    #~ <t t-foreach="order.invoice_ids" t-as="invoice">
+                                #~ <t t-if="invoice.state == 'open'">
+                                    #~ <a t-att-href="'/report/pdf/account.report_invoice/%s' %invoice.id" target="_blank"><t t-esc="invoice.number"/> (Unpaid)</a>
+                                #~ </t>
+                                #~ <t t-if="invoice.state == 'paid'">
+                                    #~ <a t-att-href="'/report/pdf/account.report_invoice/%s' %invoice.id" target="_blank"><t t-esc="invoice.number"/> (Paid)</a>
+                                #~ </t>
+                                #~ <t t-if="invoice_index != len(order.invoice_ids)-1">, </t>
+                            #~ </t>
+        
+        
         #~ raise Warning(invoice,len(invoice))
-        if len(invoice)>0:
-            document = self.env['ir.attachment'].search([('res_id','=',invoice[0]),('res_model','=','account.invoice')]).mapped('id')
-            if len(document)>0:
-                return ("/attachment/%s/%s.pdf" % (document[0],order.invoice_ids[0].origin),order.invoice_ids[0].state)
-        return None
+        #~ if len(invoice)>0:
+            #~ document = self.env['ir.attachment'].search([('res_id','=',invoice[0]),('res_model','=','account.invoice')]).mapped('id')
+            #~ if len(document)>0:
+                #~ return ("/attachment/%s/%s.pdf" % (document[0],order.invoice_ids[0].origin),order.invoice_ids[0].state)
+        #~ return ('none','none')
+    def sale_home_order_get_picking(self,order):
+        picking = order.picking_ids[-1] if order and order.picking_ids else None
+        if picking:
+            return ('/report/pdf/stock_delivery_slip.stock_delivery_slip/%s' % picking.id, picking.name, picking.state)
+        else:
+            return ('','in progress...','')
+    
+        #~ picking = order.picking_ids.mapped('id') if order else []
+        #~ if len(picking)>0:
+            #~ document = self.env['ir.attachment'].search([('res_id','=',picking[0]),('res_model','=','stock.picking')]).mapped('id')
+            #~ if len(document)>0:
+                #~ return ("/attachment/%s/%s.pdf" % (document[0],order.picking_ids[0].origin),order.picking_ids[0].state)
+        #~ return ('none','none')
 
 
 class website_sale_home(website_sale_home):

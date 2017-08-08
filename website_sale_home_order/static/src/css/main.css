@@ -15,19 +15,31 @@
     right: 0px;
     padding: 5px 10px;
 }
-
+.picking_state {
+    position: absolute;
+    top: 30px;
+    right: 0px;
+    padding: 5px 10px;
+}
 .invoice_state {
     position: absolute;
-    top: 0px;
+    top: 60px;
     right: 0px;
     padding: 5px 10px;
 }
 
 
+
+.state_ {
+    background-color: #DD3333;
+    color: #000;
+}
+
 .state_open {
     background-color: #DD3333;
     color: #000;
 }
+
 
 .state_open a {
     color: #fff;
@@ -41,6 +53,11 @@
 
 .state_sent {
     background-color: #5BC0DE;
+    color: #fff;
+}
+
+.state_confirmed {
+    background-color: #0275D8;
     color: #fff;
 }
 
