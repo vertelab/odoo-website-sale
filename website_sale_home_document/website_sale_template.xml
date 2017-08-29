@@ -16,9 +16,9 @@
         <div id="document" t-att-class="'tab-pane %s' %('active' if tab == 'document' else '')">
           <div class="container">
             <t t-foreach="website.sale_home_document_get(home_user,document_search_domain or None)" t-as="doc">
-              <div style="display: flex; justify-content: center; align-items: center">
-                <div class="document_div col-md-3 col-xs-md-12">
-                  <div style='font-size: 24px; font-weight: 500;'>
+              <div style="display: flex; justify-content: center; align-items: center" class="col-md-12 col-xs-md-12">
+                <div class="document_div col-md-5 col-xs-md-12">
+                  <div style='font-size: 24px; font-weight: 500;' >
                     <a t-att-href="'/home/%s/document/%s' %(home_user.id, doc.id)">
                       <t t-esc="doc.name" />
                     </a>
@@ -28,7 +28,7 @@
                   Date:
                   <t t-esc="doc.write_date[:10]" />
                 </div>
-                <div class="document_div col-md-5 col-xs-md-12">
+                <div class="document_div col-md-4 col-xs-md-12">
                   Responsible:
                   <t t-esc="doc.write_uid.name" />
                 </div>
@@ -42,8 +42,8 @@
           </div>
           <div class="container">
             <t t-foreach="website.sale_home_directory_get(home_user).content_ids" t-as="report">
-              <div class="row" style="display: flex; justify-content: center; align-items: center">
-                <div class="document_div col-md-3 col-xs-md-12">
+              <div style="display: flex; justify-content: center; align-items: center" class="col-md-12 col-xs-md-12">
+                <div class="document_div col-md-5 col-xs-md-12">
                   <div style='font-size: 24px; font-weight: 500;'>
                     <a t-att-href="'/home/%s/document_report/%s' %(home_user.id, report.id)">
                       <t t-esc="report.name" />
@@ -54,7 +54,7 @@
                   Date:
                   <t t-esc="report.report_id.write_date[:10]" />
                 </div>
-                <div class="document_div col-md-5 col-xs-md-12">
+                <div class="document_div col-md-4 col-xs-md-12">
                   Responsible:
                   <t t-esc="report.report_id.write_uid.name" />
                 </div>
