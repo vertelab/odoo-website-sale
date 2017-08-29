@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <template id="home_page_document" inherit_id="website_sale_home.home_page" name="Home Page Document">
+      <xpath expr="//ul[@id='home_tab_nav']" position="inside">
+        <li t-att-class="'active' if tab == 'document' else ''">
+          <a href="#document" data-toggle="tab" class="list-group-item text-center">
+            <h4>
+              <i class="fa fa-file-o" />
+            </h4>
+            <h4 class="hidden-xs">Documents</h4>
+          </a>
+        </li>
+      </xpath>
+      <xpath expr="//div[@id='home_tab_content']" position="inside">
+        <div id="document" t-att-class="'tab-pane %s' %('active' if tab == 'document' else '')">
+          <div class="container">
+            <t t-foreach="website.sale_home_document_get(home_user,document_search_domain or None)" t-as="doc">
+              <div style="display: flex; justify-content: center; align-items: center">
+                <div class="document_div col-md-3 col-xs-md-12">
+                  <div style='font-size: 24px; font-weight: 500;'>
+                    <a t-att-href="'/home/%s/document/%s' %(home_user.id, doc.id)">
+                      <t t-esc="doc.name" />
+                    </a>
+                  </div>
+                </div>
+                <div class="document_div col-md-3 col-xs-md-12">
+                  Date:
+                  <t t-esc="doc.write_date[:10]" />
+                </div>
+                <div class="document_div col-md-5 col-xs-md-12">
+                  Responsible:
+                  <t t-esc="doc.write_uid.name" />
+                </div>
+              </div>
+              <div class="document_div col-md-12 col-xs-md-12">
+                <p>
+                  <t t-esc="doc.description" />
+                </p>
+              </div>
+            </t>
+          </div>
+          <div class="container">
+            <t t-foreach="website.sale_home_directory_get(home_user).content_ids" t-as="report">
+              <div class="row" style="display: flex; justify-content: center; align-items: center">
+                <div class="document_div col-md-3 col-xs-md-12">
+                  <div style='font-size: 24px; font-weight: 500;'>
+                    <a t-att-href="'/home/%s/document_report/%s' %(home_user.id, report.report_id.id)">
+                      <t t-esc="report.name" />
+                    </a>
+                  </div>
+                </div>
+                <div class="document_div col-md-3 col-xs-md-12">
+                  Date:
+                  <t t-esc="report.report_id.write_date[:10]" />
+                </div>
+                <div class="document_div col-md-5 col-xs-md-12">
+                  Responsible:
+                  <t t-esc="report.report_id.write_uid.name" />
+                </div>
+              </div>
+              <div class="document_div col-md-12 col-xs-md-12">
+                <p>
+                  <t t-esc="report.report_id.help" />
+                </p>
+              </div>
+            </t>
+          </div>
+        </div>
+      </xpath>
+    </template>
+  </data>
+</openerp>
