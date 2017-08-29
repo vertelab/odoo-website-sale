@@ -45,7 +45,7 @@
               <div class="row" style="display: flex; justify-content: center; align-items: center">
                 <div class="document_div col-md-3 col-xs-md-12">
                   <div style='font-size: 24px; font-weight: 500;'>
-                    <a t-att-href="'/home/%s/document_report/%s' %(home_user.id, report.report_id.id)">
+                    <a t-att-href="'/home/%s/document_report/%s' %(home_user.id, report.id)">
                       <t t-esc="report.name" />
                     </a>
                   </div>
@@ -69,5 +69,20 @@
         </div>
       </xpath>
     </template>
+        
+    <record model="ir.ui.view" id="view_document_directory_form">
+        <field name="name">document.directory</field>
+        <field name="model">document.directory</field>
+        <field name="inherit_id" ref="document.view_document_directory_form"/>
+        <field name="arch" type="xml">
+            <form string="Contents" position="inside">
+                <group>
+                    <field name="domain"/>
+
+                </group>
+            </form>
+        </field>
+    </record>
+    
   </data>
 </openerp>

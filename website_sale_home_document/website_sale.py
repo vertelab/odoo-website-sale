@@ -52,17 +52,24 @@ class website(models.Model):
     def sale_home_directory_get(self,user):
         return self.env['document.directory'].sudo().search([('name','=','public')])
 
+class document_directory_content(models.Model):
+    _inherit = 'document.directory.content'
+
+    domain = fields.Char()
+
 
 class website_sale_home(website_sale_home):
 
 
-    @http.route(['/home/<model("res.users"):home_user>/document/<model("ir.attachment"):document>','/home/<model("res.users"):home_user>/document_report/<model("ir.actions.report.xml"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
+    @http.route(['/home/<model("res.users"):home_user>/document/<model("ir.attachment"):document>','/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
     def home_page_document(self, home_user=None, document=None,report=None, tab='document', **post):
         self.validate_user(home_user)
 
         if report:
+            #~ raise Warning(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'))
             #~ pdf = request.env['report'].get_pdf(request.env['res.partner'].search([]),report.get_external_id()[report.id], data=None)
-            pdf = request.env['report'].get_pdf(request.env['res.partner'].search([]),report.report_name, data=None)
+            pdf = report.report_id.render_report(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'),report.report_id.report_name, data={})[0]
+            #return http.send_file(StringIO(pdf), filename='min file.pdf', mimetype='application/pdf', as_attachment=True)
             return request.make_response(pdf, headers=[('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))])
 
         if document:
