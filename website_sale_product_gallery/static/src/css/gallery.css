@@ -23,3 +23,7 @@
 #slider {position:absolute; left:0; height:81px}
 #slider img {cursor:pointer; border:1px solid #666; padding:2px}
 */
+
+#image_nav img {
+    width: 100%;
+}
