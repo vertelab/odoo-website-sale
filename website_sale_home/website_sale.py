@@ -50,8 +50,8 @@ class website_sale_home(http.Controller):
     def info_update(self, home_user=None, **post):
         # update data for main partner
         self.validate_user(home_user)
-        home_user.sudo().email = post.get('email')
-        home_user.sudo().login = post.get('login')
+        home_user.email = post.get('email')
+        home_user.login = post.get('login')
         if post.get('confirm_password'):
             home_user.sudo().password = post.get('password')
         partner = home_user.sudo().partner_id
