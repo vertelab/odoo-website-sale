@@ -142,37 +142,45 @@
                       </div>
                       <div class="row">
                         <div class="col-md-6">
+                          <strong>Customer number</strong>
+                        </div>
+                        <div class="col-md-6">
+                          <t t-esc="order.partner_id.customer_no or ''"/>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
                           <strong>Order number</strong>
                         </div>
                         <div class="col-md-6">
                           <t t-esc="order.name"/>
                         </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <strong>Order date</strong>
                         </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <strong>Order date</strong>
-                          </div>
-                          <div class="col-md-6">
-                            <t t-esc="order.date_order"/>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <strong>Payment method</strong>
-                          </div>
-                          <div class="col-md-6">
-                            <t t-esc="order.payment_acquirer_id.name"/>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <strong>Delivery method</strong>
-                          </div>
-                          <div class="col-md-6">
-                            <t t-esc="order.carrier_id.name"/>
-                          </div>
+                        <div class="col-md-6">
+                          <t t-esc="order.date_order"/>
                         </div>
                       </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <strong>Payment method</strong>
+                        </div>
+                        <div class="col-md-6">
+                          <t t-esc="order.payment_acquirer_id.name"/>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <strong>Delivery method</strong>
+                        </div>
+                        <div class="col-md-6">
+                          <t t-esc="order.carrier_id.name"/>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md-4">
                     <h4>Delivery Address</h4>
