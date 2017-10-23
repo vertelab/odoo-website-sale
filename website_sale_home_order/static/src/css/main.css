@@ -1,3 +1,14 @@
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+.order-detail-header-link-box {
+    text-align: right;
+}
+.order-detail-header-link-box > a{
+    margin: 15px;
+}
+
 #orders_div {
     padding: 15px 0px;
 }

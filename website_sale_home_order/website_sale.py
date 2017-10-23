@@ -28,7 +28,26 @@ from openerp.addons.website_sale_home.website_sale import website_sale_home
 import logging
 _logger = logging.getLogger(__name__)
 
-
+class SaleOrder(models.Model):
+    _inherit='sale.order'
+    
+    @api.multi
+    def order_state_frontend(self):
+        """Get a customer friendly order state."""
+        if self.state == 'cancel':
+            state == 'Cancelled'
+        elif self.state in ('shipping_except', 'invoice_except'):
+            state = 'Exception'
+        elif self.state in ('draft', 'sent'):
+            state = 'Received'
+        else:
+            state = 'Packing'
+            for invoice in self.invoice_ids:
+                if invoice.state == 'open':
+                    state = 'Shipped and invoiced'
+                elif invoice.state == 'paid':
+                    state = 'Paid'
+        return _(state)
 
 class website(models.Model):
     _inherit="website"

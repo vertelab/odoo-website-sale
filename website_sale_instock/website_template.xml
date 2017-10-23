@@ -3,8 +3,10 @@
   <data>
     <template id="product" inherit_id="website_sale.product">
       <xpath expr="//form[@class='js_add_cart_variants']" position="after">
-        <div>
+        <div class="stock_status">
+<!--
           <h3>Stock Status</h3>
+-->
           <t esc="product.rout_ids.mapped('name')" />
           <span t-if="product.is_mto_route">Order article</span>
           <t t-if="not product.is_mto_route">
