@@ -14,7 +14,8 @@
             <div class="checkbox">
               <label>
                 <input type="checkbox" id='terms_and_conditions' />
-                I Agree with the <a href="#" onclick="window.open('/page/terms-and-conditions', 'newwindow', 'width=600,height=500,centerscreen=yes,status=0,location=0,toolbar=0,resizable=1,location=0,titlebar=0,scrollbars=1,dialog=1,modal=1,dependent=1'); return false;">Terms and Conditions</a>
+                I Agree with the
+                <a href="#" onclick="window.open('/page/terms-and-conditions', 'newwindow', 'width=600,height=500,centerscreen=yes,status=0,location=0,toolbar=0,resizable=1,location=0,titlebar=0,scrollbars=1,dialog=1,modal=1,dependent=1'); return false;">Terms and Conditions</a>
               </label>
             </div>
           </div>
@@ -35,10 +36,17 @@
                 <div class="col-md-12 text-center mt16 mb32">
                   <h1>General</h1>
                   <p>
-                    These Terms &amp;amp; Conditions shall apply to all sales through  <t t-esc="(website or res_company).name" /> and will exclude application of any deviating general or specific conditions or terms of buyer. No waiver or modification of these Conditions of Sale shall be binding upon <t t-esc="(website or res_company).name" />, unless approved in writing by an authorized representative of <t t-esc="(website or res_company).name" />.
-                    <br />
-                    Price and Payment
+                    These Terms &amp;amp; Conditions shall apply to all sales through
+                    <t t-esc="(website or res_company).name" />
+                    and will exclude application of any deviating general or specific conditions or terms of buyer. No waiver or modification of these Conditions of Sale shall be binding upon
+                    <t t-esc="(website or res_company).name" />
+                    , unless approved in writing by an authorized representative of
+                    <t t-esc="(website or res_company).name" />
+                    .
                   </p>
+                </div>
+                <div class="col-md-12 text-center mt16 mb32">
+                  <h3>Price and Payment</h3>
                   <p>Every product is shown including tax. In the shopping cart you can see the total price including all fees, taxes, shipping and method of payment.</p>
                 </div>
               </div>
@@ -52,7 +60,13 @@
                   <p>
                     The delivery time is stated in the shopping cart next to the various ways of delivery. If a service/product has another delivery time than expressed in the shopping cart, this delivery time will be stated in connection to the individual services/products.
                     <br />
-                    In case <t t-esc="(website or res_company).name" /> has reason to question buyer's solvency or ability to pay for delivered products, <t t-esc="(website or res_company).name" /> have no obligation to make delivery, and shall be entitled to stop products under carriage, unless buyer makes advance payment for the delivery and other claims arising from the business relation or grants security which can reasonably be accepted by <t t-esc="(website or res_company).name" />.
+                    In case
+                    <t t-esc="(website or res_company).name" />
+                    has reason to question buyer's solvency or ability to pay for delivered products,
+                    <t t-esc="(website or res_company).name" />
+                    have no obligation to make delivery, and shall be entitled to stop products under carriage, unless buyer makes advance payment for the delivery and other claims arising from the business relation or grants security which can reasonably be accepted by
+                    <t t-esc="(website or res_company).name" />
+                    .
                   </p>
                 </div>
                 <div class="col-md-12 text-center mt16 mb32">
@@ -61,13 +75,29 @@
                 </div>
                 <div class="col-md-12 text-center mt16 mb32">
                   <h3>Returning products/services</h3>
-                  <p>Returning a service/product is to be done on your expense, unless the product/service is faulty or damaged upon delivery. Returned products/services are to be sent as letters or postal packages, and not for COD. In case of a trade, <t t-esc="(website or res_company).name" /> will pay for the delivery of the replacement product/service. When you have applied the return policy you shall: -in the case of a product: return the product personally or by mail to us. -in the case of a service: make the material available to us, unless this poses significant stress to your person.</p>
+                  <p>
+                    Returning a service/product is to be done on your expense, unless the product/service is faulty or damaged upon delivery. Returned products/services are to be sent as letters or postal packages, and not for COD. In case of a trade,
+                    <t t-esc="(website or res_company).name" />
+                    will pay for the delivery of the replacement product/service. When you have applied the return policy you shall: -in the case of a product: return the product personally or by mail to us. -in the case of a service: make the material available to us, unless this poses significant stress to your person.
+                  </p>
                 </div>
                 <div class="col-md-12 text-center mt16 mb32">
                   <h3>Return Policy</h3>
-                  <p><t t-esc="(website or res_company).name" /> return period is 14 days.</p>
-                  <p><t t-esc="(website or res_company).name" /> shall, if under the jurisdiction of our return policy, refund you what you have paid for the product and/or service as soon as possible, but latest within 30 days of the product being returned or you informing us of wanting to return a service. You are oblige to pay for the return delivery of the product. <t t-esc="(website or res_company).name" /> will pay to send replacement products and/or services.</p>
-                  <p>In your message to us you must clearly state that you regret your purchase. The return period is counted from the day you received the purchased the full, or a significant part of the product. If you have purchased a customized product -or a product with a significant personal customization, the return period is counted from the day <t t-esc="(website or res_company).name" /> have informed you about the product.</p>
+                  <p>
+                    <t t-esc="(website or res_company).name" />
+                    return period is 14 days.
+                  </p>
+                  <p>
+                    <t t-esc="(website or res_company).name" />
+                    shall, if under the jurisdiction of our return policy, refund you what you have paid for the product and/or service as soon as possible, but latest within 30 days of the product being returned or you informing us of wanting to return a service. You are oblige to pay for the return delivery of the product.
+                    <t t-esc="(website or res_company).name" />
+                    will pay to send replacement products and/or services.
+                  </p>
+                  <p>
+                    In your message to us you must clearly state that you regret your purchase. The return period is counted from the day you received the purchased the full, or a significant part of the product. If you have purchased a customized product -or a product with a significant personal customization, the return period is counted from the day
+                    <t t-esc="(website or res_company).name" />
+                    have informed you about the product.
+                  </p>
                   <p>
                     <strong>You do not qualify for our return policy if:</strong>
                   </p>
@@ -88,9 +118,18 @@
                   <h3>Guarantees and Services</h3>
                   <p>Please fill in this space with your Guarantee and Service policy.</p>
                   <h3>Privacy Policy</h3>
-                  <p>When ordering a product/service you will be asked to fill in you personal information. Upon purchase you agree to this information is stored in accordance with <t t-esc="(website or res_company).name" />'s privacy policy in order to fulfill our agreement to you as our customer. In accordance to the Swedish law of Personuppgiftslagen (198:204) you have the right to know the information <t t-esc="(website or res_company).name" /> have registered about your person. If the information is erroneous, incomplete or irrelevant, you may ask to have your information corrected and/or removed. If this is the case please contact us by e-mail.</p>
+                  <p>
+                    When ordering a product/service you will be asked to fill in you personal information. Upon purchase you agree to this information is stored in accordance with
+                    <t t-esc="(website or res_company).name" />
+                    's privacy policy in order to fulfill our agreement to you as our customer. In accordance to the Swedish law of Personuppgiftslagen (198:204) you have the right to know the information
+                    <t t-esc="(website or res_company).name" />
+                    have registered about your person. If the information is erroneous, incomplete or irrelevant, you may ask to have your information corrected and/or removed. If this is the case please contact us by e-mail.
+                  </p>
                   <h3>Force Majeure</h3>
-                  <p><t t-esc="(website or res_company).name" /> is not liable for any non-performance caused by circumstances beyond our control, which directly or indirectly prevents, obstructs or renders production, delivery or freight uneconomical until such obstacle has been removed (force majeure). Such circumstances shall be deemed to include difficulties to procure raw materials as well as other difficulties and disturbances, including but not limited to war, riot, labour conflicts, fire, flood, storm, accident, fuel or power shortages, transportation shortages, obstacles or interruptions regarding transportation at sea and breakdowns or interruptions of any kind as regards to our equipment or facilities, which are deemed necessary for the performance of our agreements' obligations.</p>
+                  <p>
+                    <t t-esc="(website or res_company).name" />
+                    is not liable for any non-performance caused by circumstances beyond our control, which directly or indirectly prevents, obstructs or renders production, delivery or freight uneconomical until such obstacle has been removed (force majeure). Such circumstances shall be deemed to include difficulties to procure raw materials as well as other difficulties and disturbances, including but not limited to war, riot, labour conflicts, fire, flood, storm, accident, fuel or power shortages, transportation shortages, obstacles or interruptions regarding transportation at sea and breakdowns or interruptions of any kind as regards to our equipment or facilities, which are deemed necessary for the performance of our agreements' obligations.
+                  </p>
                   <p>
                     Also read at EU's website for Online Dispute Resolution
                     <a href="http://ec.europa.eu/odr" target="_blank">http://ec.europa.eu/odr</a>
@@ -147,9 +186,9 @@
             <header />
             <main>
               <t t-raw="0" />
-            <div class="col-md-12 text-center mt16 mb32">
-              <input type="button" value="Close this window" class="btn btn-success" onclick="self.close()" />
-                </div>
+              <div class="col-md-12 text-center mt16 mb32">
+                <input type="button" value="Close this window" class="btn btn-primary" onclick="self.close()" />
+              </div>
             </main>
           </div>
         </body>
