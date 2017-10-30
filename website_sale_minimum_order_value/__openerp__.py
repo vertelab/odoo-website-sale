@@ -35,6 +35,7 @@ Financed by Maria Åkerberg
     'data': [
         'sale_view.xml',
         'website_template.xml',
+        'security/ir.model.access.csv'
     ],
     'installable': True,
 }
