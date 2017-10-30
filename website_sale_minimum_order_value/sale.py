@@ -33,14 +33,71 @@ class sale_order_minvalue(models.Model):
     name = fields.Char()
     destination_ids = fields.Many2many(comodel_name='res.country',string="Destinations")
     min_value = fields.Float(string="Minimum Order Value")
-    info_text = fields.Text(translation=True)
+    info_text = fields.Text(translate=True)
 
 
-class website_sale(http.Controller):
+class sale_order(models.Model):
+    _inherit = 'sale.order'
+    
+    @api.one
+    def _min_value_order(self):
+        self.min_value_order = self.check_minimum_order_value(self,self.id)
+    min_value_order = fields.Boolean(string='Minimum order value reached',compute='_min_value_order')
+   
+    @api.model
+    def check_minimum_order_value(self,order):
+        minvalue = request.env['sale.order.minvalue'].search([('destination_ids','in',sale_order.partner_shipping_id.country_id.id)],limit=1)
+        if minvalue:
+            return order.amount_untaxed < minvalue.min_value
+        return False
+        
+class website(models.Model):
+    _inherit = 'website'
 
-    @http.route(['/shop/order/note'], type='json', auth="public", website=True)
-    def order_note(self, note, **post):
-        order = request.website.sudo().sale_get_order()
-        if order:
-            order.sudo().note = note
+    @api.model
+    def check_minimum_order_value(self):
+        sale_order = request.env['sale.order'].sudo().browse(request.session.get('sale_order_id'))
+        if not sale_order:
+            _logger.warning('Check minimum order value, missing sale-order %s' % request.session.get('sale_order_id'))
+            return ''
+        minvalue = request.env['sale.order.minvalue'].search([('destination_ids','in',sale_order.partner_shipping_id.country_id.id)],limit=1)
+        if minvalue:
+            if sale_order.amount_untaxed < minvalue.min_value:
+                return minvalue.info_text
+        return ''
+
+
+#~ class website_sale(website_sale.http.Controller):
+
+    #~ @http.route(['/shop/order/note'], type='json', auth="public", website=True)
+    #~ def order_note(self, note, **post):
+        #~ order = request.website.sudo().sale_get_order()
+        #~ if order:
+            #~ order.sudo().note = note
+
+    #~ @http.route(['/shop/confirm_order'], type='http', auth="public", website=True)
+    #~ def confirm_order(self, **post):
+        #~ cr, uid, context, registry = request.cr, request.uid, request.context, request.registry
+
+        #~ order = request.website.sale_get_order(context=context)
+        #~ if not order:
+            #~ return request.redirect("/shop")
+
+        #~ redirection = self.checkout_redirection(order)
+        #~ if redirection:
+            #~ return redirection
+
+        #~ values = self.checkout_values(post)
+
+        #~ values["error"] = self.checkout_form_validate(values["checkout"])
+        #~ if values["error"]:
+            #~ return request.website.render("website_sale.checkout", values)
+
+        #~ self.checkout_form_save(values["checkout"])
+
+        #~ request.session['sale_last_order_id'] = order.id
+
+        #~ request.website.sale_get_order(update_pricelist=True, context=context)
+
+        #~ return request.redirect("/shop/payment")
 

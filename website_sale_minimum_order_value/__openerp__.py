@@ -33,6 +33,7 @@ Check Minimum Order Value
     'website': 'http://www.vertel.se',
     'depends': ['website_sale'],
     'data': [
+        'sale_view.xml',
         'website_template.xml',
     ],
     'installable': True,
