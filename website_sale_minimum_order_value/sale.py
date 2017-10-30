@@ -41,15 +41,17 @@ class sale_order(models.Model):
     
     @api.one
     def _min_value_order(self):
-        self.min_value_order = self.check_minimum_order_value(self,self.id)
-    min_value_order = fields.Boolean(string='Minimum order value reached',compute='_min_value_order')
+        self.min_order_value = self.check_minimum_order_value()
+    min_order_value = fields.Boolean(string='Minimum order value',compute='_min_value_order',help="Minimum Order Value Reached for this destination")
    
-    @api.model
-    def check_minimum_order_value(self,order):
-        minvalue = request.env['sale.order.minvalue'].search([('destination_ids','in',sale_order.partner_shipping_id.country_id.id)],limit=1)
+    @api.multi
+    def check_minimum_order_value(self):
+        self.ensure_one()
+        minvalue = self.env['sale.order.minvalue'].search([('destination_ids','in',self.partner_shipping_id.country_id.id)],limit=1)
+        _logger.warn('%s %s %s' % (self.amount_untaxed, minvalue.min_value,self.amount_untaxed >= minvalue.min_value))
         if minvalue:
-            return order.amount_untaxed < minvalue.min_value
-        return False
+            return self.amount_untaxed >= minvalue.min_value
+        return True
         
 class website(models.Model):
     _inherit = 'website'
