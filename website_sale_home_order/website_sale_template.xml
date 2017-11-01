@@ -72,20 +72,21 @@
                       </a>
                   </td>
                   <td>
-                      <t t-esc="order.date_order[:10]" />
+                      <span t-esc="order.date_order[:10]" />
                   </td>
                   <td>
-                      <t t-esc="order.payment_acquirer_id.name" />
+                      <span t-field="order.payment_acquirer_id.name" />
                   </td>
                   <td>
-                      <t t-esc="order.carrier_id.name" />
+                      <span t-field="order.carrier_id.name" />
                   </td>
                   <td>
-                    <t t-esc="order.state" />
+                    <span t-field="order.state" />
                   </td>
                   <td>
-                      <t t-esc="order.amount_total" />
-                      <t t-esc="order.currency_id.name" />
+                    <!-- TODO: make this correct for all currencies. Look at website_sale. -->
+                      <span t-field="order.amount_total" />
+                      <span t-field="order.currency_id.name" />
                   </td>
 <!--
                   <td>
@@ -215,21 +216,25 @@
                         <t t-foreach="order.order_line" t-as="line">
                           <tr>
                             <td>
-                              <t t-esc="line.product_uom_qty" />
+                              <span t-esc="int(line.product_uom_qty)" />
                             </td>
                             <td>
-                              <t t-esc="line.product_id.name" />
+                              <span t-field="line.product_id.name" />
                             </td>
                             <td class="hidden-xs">
-                              <t t-esc="line.product_id.default_code" />
+                              <span t-field="line.product_id.default_code" />
                             </td>
                             <td class="hidden-xs">
-                              <t t-esc="line.price_unit" />
-                              <t t-esc="order.currency_id.name" />
+                              <span t-field="line.price_unit" style="white-space: nowrap;"  t-field-options='{
+                                   "widget": "monetary",
+                                   "display_currency": "order.currency_id"
+                               }'/>
                             </td>
                             <td>
-                              <t t-esc="line.price_subtotal" />
-                              <t t-esc="order.currency_id.name" />
+                              <span t-field="line.price_subtotal" style="white-space: nowrap;"  t-field-options='{
+                                   "widget": "monetary",
+                                   "display_currency": "order.currency_id"
+                               }'/>
                             </td>
                              <td class="order_line_buttons"/>
                           </tr>
@@ -241,34 +246,42 @@
                     <div class="pull-right col-md-4">
                       <p>
                         <label>Sum:</label>
-                        <t t-esc="order.amount_untaxed" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.amount_untaxed" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </p>
                       <p>
                         <label>Shipping:</label>
-                        <t t-esc="order.carrier_id.normal_price" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.carrier_id.normal_price" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </p>
                       <p>
                         <label>Tax:</label>
-                        <t t-esc="order.amount_tax" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.amount_tax" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </p>
                       <hr />
                       <h4>
                         <label>Total:</label>
-                        <t t-esc="order.amount_total" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.amount_total" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </h4>
                       <hr />
                     </div>
                     <div class="col-md-4">
                       <div>
-                        <t t-esc="order.note"/>
+                        <span t-field="order.note"/>
                       </div>
                       <div>
                         <t t-foreach="order.picking_ids" t-as="picking">
-                          <t t-esc="picking.note"/>
+                          <span t-field="picking.note"/>
                         </t>
                       </div>
                     </div>

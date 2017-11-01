@@ -1,9 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_portal_partner,partner portal,base.model_res_partner,base.group_portal,1,0,0,0
-access_portal_partner_bank,partner bank portal,base.model_res_partner_bank,base.group_portal,1,0,0,0
-access_portal_stock_picking,Stock Picking portal,stock.model_stock_picking,base.group_portal,1,0,0,0
-access_portal_sale_order,Sale Order portal,sale.model_sale_order,base.group_portal,1,0,0,0
-access_portal_res_bank,Bank portal,base.model_res_bank,base.group_portal,1,0,0,0
-access_portal_hr_employee,Employee portal,hr.model_hr_employee,base.group_portal,1,0,0,0
-access_portal_res_users,User portal,base.model_res_users,base.group_portal,1,0,0,0
-access_portal_product_product,Product portal,product.model_product_product,base.group_portal,1,0,0,0
+access_portal_payment_term,account.payment.term portal,account.model_account_payment_term,base.group_portal,1,0,0,0
+access_portal_payment_term_line,account.payment.term.line portal,account.model_account_payment_term_line,base.group_portal,1,0,0,0
+access_portal_fiscal_position,account.fiscal.position portal,account.model_account_fiscal_position,base.group_portal,1,0,0,0
+access_stock_picking_type_portal,stock.picking.type portal,stock.model_stock_picking_type,base.group_portal,1,0,0,0

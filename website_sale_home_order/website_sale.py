@@ -52,71 +52,42 @@ class SaleOrder(models.Model):
 class website(models.Model):
     _inherit="website"
 
-
     @api.model
-    def sale_home_order_search_domain(self,user,search=None):
-        domain = [('partner_id','child_of',user.partner_id.parent_id.id if user.partner_id.parent_id else user.partner_id.id)]
+    def sale_home_order_search_domain(self, user, search=None):
+        domain = [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
         if search:
             search = search.strip()
             # invoices and picking
-            invoice_ids = self.env['sale.order'].sudo().search(domain).mapped('invoice_ids').filtered(lambda i: search in i.name or search in i.number or search in i.date_invoice).mapped('id')
-            picking_ids = self.env['sale.order'].sudo().search(domain).mapped('picking_ids').filtered(lambda p: search in p.name).mapped('group_id').mapped('id')
+            orders = self.env['sale.order'].search(domain)
+            invoice_ids = orders.mapped('invoice_ids').filtered(lambda i: search in i.name or search in i.number or search in i.date_invoice).mapped('id')
+            picking_ids = orders.mapped('picking_ids').filtered(lambda p: search in p.name).mapped('group_id').mapped('id')
             #~ _logger.warn('invoice_ids: %s picking_ids: %s' % (invoice_ids,picking_ids))
-            for s in ['|',('invoice_ids','in',invoice_ids),'|',('procurement_group_id','in',picking_ids),'|',('name','ilike', search),'|',('date_order','ilike', search),'|',('client_order_ref','ilike',search),('user_id','ilike',search)]:
+            for s in ['|', ('invoice_ids', 'in', invoice_ids), '|', ('procurement_group_id', 'in', picking_ids), '|', ('name', 'ilike', search), '|', ('date_order', 'ilike', search),'|', ('client_order_ref', 'ilike', search), ('user_id', 'ilike', search)]:
                 domain.append(s)
         _logger.debug('search_domain: %s' % (domain))
         return domain
 
+    @api.model
+    def sale_home_order_get(self, user, search):
+        return self.env['sale.order'].search(self.sale_home_order_search_domain(user, search))
 
     @api.model
-    def sale_home_order_get(self,user,search):
-        #~ _logger.warn('domain: %s result: ' % (search,self.env['sale.order'].sudo().search(self.sale_home_order_search_domain(user,search))))
-        return self.env['sale.order'].sudo().search(self.sale_home_order_search_domain(user,search))
-
-    @api.model
-    def sale_home_order_get_invoice(self,order):
+    def sale_home_order_get_invoice(self, order):
         invoice = order.invoice_ids[-1] if order and order.invoice_ids else None
         if invoice:
-            document = self.env['ir.attachment'].search([('res_id','=',invoice.id),('res_model','=','account.invoice')]).mapped('id')
-
-            #~ return ('/report/pdf/account.report_invoice/%s' %invoice.id, invoice.number, invoice.state)
+            document = self.env['ir.attachment'].search([('res_id', '=', invoice.id), ('res_model', '=', 'account.invoice')]).mapped('id')
             if document:
                 return ('/attachment/%s/invoice.pdf' % document[-1], invoice.number, invoice.state)
-            return ('',invoice.number,invoice.state)
+            return ('', invoice.number, invoice.state)
         else:
-            return ('','in progress...','')
-        #~ .mapped('id') if order else []
-                                    #~ <t t-foreach="order.invoice_ids" t-as="invoice">
-                                #~ <t t-if="invoice.state == 'open'">
-                                    #~ <a t-att-href="'/report/pdf/account.report_invoice/%s' %invoice.id" target="_blank"><t t-esc="invoice.number"/> (Unpaid)</a>
-                                #~ </t>
-                                #~ <t t-if="invoice.state == 'paid'">
-                                    #~ <a t-att-href="'/report/pdf/account.report_invoice/%s' %invoice.id" target="_blank"><t t-esc="invoice.number"/> (Paid)</a>
-                                #~ </t>
-                                #~ <t t-if="invoice_index != len(order.invoice_ids)-1">, </t>
-                            #~ </t>
-        
-        
-        #~ raise Warning(invoice,len(invoice))
-        #~ if len(invoice)>0:
-            #~ document = self.env['ir.attachment'].search([('res_id','=',invoice[0]),('res_model','=','account.invoice')]).mapped('id')
-            #~ if len(document)>0:
-                #~ return ("/attachment/%s/%s.pdf" % (document[0],order.invoice_ids[0].origin),order.invoice_ids[0].state)
-        #~ return ('none','none')
+            return ('', 'in progress...', '')
+
     def sale_home_order_get_picking(self,order):
         picking = order.picking_ids[-1] if order and order.picking_ids else None
         if picking:
             return ('/report/pdf/stock_delivery_slip.stock_delivery_slip/%s' % picking.id, picking.name, picking.state)
         else:
-            return ('','in progress...','')
-    
-        #~ picking = order.picking_ids.mapped('id') if order else []
-        #~ if len(picking)>0:
-            #~ document = self.env['ir.attachment'].search([('res_id','=',picking[0]),('res_model','=','stock.picking')]).mapped('id')
-            #~ if len(document)>0:
-                #~ return ("/attachment/%s/%s.pdf" % (document[0],order.picking_ids[0].origin),order.picking_ids[0].state)
-        #~ return ('none','none')
-
+            return ('', 'in progress...', '')
 
 class website_sale_home(website_sale_home):
 
@@ -133,11 +104,10 @@ class website_sale_home(website_sale_home):
     def home_page_order(self, home_user=None, order=None, tab='orders', **post):
         self.validate_user(home_user)
         return request.render('website_sale_home_order.page_order', {
-            'home_user': home_user if home_user else request.env['res.users'].browse(request.uid),
-            'order': request.env['sale.order'].sudo().browse(order.id),
+            'home_user': home_user,
+            'order': order,
             'tab': tab,
         })
-
 
     @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
     def home_page_order_copy(self, home_user=None, order=None, **post):
