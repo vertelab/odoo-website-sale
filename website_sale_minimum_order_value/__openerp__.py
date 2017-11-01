@@ -21,19 +21,21 @@
 
 {
     'name': 'Website Sale Minimum Order Value',
-    'version': '0.1',
+    'version': '0.2',
     'category': 'website_sale',
     'description': """
 Check Minimum Order Value
 
-
+Financed by Maria Åkerberg
 
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
     'depends': ['website_sale'],
     'data': [
+        'sale_view.xml',
         'website_template.xml',
+        'security/ir.model.access.csv'
     ],
     'installable': True,
 }
