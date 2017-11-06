@@ -26,7 +26,18 @@
     -->
                                                 <form id="info_form" t-att-action="'/home/%s/info_update' % home_user.id if home_user else user_id.id" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
                                                     <input type="hidden" name="home_user" t-att-value="home_user.id" />
-
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="foobar1">Customer Number</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <p class="form-control-static" name="foobar1"><t t-esc="home_user.partner_id.customer_no"/></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 col-sm-4 control-label" for="foobar2">Customer Name</label>
+                                                        <div class="col-md-7 col-sm-8">
+                                                            <p class="form-control-static" name="foobar2"><t t-esc="home_user.partner_id.commercial_partner_id.name"/></p>
+                                                        </div>
+                                                    </div>
                                                     <h2 class="text-center">Login Information</h2>
                                                     <div t-attf-class="form-group #{error and 'email' in error and 'has-error' or ''}">
                                                         <label class="col-md-3 col-sm-4 control-label" for="email">Email *</label>
