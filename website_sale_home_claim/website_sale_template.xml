@@ -4,7 +4,7 @@
     <template id="home_page_claim" inherit_id="website_sale_home.home_page" name="Home Page Claim">
       <xpath expr="//ul[@id='home_tab_nav']" position="inside">
         <li t-att-class="'active' if tab == 'claims' else ''">
-          <a href="#claim" data-toggle="tab" class="list-group-item text-center">
+          <a href="#claims" data-toggle="tab" class="list-group-item text-center">
             <h4>
               <i class="fa fa-frown-o" />
             </h4>
@@ -13,7 +13,7 @@
         </li>
       </xpath>
       <xpath expr="//div[@id='home_tab_content']" position="inside">
-        <div id="claim" t-att-class="'tab-pane %s' %('active' if tab == 'claims' else '')">
+        <div id="claims" t-att-class="'tab-pane %s' %('active' if tab == 'claims' else '')">
           <div id="claims_div">
             <t t-foreach="website.sale_home_claim_get(home_user,claim_search_domain or None)" t-as="claim">
               <div class="claim_div">

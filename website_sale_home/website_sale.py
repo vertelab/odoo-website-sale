@@ -38,6 +38,9 @@ class website_sale_home(http.Controller):
 
     @http.route(['/home','/home/<model("res.users"):home_user>',], type='http', auth="user", website=True)
     def home_page(self, home_user=None, tab='settings', **post):
+        _logger.warn(request.httprequest.path)
+        if not home_user:
+            return werkzeug.utils.redirect("/home/%s" % request.env.user.id)
         self.validate_user(home_user)
         _logger.warn('User %s' % home_user.name if home_user else None)
         return request.render('website_sale_home.home_page', {
