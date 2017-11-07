@@ -16,19 +16,40 @@
         <div id="orders" t-att-class="'tab-pane %s' %('active' if tab == 'orders' else '')">
           <div id="orders_div">
             <div class="row" style="width: 100%; padding-left: 15px;">
-              <form t-att-action="'/home/%s/order_search#orders' % (home_user.id)" method="post" class="pagination form-inline col-md-3">
-                <div class="container">
-                  <div class="input-group">
-                    <input name="order_search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search" />
-                    <span class="input-group-btn">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fa fa-search" />
-                      </button>
-                    </span>
+              <div class="form-inline col-xs-10 col-md-3 col-xs-offset-1 col-md-offset-1">
+                <form t-att-action="'/home/%s#orders' % (home_user.id)" method="post" style="margin-top: 20px; margin-bottom: 20px;">
+                  <div class="container">
+                    <div class="input-group">
+                      <input name="order_search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search" />
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                          <i class="fa fa-search" />
+                        </button>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div class="col-xs-10 col-md-7 col-xs-offset-1 col-md-offset-1">
+                <ul t-if="sale_order_pager['page_count'] &gt; 1" t-attf-class="#{ classname or '' } pagination" style="margin-left: auto; margin-right: auto;">
+                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == 1 else '' ">
+                        <a t-att-href=" sale_order_pager['page_start']['url'] if sale_order_pager['page']['num'] != 1 else ''">&lt;&lt;</a>
+                    </li>
+                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == 1 else '' ">
+                        <a t-att-href=" sale_order_pager['page_previous']['url'] if sale_order_pager['page']['num'] != 1 else ''">&lt;</a>
+                    </li>
+                    <t t-foreach="sale_order_pager['pages']" t-as="page">
+                        <li t-att-class=" 'active' if page['num'] == sale_order_pager['page']['num'] else '' "> <a t-att-href="page['url']" t-raw="page['num']"/></li>
+                    </t>
+                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == sale_order_pager['page_count'] else '' ">
+                        <a t-att-href="sale_order_pager['page_next']['url'] if sale_order_pager['page']['num'] != sale_order_pager['page_count'] else ''">&gt;</a>
+                    </li>
+                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == sale_order_pager['page_count'] else '' ">
+                        <a t-att-href="sale_order_pager['page_end']['url'] if sale_order_pager['page']['num'] != sale_order_pager['page_count'] else ''">&gt;&gt;</a>
+                    </li>
+                </ul>
             </div>
+            </div>  
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -44,12 +65,7 @@
                   </td>
                   <td>
                     <b>
-                      Payment Method
-                    </b>
-                  </td>
-                  <td>
-                    <b>
-                      Delivery Method
+                      Orderer
                     </b>
                   </td>
                   <td>
@@ -65,7 +81,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr t-foreach="website.sale_home_order_get(home_user,order_search or None)" t-as="order">
+                <tr t-foreach="sale_orders" t-as="order">
                   <td>
                       <a t-att-href="'/home/%s/order/%s' %(home_user.id, order.id)">
                         <t t-esc="order.name" />
@@ -75,10 +91,7 @@
                       <span t-esc="order.date_order[:10]" />
                   </td>
                   <td>
-                      <span t-field="order.payment_acquirer_id.name" />
-                  </td>
-                  <td>
-                      <span t-field="order.carrier_id.name" />
+                      <span t-field="order.partner_id.name" />
                   </td>
                   <td>
                     <span t-field="order.state" />

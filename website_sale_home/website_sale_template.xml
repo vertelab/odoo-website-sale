@@ -18,7 +18,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div id="home_tab_content" class="col-lg-9 col-md-9 col-sm-9 col-xs-9 tab-content home_tab_content mt16 mb16">
+                                    <div id="home_tab_content" class="tab-content home_tab_content mt16 mb16">
                                         <div id="settings" t-att-class="'tab-pane %s' %('active' if tab == 'settings' else '')">
                                             <div id="info_div">
     <!--

@@ -27,6 +27,15 @@ import werkzeug
 import logging
 _logger = logging.getLogger(__name__)
 
+class website(models.Model):
+    _inherit="website"
+
+    @api.model
+    def sale_home_get_data(self, home_user, post):
+        return {
+            'home_user': home_user,
+            'tab': post.get('tab', 'settings'),
+        }
 
 class website_sale_home(http.Controller):
 
@@ -37,17 +46,13 @@ class website_sale_home(http.Controller):
             return werkzeug.utils.redirect("/home/%s" % request.uid)
 
     @http.route(['/home','/home/<model("res.users"):home_user>',], type='http', auth="user", website=True)
-    def home_page(self, home_user=None, tab='settings', **post):
+    def home_page(self, home_user=None, **post):
         _logger.warn(request.httprequest.path)
         if not home_user:
             return werkzeug.utils.redirect("/home/%s" % request.env.user.id)
         self.validate_user(home_user)
         _logger.warn('User %s' % home_user.name if home_user else None)
-        return request.render('website_sale_home.home_page', {
-            'home_user': home_user,
-            'tab': post.get('tab') if post.get('tab') else tab,
-            #~ 'user': user if user else request.env['res.users'].browse(request.uid)
-        })
+        return request.render('website_sale_home.home_page', request.website.sale_home_get_data(home_user, post))
 
     @http.route(['/home/<model("res.users"):home_user>/info_update',], type='http', auth="user", website=True)
     def info_update(self, home_user=None, **post):

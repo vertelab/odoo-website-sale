@@ -38,19 +38,18 @@ class website(models.Model):
     _inherit="website"
 
     @api.model
-    def sale_home_document_get(self,user,domain):
+    def sale_home_document_get(self, user, domain):
         _logger.warn('partner %s' % user.partner_id.name)
         if not domain:
-            domain = [('partner_id','child_of',user.partner_id.parent_id.id if user.partner_id.parent_id else user.partner_id.id)]
-            domain = [('parent_id','=','public')]
+            domain = [('partner_id','child_of',user.commercial_partner_id.id)]
             #~ if user.partner_id.parent_id:
                 #~ domain.append(('partner_id','child_of',user.partner_id.parent_id.id))
-        _logger.warn('%s %s' % (domain,self.env['ir.attachment'].sudo().search(domain)))
+        _logger.warn('%s %s' % (domain, self.env['ir.attachment'].sudo().search(domain)))
         return self.env['ir.attachment'].sudo().search(domain)
 
     @api.model
-    def sale_home_directory_get(self,user):
-        return self.env['document.directory'].sudo().search([('name','=','public')])
+    def sale_home_directory_get(self, user):
+        return self.env['document.directory'].sudo().search([('name', '=', 'public')])
 
 class document_directory_content(models.Model):
     _inherit = 'document.directory.content'
@@ -68,7 +67,7 @@ class website_sale_home(website_sale_home):
         if report:
             #~ raise Warning(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'))
             #~ pdf = request.env['report'].get_pdf(request.env['res.partner'].search([]),report.get_external_id()[report.id], data=None)
-            pdf = report.report_id.render_report(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'),report.report_id.report_name, data={})[0]
+            pdf = report.sudo().report_id.render_report(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'),report.report_id.report_name, data={})[0]
             #return http.send_file(StringIO(pdf), filename='min file.pdf', mimetype='application/pdf', as_attachment=True)
             return request.make_response(pdf, headers=[('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))])
 

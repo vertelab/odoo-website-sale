@@ -24,6 +24,7 @@ from openerp import http
 from openerp.http import request
 import werkzeug
 from openerp.addons.website_sale_home.website_sale import website_sale_home
+import math
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -53,7 +54,14 @@ class website(models.Model):
     _inherit="website"
 
     @api.model
+    def sale_home_get_data(self, home_user, post):
+        res = super(website, self).sale_home_get_data(home_user, post)
+        res.update(self.sale_home_order_get(home_user, post))
+        return res
+
+    @api.model
     def sale_home_order_search_domain(self, user, search=None):
+        _logger.warn('\n\n\nuser: %s\n\n\n' % user)
         domain = [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
         if search:
             search = search.strip()
@@ -68,8 +76,26 @@ class website(models.Model):
         return domain
 
     @api.model
-    def sale_home_order_get(self, user, search):
-        return self.env['sale.order'].search(self.sale_home_order_search_domain(user, search))
+    def sale_home_order_get(self, user, post):
+        OPP = 20 # Orders Per Page
+        search = post.get('order_search')
+        domain = self.sale_home_order_search_domain(user, search)
+        order_page = int(post.get('order_page', '1'))
+        url_args = post.copy()
+        url_args.update({
+            'order_page': '__ORDER_PAGE__',
+            'tab': 'orders',
+        })
+        pager = self.pager(url='/home/%s' % user.id, total=self.env['sale.order'].search_count(domain), page=order_page, step=OPP, scope=7, url_args=url_args)
+        for page in pager["pages"]:
+            page['url'] = page['url'].replace('/page/%s' % page['num'], '').replace('__ORDER_PAGE__', str(page['num']))
+        for page in ["page", "page_start", "page_previous", "page_next", "page_end"]:
+            pager[page]['url'] = pager[page]['url'].replace('/page/%s' % pager[page]['num'], '').replace('__ORDER_PAGE__', str(pager[page]['num']))
+        return {
+            'sale_orders': self.env['sale.order'].search(domain, limit=OPP, offset=(order_page - 1) * OPP),
+            'sale_order_pager': pager,
+            'order_search': search,
+        }
 
     @api.model
     def sale_home_order_get_invoice(self, order):
@@ -82,7 +108,7 @@ class website(models.Model):
         else:
             return ('', 'in progress...', '')
 
-    def sale_home_order_get_picking(self,order):
+    def sale_home_order_get_picking(self, order):
         picking = order.picking_ids[-1] if order and order.picking_ids else None
         if picking:
             return ('/report/pdf/stock_delivery_slip.stock_delivery_slip/%s' % picking.id, picking.name, picking.state)
@@ -90,15 +116,6 @@ class website(models.Model):
             return ('', 'in progress...', '')
 
 class website_sale_home(website_sale_home):
-
-    @http.route(['/home/<model("res.users"):user>/order_search',], type='http', auth="user", website=True)
-    def home_page_order_search(self, user=None, order_search=None, tab='orders', **post):
-        return request.render('website_sale_home.home_page', {
-            'home_user': user if user else request.env['res.users'].browse(request.uid),
-            'order_search_domain': request.website.sale_home_order_search_domain(user,order_search),
-            'order_search': order_search,
-            'tab': tab,
-        })
 
     @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>',], type='http', auth="user", website=True)
     def home_page_order(self, home_user=None, order=None, tab='orders', **post):

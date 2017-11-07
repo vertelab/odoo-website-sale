@@ -26,7 +26,7 @@
                 </div>
                 <div class="document_div col-md-3 col-xs-md-12">
                   Date:
-                  <t t-esc="doc.write_date[:10]" />
+                  <t t-esc="(doc.write_date or doc.create_date)[:10]" />
                 </div>
                 <div class="document_div col-md-4 col-xs-md-12">
                   Responsible:
