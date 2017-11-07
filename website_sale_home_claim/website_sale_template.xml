@@ -6,9 +6,7 @@
         <li t-att-class="'active' if tab == 'claims' else ''">
           <a href="#claims" data-toggle="tab" class="list-group-item text-center">
             <h4>
-              <i class="fa fa-frown-o" />
-            </h4>
-            <h4 class="hidden-xs">Claims</h4>
+              <i class="fa fa-frown-o col-sm-12"/> Claims</h4>
           </a>
         </li>
       </xpath>

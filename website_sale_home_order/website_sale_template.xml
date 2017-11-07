@@ -5,10 +5,7 @@
       <xpath expr="//ul[@id='home_tab_nav']" position="inside">
         <li t-att-class="'active' if tab == 'orders' else ''">
           <a href="#orders" data-toggle="tab" class="list-group-item text-center">
-            <h4>
-              <i class="fa fa-dollar" />
-            </h4>
-            <h4 class="hidden-xs">Orders</h4>
+            <h4><i class="fa fa-dollar col-sm-12"/> Orders</h4>
           </a>
         </li>
       </xpath>
@@ -17,7 +14,8 @@
           <div id="orders_div">
             <div class="row" style="width: 100%; padding-left: 15px;">
               <div class="form-inline col-xs-10 col-md-3 col-xs-offset-1 col-md-offset-1">
-                <form t-att-action="'/home/%s#orders' % (home_user.id)" method="post" style="margin-top: 20px; margin-bottom: 20px;">
+                <form t-att-action="'/home/%s' % (home_user.id)" method="post" style="margin-top: 20px; margin-bottom: 20px;">
+                  <input type="hidden" name="tab" value="orders"/>
                   <div class="container">
                     <div class="input-group">
                       <input name="order_search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search" />
@@ -30,11 +28,8 @@
                   </div>
                 </form>
               </div>
-              <div class="col-xs-10 col-md-7 col-xs-offset-1 col-md-offset-1">
+              <div class="col-xs-12 col-md-7 col-md-offset-1 text-center">
                 <ul t-if="sale_order_pager['page_count'] &gt; 1" t-attf-class="#{ classname or '' } pagination" style="margin-left: auto; margin-right: auto;">
-                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == 1 else '' ">
-                        <a t-att-href=" sale_order_pager['page_start']['url'] if sale_order_pager['page']['num'] != 1 else ''">&lt;&lt;</a>
-                    </li>
                     <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == 1 else '' ">
                         <a t-att-href=" sale_order_pager['page_previous']['url'] if sale_order_pager['page']['num'] != 1 else ''">&lt;</a>
                     </li>
@@ -43,9 +38,6 @@
                     </t>
                     <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == sale_order_pager['page_count'] else '' ">
                         <a t-att-href="sale_order_pager['page_next']['url'] if sale_order_pager['page']['num'] != sale_order_pager['page_count'] else ''">&gt;</a>
-                    </li>
-                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == sale_order_pager['page_count'] else '' ">
-                        <a t-att-href="sale_order_pager['page_end']['url'] if sale_order_pager['page']['num'] != sale_order_pager['page_count'] else ''">&gt;&gt;</a>
                     </li>
                 </ul>
             </div>

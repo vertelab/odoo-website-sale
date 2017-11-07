@@ -6,9 +6,7 @@
         <li t-att-class="'active' if tab == 'document' else ''">
           <a href="#document" data-toggle="tab" class="list-group-item text-center">
             <h4>
-              <i class="fa fa-file-o" />
-            </h4>
-            <h4 class="hidden-xs">Documents</h4>
+              <i class="fa fa-file-o col-sm-12"/>Documents</h4>
           </a>
         </li>
       </xpath>

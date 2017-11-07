@@ -13,7 +13,7 @@
                                         <ul id="home_tab_nav" class="list-group nav nav-tabs nav-justified">
                                             <li t-att-class="'active' if tab == 'settings' else ''">
                                                 <a href="#settings" data-toggle="tab" class="list-group-item text-center">
-                                                    <h4><i class="fa fa-user"/></h4><h4 class="hidden-xs">Settings</h4>
+                                                    <h4><i class="fa fa-user col-sm-12"/> Settings</h4>
                                                 </a>
                                             </li>
                                         </ul>

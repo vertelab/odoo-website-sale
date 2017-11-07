@@ -39,3 +39,15 @@ div.home_tab_menu{
 .input_readonly {
     padding-top: 7px;
 }
+
+@media (max-width: 768px) {
+  .nav-justified > li {
+    display: table-cell;
+    width: 1%;
+  }
+  .nav-justified > li > a  {
+    border-bottom: 1px solid #ddd !important;
+    border-radius: 4px 4px 0 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
