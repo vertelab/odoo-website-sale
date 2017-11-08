@@ -5,10 +5,7 @@
       <xpath expr="//ul[@id='home_tab_nav']" position="inside">
         <li t-att-class="'active' if tab == 'orders' else ''">
           <a href="#orders" data-toggle="tab" class="list-group-item text-center">
-            <h4>
-              <i class="fa fa-dollar" />
-            </h4>
-            <h4 class="hidden-xs">Orders</h4>
+            <h4><i class="fa fa-dollar col-sm-12"/> Orders</h4>
           </a>
         </li>
       </xpath>
@@ -16,19 +13,35 @@
         <div id="orders" t-att-class="'tab-pane %s' %('active' if tab == 'orders' else '')">
           <div id="orders_div">
             <div class="row" style="width: 100%; padding-left: 15px;">
-              <form t-att-action="'/home/%s/order_search#orders' % (home_user.id)" method="post" class="pagination form-inline col-md-3">
-                <div class="container">
-                  <div class="input-group">
-                    <input name="order_search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search" />
-                    <span class="input-group-btn">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fa fa-search" />
-                      </button>
-                    </span>
+              <div class="form-inline col-xs-10 col-md-3 col-xs-offset-1 col-md-offset-1">
+                <form t-att-action="'/home/%s' % (home_user.id)" method="post" style="margin-top: 20px; margin-bottom: 20px;">
+                  <input type="hidden" name="tab" value="orders"/>
+                  <div class="container">
+                    <div class="input-group">
+                      <input name="order_search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search" />
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                          <i class="fa fa-search" />
+                        </button>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
+              <div class="col-xs-12 col-md-7 col-md-offset-1 text-center">
+                <ul t-if="sale_order_pager['page_count'] &gt; 1" t-attf-class="#{ classname or '' } pagination" style="margin-left: auto; margin-right: auto;">
+                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == 1 else '' ">
+                        <a t-att-href=" sale_order_pager['page_previous']['url'] if sale_order_pager['page']['num'] != 1 else ''">&lt;</a>
+                    </li>
+                    <t t-foreach="sale_order_pager['pages']" t-as="page">
+                        <li t-att-class=" 'active' if page['num'] == sale_order_pager['page']['num'] else '' "> <a t-att-href="page['url']" t-raw="page['num']"/></li>
+                    </t>
+                    <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == sale_order_pager['page_count'] else '' ">
+                        <a t-att-href="sale_order_pager['page_next']['url'] if sale_order_pager['page']['num'] != sale_order_pager['page_count'] else ''">&gt;</a>
+                    </li>
+                </ul>
             </div>
+            </div>  
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -44,12 +57,7 @@
                   </td>
                   <td>
                     <b>
-                      Payment Method
-                    </b>
-                  </td>
-                  <td>
-                    <b>
-                      Delivery Method
+                      Orderer
                     </b>
                   </td>
                   <td>
@@ -65,27 +73,25 @@
                 </tr>
               </thead>
               <tbody>
-                <tr t-foreach="website.sale_home_order_get(home_user,order_search or None)" t-as="order">
+                <tr t-foreach="sale_orders" t-as="order">
                   <td>
                       <a t-att-href="'/home/%s/order/%s' %(home_user.id, order.id)">
                         <t t-esc="order.name" />
                       </a>
                   </td>
                   <td>
-                      <t t-esc="order.date_order[:10]" />
+                      <span t-esc="order.date_order[:10]" />
                   </td>
                   <td>
-                      <t t-esc="order.payment_acquirer_id.name" />
+                      <span t-field="order.partner_id.name" />
                   </td>
                   <td>
-                      <t t-esc="order.carrier_id.name" />
+                    <span t-field="order.state" />
                   </td>
                   <td>
-                    <t t-esc="order.state" />
-                  </td>
-                  <td>
-                      <t t-esc="order.amount_total" />
-                      <t t-esc="order.currency_id.name" />
+                    <!-- TODO: make this correct for all currencies. Look at website_sale. -->
+                      <span t-field="order.amount_total" />
+                      <span t-field="order.currency_id.name" />
                   </td>
 <!--
                   <td>
@@ -215,21 +221,25 @@
                         <t t-foreach="order.order_line" t-as="line">
                           <tr>
                             <td>
-                              <t t-esc="line.product_uom_qty" />
+                              <span t-esc="int(line.product_uom_qty)" />
                             </td>
                             <td>
-                              <t t-esc="line.product_id.name" />
+                              <span t-field="line.product_id.name" />
                             </td>
                             <td class="hidden-xs">
-                              <t t-esc="line.product_id.default_code" />
+                              <span t-field="line.product_id.default_code" />
                             </td>
                             <td class="hidden-xs">
-                              <t t-esc="line.price_unit" />
-                              <t t-esc="order.currency_id.name" />
+                              <span t-field="line.price_unit" style="white-space: nowrap;"  t-field-options='{
+                                   "widget": "monetary",
+                                   "display_currency": "order.currency_id"
+                               }'/>
                             </td>
                             <td>
-                              <t t-esc="line.price_subtotal" />
-                              <t t-esc="order.currency_id.name" />
+                              <span t-field="line.price_subtotal" style="white-space: nowrap;"  t-field-options='{
+                                   "widget": "monetary",
+                                   "display_currency": "order.currency_id"
+                               }'/>
                             </td>
                              <td class="order_line_buttons"/>
                           </tr>
@@ -241,34 +251,42 @@
                     <div class="pull-right col-md-4">
                       <p>
                         <label>Sum:</label>
-                        <t t-esc="order.amount_untaxed" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.amount_untaxed" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </p>
                       <p>
                         <label>Shipping:</label>
-                        <t t-esc="order.carrier_id.normal_price" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.carrier_id.normal_price" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </p>
                       <p>
                         <label>Tax:</label>
-                        <t t-esc="order.amount_tax" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.amount_tax" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </p>
                       <hr />
                       <h4>
                         <label>Total:</label>
-                        <t t-esc="order.amount_total" />
-                        <t t-esc="order.currency_id.name" />
+                        <span t-field="order.amount_total" style="white-space: nowrap;"  t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }'/>
                       </h4>
                       <hr />
                     </div>
                     <div class="col-md-4">
                       <div>
-                        <t t-esc="order.note"/>
+                        <span t-field="order.note"/>
                       </div>
                       <div>
                         <t t-foreach="order.picking_ids" t-as="picking">
-                          <t t-esc="picking.note"/>
+                          <span t-field="picking.note"/>
                         </t>
                       </div>
                     </div>
