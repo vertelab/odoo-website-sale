@@ -5,7 +5,7 @@
       <xpath expr="//div[@id='payment_method']" position="before">
         <div t-if="website.check_minimum_order_value()" class="row" id="minimum_order_value">
           <div class="col-lg-5 col-sm-6 alert alert-danger">
-            <h4>Minimum Order value</h4>
+            <h4>Minimum Order Value</h4>
             <div class="alert alert-warning" t-esc='website.check_minimum_order_value()'/>
           </div>
         </div>

@@ -24,6 +24,13 @@
 -->
           <field name="min_value" />
           <field name="destination_ids" widget="many2many_tags"/>
+          <field name="pricelist_ids" widget="many2many_tags"/>
+          <label for="product_id"/>
+          <div>
+          <field name="product_id" class="oe_inline" />
+          <field name="order_fee" class="oe_inline"/>
+          </div>
+          
             </group>
           <notebook>            
               <page string="Text">
@@ -50,6 +57,8 @@
           <field name="name" />
           <field name="min_value" />
           <field name="destination_ids" widget="many2many_tags"/>
+          <field name="pricelist_ids" widget="many2many_tags"/>
+          <field name="order_fee" />
         </tree>
       </field>
     </record>
@@ -59,8 +68,11 @@
       <field name="model">sale.order.minvalue</field>
       <field name="arch" type="xml">
         <search string="Search Minimum Order Value">
-          <field name="name" string="Order" filter_domain="[('name','ilike',self),('destination_ids','ilike',self),('info_text','ilike',self)]" />
+          <field name="name" string="Order Value" filter_domain="[('name','ilike',self),('destination_ids','ilike',self),('pricelist_ids','ilike',self),('product_id','ilike',self),('info_text','ilike',self)]" />
           <field name="destination_ids" />
+          <field name="pricelist_ids" />
+          <field name="product_id" />
+          <field name="order_fee" />
           <separator />
           <group expand="0" string="Group By">
           </group>
