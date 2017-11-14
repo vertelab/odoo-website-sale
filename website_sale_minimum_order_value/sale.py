@@ -79,7 +79,7 @@ class SaleOrder(models.Model):
                 if not line.is_min_order_fee and not line.is_delivery:
                     value += line.price_subtotal
             return value >= minvalue.min_value
-        return False
+        return True
 
     @api.multi
     def action_button_confirm(self):
