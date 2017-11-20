@@ -39,12 +39,8 @@ class website(models.Model):
 
     @api.model
     def sale_home_document_get(self, user, domain):
-        _logger.warn('partner %s' % user.partner_id.name)
         if not domain:
-            domain = [('partner_id','child_of',user.commercial_partner_id.id)]
-            #~ if user.partner_id.parent_id:
-                #~ domain.append(('partner_id','child_of',user.partner_id.parent_id.id))
-        _logger.warn('%s %s' % (domain, self.env['ir.attachment'].sudo().search(domain)))
+            domain = [('parent_id', '=', 'public')]
         return self.env['ir.attachment'].sudo().search(domain)
 
     @api.model
