@@ -3,8 +3,8 @@
     <data>
         <template id="minimum_order_value" name="Minimum Order Value" inherit_id="website_sale.payment">
             <xpath expr="//div[@id='payment_method']" position="before">
-                <div t-if="order.min_order_value" class="row" id="minimum_order_value">
-                    <t t-set="min_val" t-value="order.get_minimum_order_value()"/>
+                <div t-if="website_sale_order.min_order_value" class="row" id="minimum_order_value">
+                    <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
                     <div class="col-lg-5 col-sm-6 alert alert-danger">
                         <h4>Does not meet the minimum order value!</h4>
                         <div class="alert alert-warning" t-esc='min_val.info_text'/>
@@ -14,9 +14,9 @@
         </template>
         <template id="minimum_order_fee" name="Minimum Order Fee" inherit_id="website_sale.total">
             <xpath expr="//thead" position="inside">
-                <tr class="text-muted" id="order_min_costs" t-if="order.min_order_value">
-                    <t t-set="min_val" t-value="order.get_minimum_order_value()"/>
-                    <td><abbr t-att-title="'Orders below %s will incur an extra %s fee.' % (website.get_monetary_str(min_val.min_value, order.currency_id), website.get_monetary_str(min_val.order_fee, order.currency_id))">Min. Order Fee:</abbr></td>
+                <tr class="text-muted" id="order_min_costs" t-if="website_sale_order.min_order_value">
+                    <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
+                    <td><abbr t-att-title="'Orders below %s will incur an extra %s fee.' % (website.get_monetary_str(min_val.min_value, website_sale_order.currency_id), website.get_monetary_str(min_val.order_fee, website_sale_order.currency_id))">Min. Order Fee:</abbr></td>
                     <td class="text-right">
                         <span t-field="website_sale_order.min_order_fee" t-field-options="{                         &quot;widget&quot;: &quot;monetary&quot;,                         &quot;display_currency&quot;: &quot;website_sale_order.currency_id&quot;                     }"/>
                     </td>
