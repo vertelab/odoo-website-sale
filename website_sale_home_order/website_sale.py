@@ -78,7 +78,7 @@ class website(models.Model):
 
     @api.model
     def sale_home_order_get(self, user, post):
-        OPP = 20 # Orders Per Page
+        OPP = 50 # Orders Per Page
         search = post.get('order_search')
         domain = self.sale_home_order_search_domain(user, search)
         order_page = int(post.get('order_page', '1'))

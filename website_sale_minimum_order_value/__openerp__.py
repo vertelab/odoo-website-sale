@@ -31,7 +31,7 @@ Financed by Maria Åkerberg
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale'],
+    'depends': ['website_sale', 'website_sale_delivery'],
     'data': [
         'sale_view.xml',
         'website_template.xml',
