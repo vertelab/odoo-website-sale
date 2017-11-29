@@ -213,7 +213,7 @@
                       <thead>
                         <th>Quantity</th>
                         <th>Name</th>
-                        <th class="hidden-xs">Artical number</th>
+                        <th class="hidden-xs">Article number</th>
                         <th class="hidden-xs">Price</th>
                         <th>Total</th>
                       </thead>
@@ -224,7 +224,7 @@
                               <span t-esc="int(line.product_uom_qty)" />
                             </td>
                             <td>
-                              <span t-field="line.product_id.name" />
+                              <span t-field="line.name" />
                             </td>
                             <td class="hidden-xs">
                               <span t-field="line.product_id.default_code" />
