@@ -18,7 +18,6 @@
                                 <t t-set="product_product" t-value="product.product_variant_ids[0]"/>
                             </t>
                         </t>
-                        <p id="variant_id" t-att-data-value="product_product.id" class="hidden"/>
                         <t t-foreach="product_product.image_ids" t-as="i">
                             <div t-att-id="i.id" t-att-class="'tab-pane fade %s' %('in active' if i_index == 0 else '')">
                                 <img t-att-class="'img img-responsive %s' %('product_detail_img' if i_index == 0 else '')" style="margin: auto;" t-att-src="'/imagefield/base_multi_image.image/image_main/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_detail')"/>
