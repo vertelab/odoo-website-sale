@@ -36,7 +36,7 @@ class SaleOrder(models.Model):
     def order_state_frontend(self):
         """Get a customer friendly order state."""
         if self.state == 'cancel':
-            state == 'Cancelled'
+            state = 'Cancelled'
         elif self.state in ('shipping_except', 'invoice_except'):
             state = 'Exception'
         elif self.state in ('draft', 'sent'):
