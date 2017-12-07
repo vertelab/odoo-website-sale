@@ -35,20 +35,21 @@ class SaleOrder(models.Model):
     @api.multi
     def order_state_frontend(self):
         """Get a customer friendly order state."""
+        state = None
         if self.state == 'cancel':
-            state = 'Cancelled'
+            state = _('Cancelled')
         elif self.state in ('shipping_except', 'invoice_except'):
-            state = 'Exception'
+            state = _('Exception')
         elif self.state in ('draft', 'sent'):
-            state = 'Received'
+            state = _('Received')
         else:
-            state = 'Packing'
+            state = _('Packing')
             for invoice in self.invoice_ids:
                 if invoice.state == 'open':
-                    state = 'Shipped and invoiced'
+                    state = _('Shipped and invoiced')
                 elif invoice.state == 'paid':
-                    state = 'Paid'
-        return _(state)
+                    state = _('Paid')
+        return state
 
 class website(models.Model):
     _inherit="website"
@@ -131,7 +132,7 @@ class website_sale_home(website_sale_home):
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
-        sale_order.order_line |= order.order_line
-        #~ for line in order.order_line:
-            #~ sale_order.order_line = [(0,0,{'product_id': line.product_id.id, 'product_uom_qty': line.product_uom_qty})]
+        #~ sale_order.order_line |= order.order_line  Bättre än nedan?
+        for line in order.order_line:
+            sale_order.order_line = [(0,0,{'product_id': line.product_id.id, 'product_uom_qty': line.product_uom_qty})]
         return werkzeug.utils.redirect("/shop/cart")

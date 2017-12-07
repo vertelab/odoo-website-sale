@@ -25,11 +25,20 @@ from openerp.addons.website_sale.controllers.main import website_sale, QueryURL,
 import logging
 _logger = logging.getLogger(__name__)
 
+class product_template(models.Model):
+    _inherit = "product.template"
+    @api.multi
+    def get_default_variant(self):  
+        self.ensure_one()
+        return self.product_variant_ids.filtered(lambda v: v.default_variant == True)
+        
 class product_product(models.Model):
     _inherit = 'product.product'
 
     default_variant = fields.Boolean(string='Default Variant')
 
+
+        
 
 class website_sale(website_sale):
     @http.route([
