@@ -55,7 +55,6 @@ class document_directory_content(models.Model):
 
 class website_sale_home(website_sale_home):
 
-
     @http.route(['/home/<model("res.users"):home_user>/document/<model("ir.attachment"):document>','/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
     def home_page_document(self, home_user=None, document=None,report=None, tab='document', **post):
         self.validate_user(home_user)
@@ -75,4 +74,3 @@ class website_sale_home(website_sale_home):
             'documents': request.env['ir.attachment'].search([('partner_id', '=', home_user.partner_id.id)]),
             'tab': tab,
         })
-
