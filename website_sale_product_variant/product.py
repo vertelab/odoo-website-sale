@@ -30,7 +30,7 @@ class product_template(models.Model):
     @api.multi
     def get_default_variant(self):  
         self.ensure_one()
-        return self.product_variant_ids.filtered(lambda v: v.default_variant == True)
+        return self.product_variant_ids.filtered(lambda v: v.default_variant == True) or self.product_variant_ids[0]
         
 class product_product(models.Model):
     _inherit = 'product.product'
