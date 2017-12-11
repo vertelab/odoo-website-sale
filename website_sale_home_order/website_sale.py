@@ -132,7 +132,10 @@ class website_sale_home(website_sale_home):
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
-        #~ sale_order.order_line |= order.order_line  Bättre än nedan?
         for line in order.order_line:
-            sale_order.order_line = [(0,0,{'product_id': line.product_id.id, 'product_uom_qty': line.product_uom_qty})]
+            request.env['sale.order.line'].sudo().create({
+                    'order_id': sale_order.id,
+                    'product_id': line.product_id.id, 
+                    'product_uom_qty': line.product_uom_qty,
+            })
         return werkzeug.utils.redirect("/shop/cart")
