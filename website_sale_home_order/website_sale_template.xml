@@ -86,7 +86,7 @@
                       <span t-field="order.partner_id.name" />
                   </td>
                   <td>
-                    <span t-field="order.state" />
+                    <span t-esc="order.order_state_frontend()" />
                   </td>
                   <td>
                     <!-- TODO: make this correct for all currencies. Look at website_sale. -->

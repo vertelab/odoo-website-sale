@@ -62,7 +62,6 @@ class website(models.Model):
 
     @api.model
     def sale_home_order_search_domain(self, user, search=None):
-        _logger.warn('\n\n\nuser: %s\n\n\n' % user)
         domain = [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
         if search:
             search = search.strip()
@@ -70,7 +69,6 @@ class website(models.Model):
             orders = self.env['sale.order'].search(domain)
             invoice_ids = orders.mapped('invoice_ids').filtered(lambda i: search in i.name or search in i.number or search in i.date_invoice).mapped('id')
             picking_ids = orders.mapped('picking_ids').filtered(lambda p: search in p.name).mapped('group_id').mapped('id')
-            #~ _logger.warn('invoice_ids: %s picking_ids: %s' % (invoice_ids,picking_ids))
             for s in ['|', ('invoice_ids', 'in', invoice_ids), '|', ('procurement_group_id', 'in', picking_ids), '|', ('name', 'ilike', search), '|', ('date_order', 'ilike', search),'|', ('client_order_ref', 'ilike', search), ('user_id', 'ilike', search)]:
                 domain.append(s)
         _logger.debug('search_domain: %s' % (domain))
