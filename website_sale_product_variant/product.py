@@ -35,17 +35,14 @@ class product_template(models.Model):
     default_variant_id = fields.Many2one(comodel_name="product.product",compute='_default_variant_id')
 
     @api.multi
-    def get_default_variant(self):  
+    def get_default_variant(self):
         self.ensure_one()
         return self.sudo().product_variant_ids.filtered(lambda v: v.default_variant == True) or self.product_variant_ids[0]
-        
+
 class product_product(models.Model):
     _inherit = 'product.product'
 
     default_variant = fields.Boolean(string='Default Variant')
-
-
-        
 
 class website_sale(website_sale):
     @http.route([
