@@ -27,10 +27,17 @@ _logger = logging.getLogger(__name__)
 
 class product_template(models.Model):
     _inherit = "product.template"
+
+    @api.one
+    def _default_variant_id(self):
+        self.default_varitant_id = self.sudo().product_variant_ids.filtered(lambda v: v.default_variant == True) or self.sudo().product_variant_ids[0]
+
+    default_variant_id = fields.Many2one(comodel_name="product.product",compute='_default_variant_id')
+
     @api.multi
     def get_default_variant(self):  
         self.ensure_one()
-        return self.product_variant_ids.filtered(lambda v: v.default_variant == True) or self.product_variant_ids[0]
+        return self.sudo().product_variant_ids.filtered(lambda v: v.default_variant == True) or self.product_variant_ids[0]
         
 class product_product(models.Model):
     _inherit = 'product.product'
