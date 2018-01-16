@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* website_sale_instock
+#   * website_sale_instock
 #
 msgid ""
 msgstr ""
@@ -20,7 +20,7 @@ msgstr ""
 #. module: website_sale_instock
 #: view:website:website_sale.product
 msgid "Few in stock"
-msgstr "Får i lager"
+msgstr "Fåtal i lager"
 
 #. module: website_sale_instock
 #: view:website:website_sale.product
@@ -50,7 +50,7 @@ msgstr "Product Template"
 #. module: website_sale_instock
 #: view:website:website_sale.product
 msgid "Shortage"
-msgstr "Lagerbrist"
+msgstr "Slut i lager"
 
 #. module: website_sale_instock
 #: view:website:website_sale.product
