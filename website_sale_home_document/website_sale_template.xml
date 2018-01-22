@@ -13,7 +13,8 @@
       <xpath expr="//div[@id='home_tab_content']" position="inside">
         <div id="document" t-att-class="'tab-pane %s' %('active' if tab == 'document' else '')">
           <div class="container">
-            <t t-foreach="website.sale_home_document_get(home_user,document_search_domain or None)" t-as="doc">
+              <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')"/>
+            <t t-foreach="website.sale_home_document_get(home_user, document_search_domain or None)" t-as="doc">
               <div style="display: flex; justify-content: center; align-items: center" class="col-md-12 col-xs-md-12">
                 <div class="document_div col-md-5 col-xs-md-12">
                   <div style='font-size: 24px; font-weight: 500;' >
@@ -67,7 +68,7 @@
         </div>
       </xpath>
     </template>
-        
+
     <record model="ir.ui.view" id="view_document_directory_form">
         <field name="name">document.directory</field>
         <field name="model">document.directory</field>
@@ -81,6 +82,17 @@
             </form>
         </field>
     </record>
-    
+
+        <record id="view_knowledge_configuration" model="ir.ui.view">
+            <field name="name">Configure Knowledge Inherited website_sale_home_document</field>
+            <field name="model">knowledge.config.settings</field>
+            <field name="inherit_id" ref="knowledge.view_knowledge_configuration"/>
+            <field name="arch" type="xml">
+                <group position="inside">
+                    <field name="document_directory"/>
+                </group>
+            </field>
+        </record>
+
   </data>
 </openerp>

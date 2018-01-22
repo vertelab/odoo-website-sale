@@ -33,6 +33,19 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class knowledge_config_settings(models.TransientModel):
+    _inherit = 'knowledge.config.settings'
+
+    document_directory = fields.Char(string='Document Directory Domain', help='Specify the document directory domain')
+
+    @api.one
+    def set_params(self):
+        self.env['ir.config_parameter'].set_param('website_sale_home_document.document_directory', self.document_directory)
+
+    #~ @api.model
+    #~ def get_params(self, fields):
+        #~ return {'document_directory': self.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')}
+
 
 class website(models.Model):
     _inherit="website"
@@ -41,7 +54,7 @@ class website(models.Model):
     def sale_home_document_get(self, user, domain):
         if not domain:
             domain = [('parent_id', '=', 'public')]
-        return self.env['ir.attachment'].sudo().search(domain)
+        return self.env['ir.attachment'].sudo().search(eval(domain))
 
     @api.model
     def sale_home_directory_get(self, user):
