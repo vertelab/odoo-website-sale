@@ -42,9 +42,9 @@ class knowledge_config_settings(models.TransientModel):
     def set_params(self):
         self.env['ir.config_parameter'].set_param('website_sale_home_document.document_directory', self.document_directory)
 
-    #~ @api.model
-    #~ def get_params(self, fields):
-        #~ return {'document_directory': self.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')}
+    @api.model
+    def get_params(self, fields):
+        return {'document_directory': self.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')}
 
 
 class website(models.Model):
@@ -53,12 +53,13 @@ class website(models.Model):
     @api.model
     def sale_home_document_get(self, user, domain):
         if not domain:
-            domain = [('parent_id', '=', 'public')]
+            domain = [('parent_id.name', '=', 'public')]
         return self.env['ir.attachment'].sudo().search(eval(domain))
 
     @api.model
     def sale_home_directory_get(self, user):
         return self.env['document.directory'].sudo().search([('name', '=', 'public')])
+
 
 class document_directory_content(models.Model):
     _inherit = 'document.directory.content'
