@@ -20,21 +20,19 @@
 ##############################################################################
 
 {
-    'name': 'Website My Home Page Order',
+    'name': 'Website Sale Order Comment',
     'version': '0.1',
     'category': 'website_sale',
     'description': """
-List sale order history
-=======================
+Displays order comment
+======================
 
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale_home','website_document','account','sale_stock','sale_customer_no'],
+    'depends': ['website_sale'],
     'data': [
-        'security/ir.model.access.csv',
-        'security/portal_security.xml',
-        'website_sale_template.xml',
+        'website_template.xml',
     ],
     'installable': True,
 }

@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2017- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2004-2018 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,24 +18,17 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
 {
-    'name': 'Website My Home Page Order',
-    'version': '0.1',
-    'category': 'website_sale',
-    'description': """
-List sale order history
-=======================
-
-""",
-    'author': 'Vertel AB',
-    'website': 'http://www.vertel.se',
-    'depends': ['website_sale_home','website_document','account','sale_stock','sale_customer_no'],
-    'data': [
-        'security/ir.model.access.csv',
-        'security/portal_security.xml',
-        'website_sale_template.xml',
-    ],
-    'installable': True,
+'name': 'Sale Team Confirm Mail',
+'version': '0.1',
+'summary': 'Configurable confirm mail for sale-teams',
+'category': 'Hidden',
+'description': """Configurable confirm mail for sale-teams.""",
+'author': 'Vertel AB',
+'website': 'http://www.vertel.se',
+'depends': ['sale'],
+'data': [
+    'sales_team_view.xml',
+],
+'installable': True,
 }
-
