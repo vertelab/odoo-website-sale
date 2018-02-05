@@ -19,16 +19,16 @@
 #
 ##############################################################################
 {
-'name': 'Sale Team Confirm Mail',
+'name': 'Webshop Sale Team Confirm Mail',
 'version': '0.1',
-'summary': 'Configurable confirm mail for sale-teams',
+'summary': 'Configurable confirm mail for webshop sale-teams',
 'category': 'Hidden',
-'description': """Configurable confirm mail for sale-teams.""",
+'description': """Configurable confirm mail for webshop sale-teams.""",
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
-'depends': ['sale'],
+'depends': ['website_sale','sales_team_confirmmail'],
 'data': [
-    'sales_team_view.xml',
+    'sales_team_data.xml',
 ],
 'installable': True,
 }
