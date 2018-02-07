@@ -53,7 +53,7 @@ class website(models.Model):
     @api.model
     def sale_home_document_get(self, user, domain):
         if not domain:
-            domain = [('parent_id.name', '=', 'public')]
+            domain = "[('parent_id.name', '=', 'public')]"
         return self.env['ir.attachment'].sudo().search(eval(domain))
 
     @api.model
