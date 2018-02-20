@@ -24,22 +24,18 @@ from openerp.http import request
 from openerp.addons.website_sale.controllers.main import website_sale, QueryURL, table_compute
 import logging
 _logger = logging.getLogger(__name__)
+from timeit import default_timer as timer
 
 class product_template(models.Model):
     _inherit = "product.template"
-
-    @api.one
-    def _default_variant_id(self):
-        self.default_varitant_id = self.product_variant_ids.filtered(lambda v: v.default_variant == True) or self.product_variant_ids[0]
-
-    default_variant_id = fields.Many2one(comodel_name="product.product",compute='_default_variant_id')
 
     @api.multi
     def get_default_variant(self):
         self.ensure_one()
         if not self.product_variant_ids:
             _logger.warn('%s has not variant' %self)
-        return self.product_variant_ids.filtered(lambda v: v.default_variant == True) or self.product_variant_ids[0]
+        product = self.product_variant_ids.filtered(lambda v: v.default_variant == True) or (self.product_variant_ids[0] if len(self.product_variant_ids) > 0 else None)
+        return product
 
 class product_product(models.Model):
     _inherit = 'product.product'
