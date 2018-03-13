@@ -19,7 +19,7 @@
                 <div class="document_div col-md-5 col-xs-md-12">
                   <div style='font-size: 24px; font-weight: 500;' >
                     <a t-att-href="'/home/%s/document/%s' %(home_user.id, doc.id)">
-                      <t t-esc="doc.name" />
+                      <i class="fa fa-download"/>&amp;nbsp;<t t-esc="doc.name" />
                     </a>
                   </div>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="document_div col-md-5 col-xs-md-12">
                   <div style='font-size: 24px; font-weight: 500;'>
                     <a t-att-href="'/home/%s/document_report/%s' %(home_user.id, report.id)">
-                      <t t-esc="report.name" />
+                      <i class="fa fa-download"/>&amp;nbsp;<t t-esc="report.name" />
                     </a>
                   </div>
                 </div>
