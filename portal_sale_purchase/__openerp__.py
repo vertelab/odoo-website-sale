@@ -26,6 +26,7 @@
     'description': """Fixes access rights errors and removes the Purchase button for Portal users.
 """,
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['portal_sale', 'purchase'],
     'data': [
