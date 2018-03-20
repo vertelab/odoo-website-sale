@@ -35,7 +35,10 @@ class website(models.Model):
         return {
             'home_user': home_user,
             'tab': post.get('tab', 'settings'),
+            'validation': {},
         }
+
+PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
 
 class website_sale_home(http.Controller):
 
@@ -45,6 +48,35 @@ class website_sale_home(http.Controller):
         if not user:
             return werkzeug.utils.redirect("/home/%s" % request.uid)
 
+    def update_info(self, home_user, post):
+        validation = {}
+        children = {}
+        help = {}
+        company = home_user.partner_id.commercial_partner_id
+        if request.httprequest.method == 'POST':
+            if not company.check_token(post.get('token')):
+                return request.website.render('website.403', {})
+            company.write(self.get_company_post(post))
+            children_dict = self.get_children_post(company, post)
+            children = children_dict['children']
+            validation = children_dict['validations']
+            for field in self.company_fields():
+                validation['company_%s' %field] = 'has-success'
+        else:
+            if not company.check_token(post.get('token')):
+                return request.website.render('website.403', {})
+            children = self.get_children(company)
+        help = self.get_help()
+        value = {
+            'home_user': home_user,
+            'help': help,
+            'validation': validation,
+        }
+        if any(children):
+            for k,v in children.items():
+                value[k] = v
+        return value
+
     @http.route(['/home','/home/<model("res.users"):home_user>',], type='http', auth="user", website=True)
     def home_page(self, home_user=None, **post):
         _logger.warn(request.httprequest.path)
@@ -52,7 +84,14 @@ class website_sale_home(http.Controller):
             return werkzeug.utils.redirect("/home/%s" % request.env.user.id)
         self.validate_user(home_user)
         _logger.warn('User %s' % home_user.name if home_user else None)
-        return request.render('website_sale_home.home_page', request.website.sale_home_get_data(home_user, post))
+        company = home_user.partner_id.commercial_partner_id
+        value = request.website.sale_home_get_data(home_user, post)
+        value.update({
+            'help': self.get_help(),
+            'delivery': company.child_ids.filtered(lambda c: c.type == 'delivery')[0] if company.child_ids.filtered(lambda c: c.type == 'delivery') else None,
+            'invoice': company.child_ids.filtered(lambda c: c.type == 'invoice')[0] if company.child_ids.filtered(lambda c: c.type == 'invoice') else None,
+        })
+        return request.render('website_sale_home.home_page', value)
 
     @http.route(['/home/<model("res.users"):home_user>/info_update',], type='http', auth="user", website=True)
     def info_update(self, home_user=None, **post):
@@ -60,10 +99,10 @@ class website_sale_home(http.Controller):
         self.validate_user(home_user)
         if home_user == request.env.user:
             home_user = home_user.sudo()
-        home_user.email = post.get('email')
-        home_user.login = post.get('login')
-        if post.get('confirm_password'):
-            home_user.password = post.get('password')
+        #~ home_user.email = post.get('email')
+        #~ home_user.login = post.get('login')
+        #~ if post.get('confirm_password'):
+            #~ home_user.password = post.get('password')
         #~ partner = home_user.sudo().partner_id
         #~ partner.name = post.get('name')
         #~ partner.street = post.get('street')
@@ -119,7 +158,84 @@ class website_sale_home(http.Controller):
         #~ post.get('iban')
         #~ post.get('other_info')
 
+        self.update_info(home_user, post)
         return werkzeug.utils.redirect("/home/%s" % home_user.id)
 
 
+    # can be overrided with more company field
+    def get_company_post(self, post):
+        value = {'name': post.get('company_name')}
+        return value
 
+    # can be overrided with more company field
+    def company_fields(self):
+        return ['name']
+
+    # can be overrided with more company field
+    def contact_fields(self):
+        return ['name','phone','mobile','email','image','attachment']
+
+    # can be overrided with more address type
+    def get_children_post(self, partner_id, post):
+        address_type = ['delivery', 'invoice', 'contact']
+        children = {}
+        validations = {}
+        for at in address_type:
+            child = self.get_child(partner_id, at, post)
+            children[at] = child['child']
+            validations.update(child['validation'])
+        return {'children': children, 'validations': validations}
+
+    # can be overrided with more address type
+    def get_children(self, partner_id):
+        address_type = ['delivery', 'invoice', 'contact']
+        children = {}
+        for at in address_type:
+            children[at] = partner_id.child_ids.filtered(lambda c: c.type == at)
+        return children
+
+    def get_child(self, partner_id, address_type, post):
+        validation = {}
+        child_dict = {k.split('_')[1]:v for k,v in post.items() if k.split('_')[0] == address_type}
+        if any(child_dict):
+            if address_type != 'contact':
+                child_dict['name'] = address_type
+            child_dict['parent_id'] = partner_id.id
+            child_dict['type'] = address_type
+            child_dict['use_parent_address'] = False
+            child = partner_id.child_ids.filtered(lambda c: c.type == address_type)
+            if not child:
+                child = request.env['res.partner'].sudo().create(child_dict)
+            else:
+                child.write(child_dict)
+            for field in PARTNER_FIELDS:
+                validation['%s_%s' %(address_type, field)] = 'has-success'
+            return {'child': child, 'validation': validation}
+        return {'child': None, 'validation': validation}
+
+    # can be overrided with more help text
+    def get_help(self):
+        help = {}
+        help['help_company_name'] = _('')
+        help['help_delivery_street'] = _('')
+        help['help_delivery_street2'] = _('')
+        help['help_delivery_zip'] = _('')
+        help['help_delivery_city'] = _('')
+        help['help_delivery_phone'] = _('')
+        help['help_delivery_email'] = _('')
+        help['help_invoice_street'] = _('')
+        help['help_invoice_street2'] = _('')
+        help['help_invoice_zip'] = _('')
+        help['help_invoice_city'] = _('')
+        help['help_invoice_phone'] = _('')
+        help['help_invoice_email'] = _('')
+        help['help_contact_street'] = _('')
+        help['help_contact_street2'] = _('')
+        help['help_contact_zip'] = _('')
+        help['help_contact_city'] = _('')
+        help['help_contact_image'] = _('Please a picture of you. This makes it more personal.')
+        help['help_contact_mobile'] = _('Contatcs Cell')
+        help['help_contact_phone'] = _('Contatcs phone')
+        help['help_contact_email'] = _('Please add an email address')
+        help['help_contact_attachment'] = _('If you have more information or a diploma, you can attach it here. You can add more than one, but you have to save each one separate.')
+        return help
