@@ -4,19 +4,19 @@
         <template id="company_info_form" name="Website Home Company Info Form">
             <div class="col-md-12 mt32 mb32">
                 <ul class="nav nav-tabs">
-                    <li class="active">
+                    <li id="nav_delivery" class="active">
                         <a data-toggle="tab" href="#delivery" class="hidden-xs">Delivery</a>
                         <a data-toggle="tab" href="#delivery" class="hidden-lg hidden-md hidden-sm">
                             <i class="fa fa-truck" />
                         </a>
                     </li>
-                    <li class="">
+                    <li id="nav_invoice" class="">
                         <a data-toggle="tab" href="#invoice" class="hidden-xs">Invoice</a>
                         <a data-toggle="tab" href="#invoice" class="hidden-lg hidden-md hidden-sm">
                             <i class="fa fa-file-o" />
                         </a>
                     </li>
-                    <li class="">
+                    <li id="nav_contact" class="">
                         <a data-toggle="tab" href="#contact" class="hidden-xs">Contact</a>
                         <a data-toggle="tab" href="#contact" class="hidden-lg hidden-md hidden-sm">
                             <i class="fa fa-users" />
@@ -290,7 +290,7 @@
                                                         </div>
                                                     </div>
                                                     <div t-att-class="'form-group %s' %validation.get('company_name')">
-                                                        <label class="col-md-3 col-sm-4 control-label" for="company_name">Customer Name</label>
+                                                        <label class="col-md-3 col-sm-4 control-label" for="company_name">Company Name</label>
                                                         <div class="col-md-7 col-sm-8">
                                                             <input type="text" class="form-control" name="company_name" t-att-value="home_user.partner_id.commercial_partner_id.name" placeholder="" />
                                                         </div>

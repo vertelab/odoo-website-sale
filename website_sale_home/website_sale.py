@@ -59,8 +59,19 @@ class website_sale_home(http.Controller):
         return ['name','phone','mobile','email','image','attachment']
 
     # can be overrided with more address type
+    def get_address_type(self):
+        return ['delivery', 'invoice', 'contact']
+
+    # can be overrided with more address type
+    def get_children_by_address_type(self, company):
+        return {
+            'delivery': company.child_ids.filtered(lambda c: c.type == 'delivery')[0] if company.child_ids.filtered(lambda c: c.type == 'delivery') else None,
+            'invoice': company.child_ids.filtered(lambda c: c.type == 'invoice')[0] if company.child_ids.filtered(lambda c: c.type == 'invoice') else None
+        }
+
+    # can be overrided with more address type
     def get_children_post(self, partner_id, post):
-        address_type = ['delivery', 'invoice', 'contact']
+        address_type = self.get_address_type()
         children = {}
         validations = {}
         for at in address_type:
@@ -71,7 +82,7 @@ class website_sale_home(http.Controller):
 
     # can be overrided with more address type
     def get_children(self, partner_id):
-        address_type = ['delivery', 'invoice', 'contact']
+        address_type = self.get_address_type()
         children = {}
         for at in address_type:
             children[at] = partner_id.child_ids.filtered(lambda c: c.type == at)
@@ -170,11 +181,10 @@ class website_sale_home(http.Controller):
         value = request.website.sale_home_get_data(home_user, post)
         value.update({
             'help': self.get_help(),
-            'delivery': company.child_ids.filtered(lambda c: c.type == 'delivery')[0] if company.child_ids.filtered(lambda c: c.type == 'delivery') else None,
-            'invoice': company.child_ids.filtered(lambda c: c.type == 'invoice')[0] if company.child_ids.filtered(lambda c: c.type == 'invoice') else None,
             'company_form': True,
             'contact_form': False,
         })
+        value.update(self.get_children_by_address_type(company))
         return request.render('website_sale_home.home_page', value)
 
     # update company info
