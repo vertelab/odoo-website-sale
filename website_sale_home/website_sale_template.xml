@@ -176,6 +176,7 @@
                         <label class="col-md-3 col-sm-4 control-label" for="name">Image</label>
                         <div class="col-md-7 col-sm-8">
                             <input type="file" name="image" placeholder="File to upload pdf/jpg/png" accept="image/jpeg,image/png" capture="camera" />
+                            <t t-if="contact and contact.image"><img id="contact_img" t-att-src="'/website/image/res.partner/%s/image/300x300' %contact.id" style="max-width: 200px;"/></t>
                             <p class="help-block">
                                 <small t-esc="help.get('help_contact_image')" />
                             </p>
