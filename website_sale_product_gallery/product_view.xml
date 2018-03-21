@@ -19,8 +19,9 @@
                             </t>
                         </t>
                         <t t-foreach="product_product.image_attachment_ids.sorted(lambda key: key.sequence)" t-as="i">
+
                             <div t-att-id="i.id" t-att-class="'tab-pane fade %s' %('in active' if i_index == 0 else '')">
-                                <img t-att-class="'img img-responsive %s' %('product_detail_img' if i_index == 0 else '')" style="margin: auto;" t-att-src="'/imagefield/base_multi_image.image/image_main/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_detail')"/>
+                                <img t-att-class="'img img-responsive %s' %('product_detail_img' if i_index == 0 else '')" style="margin: auto;" t-att-src="'/imagefield/ir.attachment/datas/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_detail')"/>
                             </div>
                         </t>
                     </div>
@@ -28,7 +29,7 @@
                         <t t-foreach="product_product.image_attachment_ids.sorted(lambda key: key.sequence)" t-as="i">
                             <li t-att-class="'%s %s' %('active' if i_index == 0 else '', 'hidden-xs' if i_index &gt; 1 else '')">
                                 <a data-toggle="tab" t-att-href="'#%s' %i.id">
-                                    <img class="img img-responsive" t-att-src="'/imagefield/base_multi_image.image/image_main/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_thumbnail')"/>
+                                    <img class="img img-responsive" t-att-src="'/imagefield/ir.attachment/datas/%s/ref/%s' %(i.id, 'website_sale_product_gallery.img_product_thumbnail')"/>
                                 </a>
                             </li>
                         </t>

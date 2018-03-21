@@ -19,6 +19,16 @@ function formValidate() {
     }
 }
 
+function pwReset(home_user, partner_id, token) {
+    openerp.jsonRpc("/home/contact/pw_reset", "call", {
+        'home_user': home_user,
+        'partner_id': partner_id,
+        'token': token
+    }).done(function(data){
+        window.alert(data);
+    });
+}
+
 $("select[name='bank_type']").live("change",function(){
     if($(this).val() == "iban") {
         console.log('Iban choosen');

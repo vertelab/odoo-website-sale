@@ -30,6 +30,7 @@ Use product variant in webshop
 Use controller to specifie a variant or use default variant
 """,
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['website_sale',],
     'data': ['product_view.xml',],

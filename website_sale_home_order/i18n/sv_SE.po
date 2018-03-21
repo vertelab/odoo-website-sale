@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0-20170901\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-07 12:02+0000\n"
-"PO-Revision-Date: 2018-03-07 12:02+0000\n"
+"POT-Creation-Date: 2018-03-07 11:57+0000\n"
+"PO-Revision-Date: 2018-03-07 11:57+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,188 +18,188 @@ msgstr ""
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "&nbsp;Copy to cart"
-msgstr ""
+msgstr "&nbsp;Kopiera till varukorgen"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "&nbsp;Download invoice"
-msgstr ""
+msgstr "&nbsp;Ladda ner faktura"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "&nbsp;Download order"
-msgstr ""
+msgstr "&nbsp;Ladda ner order"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "&nbsp;Download picking"
-msgstr ""
+msgstr "&nbsp;Ladda ner plockning"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Article number"
-msgstr ""
+msgstr "Artikelnummer"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Back To My Account"
-msgstr ""
+msgstr "Åter till kontot"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:40
 #, python-format
 msgid "Cancelled"
-msgstr ""
+msgstr "Avbruten"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Customer number"
-msgstr ""
+msgstr "Kundnummer"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Delivery Address"
-msgstr ""
+msgstr "Leveransadress"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Delivery method"
-msgstr ""
+msgstr "Leveransmetod"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:42
 #, python-format
 msgid "Exception"
-msgstr ""
+msgstr "Undantag"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Invoice Address"
-msgstr ""
+msgstr "Fakturaadress"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Name"
-msgstr ""
+msgstr "Namn"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Order date"
-msgstr ""
+msgstr "Orderdatum"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Order information"
-msgstr ""
+msgstr "Orderinformation"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 #: view:website:website_sale_home_order.page_order
 msgid "Order number"
-msgstr ""
+msgstr "Ordernummer"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "Orderer"
-msgstr ""
+msgstr "Beställare"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "Orders"
-msgstr ""
+msgstr "Ordrar"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:46
 #, python-format
 msgid "Packing"
-msgstr ""
+msgstr "Packas"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:51
 #, python-format
 msgid "Paid"
-msgstr ""
+msgstr "Betald"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Payment method"
-msgstr ""
+msgstr "Betalningsmetod"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Price"
-msgstr ""
+msgstr "Pris"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Products"
-msgstr ""
+msgstr "Produkter"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Quantity"
-msgstr ""
+msgstr "Antal"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:44
 #, python-format
 msgid "Received"
-msgstr ""
+msgstr "Mottagen"
 
 #. module: website_sale_home_order
 #: model:ir.model,name:website_sale_home_order.model_sale_order
 msgid "Sale Order"
-msgstr ""
+msgstr "Kundorder"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "Search..."
-msgstr ""
+msgstr "Sök..."
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:49
 #, python-format
 msgid "Shipped and invoiced"
-msgstr ""
+msgstr "Levererad och fakturerad"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Shipping:"
-msgstr ""
+msgstr "Leverans:"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "State"
-msgstr ""
+msgstr "Status"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Sum:"
-msgstr ""
+msgstr "Summa:"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Tax:"
-msgstr ""
+msgstr "Moms:"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 #: view:website:website_sale_home_order.page_order
 msgid "Total"
-msgstr ""
+msgstr "Totalt"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
 msgid "Total:"
-msgstr ""
+msgstr "Total:"
 
 #. module: website_sale_home_order
 #: model:ir.model,name:website_sale_home_order.model_website
 msgid "Website"
-msgstr ""
+msgstr "Webbplats"
 

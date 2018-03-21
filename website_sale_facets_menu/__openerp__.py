@@ -27,6 +27,7 @@
     'description': """
 """,
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['website_sale', 'product_facets'],
     'data': ['sale_view.xml',],

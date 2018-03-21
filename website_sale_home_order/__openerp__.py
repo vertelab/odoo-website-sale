@@ -29,6 +29,7 @@ List sale order history
 
 """,
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['website_sale_home','website_document','account','sale_stock','sale_customer_no'],
     'data': [

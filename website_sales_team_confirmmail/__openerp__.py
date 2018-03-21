@@ -25,6 +25,7 @@
 'category': 'Hidden',
 'description': """Configurable confirm mail for webshop sale-teams.""",
 'author': 'Vertel AB',
+    'license': 'AGPL-3',
 'website': 'http://www.vertel.se',
 'depends': ['website_sale','sales_team_confirmmail'],
 'data': [
