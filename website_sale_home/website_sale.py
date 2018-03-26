@@ -56,7 +56,7 @@ class website_sale_home(http.Controller):
 
     # can be overrided with more company field
     def contact_fields(self):
-        return ['name','phone','mobile','email','image','attachment']
+        return ['name','phone','mobile','email','image','attachment', 'function']
 
     # can be overrided with more address type
     def get_address_type(self):
@@ -127,6 +127,7 @@ class website_sale_home(http.Controller):
         help['help_contact_street2'] = _('')
         help['help_contact_zip'] = _('')
         help['help_contact_city'] = _('')
+        help['help_contact_function'] = _('')
         help['help_contact_image'] = _('Please a picture of you. This makes it more personal.')
         help['help_contact_mobile'] = _('Contatcs Cell')
         help['help_contact_phone'] = _('Contatcs phone')
