@@ -33,6 +33,7 @@ A home page for logged in user
     'website': 'http://www.vertel.se',
     'depends': ['website_sale'],
     'data': [
+        'security/security_data.xml',
         'website_sale_template.xml',
     ],
     'installable': True,

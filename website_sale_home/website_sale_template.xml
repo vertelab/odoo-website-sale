@@ -17,7 +17,7 @@
                         </a>
                     </li>
                     <li id="nav_contact" class="">
-                        <a data-toggle="tab" href="#contact" class="hidden-xs">Contact</a>
+                        <a data-toggle="tab" href="#contact" class="hidden-xs">My Employees</a>
                         <a data-toggle="tab" href="#contact" class="hidden-lg hidden-md hidden-sm">
                             <i class="fa fa-users" />
                         </a>
@@ -146,6 +146,9 @@
                                         <a href="javascript:void(0);" class="fa fa-envelope-o fa-2x" t-att-onclick="'''pwReset(%s, %s, '%s');''' %(home_user.id, contact.id, home_user.partner_id.commercial_partner_id.token)" />
                                     </td>
                                     <td class="text-center">
+<!--
+                                        <a href="javascript:void(0);" t-att-data-modal-form-action="'/home/%s/contact/%s/delete?token=%s' % (home_user.id, contact.id, home_user.partner_id.commercial_partner_id.token)" t-att-data-partner-name="contact.name" class="fa fa-trash-o fa-2x" data-toggle="modal" data-target="#delUserModal"/>
+-->
                                         <a t-att-href="'/home/%s/contact/%s/delete?token=%s' % (home_user.id, contact.id, home_user.partner_id.commercial_partner_id.token)" class="fa fa-trash-o fa-2x" />
                                     </td>
                                 </tr>
@@ -276,6 +279,36 @@
         </template>
         <template id="home_page" name="Home Page">
             <t t-call="website.layout">
+                <!-- Modal -->
+<!--
+                <div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-labelledby="delUserModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delUserModalLabel">Title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">x</span>
+                                </button>
+                            </div>
+                            <form class="delUserModalForm">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 col-sm-4 control-label" for="company_name">Reason</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input type="text" class="form-control" name="reason" placeholder="Reason for deleting this contact"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary delUserModalButton">Delete Contact</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+-->
+                
                 <div id="wrap" class="oe_structure oe_empty">
                     <section>
                         <div class="container">
@@ -305,10 +338,10 @@
                                                             <p class="form-control-static" name="foobar1"><t t-esc="home_user.partner_id.commercial_partner_id.customer_no"/></p>
                                                         </div>
                                                     </div>
-                                                    <div t-att-class="'form-group %s' %validation.get('company_name')">
+                                                    <div t-att-class="'form-group'">
                                                         <label class="col-md-3 col-sm-4 control-label" for="company_name">Company Name</label>
                                                         <div class="col-md-7 col-sm-8">
-                                                            <input type="text" class="form-control" name="company_name" t-att-value="home_user.partner_id.commercial_partner_id.name" placeholder="" />
+                                                            <input type="text" class="form-control" name="company_name" readonly="" t-att-value="home_user.partner_id.commercial_partner_id.name" placeholder="" />
                                                         </div>
                                                     </div>
 <!--

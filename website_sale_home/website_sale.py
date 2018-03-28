@@ -47,7 +47,7 @@ class website_sale_home(http.Controller):
 
     # can be overrided with more company field
     def get_company_post(self, post):
-        value = {'name': post.get('company_name')}
+        value = {}
         return value
 
     # can be overrided with more company field
@@ -296,7 +296,7 @@ class website_sale_home(http.Controller):
                         validation['contact_email'] = 'has-error'
                         partner = request.env['res.partner'].sudo().browse([])
                         help_dic = self.get_help()
-                        help_dic['help_contact_email'] = _('This email is alreay exist. Choose another one!')
+                        help_dic['help_contact_email'] = _('This email alreay exists. Choose another one or contact the administrator.')
                         return request.website.render('website_sale_home.home_page', {
                             'contact': partner,
                             'help': help_dic,
@@ -336,16 +336,36 @@ class website_sale_home(http.Controller):
             })
         return request.render('website_sale_home.home_page', value)
 
+    def check_admin(self, home_user, user=False):
+        user = user or request.user
+        if user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
+            return False
+        if request.env.ref('website_sale_home.group_home_admin') not in user.groups_id:
+            return False
+        return True
+
     # delete contact
-    @http.route(['/home/<model("res.users"):home_user>/contact/<model("res.partner"):partner>/delete'], type='http', auth='user', website=True)
+    @http.route(['/home/<model("res.users"):home_user>/contact/<model("res.partner"):partner>/delete'], type='http', method="post", auth='user', website=True)
     def contact_delete(self, home_user=None, partner=None, **post):
+        #~ home_user = request.env['res.users'].browse(post.get('home_user'))
+        #~ partner = request.env['res.partner'].browse(post.get('partner_id'))
+        reason = post.get('reason')
         company = home_user.partner_id.commercial_partner_id
         if not company.check_token(post.get('token')):
             return request.website.render('website.403', {})
+        if not check_admin(home_user):
+            return request.website.render('website.403', {})
         if partner and partner in company.child_ids:
             user = request.env['res.users'].sudo().search([('partner_id', '=', partner.id)])
-            user.unlink()
-            partner.unlink()
+            if user:
+                # Not allowed to delete admin user
+                if check_admin(home_user, user):
+                    return request.website.render('website.403', {})
+                else:
+                    user.active = False
+                    partner.active = False
+            else:
+                partner.active = False
             validation = {}
             for k in self.contact_fields():
                 validation[k] = 'has-success'
@@ -359,12 +379,17 @@ class website_sale_home(http.Controller):
         if not company.check_token(token):
             return werkzeug.utils.redirect('/home/%s' % home_user.id)
         user = request.env['res.users'].sudo().search([('partner_id', '=', partner_id)])
+        _logger.warn('\n\n\n%s\n\n' % user)
         try:
+            if not user:
+                raise Warning(_("Contact '%s' has no user.") % partner_id)
             user.action_reset_password()
-            return _('Password reset has been sent to user % by email' %user.name)
+            return _(u'Password reset has been sent to user %s by email') % user.name
         except:
-            _logger.warn('Cannot send mail to %s. Please check your mail server configuration.' %user.name)
-            return _('Cannot send mail to %s. Please check your mail server configuration.' %user.name)
+            err = sys.exc_info()
+            error = ''.join(traceback.format_exception(err[0], err[1], err[2]))
+            _logger.exception(_('Cannot send mail to %s. Please check your mail server configuration.') % user.name)
+            return _('Cannot send mail to %s. Please check your mail server configuration.') % user.name
 
     # delete contact attachment
     @http.route(['/home/<model("res.users"):home_user>/attachment/<int:attachment>/delete'], type='http', auth='user', website=True)

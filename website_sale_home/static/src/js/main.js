@@ -19,6 +19,15 @@ function formValidate() {
     }
 }
 
+//~ $('#delUserModal').on('show.bs.modal', function (event) {
+    //~ var button = $(event.relatedTarget); // Button that triggered the modal
+    //~ name = button.data('partner-name');
+    //~ var modal = $(this);
+    //~ modal.find('.modal-title').text(openerp._t('Delete ') + name);
+    //~ modal.find('.userDelModalForm').prop('action', button.data('modal-form-action')); // wont work for some reason
+    //~ console.log(button.data('modal-form-action'))
+//~ })
+
 function pwReset(home_user, partner_id, token) {
     openerp.jsonRpc("/home/contact/pw_reset", "call", {
         'home_user': home_user,
