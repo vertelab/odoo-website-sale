@@ -45,42 +45,48 @@ PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
 
 class website_sale_home(http.Controller):
 
-    # can be overrided with more company field
+    # can be overridden with more company field
     def get_company_post(self, post):
         value = {}
         return value
 
-    # can be overrided with more company field
+    # can be overridden with more company field
     def company_fields(self):
         return ['name']
 
-    # can be overrided with more company field
+    # can be overridden with more company field
     def contact_fields(self):
         return ['name','phone','mobile','email','image','attachment', 'function']
 
-    # can be overrided with more address type
+    # can be overriden with more address type
     def get_address_type(self):
+        """Show these address types."""
         return ['delivery', 'invoice', 'contact']
 
-    # can be overrided with more address type
+    # can be overridden with more address type
+    def get_address_types_readonly(self):
+        """These address types are readonly."""
+        return []
+
+    # can be overridden with more address type
     def get_children_by_address_type(self, company):
         return {
             'delivery': company.child_ids.filtered(lambda c: c.type == 'delivery')[0] if company.child_ids.filtered(lambda c: c.type == 'delivery') else None,
             'invoice': company.child_ids.filtered(lambda c: c.type == 'invoice')[0] if company.child_ids.filtered(lambda c: c.type == 'invoice') else None
         }
 
-    # can be overrided with more address type
-    def get_children_post(self, partner_id, post):
-        address_type = self.get_address_type()
+    # can be overridden with more address type
+    def save_children(self, partner_id, post):
+        address_type = set(self.get_address_type()) - set(self.get_address_types_readonly())
         children = {}
         validations = {}
         for at in address_type:
-            child = self.get_child(partner_id, at, post)
+            child = self.write_child(partner_id, at, post)
             children[at] = child['child']
             validations.update(child['validation'])
         return {'children': children, 'validations': validations}
 
-    # can be overrided with more address type
+    # can be overridden with more address type
     def get_children(self, partner_id):
         address_type = self.get_address_type()
         children = {}
@@ -88,15 +94,17 @@ class website_sale_home(http.Controller):
             children[at] = partner_id.child_ids.filtered(lambda c: c.type == at)
         return children
 
-    def get_child(self, partner_id, address_type, post):
+    def write_child(self, partner_id, address_type, post):
         validation = {}
-        child_dict = {k.split('_')[1]:v for k,v in post.items() if k.split('_')[0] == address_type}
+        child_dict = {k.split('_', 1)[1]:v for k,v in post.items() if k.split('_')[0] == address_type}
         if any(child_dict):
             if address_type != 'contact':
                 child_dict['name'] = address_type
             child_dict['parent_id'] = partner_id.id
             child_dict['type'] = address_type
             child_dict['use_parent_address'] = False
+            if child_dict.get('country_id'):
+                child_dict['country_id'] = int(child_dict['country_id'])
             child = partner_id.child_ids.filtered(lambda c: c.type == address_type)
             if not child:
                 child = request.env['res.partner'].sudo().create(child_dict)
@@ -107,7 +115,7 @@ class website_sale_home(http.Controller):
             return {'child': child, 'validation': validation}
         return {'child': None, 'validation': validation}
 
-    # can be overrided with more help text
+    # can be overridden with more help text
     def get_help(self):
         help = {}
         help['help_company_name'] = _('')
@@ -150,7 +158,7 @@ class website_sale_home(http.Controller):
             if not company.check_token(post.get('token')):
                 return request.website.render('website.403', {})
             company.write(self.get_company_post(post))
-            children_dict = self.get_children_post(company, post)
+            children_dict = self.save_children(company, post)
             children = children_dict['children']
             validation = children_dict['validations']
             for field in self.company_fields():
@@ -158,17 +166,6 @@ class website_sale_home(http.Controller):
         else:
             if not company.check_token(post.get('token')):
                 return request.website.render('website.403', {})
-            children = self.get_children(company)
-        help = self.get_help()
-        value = {
-            'home_user': home_user,
-            'help': help,
-            'validation': validation,
-        }
-        if any(children):
-            for k,v in children.items():
-                value[k] = v
-        return value
 
     # home page, company info
     @http.route(['/home','/home/<model("res.users"):home_user>'], type='http', auth="user", website=True)
@@ -184,76 +181,21 @@ class website_sale_home(http.Controller):
             'help': self.get_help(),
             'company_form': True,
             'contact_form': False,
+            'address_types_readonly': self.get_address_types_readonly(),
+            'country_selection': [(country['id'], country['name']) for country in request.env['res.country'].search_read([], ['name'])],
         })
         value.update(self.get_children_by_address_type(company))
+        # pages = [{'name': 'delivery', 'string': 'Delivery Address', 'type': 'contact_form', 'fields': [{'name': 'street1', 'string': 'Street', 'readonly': False, 'placeholder': 'Street 123'}...]}...]
         return request.render('website_sale_home.home_page', value)
 
     # update company info
     @http.route(['/home/<model("res.users"):home_user>/info_update'], type='http', auth="user", website=True)
     def info_update(self, home_user=None, **post):
+        _logger.warn(post)
         # update data for main partner
         self.validate_user(home_user)
         if home_user == request.env.user:
             home_user = home_user.sudo()
-        #~ home_user.email = post.get('email')
-        #~ home_user.login = post.get('login')
-        #~ if post.get('confirm_password'):
-            #~ home_user.password = post.get('password')
-        #~ partner = home_user.sudo().partner_id
-        #~ partner.name = post.get('name')
-        #~ partner.street = post.get('street')
-        #~ partner.streets = post.get('street2')
-        #~ partner.city = post.get('city')
-        #~ partner.zip = post.get('zip')
-        #~ partner.phone = post.get('phone')
-        #~ partner.mobile = post.get('mobile')
-        #~ partner.fax = post.get('fax')
-        #~ partner.country_id = int(post.get('country_id'))
-
-        #~ if home_user.partner_id.is_company and len(home_user.partner_id.child_ids) > 0:
-            #~ # child partner data format: mainpartnerid_childpartnerid_filedname
-            #~ for child in home_user.partner_id.child_ids:
-                #~ child.sudo().function = post.get('%s_function' %child.id)
-                #~ child.sudo().email = post.get('%s_email' %child.id)
-                #~ child.sudo().phone = post.get('%s_phone' %child.id)
-                #~ child.sudo().mobile = post.get('%s_mobile' %child.id)
-                #~ child.sudo().use_parent_address = post.get('%s_use_parent_address' %child.id)
-                #~ child.sudo().type = post.get('%s_type' %child.id)
-                #~ if post.get('%s_use_parent_address' %child.id) != 1:
-                    #~ child.sudo().street = post.get('%s_street' %child.id)
-                    #~ child.sudo().street2 = post.get('%s_street2' %child.id)
-                    #~ child.sudo().city = post.get('%s_city' %child.id)
-                    #~ child.sudo().zip = post.get('%s_zip' %child.id)
-                    #~ child.sudo().country_id = int(post.get('%s_country_id' %child.id))
-
-        #~ if home_user.partner_id.is_company and post.get('account_number') != '':
-            #~ res_partner_bank_obj = request.env['res.partner.bank']
-            #~ if len(home_user.partner_id.bank_ids) > 0:
-                #~ bank_id = home_user.partner_id.bank_ids[0]
-                #~ bank_id.state = post.get('bank_type')
-                #~ bank_id.acc_number = post.get('account_number')
-                #~ bank_id.bank = int(post.get('bank_name'))
-                #~ bank_id.bank_name = res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_name', False)
-                #~ bank_id.bank_bic = res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_bic', False)
-            #~ else:
-                #~ res_partner_bank_obj.create({
-                    #~ 'state': post.get('bank_type'),
-                    #~ 'acc_number': post.get('account_number'),
-                    #~ 'partner_id': home_user.partner_id.id,
-                    #~ 'bank': int(post.get('bank_name')),
-                    #~ 'bank_name': res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_name', False),
-                    #~ 'bank_bic': res_partner_bank_obj.onchange_bank_id(int(post.get('bank_name')))['value'].get('bank_bic', False),
-                    #~ 'owner_name': home_user.partner_id.name,
-                #~ })
-
-        #~ post.get('account_holder')
-        #~ post.get('account_number')
-        #~ post.get('account_sort_code')
-        #~ post.get('bank_name')
-        #~ post.get('bank_type')
-        #~ post.get('iban')
-        #~ post.get('other_info')
-
         self.update_info(home_user, post)
         return werkzeug.utils.redirect("/home/%s" % home_user.id)
 
@@ -269,7 +211,8 @@ class website_sale_home(http.Controller):
                 partner = request.env['res.partner'].sudo().browse([])
 
         value = request.website.sale_home_get_data(home_user, post)
-
+        value['country_selection'] = [(country['id'], country['name']) for country in request.env['res.country'].search_read([], ['name'])]
+        _logger.warn(value)
         if request.httprequest.method == 'POST':
             # Values
             values = {f: post['contact_%s' % f] for f in self.contact_fields() if post.get('contact_%s' % f) and f not in ['attachment','image']}

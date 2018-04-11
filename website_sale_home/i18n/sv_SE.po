@@ -128,9 +128,13 @@ msgstr "Standard"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
-#: view:website:website_sale_home.company_info_form
 msgid "Delivery"
 msgstr "Leverans"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Delivery Address"
+msgstr "Leveransadress"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -167,9 +171,13 @@ msgstr "Bild"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
-#: view:website:website_sale_home.company_info_form
 msgid "Invoice"
 msgstr "Faktura"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Invoice Address"
+msgstr "Fakturaadress"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -263,8 +271,8 @@ msgstr "Street 1"
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 #: view:website:website_sale_home.company_info_form
-msgid "Street 2"
-msgstr "Street 2"
+msgid "Street row 2"
+msgstr "Gata rad 2"
 
 #. module: website_sale_home
 #: code:addons/website_sale_home/website_sale.py:299
@@ -275,7 +283,7 @@ msgstr "This email alreay exists. Choose another one or contact the administrato
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
 msgid "Type"
-msgstr "Type"
+msgstr "Typ"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -291,5 +299,5 @@ msgstr "Webbplats"
 #: view:website:website_sale_home.children_info
 #: view:website:website_sale_home.company_info_form
 msgid "Zip"
-msgstr "Zip"
+msgstr "Postnummer"
 
