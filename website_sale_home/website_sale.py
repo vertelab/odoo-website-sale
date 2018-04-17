@@ -136,10 +136,10 @@ class website_sale_home(http.Controller):
         help['help_contact_zip'] = _('')
         help['help_contact_city'] = _('')
         help['help_contact_function'] = _('')
-        help['help_contact_image'] = _('Please a picture of you. This makes it more personal.')
-        help['help_contact_mobile'] = _('Contatcs Cell')
-        help['help_contact_phone'] = _('Contatcs phone')
-        help['help_contact_email'] = _('Please add an email address')
+        help['help_contact_image'] = _('Please provide a picture of yourself. This makes it more personal.')
+        help['help_contact_mobile'] = _('')
+        help['help_contact_phone'] = _('')
+        help['help_contact_email'] = _('Your email will also be used as your login name.')
         help['help_contact_attachment'] = _('If you have more information or a diploma, you can attach it here. You can add more than one, but you have to save each one separate.')
         return help
 
@@ -199,84 +199,101 @@ class website_sale_home(http.Controller):
         self.update_info(home_user, post)
         return werkzeug.utils.redirect("/home/%s" % home_user.id)
 
+    def create_contact_user(self, values):
+        template = request.env.ref('website_sale_home.contact_template').sudo()
+        user = template.with_context(no_reset_password=True).copy({
+            'name': values.get('name'),
+            'login': values.get('email'),
+            'image': values.get('image'),
+            'active': True,
+        })
+        user.partner_id.sudo().write({
+            'email': values.get('email'),
+            'phone': values.get('phone'),
+            'mobile': values.get('mobile'),
+            'parent_id': values.get('parent_id'),
+        })
+        return user
+
     # new contact, update contact
     @http.route(['/home/<model("res.users"):home_user>/contact/new', '/home/<model("res.users"):home_user>/contact/<model("res.partner"):partner>'], type='http', auth='user', website=True)
     def contact_page(self, home_user=None, partner=None, **post):
+        _logger.warn('\n\ncontact_page\n')
         validation = {}
+        help_dic = self.get_help()
         company = home_user.partner_id.commercial_partner_id
         if not company.check_token(post.get('token')):
             return request.website.render('website.403', {})
         if partner:
+            # Why?
             if not (partner in company.child_ids):
                 partner = request.env['res.partner'].sudo().browse([])
 
         value = request.website.sale_home_get_data(home_user, post)
         value['country_selection'] = [(country['id'], country['name']) for country in request.env['res.country'].search_read([], ['name'])]
-        _logger.warn(value)
+        #~ _logger.warn(value)
+        values = {}
         if request.httprequest.method == 'POST':
             # Values
             values = {f: post['contact_%s' % f] for f in self.contact_fields() if post.get('contact_%s' % f) and f not in ['attachment','image']}
             if post.get('image'):
                 image = post['image'].read()
                 values['image'] = base64.encodestring(image)
-            if post.get('attachment'):
-                attachment = request.env['ir.attachment'].sudo().create({
-                    'name': post['attachment'].filename,
-                    'res_model': 'res.partner',
-                    'res_id': partner.id,
-                    'datas': base64.encodestring(post['attachment'].read()),
-                    'datas_fname': post['attachment'].filename,
-                })
+            # If validation fails, the uploaded image will return in image_b64 on next validation attempt.
+            elif post.get('image_b64'):
+                values['image'] = post.get('image_b64')
             values['parent_id'] = company.id
             # Validation and store
             for field in self.contact_fields():
-                validation['contact_%s' %field] = 'has-success'
-            if not values.get('contact_name'):
+                validation['contact_%s' % field] = 'has-success'
+            if not values.get('name'):
                 validation['contact_name'] = 'has-error'
-            if not 'has-error' in validation:
+            # Check that the email is a unique user login
+            if not partner and request.env['res.users'].sudo().with_context(active_test=False).search_count([('login', '=', values.get('email'))]):
+                validation['contact_email'] = 'has-error'
+                help_dic['help_contact_email'] = _('This email alreay exists. Choose another one or contact the administrator.')
+            elif partner and request.env['res.users'].sudo().with_context(active_test=False).search_count([('login', '=', values.get('email')), ('partner_id', '!=', partner.id)]):
+                validation['contact_email'] = 'has-error'
+                help_dic['help_contact_email'] = _("The email %s alreay exists. Choose another one or contact the administrator." % values.get('email'))
+            if not 'has-error' in validation.values():
                 if not partner:
-                    if values.get('email') in request.env['res.users'].sudo().search([]).mapped('login'):
-                        validation['contact_email'] = 'has-error'
-                        partner = request.env['res.partner'].sudo().browse([])
-                        help_dic = self.get_help()
-                        help_dic['help_contact_email'] = _('This email alreay exists. Choose another one or contact the administrator.')
-                        return request.website.render('website_sale_home.home_page', {
-                            'contact': partner,
-                            'help': help_dic,
-                            'validation': validation,
-                        })
+                    # Create new partner and user.
                     try:
-                        user = request.env['res.users'].sudo().with_context(no_reset_password=True).create({
-                            'name': values.get('name'),
-                            'login': values.get('email'),
-                            'image': values.get('image'),
-                        })
-                        user.partner_id.sudo().write({
-                            'email': values.get('email'),
-                            'phone': values.get('phone'),
-                            'mobile': values.get('mobile'),
-                            'parent_id': values.get('parent_id'),
-                        })
+                        user = self.create_contact_user(values)
                         partner = user.partner_id
                     except Exception as e:
                         err = sys.exc_info()
                         error = ''.join(traceback.format_exception(err[0], err[1], err[2]))
                         _logger.info('Cannot create user %s: %s' % (values.get('name'), error))
                 else:
+                    # Update existing partner and user.
                     partner.sudo().write(values)
+                    user = request.env['res.users'].search([('partner_id', '=', partner.id)])
+                    if user.name != values['name']:
+                        user.name= values['name']
+                    if user.login != values['email']:
+                        user.login = values['email']
+                if post.get('attachment'):
+                    attachment = request.env['ir.attachment'].sudo().create({
+                        'name': post['attachment'].filename,
+                        'res_model': 'res.partner',
+                        'res_id': partner.id,
+                        'datas': base64.encodestring(post['attachment'].read()),
+                        'datas_fname': post['attachment'].filename,
+                    })
                 values.update({
                     'company_form': False,
                     'contact_form': True,
                 })
-                return werkzeug.utils.redirect('/home/%s/contact/%s?token=%s' % (home_user.id, partner.id, post.get('token')))
-        else:
-            value.update({
-                'help': self.get_help(),
-                'contact': partner,
-                'validation': validation,
-                'company_form': False,
-                'contact_form': True,
-            })
+                return werkzeug.utils.redirect('/home/%s/contact/%s?token=%s' % (home_user.id, partner and partner.id or 'new', post.get('token')))
+        value.update({
+            'help': help_dic,
+            'contact': partner,
+            'validation': validation,
+            'contact_values': values,
+            'company_form': False,
+            'contact_form': True,
+        })
         return request.render('website_sale_home.home_page', value)
 
     def check_admin(self, home_user, user=False):

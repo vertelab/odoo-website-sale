@@ -35,6 +35,7 @@ A home page for logged in user
     'data': [
         'security/security_data.xml',
         'website_sale_template.xml',
+        'website_sale_data.xml',
     ],
     'installable': True,
 }
