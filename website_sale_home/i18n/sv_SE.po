@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* website_sale_home
+#   * website_sale_home
 #
 msgid ""
 msgstr ""
@@ -72,6 +72,11 @@ msgstr "Företagsinformation"
 #: view:website:website_sale_home.home_page
 msgid "Company Name"
 msgstr "Bolagsnamn"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Invoice Type"
+msgstr "Fakturatyper"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form

@@ -157,6 +157,8 @@ class website_sale_home(http.Controller):
         if request.httprequest.method == 'POST':
             if not company.check_token(post.get('token')):
                 return request.website.render('website.403', {})
+            if post.get('invoicetype'):
+                company.write({'property_invoice_type': int(post.get('invoicetype'))})
             company.write(self.get_company_post(post))
             children_dict = self.save_children(company, post)
             children = children_dict['children']
@@ -182,6 +184,7 @@ class website_sale_home(http.Controller):
             'address_types_readonly': self.get_address_types_readonly(),
             'country_selection': [(country['id'], country['name']) for country in request.env['res.country'].search_read([], ['name'])],
             'default_country': (home_user and home_user.country_id and home_user.country_id.id) or (request.website.company_id and request.website.company_id.country_id and request.website.company_id.country_id.id),
+            'invoice_type_selection': [(invoice_type['id'], invoice_type['name']) for invoice_type in request.env['sale_journal.invoice.type'].search_read([], ['name'])],
         })
         value.update(self.get_children_by_address_type(company))
         # pages = [{'name': 'delivery', 'string': 'Delivery Address', 'type': 'contact_form', 'fields': [{'name': 'street1', 'string': 'Street', 'readonly': False, 'placeholder': 'Street 123'}...]}...]
