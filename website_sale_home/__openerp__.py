@@ -31,7 +31,7 @@ A home page for logged in user
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale'],
+    'depends': ['website_sale', 'sale_journal'],
     'data': [
         'security/security_data.xml',
         'website_sale_template.xml',
