@@ -19,7 +19,7 @@
 #
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import except_orm, Warning, RedirectWarning
+from openerp.exceptions import except_orm, Warning, RedirectWarning, AccessError
 from openerp import http
 from openerp.http import request
 import werkzeug
@@ -150,22 +150,19 @@ class website_sale_home(http.Controller):
             return werkzeug.utils.redirect("/home/%s" % request.uid)
 
     def update_info(self, home_user, post):
+        if not self.check_admin():
+            return request.website.render('website.403', {})
         validation = {}
         children = {}
         help = {}
         company = home_user.partner_id.commercial_partner_id
         if request.httprequest.method == 'POST':
-            if not company.check_token(post.get('token')):
-                return request.website.render('website.403', {})
             company.write(self.get_company_post(post))
             children_dict = self.save_children(company, post)
             children = children_dict['children']
             validation = children_dict['validations']
             for field in self.company_fields():
                 validation['company_%s' %field] = 'has-success'
-        else:
-            if not company.check_token(post.get('token')):
-                return request.website.render('website.403', {})
 
     # home page, company info
     @http.route(['/home','/home/<model("res.users"):home_user>'], type='http', auth="user", website=True)
@@ -190,7 +187,6 @@ class website_sale_home(http.Controller):
     # update company info
     @http.route(['/home/<model("res.users"):home_user>/info_update'], type='http', auth="user", website=True)
     def info_update(self, home_user=None, **post):
-        _logger.warn(post)
         # update data for main partner
         self.validate_user(home_user)
         if home_user == request.env.user:
@@ -217,12 +213,9 @@ class website_sale_home(http.Controller):
     # new contact, update contact
     @http.route(['/home/<model("res.users"):home_user>/contact/new', '/home/<model("res.users"):home_user>/contact/<model("res.partner"):partner>'], type='http', auth='user', website=True)
     def contact_page(self, home_user=None, partner=None, **post):
-        _logger.warn('\n\ncontact_page\n')
         validation = {}
         help_dic = self.get_help()
         company = home_user.partner_id.commercial_partner_id
-        if not company.check_token(post.get('token')):
-            return request.website.render('website.403', {})
         if partner:
             # Why?
             if not (partner in company.child_ids):
@@ -233,6 +226,8 @@ class website_sale_home(http.Controller):
         #~ _logger.warn(value)
         values = {}
         if request.httprequest.method == 'POST':
+            if not self.check_admin():
+                return request.website.render('website.403', {})
             # Values
             values = {f: post['contact_%s' % f] for f in self.contact_fields() if post.get('contact_%s' % f) and f not in ['attachment','image']}
             if post.get('image'):
@@ -284,7 +279,7 @@ class website_sale_home(http.Controller):
                     'company_form': False,
                     'contact_form': True,
                 })
-                return werkzeug.utils.redirect('/home/%s/contact/%s?token=%s' % (home_user.id, partner and partner.id or 'new', post.get('token')))
+                return werkzeug.utils.redirect('/home/%s/contact/%s' % (home_user.id, partner and partner.id or 'new'))
         value.update({
             'help': help_dic,
             'contact': partner,
@@ -296,49 +291,69 @@ class website_sale_home(http.Controller):
         return request.render('website_sale_home.home_page', value)
 
     def check_admin(self, home_user, user=False):
-        user = user or request.user
+        user = user or request.env.user
         if user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
             return False
         if request.env.ref('website_sale_home.group_home_admin') not in user.groups_id:
             return False
         return True
+    
+    @http.route(['/home/send_message'], type='json', auth="user", website=True)
+    def send_message(self, partner_id=None, msg_body='', **kw):
+        partner = request.env.user.partner_id.commercial_partner_id
+        if msg_body:
+            if request.env.user.partner_id not in partner.message_follower_ids:
+                partner.sudo().message_subscribe_users([request.env.user.id])
+            msg_body = msg_body.split('\n', 1)
+            subject = body = ''
+            for word in msg_body[0].split(' '):
+                if len(subject) < 40:
+                    subject = ' '.join([subject, word])
+                else:
+                    body = ' '.join([body, word])
+            if len(msg_body) > 1:
+                body = ' '.join([body, msg_body[1]])
+            partner.message_post(subject=subject, body=body, author_id=request.env.user.partner_id.id)
+            return True
+        return False
+
+    def delete_contact(self, home_user, partner, reason):
+        partner = partner.sudo()
+        user = request.env['res.users'].sudo().search([('partner_id', '=', partner.id)])
+        if user:
+            # Not allowed to delete admin user
+            if self.check_admin(home_user, user):
+                return request.website.render('website.403', {})
+            else:
+                user.active = False
+        body = _("""%s wants to delete <a href="/web?debug=#id=%s&view_type=form&model=res.partner">%s</a> because '%s'.""") % (request.env.user.name, partner.id, partner.name, reason)
+        subject = _("Contact %s inactivated") % partner.name
+        partner.commercial_partner_id.message_post(body=body, subject=subject)
+        partner.message_post(body=body, subject=subject)
+        partner.active = False
 
     # delete contact
     @http.route(['/home/<model("res.users"):home_user>/contact/<model("res.partner"):partner>/delete'], type='http', method="post", auth='user', website=True)
     def contact_delete(self, home_user=None, partner=None, **post):
         #~ home_user = request.env['res.users'].browse(post.get('home_user'))
         #~ partner = request.env['res.partner'].browse(post.get('partner_id'))
-        reason = post.get('reason')
+        reason = post.get('reason', '')
         company = home_user.partner_id.commercial_partner_id
-        if not company.check_token(post.get('token')):
-            return request.website.render('website.403', {})
-        if not check_admin(home_user):
+        if not self.check_admin(home_user):
             return request.website.render('website.403', {})
         if partner and partner in company.child_ids:
-            user = request.env['res.users'].sudo().search([('partner_id', '=', partner.id)])
-            if user:
-                # Not allowed to delete admin user
-                if check_admin(home_user, user):
-                    return request.website.render('website.403', {})
-                else:
-                    user.active = False
-                    partner.active = False
-            else:
-                partner.active = False
-            validation = {}
-            for k in self.contact_fields():
-                validation[k] = 'has-success'
+            try:
+                self.delete_contact(home_user, partner, reason)
+            except AccessError:
+                return request.website.render('website.403', {})
         return werkzeug.utils.redirect('/home/%s' % home_user.id)
 
     # send reset password to contact
     @http.route(['/home/contact/pw_reset'], type='json', auth='user', website=True)
-    def contact_pw_reset(self, home_user=0, partner_id=0, token='', **kw):
+    def contact_pw_reset(self, home_user=0, partner_id=0, **kw):
         home_user = request.env['res.users'].sudo().browse(home_user)
         company = home_user.partner_id.commercial_partner_id
-        if not company.check_token(token):
-            return werkzeug.utils.redirect('/home/%s' % home_user.id)
         user = request.env['res.users'].sudo().search([('partner_id', '=', partner_id)])
-        _logger.warn('\n\n\n%s\n\n' % user)
         try:
             if not user:
                 raise Warning(_("Contact '%s' has no user.") % partner_id)
@@ -354,12 +369,10 @@ class website_sale_home(http.Controller):
     @http.route(['/home/<model("res.users"):home_user>/attachment/<int:attachment>/delete'], type='http', auth='user', website=True)
     def contact_attachment_delete(self, home_user=None, attachment=0, **post):
         company = home_user.partner_id.commercial_partner_id
-        if not company.check_token(post.get('token')):
-            return request.website.render('website.403', {})
         if attachment > 0:
             attachment = request.env['ir.attachment'].sudo().browse(attachment)
             if attachment.res_model == 'res.partner' and attachment.res_id != 0:
                 partner = request.env['res.partner'].browse(attachment.res_id)
                 if partner.parent_id == home_user.partner_id.commercial_partner_id:
                     attachment.unlink()
-        return werkzeug.utils.redirect('/home/%s/contact/%s?token=%s' % (home_user.id, partner.id, post.get('token')))
+        return werkzeug.utils.redirect('/home/%s/contact/%s' % (home_user.id, partner.id))

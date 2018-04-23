@@ -5,6 +5,31 @@ $(document).ready(function() {
         $(this).addClass("active");
         var index = $(this).index();
     });
+    $("#oe_sale_home_open_msgbox").click(function(){
+        $(this).closest('#oe_sale_home_message_box').find("#oe_sale_home_msgbox").removeClass('hidden');
+        $(this).addClass('hidden');
+        $(this).closest('#oe_sale_home_message_box').find("#oe_sale_home_close_msgbox").removeClass('hidden');
+        $(this).closest('#oe_sale_home_message_box').find("#oe_sale_home_send_msgbox").removeClass('hidden');
+    });
+    $("#oe_sale_home_close_msgbox").click(function(){
+        $(this).closest('#oe_sale_home_message_box').find("#oe_sale_home_msgbox").addClass('hidden');
+        $(this).closest('#oe_sale_home_message_box').find("#oe_sale_home_send_msgbox").addClass('hidden');
+        $(this).addClass('hidden');
+        $(this).closest('#oe_sale_home_message_box').find("#oe_sale_home_open_msgbox").removeClass('hidden');
+    });
+    $("#oe_sale_home_send_msgbox").click(function(){
+        var self = $(this);
+        openerp.jsonRpc("/home/send_message", "call", {
+            "partner_id": self.data('value'),
+            "msg_body": self.closest("#oe_sale_home_message_box").find("#oe_sale_home_msgbox").val()
+        }).done(function(data){
+            $("#oe_sale_home_message_box").load(location.href + " #oe_sale_home_message_box");
+            $("#oe_sale_home_msgbox").addClass('hidden');
+            $("#oe_sale_home_send_msgbox").addClass('hidden');
+            $("#oe_sale_home_close_msgbox").addClass('hidden');
+            $("#oe_sale_home_open_msgbox").removeClass('hidden');
+        });
+    });
 });
 
 function formValidate() {
@@ -19,20 +44,19 @@ function formValidate() {
     }
 }
 
-//~ $('#delUserModal').on('show.bs.modal', function (event) {
-    //~ var button = $(event.relatedTarget); // Button that triggered the modal
-    //~ name = button.data('partner-name');
-    //~ var modal = $(this);
-    //~ modal.find('.modal-title').text(openerp._t('Delete ') + name);
-    //~ modal.find('.userDelModalForm').prop('action', button.data('modal-form-action')); // wont work for some reason
-    //~ console.log(button.data('modal-form-action'))
-//~ })
+$('#delUserModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    name = button.data('partner-name');
+    var modal = $(this);
+    modal.find('.modal-title').text(openerp._t('Delete ') + name);
+    modal.find('.delUserModalForm').prop('action', button.data('modal-form-action')); // wont work for some reason
+    console.log(button.data('modal-form-action'))
+})
 
-function pwReset(home_user, partner_id, token) {
+function pwReset(home_user, partner_id) {
     openerp.jsonRpc("/home/contact/pw_reset", "call", {
         'home_user': home_user,
         'partner_id': partner_id,
-        'token': token
     }).done(function(data){
         window.alert(data);
     });

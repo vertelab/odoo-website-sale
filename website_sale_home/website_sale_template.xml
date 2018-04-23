@@ -155,7 +155,7 @@
                                         <img style="width: 32px; margin: 4px; border-radius: 2px;" t-att-src="'%s' %(('data:image/png;base64,%s' %contact.image_small) if contact.image_small else '/web/static/src/img/placeholder.png')"/>
                                     </td>
                                     <td>
-                                        <a t-att-href="'/home/%s/contact/%s?token=%s' %(home_user.id, contact.id, home_user.partner_id.commercial_partner_id.token)"><span t-field="contact.name" /></a>
+                                        <a t-att-href="'/home/%s/contact/%s' %(home_user.id, contact.id)"><span t-field="contact.name" /></a>
                                     </td>
                                     <td>
                                         <span t-field="contact.phone" />
@@ -167,18 +167,18 @@
                                         <span t-field="contact.email" />
                                     </td>
                                     <td class="text-center">
-                                        <a href="javascript:void(0);" class="fa fa-envelope-o fa-2x" t-att-onclick="'''pwReset(%s, %s, '%s');''' %(home_user.id, contact.id, home_user.partner_id.commercial_partner_id.token)" />
+                                        <a href="javascript:void(0);" class="fa fa-envelope-o fa-2x" t-att-onclick="'''pwReset(%s, %s);''' %(home_user.id, contact.id)" />
                                     </td>
                                     <td class="text-center">
+                                        <a href="javascript:void(0);" t-att-data-modal-form-action="'/home/%s/contact/%s/delete' % (home_user.id, contact.id)" t-att-data-partner-name="contact.name" class="fa fa-trash-o fa-2x" data-toggle="modal" data-target="#delUserModal"/>
 <!--
-                                        <a href="javascript:void(0);" t-att-data-modal-form-action="'/home/%s/contact/%s/delete?token=%s' % (home_user.id, contact.id, home_user.partner_id.commercial_partner_id.token)" t-att-data-partner-name="contact.name" class="fa fa-trash-o fa-2x" data-toggle="modal" data-target="#delUserModal"/>
+                                        <a t-att-href="'/home/%s/contact/%s/delete' % (home_user.id, contact.id)" class="fa fa-trash-o fa-2x" />
 -->
-                                        <a t-att-href="'/home/%s/contact/%s/delete?token=%s' % (home_user.id, contact.id, home_user.partner_id.commercial_partner_id.token)" class="fa fa-trash-o fa-2x" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td/>
-                                    <td><a t-att-href="'/home/%s/contact/new?token=%s' % (home_user.id, home_user.partner_id.commercial_partner_id.token)"><u>New Contact</u></a></td>
+                                    <td><a t-att-href="'/home/%s/contact/new' % home_user.id"><u>New Contact</u></a></td>
                                     <td/>
                                     <td/>
                                     <td/>
@@ -193,7 +193,9 @@
         </template>
         <template id="contact_form" name="Website Home Contact Form">
             <div class="col-md-12">
+<!--
                 <input name="token" t-att-value="home_user.partner_id.commercial_partner_id.token" type="hidden"/>
+-->
                 <h4 id="title_contact" class="text-center">
                     <strong>Contact Infomation</strong>
                 </h4>
@@ -282,7 +284,7 @@
                                 <span t-field="attachment.mimetype" />
                             </td>
                             <td class="text-center">
-                                <a t-att-href="'/home/%s/attachment/%s/delete?token=%s' % (home_user.id, attachment.id, home_user.partner_id.commercial_partner_id.token)" class="fa fa-trash-o fa-2x" />
+                                <a t-att-href="'/home/%s/attachment/%s/delete' % (home_user.id, attachment.id)" class="fa fa-trash-o fa-2x" />
                             </td>
                         </tr>
                     </tbody>
@@ -306,8 +308,8 @@
         </template>
         <template id="home_page" name="Home Page">
             <t t-call="website.layout">
+                
                 <!-- Modal -->
-<!--
                 <div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-labelledby="delUserModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -334,7 +336,6 @@
                         </div>
                     </div>
                 </div>
--->
                 
                 <div id="wrap" class="oe_structure oe_empty">
                     <section>
@@ -357,7 +358,7 @@
     <!--
                                                 <h4 class="text-center">(* = Required)</h4>
     -->
-                                                <form id="info_form" t-att-action="'/home/%s/info_update?token=%s' % (home_user.id if home_user else user_id.id, home_user.partner_id.commercial_partner_id.token)" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
+                                                <form id="info_form" t-att-action="'/home/%s/info_update' % (home_user.id if home_user else user_id.id)" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
                                                     <input type="hidden" name="home_user" t-att-value="home_user.id" />
                                                     <div class="form-group">
                                                         <label class="col-md-3 col-sm-4 control-label" for="foobar1">Customer Number</label>
@@ -407,9 +408,37 @@
                                                         </div>
                                                     </div>
                                                 </form>
+                                                <div id="oe_sale_home_message_box">
+                                                    <p>
+                                                        <u id="oe_sale_home_open_msgbox">Send a message</u>
+                                                    </p>
+                                                    <p>
+                                                        <u id="oe_sale_home_close_msgbox" class="hidden">Close message box</u>
+                                                    </p>
+                                                    <textarea id="oe_sale_home_msgbox" class="form-control hidden" rows="3" placeholder="Write your message here..."/>
+                                                    <button id="oe_sale_home_send_msgbox" type="button" class="btn btn-primary mt4 mb4 hidden" t-att-data-value="home_user.partner_id.commercial_partner_id.id">Send</button>
+                                                    <div t-foreach="home_user.partner_id.commercial_partner_id.sudo().message_ids.with_context(partner_id = request.env.user.partner_id.id).filtered(lambda msg: (msg._context['partner_id'] == msg.author_id.id) or (msg._context['partner_id'] in msg.notified_partner_ids._ids))" t-as="message">
+                                                        <div class="container mt4 mb4 oe_dark">
+                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                <img style="width: 32px; margin: 4px; border-radius: 2px;" t-att-src="'data:image/png;base64,%s' %message.author_avatar"/>
+                                                            </div>
+                                                            <div class="col-md-10 col-sm-10 col-xs-10">
+                                                                <h4 t-esc="message.subject"/>
+                                                                <div t-raw="message.body"/>
+                                                            </div>
+                                                            <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                                                                <small>
+                                                                    <b t-esc="message.author_id.name"/>
+                                                                </small>
+                                                                <span>•</span>
+                                                                <small t-esc="message.write_date"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div id="contact_div" t-if="contact_form">
-                                                <form id="info_form" t-att-action="'/home/%s/contact/%s?token=%s' %(home_user.id if home_user else user_id.id, contact.id if contact else 'new', home_user.partner_id.commercial_partner_id.token)" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
+                                                <form id="info_form" t-att-action="'/home/%s/contact/%s' %(home_user.id if home_user else user_id.id, contact.id if contact else 'new')" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
                                                     <t t-call="website_sale_home.contact_form"/>
                                                 </form>
                                             </div>

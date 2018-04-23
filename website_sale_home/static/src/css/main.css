@@ -8,6 +8,10 @@ div#main_div{
   opacity: 0.97;
 }
 
+form.delUserModalForm > div.modal-footer {
+  margin-top: 20px;
+}
+
 div.home_tab_menu{
   padding-right: 0;
   padding-left: 0;
