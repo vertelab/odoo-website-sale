@@ -39,6 +39,8 @@ class website(models.Model):
             'home_user': home_user,
             'tab': post.get('tab', 'settings'),
             'validation': {},
+            'country_selection': [(country['id'], country['name']) for country in request.env['res.country'].search_read([], ['name'])],
+            'default_country': (home_user and home_user.country_id and home_user.country_id.id) or (request.website.company_id and request.website.company_id.country_id and request.website.company_id.country_id.id),
         }
 
 PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
@@ -179,8 +181,6 @@ class website_sale_home(http.Controller):
             'company_form': True,
             'contact_form': False,
             'address_types_readonly': self.get_address_types_readonly(),
-            'country_selection': [(country['id'], country['name']) for country in request.env['res.country'].search_read([], ['name'])],
-            'default_country': (home_user and home_user.country_id and home_user.country_id.id) or (request.website.company_id and request.website.company_id.country_id and request.website.company_id.country_id.id),
             'invoice_type_selection': [(invoice_type['id'], invoice_type['name']) for invoice_type in request.env['sale_journal.invoice.type'].sudo().search_read([], ['name'])],
         })
         value.update(self.get_children_by_address_type(company))
@@ -225,7 +225,6 @@ class website_sale_home(http.Controller):
                 partner = request.env['res.partner'].sudo().browse([])
 
         value = request.website.sale_home_get_data(home_user, post)
-        value['country_selection'] = [(country['id'], country['name']) for country in request.env['res.country'].search_read([], ['name'])]
         #~ _logger.warn(value)
         values = {}
         if request.httprequest.method == 'POST':
