@@ -228,14 +228,6 @@
                             <small t-esc="help.get('help_contact_function', '')" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-4 control-label">Competences</label>
-                        <div class="col-md-7 col-sm-8">
-                            <t t-foreach="contact and contact.category_id or []" t-as="tag">
-                                <span t-esc="tag.name" class="oe_website_home_partner_tag"/>
-                            </t>
-                        </div>
-                    </div>
                     <div t-att-class="'form-group %s' %validation.get('contact_phone', '')">
                         <label class="col-md-3 col-sm-4 control-label" for="contact_phone">Phone</label>
                         <div class="col-md-7 col-sm-8">
@@ -272,10 +264,19 @@
                     <tbody t-if="contact">
                         <tr t-foreach="request.env['ir.attachment'].search([('res_model','=','res.partner'),('res_id','=',contact.id)])" t-as="attachment">
                             <td>
-                                <img style="width: 32px; margin: 4px; border-radius: 2px;" t-att-src="'/web/binary/image?model=ir.attachment&amp;field=datas&amp;id=%s' %attachment.id"/>
+                                <a t-att-href="'/web/binary/saveas?model=ir.attachment&amp;id=%s&amp;field=datas&amp;filename_field=name' % attachment.id">
+                                    <t t-if="attachment.file_type_icon == 'webimage'">
+                                        <img style="width: 32px; margin: 4px; border-radius: 2px;" t-att-src="'/web/binary/image?model=ir.attachment&amp;field=datas&amp;id=%s' %attachment.id"/>
+                                    </t>
+                                    <t t-if="attachment.file_type_icon != 'webimage'">
+                                        <img style="width: 32px; margin: 4px; border-radius: 2px;" t-att-src="'/mail/static/src/img/mimetypes/%s.png' % attachment.file_type_icon"/>
+                                    </t>
+                                </a>
                             </td>
                             <td>
-                                <span t-field="attachment.name" />
+                                <a t-att-href="'/web/binary/saveas?model=ir.attachment&amp;id=%s&amp;field=datas&amp;filename_field=name' % attachment.id">
+                                    <span t-field="attachment.name" />
+                                </a>
                             </td>
                             <td>
                                 <span t-field="attachment.write_date" />
