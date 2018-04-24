@@ -55,13 +55,18 @@ msgstr "Cannot send mail to %s. Please check your mail server configuration."
 #. module: website_sale_home
 #: view:website:website_sale_home.company_info_form
 msgid "Cell"
-msgstr "Cell"
+msgstr "Mobil"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 #: view:website:website_sale_home.company_info_form
 msgid "City"
 msgstr "Stad"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "New Contact"
+msgstr "Ny kontakt"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
@@ -77,6 +82,36 @@ msgstr "Bolagsnamn"
 #: view:website:website_sale_home.home_page
 msgid "Invoice Type"
 msgstr "Fakturatyper"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Has Webshop?"
+msgstr "Har webbutik?"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Webshop Website"
+msgstr "Webbutik webbplats"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Send a message"
+msgstr "Skicka ett meddelande"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Close message box"
+msgstr "Stäng meddelande rutan"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Write your message here..."
+msgstr "Skriv ditt meddelande här..."
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Send"
+msgstr "Skicka"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -103,13 +138,13 @@ msgstr "Kontaktinfomation"
 #: code:addons/website_sale_home/website_sale.py:132
 #, python-format
 msgid "Contatcs Cell"
-msgstr "Contatcs Cell"
+msgstr "Kontakt mobil"
 
 #. module: website_sale_home
 #: code:addons/website_sale_home/website_sale.py:133
 #, python-format
 msgid "Contatcs phone"
-msgstr "Contatcs phone"
+msgstr "Kontakt telefon"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -154,14 +189,19 @@ msgid "Email"
 msgstr "E-post"
 
 #. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Password Reset"
+msgstr "Återställa lösenord"
+
+#. module: website_sale_home
 #: view:website:website_sale_home.contact_form
 msgid "File to upload pdf/jpg/png"
-msgstr "File to upload pdf/jpg/png"
+msgstr "Fil att ladda upp pdf/jpg/png"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
 msgid "Given and family name"
-msgstr "Given and family name"
+msgstr "Ange ett efternamn"
 
 #. module: website_sale_home
 #: model:res.groups,name:website_sale_home.group_home_admin
@@ -226,7 +266,7 @@ msgstr "Namn"
 #. module: website_sale_home
 #: view:website:website_sale_home.company_info_form
 msgid "New Contact"
-msgstr "New Contact"
+msgstr "Ny kontakt"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -236,13 +276,13 @@ msgstr "Övrigt"
 #. module: website_sale_home
 #: view:website:website_sale_home.company_info_form
 msgid "Password Reset"
-msgstr "Password Reset"
+msgstr "Lösenordsåterställning"
 
 #. module: website_sale_home
 #: code:addons/website_sale_home/website_sale.py:387
 #, python-format
 msgid "Password reset has been sent to user %s by email"
-msgstr "Password reset has been sent to user %s by email"
+msgstr "Lösenordsåterställning har skickats till användaren % s via e-post"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -255,13 +295,13 @@ msgstr "Telefon"
 #: code:addons/website_sale_home/website_sale.py:131
 #, python-format
 msgid "Please a picture of you. This makes it more personal."
-msgstr "Please a picture of you. This makes it more personal."
+msgstr "Vänligen en bild av dig. Detta gör det mer personligt."
 
 #. module: website_sale_home
 #: code:addons/website_sale_home/website_sale.py:134
 #, python-format
 msgid "Please add an email address"
-msgstr "Please add an email address"
+msgstr "Lägg till en e-postadress"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -282,7 +322,7 @@ msgstr "Gata"
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 msgid "Street 1"
-msgstr "Street 1"
+msgstr "Gata 1"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -293,8 +333,8 @@ msgstr "Gata rad 2"
 #. module: website_sale_home
 #: code:addons/website_sale_home/website_sale.py:299
 #, python-format
-msgid "This email alreay exists. Choose another one or contact the administrator."
-msgstr "This email alreay exists. Choose another one or contact the administrator."
+msgid "This email already exists. Choose another one or contact the administrator."
+msgstr "Denna e-post existerar redan. Välj en annan eller kontakta administratören."
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -304,7 +344,7 @@ msgstr "Typ"
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 msgid "Use Company Address"
-msgstr "Use Company Address"
+msgstr "Använd företagsadress"
 
 #. module: website_sale_home
 #: model:ir.model,name:website_sale_home.model_website
