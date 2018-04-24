@@ -17,13 +17,13 @@ msgstr ""
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
-msgid "0123-45 67 89"
-msgstr "0123-45 67 89"
+msgid "e.g. 0123-45 67 89"
+msgstr "t.ex. 0123-45 67 89"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
-msgid "0709-99 99 99"
-msgstr "0709-99 99 99"
+msgid "e.g. 0709-99 99 99"
+msgstr "t.ex. 0709-99 99 99"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -118,6 +118,11 @@ msgstr "Land"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
+msgid "Logged in as"
+msgstr "Inloggad som"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
 msgid "Customer Number"
 msgstr "Kundnummer"
 
@@ -183,6 +188,12 @@ msgstr "Faktura"
 #: view:website:website_sale_home.company_info_form
 msgid "Invoice Address"
 msgstr "Fakturaadress"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.children_info
+#: view:website:website_sale_home.contact_form
+msgid "e.g. masseur"
+msgstr "t.ex. massör"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
