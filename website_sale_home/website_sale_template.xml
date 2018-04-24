@@ -200,7 +200,7 @@
                     <strong>Contact Infomation</strong>
                 </h4>
                 <p id="instruction_contact" />
-                <div class="contact_person">
+                <div class="container contact_person">
                     <div t-attf-class="form-group #{validation.get('contact_image', '')}">
                         <label class="col-md-3 col-sm-4 control-label" for="name">Image</label>
                         <div class="col-md-7 col-sm-8">
@@ -308,7 +308,7 @@
         </template>
         <template id="home_page" name="Home Page">
             <t t-call="website.layout">
-                
+
                 <!-- Modal -->
                 <div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-labelledby="delUserModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
