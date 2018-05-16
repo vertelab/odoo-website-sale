@@ -117,8 +117,40 @@
                             <field name="min_order_value" />
                     </group>
                 </xpath>
+                <!-- WTF? It's not possible to search for this button by name. -->
+                <xpath expr="//button[@string='Confirm Sale'][@states='draft']" position="attributes">
+                    <attribute name="context">{'min_order_value_dialog': True}</attribute>
+                </xpath>
+                <xpath expr="//button[@string='Confirm Sale'][@states='sent']" position="attributes">
+                    <attribute name="context">{'min_order_value_dialog': True}</attribute>
+                </xpath>
             </field>
         </record>
     
+    <record model="ir.ui.view" id="view_minimum_order_dialog_form">
+        <field name="name">Minimum Order Value Dialog</field>
+        <field name="model">sale.order.minvalue.dialog</field>
+        <field name="arch" type="xml">
+            <form string="Minimum Order Value">
+                <p>This order is below the minimum order value.</p>
+                <field name="order_id" invisible="1"/>
+                <footer>
+                    <button name="confirm_fee" string="Confirm Fee" type="object" class="oe_highlight"/>
+                    or
+                    <button name="waive_fee" string="Waive Fee" type="object"/>
+                    <button string="_Cancel" class="oe_link pull-right" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+  
+    <record id="action_minimum_order_dialog" model="ir.actions.act_window">
+        <field name="name">Minimum Order Value Dialog</field>
+        <field name="res_model">sale.order.minvalue.dialog</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_minimum_order_dialog_form"/>
+    </record>
+
     </data>
 </openerp>
