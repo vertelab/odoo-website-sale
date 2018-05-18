@@ -8,7 +8,7 @@
         </template>
         <template id="assets_frontend" inherit_id="website_sale.assets_frontend" name="Assests Frontend Website Sale Shopping Button">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/website_sale_shopping_button/static/src/js/main.js" />
+                <script type="text/javascript" src="/website_sale_one_click_shooping/static/src/js/main.js" />
             </xpath>
         </template>
     </data>
