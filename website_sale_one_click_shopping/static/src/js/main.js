@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.oe_website_sale .a-submit, #comment .a-submit').off('click').on('click', function (e) {
+    $('form[action="/shop/cart/update"] .a-submit, #comment .a-submit').off('click').on('click', function (e) {
         e.preventDefault();
         $.ajax({
             url: '/shop/cart/update',
