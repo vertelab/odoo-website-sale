@@ -35,7 +35,7 @@ class SaleOrderLine(models.Model):
 
 class sale_order_minvalue(models.Model):
     _name="sale.order.minvalue"
-    
+
     name = fields.Char()
     destination_ids = fields.Many2many(comodel_name='res.country',string="Destinations")
     pricelist_ids = fields.Many2many(comodel_name="product.pricelist",string="Price Lists")
@@ -56,7 +56,7 @@ class SaleOrder(models.Model):
             string='Order Lines displayed on Website', readonly=True,
             domain=[('is_delivery', '=', False), ('is_min_order_fee', '=', False)],
             help='Order Lines to be displayed on the website. They should not be used for computation purpose.',
-        )    
+        )
     @api.one
     def _min_value_order(self):
         minvalue = self.get_minimum_order_value()
@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
     @api.multi
     def get_minimum_order_value(self):
         self.ensure_one()
-        return self.env['sale.order.minvalue'].search([('destination_ids', 'in', self.partner_shipping_id.country_id.id), ('pricelist_ids', 'in', self.pricelist_id.id)], limit=1)
+        return self.env['sale.order.minvalue'].search([('destination_ids', 'in', [self.partner_shipping_id.country_id.id]), ('pricelist_ids', 'in', [self.pricelist_id.id])], limit=1)
 
     @api.multi
     def check_minimum_order_value(self, minvalue=None):
@@ -172,13 +172,13 @@ class SaleOrder(models.Model):
 
 class SaleOrderMinvalueDialog(models.TransientModel):
     _name = 'sale.order.minvalue.dialog'
-    
+
     order_id = fields.Many2one('sale.order')
-    
+
     @api.multi
     def confirm_fee(self):
         return self.order_id.with_context(min_order_value_action='confirm').action_button_confirm()
-    
+
     @api.multi
     def waive_fee(self):
         return self.order_id.with_context(min_order_value_action='waive').action_button_confirm()
@@ -205,3 +205,12 @@ class website(models.Model):
                 return minvalue.info_text
         return ''
 
+class controller(http.Controller):
+
+    @http.route(['/shop/allowed_order'], type='http', auth="none", website=True)
+    def shop_allowed_order(self, order_id=0, **post):
+        answer = request.env['sale.order'].sudo().browse(order_id).check_min_allowed_web_order()
+        if answer:
+            return '1'
+        else:
+            return '0'
