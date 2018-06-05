@@ -32,35 +32,6 @@
             </xpath>
         </template>
         
-        <template id="total" >
-            
-            
-    <table class='pull-right mb16' id="cart_total" t-if="website_sale_order">
-        <thead>
-            <tr width="100" style="border-top: 1px solid #000" id="order_total">
-                <th><h3>Total: </h3></th>
-                <th class="text-right">
-                  <h3><span t-field="website_sale_order.amount_total" style="white-space: nowrap;" t-field-options='{
-                      "widget": "monetary",
-                      "from_currency": "website_sale_order.pricelist_id.currency_id",
-                      "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
-                    }'/></h3>
-                </th>
-            </tr>
-            <tr width="120" class="text-muted" id="order_total_taxes">
-                <td><abbr title="Taxes may be updated after providing shipping address">Taxes:</abbr></td>
-                <td class="text-right">
-                    <span t-field="website_sale_order.amount_tax" style="white-space: nowrap;" t-field-options='{
-                        "widget": "monetary",
-                        "from_currency": "website_sale_order.pricelist_id.currency_id",
-                        "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
-                    }'/>
-                </td>
-            </tr>
-        </thead>
-    </table>
-</template>
-        
         
     </data>
 </openerp>
