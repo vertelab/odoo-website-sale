@@ -18,7 +18,7 @@
             <table position='before'>
             <div class="col-lg-3 col-sm-3 col-md-3 text-muted" id="minimum_value_info">
                 <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
-                <t t-field="min_val.info_html"/>
+                <t t-raw="min_val.info_html"/>
               </div>            
             </table>
             <xpath expr="//thead" position="inside">
