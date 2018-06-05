@@ -30,11 +30,16 @@
           <field name="product_id" class="oe_inline"/>
           <field name="order_fee" class="oe_inline"/>
           </div>
+          <field name="min_allowed_web_order" />
+          <field name="sample_order" />
           
             </group>
           <notebook>            
               <page string="Text">
                 <field name="info_text" />
+              </page>
+              <page string="Web">
+                <field name="info_html" />
               </page>
           </notebook>
           </sheet>

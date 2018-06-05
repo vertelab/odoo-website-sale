@@ -41,8 +41,11 @@ class sale_order_minvalue(models.Model):
     pricelist_ids = fields.Many2many(comodel_name="product.pricelist",string="Price Lists")
     product_id = fields.Many2one(comodel_name="product.product",string="Order Fee",help="Product for Order Fee")
     order_fee = fields.Float(string="Order Fee",related="product_id.list_price")
-    min_value = fields.Float(string="Minimum Order Value")
+    min_allowed_web_order = fields.Float(string="Minimum Allowed Web Order Value",help='Orders under this value will be refused in the webshop')
+    min_value = fields.Float(string="Minimum Order Value",help="Orders under this value will have an extra fee")
     info_text = fields.Text(translate=True)
+    info_html = fields.Html(translate=True)
+    sample_order = fields.Boolean(string="Sample order",help="Allow a sample order (first one) without any fee or block.")
 
 
 class SaleOrder(models.Model):
@@ -53,16 +56,15 @@ class SaleOrder(models.Model):
             string='Order Lines displayed on Website', readonly=True,
             domain=[('is_delivery', '=', False), ('is_min_order_fee', '=', False)],
             help='Order Lines to be displayed on the website. They should not be used for computation purpose.',
-        )
-    min_order_value = fields.Boolean(string='Minimum order value', compute='_min_value_order', help="Does not meet the minimum order value!")
-    min_order_fee = fields.Float(string='Minimum order fee', compute='_min_value_order')
-
+        )    
     @api.one
     def _min_value_order(self):
         minvalue = self.get_minimum_order_value()
         _logger.warn('minvalue: %s' % minvalue)
         self.min_order_value = not self.check_minimum_order_value(minvalue)
         self.min_order_fee = self.get_min_order_fee()
+    min_order_value = fields.Boolean(string='Minimum order value', compute='_min_value_order', help="Does not meet the minimum order value!")
+    min_order_fee = fields.Float(string='Minimum order fee', compute='_min_value_order')
 
     @api.multi
     def get_minimum_order_value(self):
@@ -74,12 +76,29 @@ class SaleOrder(models.Model):
         self.ensure_one()
         minvalue = minvalue or self.get_minimum_order_value()
         if minvalue:
+            if minvalue.sample_order and self.env['sale.order'].search_count([('partner_id.commercial_partner_id', '=', self.partner_id.commercial_partner_id.id)]) == 0:
+                return True
             value = 0.0
             for line in self.order_line:
                 if not line.is_min_order_fee and not line.is_delivery:
                     value += line.price_subtotal
             return value >= minvalue.min_value
         return True
+
+    @api.multi
+    def check_min_allowed_web_order(self, minvalue=None):
+        self.ensure_one()
+        minvalue = minvalue or self.get_minimum_order_value()
+        if minvalue:
+            if minvalue.sample_order and self.env['sale.order'].search_count([('partner_id.commercial_partner_id', '=', self.partner_id.commercial_partner_id.id)]) == 0:
+                return True
+            value = 0.0
+            for line in self.order_line:
+                if not line.is_min_order_fee and not line.is_delivery:
+                    value += line.price_subtotal
+            return value >= minvalue.min_allowed_web_order
+        return True
+
 
     @api.multi
     def action_button_confirm(self):

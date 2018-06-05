@@ -2,6 +2,7 @@
 <openerp>
     <data>
         <template id="minimum_order_value" name="Minimum Order Value" inherit_id="website_sale.payment">
+<!--
             <xpath expr="//div[@id='payment_method']" position="before">
                 <div t-if="website_sale_order.min_order_value" class="row" id="minimum_order_value">
                     <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
@@ -11,8 +12,15 @@
                     </div>
                 </div>
             </xpath>
+-->
         </template>
         <template id="minimum_order_fee" name="Minimum Order Fee" inherit_id="website_sale.total">
+            <table position='before'>
+            <div class="col-lg-3 col-sm-3 col-md-3 text-muted" id="minimum_value_info">
+                <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
+                <t t-field="min_val.info_html"/>
+              </div>            
+            </table>
             <xpath expr="//thead" position="inside">
                 <tr class="text-muted" id="order_min_costs" t-if="website_sale_order.min_order_value">
                     <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
@@ -23,5 +31,36 @@
                 </tr>
             </xpath>
         </template>
+        
+        <template id="total" >
+            
+            
+    <table class='pull-right mb16' id="cart_total" t-if="website_sale_order">
+        <thead>
+            <tr width="100" style="border-top: 1px solid #000" id="order_total">
+                <th><h3>Total: </h3></th>
+                <th class="text-right">
+                  <h3><span t-field="website_sale_order.amount_total" style="white-space: nowrap;" t-field-options='{
+                      "widget": "monetary",
+                      "from_currency": "website_sale_order.pricelist_id.currency_id",
+                      "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                    }'/></h3>
+                </th>
+            </tr>
+            <tr width="120" class="text-muted" id="order_total_taxes">
+                <td><abbr title="Taxes may be updated after providing shipping address">Taxes:</abbr></td>
+                <td class="text-right">
+                    <span t-field="website_sale_order.amount_tax" style="white-space: nowrap;" t-field-options='{
+                        "widget": "monetary",
+                        "from_currency": "website_sale_order.pricelist_id.currency_id",
+                        "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                    }'/>
+                </td>
+            </tr>
+        </thead>
+    </table>
+</template>
+        
+        
     </data>
 </openerp>

@@ -21,7 +21,7 @@
 
 {
     'name': 'Website Sale Minimum Order Value',
-    'version': '0.2',
+    'version': '0.3',
     'category': 'website_sale',
     'description': """
 Check Minimum Order Value
