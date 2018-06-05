@@ -15,12 +15,12 @@
 -->
         </template>
         <template id="minimum_order_fee" name="Minimum Order Fee" inherit_id="website_sale.total">
-            <table position='before'>
-            <div class="col-lg-3 col-sm-3 col-md-3 text-muted" id="minimum_value_info">
-                <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
-                <t t-raw="min_val.info_html"/>
-              </div>            
-            </table>
+            <xpath expr="//table" position="before">
+                <div class="col-lg-8 col-sm-8 col-md-8 text-muted" id="minimum_value_info">
+                    <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
+                    <div t-raw="min_val.info_html"/>
+                </div>
+            </xpath>
             <xpath expr="//thead" position="inside">
                 <tr class="text-muted" id="order_min_costs" t-if="website_sale_order.min_order_value">
                     <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
@@ -31,7 +31,18 @@
                 </tr>
             </xpath>
         </template>
-        
-        
+        <template id="cart" name="Minimum Order Cart" inherit_id="website_sale.cart">
+            <xpath expr="//a[@href='/shop/checkout']" position="attributes">
+                <attribute name="t-att">{'disabled': '1'} if not website_sale_order.check_min_allowed_web_order() else {}</attribute>
+                <attribute name="id">process_checkout</attribute>
+                <attribute name="t-att-data-order">website_sale_order.id</attribute>
+            </xpath>
+        </template>
+        <template id="assets_frontend" inherit_id="website_sale.assets_frontend" name="Website Sale Minimum Order Value Assets Frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/website_sale_minimum_order_value/static/src/js/main.js"></script>
+            </xpath>
+        </template>
+
     </data>
 </openerp>
