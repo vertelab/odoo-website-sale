@@ -16,9 +16,9 @@
         </template>
         <template id="minimum_order_fee" name="Minimum Order Fee" inherit_id="website_sale.total">
             <table position='before'>
-            <div class="col-lg-3 col-sm-3 col-md-3 text-muted" id="minimum_value_info">
+            <div class="col-lg-8 col-sm-8 col-md-8 text-muted" id="minimum_value_info">
                 <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
-                <t t-raw="min_val.info_html"/>
+                <div t-raw="min_val.info_html"/>
               </div>            
             </table>
             <xpath expr="//thead" position="inside">
