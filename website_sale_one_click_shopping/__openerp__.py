@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution, third party addon
-# Copyright (C) 2017- Vertel AB (<http://vertel.se>).
+# Copyright (C) 2018 Vertel AB (<http://vertel.se>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -20,22 +20,21 @@
 ##############################################################################
 
 {
-    'name': 'Website My Home Page',
-    'version': '0.2',
+    'name': 'Website Sale One Click Shopping',
+    'version': '0.1',
     'category': 'website_sale',
     'description': """
-A home page for logged in user
-==============================
-
+One Click Shopping Button
+=========================
+* Shopping button update shopping cart without redirect to shopping cart page
+* This module does an ajax request to /shop/cart/update after clicked "Add to cart" button
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale', 'sale_journal'],
+    'depends': ['website_sale'],
     'data': [
-        'security/security_data.xml',
-        'website_sale_template.xml',
-        'website_sale_data.xml',
+        'website_template.xml',
     ],
     'installable': True,
 }

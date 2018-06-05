@@ -29,6 +29,14 @@ import math
 import logging
 _logger = logging.getLogger(__name__)
 
+class SaleOrderLine(models.Model):
+    _inherit='sale.order.line'
+    
+    @api.multi
+    def sale_home_confirm_copy(self):
+        """Check if this order line should be copied. Override to handle fees and whatnot."""
+        return True
+
 class SaleOrder(models.Model):
     _inherit='sale.order'
     
@@ -131,9 +139,10 @@ class website_sale_home(website_sale_home):
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
         for line in order.order_line:
-            request.env['sale.order.line'].sudo().create({
-                    'order_id': sale_order.id,
-                    'product_id': line.product_id.id, 
-                    'product_uom_qty': line.product_uom_qty,
-            })
+            if line.sale_home_confirm_copy():
+                request.env['sale.order.line'].sudo().create({
+                        'order_id': sale_order.id,
+                        'product_id': line.product_id.id, 
+                        'product_uom_qty': line.product_uom_qty,
+                })
         return werkzeug.utils.redirect("/shop/cart")

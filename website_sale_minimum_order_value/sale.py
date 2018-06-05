@@ -103,7 +103,18 @@ class SaleOrder(models.Model):
     @api.multi
     def action_button_confirm(self):
         self.ensure_one()
-        self.minimum_order_value_set()
+        if self._context.get('min_order_value_dialog') and not self._context.get('min_order_value_action'):
+            if not self.check_minimum_order_value():
+                action = self.env['ir.actions.act_window'].for_xml_id('website_sale_minimum_order_value', 'action_minimum_order_dialog')
+                action['context'] = {'default_order_id': self.id}
+                return action
+        if self._context.get('min_order_value_action') == 'waive':
+            # Find and delete min order values if they exist
+            lines = self.env['sale.order.line'].search([('order_id', '=', self.id), ('is_min_order_fee', '=', True)])
+            if lines:
+                lines.unlink()
+        else:
+            self.minimum_order_value_set()
         return super(SaleOrder,self).action_button_confirm()
 
     @api.multi
@@ -158,6 +169,19 @@ class SaleOrder(models.Model):
                 sale_order.minimum_order_value_set()
 
         return values
+
+class SaleOrderMinvalueDialog(models.TransientModel):
+    _name = 'sale.order.minvalue.dialog'
+    
+    order_id = fields.Many2one('sale.order')
+    
+    @api.multi
+    def confirm_fee(self):
+        return self.order_id.with_context(min_order_value_action='confirm').action_button_confirm()
+    
+    @api.multi
+    def waive_fee(self):
+        return self.order_id.with_context(min_order_value_action='waive').action_button_confirm()
 
 class website(models.Model):
     _inherit = 'website'

@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <field name="translatable" position="after">
                     <field name="pricelist_id"/>
+                    <field name="fiscal_position_id"/>
                 </field>
             </field>
         </record>

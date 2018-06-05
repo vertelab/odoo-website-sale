@@ -28,9 +28,14 @@ class res_lang(models.Model):
     _inherit = 'res.lang'
 
     pricelist_id = fields.Many2one(comodel_name='product.pricelist', string='Price List')
-
+    fiscal_position_id = fields.Many2one(comodel_name='account.fiscal.position', string='Fiscal Position')
 
 class product_pricelist(models.Model):
     _inherit = 'product.pricelist'
 
     language_ids = fields.One2many(comodel_name='res.lang', inverse_name='pricelist_id', string='Languages')
+
+class account_fiscal_position(models.Model):
+    _inherit = 'account.fiscal.position'
+
+    language_ids = fields.One2many(comodel_name='res.lang', inverse_name='fiscal_position_id', string='Languages')

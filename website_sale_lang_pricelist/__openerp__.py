@@ -30,7 +30,7 @@ Different pricelist on each language
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['product'],
+    'depends': ['product', 'account'],
     'data': [
         'res_lang_view.xml',
     ],

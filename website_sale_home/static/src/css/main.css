@@ -8,6 +8,10 @@ div#main_div{
   opacity: 0.97;
 }
 
+form.delUserModalForm > div.modal-footer {
+  margin-top: 20px;
+}
+
 div.home_tab_menu{
   padding-right: 0;
   padding-left: 0;
@@ -38,6 +42,22 @@ div.home_tab_menu{
 
 .input_readonly {
     padding-top: 7px;
+}
+
+.oe_website_home_partner_tag {
+  background-color: #FFF282;
+  border: 1px solid #AFAFB6;
+  border-radius: 3px;
+  color: #4C4C4C;
+  padding: 3px 5px;
+}
+
+.oe_website_home_partner_course {
+  background-color: #8FFF82;
+  border: 1px solid #AFAFB6;
+  border-radius: 3px;
+  color: #4C4C4C;
+  padding: 3px 5px;
 }
 
 @media (max-width: 768px) {
