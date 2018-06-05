@@ -43,17 +43,21 @@
             <t t-foreach="website.sale_home_directory_get(home_user).content_ids" t-as="report">
               <div style="display: flex; justify-content: center; align-items: center" class="col-md-12 col-xs-md-12">
                 <div class="document_div col-md-5 col-xs-md-12">
-                  <div style='font-size: 24px; font-weight: 500;' t-if='report.type == "binary"'>
+                <t t-if='report.type == "binary"'>
+                  <div style='font-size: 24px; font-weight: 500;'>
                     <a t-att-href="'/home/%s/document_report/%s' %(home_user.id, report.id)">
                       <i class="fa fa-download"/>&amp;nbsp;<t t-esc="report.name" />
                     </a>
                   </div>
-                <div style='font-size: 24px; font-weight: 500;' t-if='report.type == "url"'>
-                    <a t-att-href="'%s' %(report.url)">
-                      <i class="fa fa-link"/>&amp;nbsp;<t t-esc="report.name" />
-                    </a>
-                  </div>
-                </div>
+                </t>
+                <t t-if='report.type == "url"'>
+                    <div style='font-size: 24px; font-weight: 500;' >
+                        <a t-att-href="'%s' %(report.url)">
+                          <i class="fa fa-link"/>&amp;nbsp;<t t-esc="report.name" />
+                        </a>
+                      </div>
+                    </div>
+                </t>
                 <div class="document_div col-md-3 col-xs-md-12">
                   Date:
                   <t t-esc="report.report_id.write_date[:10]" />
