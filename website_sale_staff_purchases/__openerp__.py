@@ -20,12 +20,14 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale Order Comment',
+    'name': 'Website Sale Staff Purchases',
     'version': '0.1',
     'category': 'website_sale',
     'description': """
-Displays order comment
-======================
+
+* Pricelist from company
+* Change invoice address to personal from hr
+
 
 """,
     'author': 'Vertel AB',

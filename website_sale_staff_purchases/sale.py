@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 2017- Vertel AB (<http://vertel.se>).
+#    Copyright (C) 20178- Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -24,15 +24,18 @@ import openerp
 from openerp import http
 from openerp.http import request
 
+from openerp.addons.website_sale.controllers.main import website_sale, QueryURL, table_compute
+
 import logging
 _logger = logging.getLogger(__name__)
 
-
-class website_sale(http.Controller):
-
-    @http.route(['/shop/order/note'], type='json', auth="public", website=True)
-    def order_note(self, note, **post):
-        order = request.website.sudo().sale_get_order()
-        if order:
-            order.sudo().note = note
-
+class WebsiteSale(website_sale):
+    
+    
+    def checkout_values(self, data=None):
+        values = super(WebsiteSale,self).checkout_values(data)
+        employee_id = request.env['he.employee'].search('user_id', '=',request.website.user_id.id)
+        if employee_id and employee_id.address_home_id:
+            values['checkout'].update(self.checkout_parse("billing", employee_id.address_home_id))
+        return values
+    
