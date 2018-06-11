@@ -33,7 +33,7 @@ class WebsiteSale(website_sale):
     
     
     def checkout_values(self, data=None):
-        
+        #TODO använd order, ändra partner_id på order (checkout_values och template skall använda order och inte user.Partner_id)
         values = super(WebsiteSale,self).checkout_values(data)
         order = values
        
