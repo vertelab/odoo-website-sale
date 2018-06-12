@@ -34,14 +34,22 @@
                   </t>
                   <t t-if='doc.type == "url"'>
                     <div style='font-size: 24px; font-weight: 500;'>
-                      <a t-att-href="'%s' %(doc.url)">
+                      <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
                         <i class="fa fa-link" />
                         &amp;nbsp;
                         <t t-esc="doc.name" />
                       </a>
                     </div>
                   </t>
-                    
+                  <t t-if='doc.type == "youtube"'>
+                    <div style='font-size: 24px; font-weight: 500;'>
+                      <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''" >
+                        <i class="fa fa-youtube-square" />
+                        &amp;nbsp;
+                        <t t-esc="doc.name" />
+                      </a>
+                    </div>
+                  </t>
                     
                     
                   </div>

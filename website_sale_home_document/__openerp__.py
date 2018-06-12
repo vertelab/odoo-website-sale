@@ -31,7 +31,7 @@ Form for claims
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale_home', 'document', 'knowledge'],
+    'depends': ['website_sale_home', 'document', 'knowledge','attachment_youtube'],
     'data': [
         'website_sale_template.xml',
     ],
