@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <template id="minimum_order_value" name="Minimum Order Value" inherit_id="website_sale.payment">
 <!--
+        <template id="minimum_order_value" name="Minimum Order Value" inherit_id="website_sale.payment">
             <xpath expr="//div[@id='payment_method']" position="before">
                 <div t-if="website_sale_order.min_order_value" class="row" id="minimum_order_value">
                     <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
@@ -12,7 +12,6 @@
                     </div>
                 </div>
             </xpath>
--->
         </template>
         <template id="minimum_order_fee" name="Minimum Order Fee" inherit_id="website_sale.total">
             <xpath expr="//thead" position="inside">
@@ -25,6 +24,7 @@
                 </tr>
             </xpath>
         </template>
+-->
         <template id="cart" name="Minimum Order Cart" inherit_id="website_sale.cart">
             <xpath expr="//t[@t-call='website_sale.total']" position="before">
                 <div class="col-lg-7 col-sm-7 col-md-7 text-muted" id="minimum_value_info">

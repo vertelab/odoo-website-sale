@@ -147,7 +147,9 @@
                                 <th>Cell</th>
                                 <th>Email</th>
                                 <th>Password Reset</th>
+<!--
                                 <th/>
+-->
                             </thead>
                             <tbody>
                                 <tr t-foreach="home_user.partner_id.commercial_partner_id.child_ids.filtered(lambda c: c.type == 'contact')" t-as="contact">
@@ -169,12 +171,12 @@
                                     <td class="text-center">
                                         <a href="javascript:void(0);" class="fa fa-envelope-o fa-2x" t-att-onclick="'''pwReset(%s, %s);''' %(home_user.id, contact.id)" />
                                     </td>
+<!--
                                     <td class="text-center">
                                         <a href="javascript:void(0);" t-att-data-modal-form-action="'/home/%s/contact/%s/delete' % (home_user.id, contact.id)" t-att-data-partner-name="contact.name" class="fa fa-trash-o fa-2x" data-toggle="modal" data-target="#delUserModal"/>
-<!--
                                         <a t-att-href="'/home/%s/contact/%s/delete' % (home_user.id, contact.id)" class="fa fa-trash-o fa-2x" />
--->
                                     </td>
+-->
                                 </tr>
                                 <tr>
                                     <td/>
@@ -183,7 +185,9 @@
                                     <td/>
                                     <td/>
                                     <td/>
+<!--
                                     <td/>
+-->
                                 </tr>
                             </tbody>
                         </table>
