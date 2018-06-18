@@ -208,8 +208,8 @@ class website(models.Model):
 class controller(http.Controller):
 
     @http.route(['/shop/allowed_order'], type='http', auth="none", website=True)
-    def shop_allowed_order(self, order_id=0, **post):
-        answer = request.env['sale.order'].sudo().browse(order_id).check_min_allowed_web_order()
+    def shop_allowed_order(self, **post):
+        answer = request.env['sale.order'].sudo().browse(int(post.get('order', '0'))).check_min_allowed_web_order()
         if answer:
             return '1'
         else:
