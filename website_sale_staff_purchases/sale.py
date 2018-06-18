@@ -34,28 +34,14 @@ class WebsiteSale(website_sale):
     
     def checkout_values(self, data=None):
         #TODO använd order, ändra partner_id på order (checkout_values och template skall använda order och inte user.Partner_id)
-        values = super(WebsiteSale,self).checkout_values(data)
-        order = values
-       
         employee_id = request.env['hr.employee'].sudo().search([('user_id', '=',request.env.user.id)])
-        #raise Warning(employee_id.name,request.env.user.id,request.env.user.name)
-        _logger.warn('values.checkout %s user %s ' % (values.get('checkout'),{key:getattr(employee_id.address_home_id,key) for key in ['street','street2','name','zip','city']}))
-        _logger.warn('values %s checkout %s' % (request.env.user.id,employee_id))
         if employee_id and employee_id.address_home_id:
-            _logger.warn('values %s checkout %s' % (values.get('checkout'),employee_id))
-            values['checkout'].update(self.checkout_parse("billing", {key:getattr(employee_id.address_home_id,key) for key in ['street','street2','name','zip','city']}))
-            values['checkout']['invoicings'] = [employee_id.address_home_id]
-            values['checkout']['shipping_name'] = employee_id.name
-            values['shipping_name'] = employee_id.name
-            values['vat'] = ''
-            values['invoicings'] = [employee_id.address_home_id.id]
-            _logger.warn('values %s checkout %s ' % (values,values.get('checkout')))
-            # ~ order = self.env['sale.order'].browse(values['checkout'])
-        values['checkout']['invoicing_id'] = request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')[0].id
-        values['checkout']['invoicings'] = [request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')]
-        values['invoicings'] = [request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')]
-        values['checkout']['shipping_name'] = 'ANDSJO'
-        values['shipping_name'] = 'ANSJO'
-        _logger.warn('values #end %s ' % (values))
-        return values
+            if not employee_id.address_home_id.is_company:
+                raise Warning('Employee must be company')
+            order = request.website.sale_get_order(force_create=1)
+            order.partner_id = employee_id.address_home_id.id
+            _logger.warn('Adresses %s' % request.env['sale.order'].sudo().onchange_partner_id(employee_id.address_home_id.id)['value'])
+            order.write(request.env['sale.order'].sudo().onchange_partner_id(employee_id.address_home_id.id)['value'])
+            _logger.warn('Partner_id %s shipping %s invoice %s' % (order.partner_id,order.partner_shipping_id,order.partner_invoice_id))
+        return super(WebsiteSale,self).checkout_values(data)
     
