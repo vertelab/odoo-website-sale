@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <template id="company_info_form" name="Website Home Company Info Form">
-            <div class="col-md-12 mt32 mb32">
+            <div class="col-md-12 mt32 mb32" style="padding: 0px;">
                 <ul class="nav nav-tabs">
                     <li id="nav_delivery" class="active">
                         <a data-toggle="tab" href="#delivery" class="hidden-xs">Delivery Address</a>

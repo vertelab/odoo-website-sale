@@ -70,4 +70,8 @@ div.home_tab_menu{
     border-radius: 4px 4px 0 0 !important;
     margin-bottom: 0 !important;
   }
+  div#main_div{
+    border: none;
+    padding: 0px 15px;
+  }
 }
