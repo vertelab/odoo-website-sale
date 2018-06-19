@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 20178- Vertel AB (<http://vertel.se>).
+#    Copyright (C) 2018- Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -33,7 +33,6 @@ class WebsiteSale(website_sale):
     
     
     def checkout_values(self, data=None):
-        #TODO använd order, ändra partner_id på order (checkout_values och template skall använda order och inte user.Partner_id)
         employee_id = request.env['hr.employee'].sudo().search([('user_id', '=',request.env.user.id)])
         if employee_id and employee_id.address_home_id:
             if not employee_id.address_home_id.is_company:
@@ -43,5 +42,8 @@ class WebsiteSale(website_sale):
             _logger.warn('Adresses %s' % request.env['sale.order'].sudo().onchange_partner_id(employee_id.address_home_id.id)['value'])
             order.write(request.env['sale.order'].sudo().onchange_partner_id(employee_id.address_home_id.id)['value'])
             _logger.warn('Partner_id %s shipping %s invoice %s' % (order.partner_id,order.partner_shipping_id,order.partner_invoice_id))
+        res = super(WebsiteSale,self).checkout_values(data)
+        order = request.website.sale_get_order(force_create=1)
+        _logger.warn('Partner_id %s shipping %s invoice %s res %s' % (order.partner_id,order.partner_shipping_id,order.partner_invoice_id,res))
         return super(WebsiteSale,self).checkout_values(data)
     
