@@ -32,8 +32,32 @@ function loadHomeMessageBox() {
     });
 };
 
+
+function readURL(input) {
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    console.log
+    reader.onload = function(e) {
+      $('#blah').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
 $(document).ready(function() {
     loadHomeMessageBox();
+    $(".img-input-preview").change(function() {
+        var target_img = $(this).data('preview-image');
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $(target_img).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(this.files[0]);
+          }
+    });
 });
 
 function formValidate() {

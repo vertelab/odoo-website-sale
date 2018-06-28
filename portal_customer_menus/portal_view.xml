@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_partner_my_addresses_tree" model="ir.ui.view">
+            <field name="name">res.partner.my.addresses.tree</field>
+            <field name="model">res.partner</field>
+            <field eval="1000" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Contacts">
+                    <field name="display_name"/>
+                    <field name="type"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="country_id" invisible="1"/>
+                    <field name="parent_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_partner_my_addresses_form" model="ir.ui.view">
+            <field name="name">res.partner.my.addresses.form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form string="Partners">
+                <sheet>
+                    <field name="image" widget='image' class="oe_left oe_avatar" options='{"preview_image": "image_medium", "size": [90, 90]}'/>
+                    <div class="oe_title oe_left">
+                        <div class="oe_edit_only">
+                            <label for="name"/>
+                        </div>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Name" />
+                        </h1>
+                    </div>
+                    <div class="oe_right oe_button_box" name="buttons"> </div>
+
+                    <group>
+                        <group>
+                            <field name="parent_id" invisible="1"/>
+                            <label for="type" attrs="{'invisible': [('parent_id','=', False)]}"/>
+                            <div attrs="{'invisible': [('parent_id','=', False)]}" name="div_type">
+                                <field class="oe_inline" attrs="{'required': [('parent_id', '!=', False)]}" name="type"/>
+                            </div>
+
+                            <label for="street" string="Address"/>
+                            <div>
+                                <field name="street" placeholder="Street..." />
+                                <field name="street2" />
+                                <div class="address_format">
+                                    <field name="city" placeholder="City" style="width: 40%%"/>
+                                    <field name="state_id" invisible="1" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}' on_change="onchange_state(state_id)"/>
+                                    <field name="zip" placeholder="ZIP" style="width: 20%%"/>
+                                </div>
+                                <field name="country_id" placeholder="Country" class="oe_no_button" options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                        </group>
+                        <group attrs="{'invisible': [('parent_id', '!=', False)]}">
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="fax"/>
+                            <field name="user_ids" invisible="1"/>
+                            <field name="email" widget="email" attrs="{'required': [('user_ids','!=', [])]}"/>
+                            <field name="title" options='{"no_open": True}'/>
+                        </group>
+                        <group attrs="{'invisible': [('parent_id', '=', False)]}"/>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_res_partner_filter" model="ir.ui.view">
+            <field name="name">res.partner.my.addresses.select</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <search string="Search Partner">
+                   <field name="name"
+                       filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self),('street','ilike',self),('city','ilike',self)]"/>
+                   <group expand="0" string="Group By">
+                       <filter string="Address Type" context="{'group_by': 'type'}"/>
+                   </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="action_my_addresses" model="ir.actions.act_window">
+            <field name="name">My Addresses</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('commercial_partner_id.user_ids', '=', uid)]</field>
+            <field name="context">{'address_type_limit': ['delivery', 'invoice'], 'default_type': 'delivery', 'default_parent_id': 123456}</field>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_partner_my_addresses_tree')}), (0, 0, {'view_mode': 'form','view_id': ref('view_partner_my_addresses_form')})]"/>
+            <field name="search_view_id" ref="view_res_partner_filter"/>
+        </record>
+        
+        <record id="action_my_addresses_sa" model="ir.actions.server">
+            <field name="name">My Addresses</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="code">action = env['ir.actions.act_window'].for_xml_id('portal_customer_menus', 'action_my_addresses')
+action['context'] = action['context'].replace('123456', str(env.user.partner_id.id))
+            </field>
+        </record>
+        
+        <record id="action_change_password" model="ir.actions.server">
+            <field name="name">Change Password</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="code">action = {
+    'type': 'ir.actions.client',
+    'tag': 'change_password',
+    'target': 'new',
+}
+            </field>
+        </record>
+        
+        <record id="portal.portal_orders" model="ir.ui.menu">
+            <field name="sequence">1</field>
+        </record>
+        
+        <menuitem id="menu_my_settings" name="My Settings" parent="portal.portal_menu" sequence="9"/>
+        <menuitem action="action_my_addresses_sa" id="menu_my_addresses" name="My Addresses" parent="menu_my_settings" sequence="20"/>
+        <menuitem action="action_change_password" id="menu_change_password" name="Change Password" parent="menu_my_settings" sequence="100"/>
+
+    </data>
+</openerp>
