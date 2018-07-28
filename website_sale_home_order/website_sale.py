@@ -51,7 +51,7 @@ class SaleOrder(models.Model):
         elif self.state in ('draft', 'sent'):
             state = _('Received')
         else:
-            state = _('Packing')
+            state = _('Ready for picking')
             for invoice in self.invoice_ids:
                 if invoice.state == 'open':
                     state = _('Shipped and invoiced')
