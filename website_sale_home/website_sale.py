@@ -50,6 +50,8 @@ class website_sale_home(http.Controller):
     # can be overridden with more company field
     def get_company_post(self, post):
         value = {}
+        if post.get('invoicetype'):
+            value['property_invoice_type'] = int(post.get('invoicetype'))
         return value
 
     # can be overridden with more company field
@@ -73,8 +75,8 @@ class website_sale_home(http.Controller):
     # can be overridden with more address type
     def get_children_by_address_type(self, company):
         return {
-            'delivery': company.child_ids.filtered(lambda c: c.type == 'delivery')[0] if company.child_ids.filtered(lambda c: c.type == 'delivery') else None,
-            'invoice': company.child_ids.filtered(lambda c: c.type == 'invoice')[0] if company.child_ids.filtered(lambda c: c.type == 'invoice') else None
+            'delivery': company.child_ids.filtered(lambda c: c.type == 'delivery'),
+            'invoice': company.child_ids.filtered(lambda c: c.type == 'invoice'),
         }
 
     # can be overridden with more address type
@@ -97,9 +99,24 @@ class website_sale_home(http.Controller):
         return children
 
     def write_child(self, partner_id, address_type, post):
+        # TODO: Implement controls for which fields can be written here. This is very not secure.
         validation = {}
         child_dict = {k.split('_', 1)[1]:v for k,v in post.items() if k.split('_')[0] == address_type}
-        if any(child_dict):
+        child_dicts = {}
+        delete = []
+        for key in child_dict:
+            id = key.split('_', 1)[0]
+            if (id[:2] == 'id' and id[2:].isdigit()) or (id[:3] == 'new' and id[3:].isdigit()):
+                if (id[:2] == 'id' and id[2:].isdigit()):
+                    id = int(id[2:])
+                if id not in child_dicts:
+                    child_dicts[id] = {}
+                child_dicts[id][key.split('_', 1)[1]] = child_dict[key]
+                delete.append(key)
+        for key in delete:
+            del child_dict[key]
+        res = {'child': request.env['res.partner'].browse([]), 'validation': validation}
+        if child_dict:
             if address_type != 'contact':
                 child_dict['name'] = address_type
             child_dict['parent_id'] = partner_id.id
@@ -111,11 +128,30 @@ class website_sale_home(http.Controller):
             if not child:
                 child = request.env['res.partner'].sudo().create(child_dict)
             else:
-                child.write(child_dict)
+                child[0].write(child_dict)
             for field in PARTNER_FIELDS:
                 validation['%s_%s' %(address_type, field)] = 'has-success'
-            return {'child': child, 'validation': validation}
-        return {'child': None, 'validation': validation}
+            res['child'] |= child
+        _logger.warn(child_dicts)
+        for id in child_dicts:
+            d = child_dicts[id]
+            if address_type != 'contact':
+                d['name'] = address_type
+            d['parent_id'] = partner_id.id
+            d['type'] = address_type
+            d['use_parent_address'] = False
+            if d.get('country_id'):
+                d['country_id'] = int(d['country_id'])
+            if type(id) == int:
+                child = partner_id.child_ids.filtered(lambda c: c.type == address_type and c.id == id)
+                if child:
+                    child.write(d)
+            else:
+                child = request.env['res.partner'].sudo().create(d)
+            for field in PARTNER_FIELDS:
+                validation['%s_id%s_%s' %(address_type, child.id, field)] = 'has-success'
+            res['child'] |= child
+        return res
 
     # can be overridden with more help text
     def get_help(self):
