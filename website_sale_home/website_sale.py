@@ -159,6 +159,10 @@ class website_sale_home(http.Controller):
         help = {}
         company = home_user.partner_id.commercial_partner_id
         if request.httprequest.method == 'POST':
+            if post.get('website_short_description'):
+                translated_text = request.env['ir.translation'].search([('name', '=', 'res.partner,website_short_description'), ('type', '=', 'model'), ('lang', '=', request.env.lang), ('res_id', '=', home_user.partner_id.commercial_partner_id.id)])
+                if translated_text:
+                    translated_text.write({'value': post.get('website_short_description')})
             if post.get('invoicetype'):
                 company.write({'property_invoice_type': int(post.get('invoicetype'))})
             company.write(self.get_company_post(post))
@@ -299,7 +303,7 @@ class website_sale_home(http.Controller):
         if request.env.ref('website_sale_home.group_home_admin') not in user.groups_id:
             return False
         return True
-    
+
     @http.route(['/home/send_message'], type='json', auth="user", website=True)
     def send_message(self, partner_id=None, msg_body='', **kw):
         partner = request.env.user.partner_id.commercial_partner_id
