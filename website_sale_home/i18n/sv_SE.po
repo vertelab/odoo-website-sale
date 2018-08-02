@@ -80,6 +80,11 @@ msgstr "Bolagsnamn"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
+msgid "Company Description"
+msgstr "Företagsbeskrivning"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
 msgid "Invoice Type"
 msgstr "Fakturatyper"
 
