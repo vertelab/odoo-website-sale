@@ -30,8 +30,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 class WebsiteSale(website_sale):
-    
-    
+
     def checkout_values(self, data=None):
         employee_id = request.env['hr.employee'].sudo().search([('user_id', '=',request.env.user.id)])
         if employee_id and employee_id.address_home_id:
@@ -42,8 +41,4 @@ class WebsiteSale(website_sale):
             _logger.warn('Adresses %s' % request.env['sale.order'].sudo().onchange_partner_id(employee_id.address_home_id.id)['value'])
             order.write(request.env['sale.order'].sudo().onchange_partner_id(employee_id.address_home_id.id)['value'])
             _logger.warn('Partner_id %s shipping %s invoice %s' % (order.partner_id,order.partner_shipping_id,order.partner_invoice_id))
-        res = super(WebsiteSale,self).checkout_values(data)
-        order = request.website.sale_get_order(force_create=1)
-        _logger.warn('Partner_id %s shipping %s invoice %s res %s' % (order.partner_id,order.partner_shipping_id,order.partner_invoice_id,res))
         return super(WebsiteSale,self).checkout_values(data)
-    

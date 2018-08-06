@@ -305,9 +305,9 @@ class website_sale_home(http.Controller):
                     # Update existing partner and user.
                     partner.sudo().write(values)
                     user = request.env['res.users'].search([('partner_id', '=', partner.id)])
-                    if user.name != values['name']:
+                    if user and user.name != values['name']:
                         user.name= values['name']
-                    if user.login != values['email']:
+                    if user and user.login != values['email']:
                         user.login = values['email']
                 if post.get('attachment'):
                     attachment = request.env['ir.attachment'].sudo().create({
