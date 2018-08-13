@@ -50,6 +50,7 @@ class website(models.Model):
                 return False
             if self.env.ref('website_sale_home.group_home_admin') not in self.env.user.groups_id:
                 return False
+            return True
         if not check_admin(home_user):
             company_admin = []
             for contact in home_user.partner_id.commercial_partner_id.child_ids.filtered(lambda c: c.type == 'contact'):
