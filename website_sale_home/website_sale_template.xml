@@ -301,7 +301,11 @@
                                         <img style="width: 32px; margin: 4px; border-radius: 2px;" t-att-src="('data:image/png;base64,%s' % contact.image_small) if contact.image_small else '/base/static/src/img/avatar.png'"/>
                                     </td>
                                     <td>
-                                        <a t-att-href="'/home/%s/contact/%s' %(home_user.id, contact.id)"><span t-field="contact.name"/></a>
+                                        <a t-att-href="'/home/%s/contact/%s' %(home_user.id, contact.id)"><span t-field="contact.name"/>
+                                            <t t-if="request.env['res.users'].search([('partner_id', '=', contact.id)])">
+                                                <t t-if="request.env.ref('website_sale_home.group_home_admin') in request.env['res.users'].search([('partner_id', '=', contact.id)]).groups_id"> <i class="fa fa-user" title="Administrator"/></t>
+                                            </t>
+                                        </a>
                                     </td>
                                     <td>
                                         <span t-field="contact.phone"/>
@@ -348,6 +352,8 @@
                 <h4 id="title_contact" class="text-center">
                     <strong>Contact Infomation</strong>
                 </h4>
+                <t t-set="website_sale_home_access_control" t-value="website.website_sale_home_access_control(user_id)"/>
+                <t t-if="website_sale_home_access_control != ''"><h4 class="text-center text-danger"><t t-esc="website_sale_home_access_control"/></h4></t>
                 <p id="instruction_contact" />
                 <div class="container contact_person">
                     <div t-attf-class="form-group #{validation.get('contact_image', '')}">
@@ -451,7 +457,7 @@
                 <div class="container">
                     <div class="pull-right mb16">
                         <a t-att-href="'/home/%s' %home_user.id" role="button" class="btn btn-default btn-lg">Back</a>
-                        <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                        <button t-if="website_sale_home_access_control == ''" type="submit" class="btn btn-primary btn-lg">Save</button>
                     </div>
                 </div>
             </div>

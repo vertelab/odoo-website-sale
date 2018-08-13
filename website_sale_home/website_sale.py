@@ -43,6 +43,25 @@ class website(models.Model):
             'default_country': (home_user and home_user.country_id and home_user.country_id.id) or (request.website.company_id and request.website.company_id.country_id and request.website.company_id.country_id.id),
         }
 
+    @api.model
+    def website_sale_home_access_control(self, home_user):
+        def check_admin(home_user):
+            if self.env.user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
+                return False
+            if self.env.ref('website_sale_home.group_home_admin') not in self.env.user.groups_id:
+                return False
+        if not check_admin(home_user):
+            company_admin = []
+            for contact in home_user.partner_id.commercial_partner_id.child_ids.filtered(lambda c: c.type == 'contact'):
+                if self.env['res.users'].search([('partner_id', '=', contact.id)]):
+                    if self.env.ref('website_sale_home.group_home_admin') in self.env['res.users'].search([('partner_id', '=', contact.id)]).groups_id:
+                        company_admin.append(contact.name)
+            if len(company_admin) > 0:
+                return _('You have not access right to edit or create contact for your company. Please contact your administrator: %s' % ' or '.join(a for a in company_admin))
+            else:
+                return _('You have not access right to edit or create contact for your company. Please contact us.')
+        return ''
+
 PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
 
 class website_sale_home(http.Controller):
@@ -268,8 +287,6 @@ class website_sale_home(http.Controller):
         #~ _logger.warn(value)
         values = {}
         if request.httprequest.method == 'POST':
-            if not self.check_admin(home_user):
-                return request.website.render('website.403', {})
             # Values
             values = {f: post['contact_%s' % f] for f in self.contact_fields() if post.get('contact_%s' % f) and f not in ['attachment','image']}
             if post.get('image'):
@@ -329,6 +346,7 @@ class website_sale_home(http.Controller):
             'contact_values': values,
             'company_form': False,
             'contact_form': True,
+            'access_warning': '',
         })
         return request.render('website_sale_home.home_page', value)
 
