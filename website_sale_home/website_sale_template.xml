@@ -350,7 +350,7 @@
                 <input name="token" t-att-value="home_user.partner_id.commercial_partner_id.token" type="hidden"/>
 -->
                 <h4 id="title_contact" class="text-center">
-                    <strong>Contact Infomation</strong>
+                    <strong>Contact Information</strong>
                 </h4>
                 <t t-set="website_sale_home_access_control" t-value="website.website_sale_home_access_control(user_id)"/>
                 <t t-if="website_sale_home_access_control != ''"><h4 class="text-center text-danger"><t t-esc="website_sale_home_access_control"/></h4></t>
