@@ -35,7 +35,7 @@ class product_template(models.Model):
         if not self.product_variant_ids:
             _logger.warn('%s has not variant' %self)
         else:
-            return self.product_variant_ids.filtered(lambda v: v.default_variant == True) or (self.product_variant_ids[0] if len(self.product_variant_ids) > 0 else None)
+            return self.product_variant_ids.filtered(lambda v: v.default_variant == True) or (self.product_variant_ids[0] if self and len(self.product_variant_ids) > 0 else None)
         return None
 
 class product_product(models.Model):
