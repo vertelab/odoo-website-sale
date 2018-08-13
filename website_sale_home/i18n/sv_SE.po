@@ -367,3 +367,19 @@ msgstr "Webbplats"
 msgid "Zip"
 msgstr "Postnummer"
 
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Administrator"
+msgstr "Administratör"
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:62
+#, python-format
+msgid "You have not access right to edit or create contact for your company. Please contact us."
+msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta oss."
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:60
+#, python-format
+msgid "You have not access right to edit or create contact for your company. Please contact your administrator: %s. or "
+msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta din administratör: %s. eller "
