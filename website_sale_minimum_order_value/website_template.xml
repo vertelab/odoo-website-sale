@@ -27,7 +27,13 @@
 -->
         <template id="cart" name="Minimum Order Cart" inherit_id="website_sale.cart">
             <xpath expr="//t[@t-call='website_sale.total']" position="before">
-                <div t-if="website_sale_order" class="col-lg-7 col-sm-7 col-md-7 text-muted" id="minimum_value_info">
+                <div t-if="website_sale_order" class="col-lg-7 col-sm-7 col-md-7 hidden-xs text-muted" id="minimum_value_info">
+                    <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
+                    <div t-raw="min_val.info_html"/>
+                </div>
+            </xpath>
+            <xpath expr="//t[@t-call='website_sale.total']" position="after">
+                <div t-if="website_sale_order" class="col-xs-12 hidden-lg hidden-md hidden-sm text-muted mb32" id="minimum_value_info">
                     <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
                     <div t-raw="min_val.info_html"/>
                 </div>
