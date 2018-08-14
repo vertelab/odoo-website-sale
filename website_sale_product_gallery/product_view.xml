@@ -11,14 +11,14 @@
                         <span itemprop="image" t-field="product.image" t-field-options='{"widget": "image", "class": "product_detail_img hidden", "alt-field": "name"}'/>
                         <t t-if="not product_product">
                             <t t-set="product_variants" t-value="product.get_default_variant()"/>
-                            <t t-if="len(product_variants) &gt; 0">
+                            <t t-if="product_variants and len(product_variants) &gt; 0">
                                 <t t-set="product_product" t-value="product_variants[0]"/>
                             </t>
-                            <t t-if="len(product_variants) == 0">
+                            <t t-if="product_variants and len(product_variants) == 0">
                                 <t t-set="product_product" t-value="product.product_variant_ids[0]"/>
                             </t>
                         </t>
-                        <t t-set="image_attachment_ids" t-value="product_product.get_image_attachment_ids()"/>
+                        <t t-set="image_attachment_ids" t-value="product_product and product_product.get_image_attachment_ids() or []"/>
                         <t t-foreach="image_attachment_ids" t-as="i">
                             <div t-att-id="i" t-att-class="'tab-pane fade %s' %('in active' if i_index == 0 else '')">
                                 <img t-att-class="'img img-responsive %s' %('product_detail_img' if i_index == 0 else '')" style="margin: auto;" t-att-src="'/imagefield/ir.attachment/datas/%s/ref/%s' %(i, 'website_sale_product_gallery.img_product_detail')"/>
