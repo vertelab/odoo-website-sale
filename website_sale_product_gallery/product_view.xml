@@ -8,7 +8,7 @@
                     <!-- display image zoom -->
                     <div class="image_zoom"/>
                     <div id="image_big" class="tab-content">
-                        <span itemprop="image" t-field="product.image" t-field-options='{"widget": "image", "class": "product_detail_img hidden", "alt-field": "name"}'/>
+                        <!--<span itemprop="image" t-field="product.image" t-field-options='{"widget": "image", "class": "product_detail_img hidden", "alt-field": "name"}'/>-->
                         <t t-if="not product_product">
                             <t t-set="product_variants" t-value="product.get_default_variant()"/>
                             <t t-if="product_variants and len(product_variants) &gt; 0">
