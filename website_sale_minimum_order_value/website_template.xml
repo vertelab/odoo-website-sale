@@ -39,7 +39,7 @@
                 </div>
             </xpath>
             <xpath expr="//a[@href='/shop/checkout']" position="attributes">
-                <attribute name="t-att">{'disabled': '1'} if not (website_sale_order and website_sale_order.check_min_allowed_web_order()) else {}</attribute>
+                <attribute name="t-att">{'disabled': '1'} if (not website_sale_order or not website_sale_order.minimum_order_get_allowed()) else {}</attribute>
                 <attribute name="id">process_checkout</attribute>
                 <attribute name="t-att-data-order">website_sale_order and website_sale_order.id</attribute>
             </xpath>
