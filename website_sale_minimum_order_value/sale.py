@@ -225,6 +225,5 @@ class controller(http.Controller):
         order = request.env['sale.order'].sudo().browse(int(post.get('order', '0')))
         if order:
             res = order.minimum_order_get_allowed()
-            _logger.warn('<<<<<<<< %s' %res)
             return '1' if res else '0'
         return '0'
