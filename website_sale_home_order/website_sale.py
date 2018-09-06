@@ -138,7 +138,7 @@ class website_sale_home(website_sale_home):
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
-        for line in order.order_line.filtered(lambda l: not l.event_id):
+        for line in order.order_line.filtered(lambda l: not (l.event_id or l.product_id.event_ok)):
             if line.sale_home_confirm_copy():
                 request.env['sale.order.line'].sudo().create({
                         'order_id': sale_order.id,
