@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 2017- Vertel AB (<http://vertel.se>).
+#    Copyright (C) 2004-2015 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,20 +19,27 @@
 #
 ##############################################################################
 from openerp import models, fields, api, _
-
-import openerp
+from openerp.exceptions import except_orm, Warning, RedirectWarning
 from openerp import http
 from openerp.http import request
+import openerp.addons.website_sale_delivery.controllers.main
 
 import logging
 _logger = logging.getLogger(__name__)
 
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+    
+    @api.model
+    def fields_get(self, allfields=None, write_access=True, attributes=None):
+        res = super(ResPartner, self).fields_get(allfields=allfields, write_access=write_access, attributes=attributes)
+        types = self.env.context.get('address_type_limit')
+        if types and 'type' in res:
+            selection = []
+            for option in res['type']['selection']:
+                    if option[0] in types:
+                        selection.append(option)
+            res['type']['selection'] = selection
+        return res
 
-class website_sale(http.Controller):
-
-    @http.route(['/shop/order/note'], type='json', auth="public", website=True)
-    def order_note(self, note, **post):
-        order = request.website.sudo().sale_get_order()
-        if order:
-            order.sudo().note = note
 

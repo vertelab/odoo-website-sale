@@ -20,20 +20,21 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale Order Comment',
-    'version': '0.1',
+    'name': 'Portal Customer Menus',
+    'version': '0.2',
     'category': 'website_sale',
-    'description': """
-Displays order comment
-======================
-
+    'description': """Adds more customer menus to the portal.
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['website_sale'],
+    'depends': ['portal_sale'],
     'data': [
-        'website_template.xml',
+        'portal_view.xml',
+        #web/static/src/xml/base.xml
+    ],
+    'qweb' : [
+        "static/src/xml/*.xml",
     ],
     'installable': True,
 }

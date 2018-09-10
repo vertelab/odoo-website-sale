@@ -25,7 +25,7 @@
                     
                      <t t-if='doc.type == "binary"'>
                     <div style='font-size: 24px; font-weight: 500;'>
-                      <a t-att-href="'/home/%s/document_report/%s' %(home_user.id, doc.id)">
+                      <a t-att-href="'/home/%s/document/%s' %(home_user.id, doc.id)">
                         <i class="fa fa-download" />
                         &amp;nbsp;
                         <t t-esc="doc.name" />

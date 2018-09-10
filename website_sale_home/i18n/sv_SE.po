@@ -80,6 +80,11 @@ msgstr "Bolagsnamn"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
+msgid "Company Description"
+msgstr "Företagsbeskrivning"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
 msgid "Invoice Type"
 msgstr "Fakturatyper"
 
@@ -131,8 +136,8 @@ msgstr "Contact '%s' has no user."
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
-msgid "Contact Infomation"
-msgstr "Kontaktinfomation"
+msgid "Contact Information"
+msgstr "Kontaktinformation"
 
 #. module: website_sale_home
 #: code:addons/website_sale_home/website_sale.py:132
@@ -155,6 +160,11 @@ msgstr "Land"
 #: view:website:website_sale_home.home_page
 msgid "Logged in as"
 msgstr "Inloggad som"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Organization Number"
+msgstr "Organisationsnummer"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
@@ -357,3 +367,19 @@ msgstr "Webbplats"
 msgid "Zip"
 msgstr "Postnummer"
 
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Administrator"
+msgstr "Administratör"
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:62
+#, python-format
+msgid "You have not access right to edit or create contact for your company. Please contact us."
+msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta oss."
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:60
+#, python-format
+msgid "You have not access right to edit or create contact for your company. Please contact your administrator: %s. or "
+msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta din administratör: %s. eller "

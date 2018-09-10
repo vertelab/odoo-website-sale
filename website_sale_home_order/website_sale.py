@@ -31,7 +31,7 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrderLine(models.Model):
     _inherit='sale.order.line'
-    
+
     @api.multi
     def sale_home_confirm_copy(self):
         """Check if this order line should be copied. Override to handle fees and whatnot."""
@@ -39,7 +39,7 @@ class SaleOrderLine(models.Model):
 
 class SaleOrder(models.Model):
     _inherit='sale.order'
-    
+
     @api.multi
     def order_state_frontend(self):
         """Get a customer friendly order state."""
@@ -51,7 +51,7 @@ class SaleOrder(models.Model):
         elif self.state in ('draft', 'sent'):
             state = _('Received')
         else:
-            state = _('Packing')
+            state = _('Ready for picking')
             for invoice in self.invoice_ids:
                 if invoice.state == 'open':
                     state = _('Shipped and invoiced')
@@ -138,11 +138,11 @@ class website_sale_home(website_sale_home):
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
-        for line in order.order_line:
+        for line in order.order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok)):
             if line.sale_home_confirm_copy():
                 request.env['sale.order.line'].sudo().create({
                         'order_id': sale_order.id,
-                        'product_id': line.product_id.id, 
+                        'product_id': line.product_id.id,
                         'product_uom_qty': line.product_uom_qty,
                 })
         return werkzeug.utils.redirect("/shop/cart")

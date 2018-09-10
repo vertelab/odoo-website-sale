@@ -69,7 +69,8 @@ class document_directory_content(models.Model):
 
 class website_sale_home(website_sale_home):
 
-    @http.route(['/home/<model("res.users"):home_user>/document/<model("ir.attachment"):document>','/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
+    # ~ @http.route(['/home/<model("res.users"):home_user>/document/<model("ir.attachment"):document>','/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
+    @http.route(['/home/<model("res.users"):home_user>/document/<int:document>','/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
     def home_page_document(self, home_user=None, document=None,report=None, tab='document', **post):
         self.validate_user(home_user)
 
@@ -81,9 +82,21 @@ class website_sale_home(website_sale_home):
             return request.make_response(pdf, headers=[('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))])
 
         if document:
-            _logger.warn('%s %s %s'%(document.datas_fname.replace(' ', '_'),document.mimetype,document.write_date))
-            return http.send_file(StringIO(document.datas.decode('base64')), filename=document.datas_fname.replace(' ', '_'), mimetype=document.mimetype or '', mtime=document.write_date, as_attachment=True)
-        return request.website.render('website_sale_home_claim.page_documents', {
+            document = request.env['ir.attachment'].search([('id','=',document)])
+            if not document:
+                _logger.warn('cannot read document')
+            else:
+                document = request.env['ir.attachment'].sudo().search([('id','=',document.id)]) #TODO better security-check  check:225 ir_attachment.py  check:71 document.py
+                _logger.warn('Try to send %s' % document)
+                fname = document.datas_fname.replace(' ', '_') if document.datas_fname else 'file'
+                mime = mimetype=document.mimetype or ''
+                write_date=document.write_date
+                data = document.datas.decode('base64')
+                # ~ _logger.warn('%s %s %s'%(document.datas_fname.replace(' ', '_'),document.mimetype,document.write_date))
+                _logger.warn('%s %s %s %s'%(fname,mime,write_date,len(data)))
+                return http.send_file(StringIO(data), filename=fname, mimetype=mime, mtime=write_date, as_attachment=True)
+                # ~ return http.send_file(StringIO(data), filename=fname, mimetype=mime, mtime=write_date)
+        return request.website.render('website_sale_home_document.page_documents', {
             'home_user': home_user,
             'documents': request.env['ir.attachment'].search([('partner_id', '=', home_user.partner_id.id)]),
             'tab': tab,

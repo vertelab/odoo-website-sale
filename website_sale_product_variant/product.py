@@ -34,8 +34,9 @@ class product_template(models.Model):
         self.ensure_one()
         if not self.product_variant_ids:
             _logger.warn('%s has not variant' %self)
-        product = self.product_variant_ids.filtered(lambda v: v.default_variant == True) or (self.product_variant_ids[0] if self and self.product_variant_ids and len(self.product_variant_ids) > 0 else None)
-        return product
+        else:
+            return self.product_variant_ids.filtered(lambda v: v.default_variant == True) or (self.product_variant_ids[0] if self and len(self.product_variant_ids) > 0 else None)
+        return None
 
 class product_product(models.Model):
     _inherit = 'product.product'

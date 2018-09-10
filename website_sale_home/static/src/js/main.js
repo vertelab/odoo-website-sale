@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function loadHomeMessageBox() {
     $("div.home_tab_menu>div.list-group>a").click(function(e) {
         e.preventDefault();
         $(this).siblings('a.active').removeClass("active");
@@ -23,12 +23,40 @@ $(document).ready(function() {
             "partner_id": self.data('value'),
             "msg_body": self.closest("#oe_sale_home_message_box").find("#oe_sale_home_msgbox").val()
         }).done(function(data){
-            $("#oe_sale_home_message_box").load(location.href + " #oe_sale_home_message_box");
-            $("#oe_sale_home_msgbox").addClass('hidden');
-            $("#oe_sale_home_send_msgbox").addClass('hidden');
-            $("#oe_sale_home_close_msgbox").addClass('hidden');
-            $("#oe_sale_home_open_msgbox").removeClass('hidden');
+            $("#oe_sale_home_message_box").load(
+                location.href + " #oe_sale_home_message_box",
+                function(response, status, xhr) {
+                    loadHomeMessageBox();
+                });
         });
+    });
+};
+
+
+function readURL(input) {
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    console.log
+    reader.onload = function(e) {
+      $('#blah').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$(document).ready(function() {
+    loadHomeMessageBox();
+    $(".img-input-preview").change(function() {
+        var target_img = $(this).data('preview-image');
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $(target_img).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(this.files[0]);
+          }
     });
 });
 

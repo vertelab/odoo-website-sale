@@ -114,10 +114,10 @@ msgid "Orders"
 msgstr "Ordrar"
 
 #. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:46
+#: code:addons/website_sale_home_order/website_sale.py:54
 #, python-format
-msgid "Packing"
-msgstr "Packas"
+msgid "Ready for picking"
+msgstr "Klar att plockas"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:51

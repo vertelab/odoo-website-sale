@@ -27,15 +27,21 @@
 -->
         <template id="cart" name="Minimum Order Cart" inherit_id="website_sale.cart">
             <xpath expr="//t[@t-call='website_sale.total']" position="before">
-                <div class="col-lg-7 col-sm-7 col-md-7 text-muted" id="minimum_value_info">
+                <div t-if="website_sale_order" class="col-lg-7 col-sm-7 col-md-7 hidden-xs text-muted" id="minimum_value_info">
+                    <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
+                    <div t-raw="min_val.info_html"/>
+                </div>
+            </xpath>
+            <xpath expr="//t[@t-call='website_sale.total']" position="after">
+                <div t-if="website_sale_order" class="col-xs-12 hidden-lg hidden-md hidden-sm text-muted mb32" id="minimum_value_info">
                     <t t-set="min_val" t-value="website_sale_order.get_minimum_order_value()"/>
                     <div t-raw="min_val.info_html"/>
                 </div>
             </xpath>
             <xpath expr="//a[@href='/shop/checkout']" position="attributes">
-                <attribute name="t-att">{'disabled': '1'} if not website_sale_order.check_min_allowed_web_order() else {}</attribute>
+                <attribute name="t-att">{'disabled': '1'} if (not website_sale_order or not website_sale_order.minimum_order_get_allowed()) else {}</attribute>
                 <attribute name="id">process_checkout</attribute>
-                <attribute name="t-att-data-order">website_sale_order.id</attribute>
+                <attribute name="t-att-data-order">website_sale_order and website_sale_order.id</attribute>
             </xpath>
         </template>
         <template id="assets_frontend" inherit_id="website_sale.assets_frontend" name="Website Sale Minimum Order Value Assets Frontend">

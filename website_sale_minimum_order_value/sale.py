@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
     @api.multi
     def get_minimum_order_value(self):
         self.ensure_one()
-        return self.env['sale.order.minvalue'].search([('destination_ids', 'in', [self.partner_shipping_id.country_id.id]), ('pricelist_ids', 'in', [self.pricelist_id.id])], limit=1)
+        return self.env['sale.order.minvalue'].search([('destination_ids', 'in', [self.partner_shipping_id.country_id.id or self.env.ref('base.se').id]), ('pricelist_ids', 'in', [self.pricelist_id.id])], limit=1)
 
     @api.multi
     def check_minimum_order_value(self, minvalue=None):
@@ -99,6 +99,19 @@ class SaleOrder(models.Model):
             return value >= minvalue.min_allowed_web_order
         return True
 
+    @api.multi
+    def minimum_order_get_allowed(self):
+        event_line = False
+        not_event_line = False
+        for line in self.order_line:
+            if line.event_id:
+                event_line = True
+            else:
+                not_event_line = True
+        if event_line and not not_event_line:
+            return True
+        else:
+            return self.check_min_allowed_web_order()
 
     @api.multi
     def action_button_confirm(self):
@@ -208,9 +221,9 @@ class website(models.Model):
 class controller(http.Controller):
 
     @http.route(['/shop/allowed_order'], type='http', auth="none", website=True)
-    def shop_allowed_order(self, order_id=0, **post):
-        answer = request.env['sale.order'].sudo().browse(order_id).check_min_allowed_web_order()
-        if answer:
-            return '1'
-        else:
-            return '0'
+    def shop_allowed_order(self, **post):
+        order = request.env['sale.order'].sudo().browse(int(post.get('order', '0')))
+        if order:
+            res = order.minimum_order_get_allowed()
+            return '1' if res else '0'
+        return '0'
