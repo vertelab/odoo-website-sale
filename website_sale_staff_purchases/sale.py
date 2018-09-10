@@ -43,19 +43,25 @@ class WebsiteSale(website_sale):
         _logger.warn('values %s checkout %s' % (request.env.user.id,employee_id))
         if employee_id and employee_id.address_home_id:
             _logger.warn('values %s checkout %s' % (values.get('checkout'),employee_id))
-            values['checkout'].update(self.checkout_parse("billing", {key:getattr(employee_id.address_home_id,key) for key in ['street','street2','name','zip','city']}))
-            values['checkout']['invoicings'] = [employee_id.address_home_id]
-            values['checkout']['shipping_name'] = employee_id.name
-            values['shipping_name'] = employee_id.name
-            values['vat'] = ''
+            values['checkout']['invoicing_id'] = employee_id.address_home_id.id
+            values['checkout']['invoicings'] = [employee_id.address_home_id.id]
             values['invoicings'] = [employee_id.address_home_id.id]
+            values['checkout']['shipping_name'] = request.env.user.login
+            values['shipping_name'] = request.env.user.login
+            values['vat'] = ''
+            # ~ values['checkout'].update(self.checkout_parse("billing", {key:getattr(employee_id.address_home_id,key) for key in ['street','street2','name','zip','city']}))
+            # ~ values['checkout']['invoicings'] = [employee_id.address_home_id]
+            # ~ values['checkout']['shipping_name'] = employee_id.name
+            # ~ values['shipping_name'] = employee_id.name
+            # ~ values['vat'] = ''
+            # ~ values['invoicings'] = [employee_id.address_home_id.id]
             _logger.warn('values %s checkout %s ' % (values,values.get('checkout')))
             # ~ order = self.env['sale.order'].browse(values['checkout'])
-        values['checkout']['invoicing_id'] = request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')[0].id
-        values['checkout']['invoicings'] = [request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')]
-        values['invoicings'] = [request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')]
-        values['checkout']['shipping_name'] = 'ANDSJO'
-        values['shipping_name'] = 'ANSJO'
+        # ~ values['checkout']['invoicing_id'] = request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')[0].id
+        # ~ values['checkout']['invoicings'] = [request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')]
+        # ~ values['invoicings'] = [request.env['hr.employee'].sudo().browse(59).mapped('address_home_id')]
+        # ~ values['checkout']['shipping_name'] = 'ANDSJO'
+        # ~ values['shipping_name'] = 'ANSJO'
         _logger.warn('values #end %s ' % (values))
         return values
     
