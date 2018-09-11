@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="home_page_issue" inherit_id="website_sale_home.home_page" name="Home Page Issue">
+            <xpath expr="//div[@id='oe_sale_home_message_box']" position="replace">
+                <div id="oe_sale_home_message_box" class="mt64">
+                    <t t-set="commercial_partner_id" t-value="home_user.partner_id.commercial_partner_id"/>
+                    <t t-set="last_issue" t-value="commercial_partner_id.sudo().last_issue()"/>
+                    <t t-if="last_issue">
+                        <div id="issue_info" t-att-data-issue_id="last_issue.id" class="container" style="padding: 0px;">
+                            <div class="col-md-12 col-sm-12 col-xs-12 mt16 mb16 oe_dark">
+                                <h3 t-esc="last_issue.name" />
+                                <div t-raw="last_issue.description" />
+                                <div class="col-md-1 col-sm-1 col-xs-1 mt8 msg_avatar">
+                                    <img t-att-src="('data:image/png;base64,%s' % last_issue.user_id.image) if last_issue.user_id else '/base/static/src/img/avatar.png'" />
+                                </div>
+                                <div class="col-md-11 col-sm-11 col-xs-11">
+                                    <h4><strong>Responsible</strong></h4>
+                                    <h4 t-esc="last_issue.user_id.name or ''" />
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <h5 t-esc="last_issue.stage_id.name"/>
+                                </div>
+                            </div>
+                            <p>
+                                <u id="oe_sale_home_open_msgbox">Send a message</u>
+                            </p>
+                            <p>
+                                <u id="oe_sale_home_close_msgbox" class="hidden">Close message box</u>
+                            </p>
+                            <div class="container mt32">
+                                <textarea id="oe_sale_home_msgbox" class="form-control hidden" rows="3" placeholder="Write your message here..." />
+                                <button id="oe_sale_home_issue_send_msgbox" type="button" class="btn btn-primary mt4 mb4 pull-right hidden" t-att-data-value="commercial_partner_id.id">Send</button>
+                            </div>
+                        </div>
+                        <div id="timeline" class="mt32 mb32">
+                            <span>
+                                History
+                            </span>
+                        </div>
+                        <div id="oe_sale_home_message_box_history" class="container mb32 mb32">
+                            <t t-foreach="last_issue.message_ids.with_context(partner_id = request.env.user.partner_id.id).filtered(lambda msg: (msg._context['partner_id'] == msg.author_id.id) or (msg._context['partner_id'] in msg.notified_partner_ids._ids)).filtered(lambda msg: msg.type == 'comment')" t-as="message">
+                            <!-- from responsible -->
+                                <div t-if="message.author_id.commercial_partner_id not in last_issue.partner_id" class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">
+                                    <div class="col-md-1 col-sm-1 col-xs-1 msg_avatar">
+                                        <img t-att-src="('data:image/png;base64,%s' % message.author_avatar) if message.author_avatar else '/base/static/src/img/avatar.png'" t-att-title="message.author_id.name"/>
+                                    </div>
+                                    <div class="col-md-8 col-sm-8 col-xs-11 mt4 mb4 oe_black" style="border-radius: 20px;">
+                                        <div class="message_body" t-raw="message.body" />
+                                        <div class="text-right">
+                                            <small>
+                                                <b t-esc="message.author_id.name" />
+                                            </small>
+                                            <span>•</span>
+                                            <small t-esc="message.write_date" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 hidden-xs mt4 mb4"/>
+                                </div>
+                                <!-- from customer -->
+                                <div t-if="message.author_id.commercial_partner_id in last_issue.partner_id" class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-11 col-md-offset-3 col-sm-offset-3 mt4 mb4 oe_dn" style="border-radius: 20px;">
+                                        <div class="message_body" t-raw="message.body" />
+                                        <div class="text-right">
+                                            <small>
+                                                <b t-esc="message.author_id.name" />
+                                            </small>
+                                            <span>•</span>
+                                            <small t-esc="message.write_date" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 col-xs-1 msg_avatar">
+                                        <img t-att-src="('data:image/png;base64,%s' % message.author_avatar) if message.author_avatar else '/base/static/src/img/avatar.png'" t-att-title="message.author_id.name"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-if="not last_issue">
+                        <p style="padding-left: 15px;">
+                            <u id="oe_sale_home_open_msgbox">Send a message</u>
+                        </p>
+                        <p style="padding-left: 15px;">
+                            <u id="oe_sale_home_close_msgbox" class="hidden">Close message box</u>
+                        </p>
+                        <div class="container mt32">
+                            <textarea id="oe_sale_home_msgbox" class="form-control hidden" rows="3" placeholder="Write your message here..." />
+                            <button id="oe_sale_home_issue_send_msgbox" type="button" class="btn btn-primary mt4 mb4 pull-right hidden" t-att-data-value="commercial_partner_id.id">Send</button>
+                        </div>
+                    </t>
+                </div>
+            </xpath>
+        </template>
+        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Home Issue Assets Frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/website_sale_home_issue/static/src/css/main.css" t-ignore="true"/>
+                <script type="text/javascript" src="/website_sale_home_issue/static/src/js/main.js"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>

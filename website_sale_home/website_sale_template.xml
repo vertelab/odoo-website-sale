@@ -592,7 +592,7 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                                <div id="oe_sale_home_message_box">
+                                                <div id="oe_sale_home_message_box" class="mt64">
                                                     <p>
                                                         <u id="oe_sale_home_open_msgbox">Send a message</u>
                                                     </p>
