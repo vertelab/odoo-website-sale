@@ -1,0 +1,48 @@
+.oe_dn {
+    background-color: #CC6C45;
+    color: white;
+}
+
+#issue_info {
+    padding: 0px 15px !important;
+}
+
+#timeline {
+    width: 95%;
+    height: 15px;
+    border-bottom: 1px solid #aaa;
+    text-align: center;
+    margin: auto;
+}
+
+#timeline span{
+    font-size: 20px;
+    padding: 0 20px;
+    background-color: #fff;
+}
+
+.message_body {
+    padding: 10px 0px;
+}
+
+.msg_avatar {
+    padding: 0px;
+}
+
+.msg_avatar img {
+    margin: auto;
+    display: block;
+    width: 40px;
+    border-radius: 20px;
+    margin-top: 5px;
+}
+
+@media (max-width: 700px) {
+    .msg_avatar img {
+        width: 20px;
+        border-radius: 10px;
+    }
+    #issue_info {
+        padding: 0px !important;
+    }
+}
