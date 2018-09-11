@@ -133,6 +133,6 @@ class product_template(models.Model):
     _inherit = 'product.template'
 
     @api.model
-    def get_pricelist_chart_line(self,product,pricelist):
+    def get_pricelist_chart_line(self,pricelist):
         """ returns cheapest pricelist line  """
-        return product.variant_ids.get_pricelist_chart_line().sorted(key=price, reverse=True)[0]
+        return self.variant_ids.get_pricelist_chart_line(pricelist).sorted(key=price, reverse=True)[0]
