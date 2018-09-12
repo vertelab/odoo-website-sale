@@ -31,7 +31,7 @@ Change the message box to an issue conversation
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['project_issue', 'sale_service', 'website_sale_home'],
+    'depends': ['project_issue', 'sale_service', 'website_sale_home', 'website_reseller_register'],
     'data': [
         'website_sale_template.xml',
         'project_data.xml',
