@@ -26,7 +26,7 @@
     'description': """
 Change the message box to an issue conversation
 ===============================================
-* new field issue_ids on res.partner
+* new method to get last issue for res.partner
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',
