@@ -13,7 +13,7 @@
 
 #oe_issue_stage {
     position: absolute;
-    top: 0px;
+    bottom: 0px;
     right: 0px;
     padding: 10px;
     background-color: #000;
