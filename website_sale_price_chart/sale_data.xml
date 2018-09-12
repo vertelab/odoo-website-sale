@@ -31,7 +31,7 @@ for o in obj:
       <field name="doall" eval="True"/>
       <field name="numbercall">-1</field>
       <field name="model">product.product</field>
-      <field name="function">calc_pricelist_chart</field>
+      <field name="function">calc_pricelist_chart_all</field>
     </record>
   </data>
 </openerp>
