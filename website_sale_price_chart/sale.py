@@ -31,10 +31,10 @@ class pricelist_chart_type(models.Model):
     """
         Key -> pricelist
         Gives:
-            Pricelist for price 
+            Pricelist for price
             Pricelist for recommended price
             Use account.tax if tax should be added
-            
+
     """
     _name = "pricelist_chart.type"
     _description = "Pricelist Chart Type"
@@ -67,20 +67,20 @@ class pricelist_chart_type(models.Model):
 
 class product_product(models.Model):
     _inherit = 'product.product'
-    
+
     pricelist_chart_ids = fields.One2many(comodel_name='product.pricelist_chart',inverse_name='product_id')
-    
+
     @api.multi
     def calc_pricelist_chart(self):
         for product in self:
             self.env['pricelist_chart.type'].search([]).calc(product)
- 
+
     @api.model
     def calc_pricelist_chart_all(self):
         for product in self.env['product.product'].search([('sale_ok','=',True)]):
             self.env['pricelist_chart.type'].search([]).calc(product)
-            
-            
+
+
     @api.multi
     def get_pricelist_chart_line(self,pricelist):
         """ returns pricelist line  """
@@ -94,24 +94,24 @@ class product_product(models.Model):
                 pl = pl_type.calc(product)
             pl_ids |= pl
         return pl_ids
-            
+
 class product_pricelist_chart(models.Model):
     _name = 'product.pricelist_chart'
 
     product_id = fields.Many2one(comodel_name='product.product')
-    pricelist_chart_id = fields.Many2one(comodel_name='pricelist_chart.type') 
+    pricelist_chart_id = fields.Many2one(comodel_name='pricelist_chart.type')
     price      = fields.Float()
     price_tax  = fields.Boolean()
-    
+
     def _price_txt_format(self,price,currency):
         return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
                 self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
-                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '', 
+                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
                 post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
             ).format(
                 symbol=currency.symbol,
             )
-    
+
     @api.one
     def _price_txt(self):
 
@@ -121,7 +121,7 @@ class product_pricelist_chart(models.Model):
         self.rec_price_txt_short = self._price_txt_format(self.rec_price,self.pricelist_chart_id.rec_pricelist.currency_id)
         self.rec_price_txt       = '%s %s' % (self.rec_price_txt_short + _('your incl. tax') if self.rec_price_tax else _('your excl. tax')  )
         self.rec_price_txt_short = '(%s)' % self.rec_price_txt_short
-        
+
     price_txt  = fields.Char(compute='_price_txt')
     price_txt_short  = fields.Char(compute='_price_txt')
     rec_price  = fields.Float()
@@ -135,4 +135,4 @@ class product_template(models.Model):
     @api.model
     def get_pricelist_chart_line(self,pricelist):
         """ returns cheapest pricelist line  """
-        return self.variant_ids.get_pricelist_chart_line(pricelist).sorted(key=price, reverse=True)[0]
+        return self.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=price, reverse=True)[0]
