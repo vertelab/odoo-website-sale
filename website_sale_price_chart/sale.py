@@ -46,18 +46,18 @@ class pricelist_chart_type(models.Model):
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included')
 
     @api.multi
-    def calc(self,product):
+    def calc(self,product_id):
         for pl_type in self:
-            pl = self.env['product.pricelist_chart'].search([('product_id','=',product.id),('pricelist_chart_id','=',pl_type.id)])
+            pl = self.env['product.pricelist_chart'].search([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
             if not pl:
-                pl = self.env['product.pricelist_chart'].create({'product_id': product.id,'pricelist_chart_id': pl_type.id})
-            pl.price = pl_type.pricelist.price_get(product.id, 1)[pl_type.pricelist.id]
+                pl = self.env['product.pricelist_chart'].create({'product_id': product_id,'pricelist_chart_id': pl_type.id})
+            pl.price = pl_type.pricelist.price_get(product_id, 1)[pl_type.pricelist.id]
             _logger.warn('price %s' % pl.price)
             if pl_type.price_tax:
                 pl.price + sum(map(lambda x: x.get('amount', 0.0), pl_type.price_tax.compute_all(pl.price, 1, None, self.env.user.partner_id)['taxes']))
                 pl.price_tax = True
             if pl_type.rec_pricelist:
-                pl.rec_price = pl_type.rec_pricelist.price_get(product.id, 1)[pl_type.rec_pricelist.id]
+                pl.rec_price = pl_type.rec_pricelist.price_get(product_id, 1)[pl_type.rec_pricelist.id]
                 if pl_type.rec_price_tax:
                     pl.rec_price + sum(map(lambda x: x.get('amount', 0.0), pl_type.rec_price_tax.compute_all(pl.rec_price, 1, None, self.env.user.partner_id)['taxes']))
                     pl.rec_price_tax = True
@@ -73,17 +73,17 @@ class product_product(models.Model):
     @api.multi
     def calc_pricelist_chart(self):
         for product in self:
-            self.env['pricelist_chart.type'].search([]).calc(product)
+            self.env['pricelist_chart.type'].search([]).calc(product.id)
  
     @api.model
     def calc_pricelist_chart_all(self):
         for product in self.env['product.product'].search([('sale_ok','=',True)]):
-            self.env['pricelist_chart.type'].search([]).calc(product)
+            self.env['pricelist_chart.type'].search([]).calc(product.id)
             
             
     @api.multi
     def get_pricelist_chart_line(self,pricelist):
-        """ returns pricelist line  """
+        """ returns pricelist line-object  """
         pl_ids = self.env['product.pricelist_chart'].browse()
         for product in self:
             pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
@@ -91,9 +91,22 @@ class product_product(models.Model):
                 pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
             pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
             if not pl:
-                pl = pl_type.calc(product)
+                pl = pl_type.calc(product.id)
             pl_ids |= pl
         return pl_ids
+
+    @api.model
+    def get_pricelist_chart_rec(self,product_id,pricelist_id):
+        """ returns pricelist rec  """
+        pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist_id)])
+        if not pl_type:
+            pricelist = self.env['product.pricelist'].browse(pricelist_id)
+            pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
+        pl = self.env['product.pricelist_chart'].search_read([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
+        if not pl:
+            pl_type.calc(product.id)
+            pl = self.env['product.pricelist_chart'].search_read([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
+        return pl
             
 class product_pricelist_chart(models.Model):
     _name = 'product.pricelist_chart'
