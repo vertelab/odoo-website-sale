@@ -72,6 +72,19 @@ function formValidate() {
     }
 }
 
+//~ $('#submit_btn').click(function () {
+    //~ $('input:invalid').each(function () {
+        //~ var $closest = $(this).closest('.tab-pane');
+        //~ var id = $closest.attr('id');
+
+        //~ $('.nav a[href="#' + id + '"]').tab('show');
+        //~ $(this).closest("div").addClass("has-error");
+        //~ $(this).focus();
+
+        //~ return false;
+    //~ });
+//~ });
+
 $('#delUserModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Button that triggered the modal
     name = button.data('partner-name');
