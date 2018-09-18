@@ -426,6 +426,15 @@ class website_sale_home(http.Controller):
             _logger.exception(_('Cannot send mail to %s. Please check your mail server configuration.') % user.name)
             return _('Cannot send mail to %s. Please check your mail server configuration.') % user.name
 
+    # remove contact image
+    @http.route(['/home/contact/remove_img_contact'], type='json', auth="public", website=True)
+    def contact_remove_img(self, partner_id='0', **kw):
+        partner = request.env['res.partner'].sudo().browse(int(partner_id))
+        if partner:
+            partner.write({'image': None})
+            return True
+        return False
+
     # delete contact attachment
     @http.route(['/home/<model("res.users"):home_user>/attachment/<int:attachment>/delete'], type='http', auth='user', website=True)
     def contact_attachment_delete(self, home_user=None, attachment=0, **post):

@@ -58,6 +58,19 @@ $(document).ready(function() {
             reader.readAsDataURL(this.files[0]);
           }
     });
+
+    $("i#remove_img_contact").click(function(){
+        var self = $(this);
+        openerp.jsonRpc("/home/contact/remove_img_contact", "call", {
+            'partner_id': self.data("partner_id")
+        }).done(function(data){
+            if (data) {
+                $("img#contact_img").attr("src", "");
+                self.find("input#image").val('1');
+                self.addClass("hidden");
+            }
+        });
+    });
 });
 
 function formValidate() {
