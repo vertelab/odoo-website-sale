@@ -111,9 +111,9 @@ class product_product(models.Model):
             
     @api.multi
     def get_html_price_long(self,pricelist):
-        def price_format(self, price, dp=None):
+        def price_format(price, dp=None):
             if not dp:
-                dp = request.env['res.lang'].search_read([('code', '=', request.env.lang)], ['decimal_point'])
+                dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
                 dp = dp and dp[0]['decimal_point'] or '.'
             return ('%.2f' %price).replace('.', dp)
         def price_txt_format(self,price,currency):
@@ -128,27 +128,29 @@ class product_product(models.Model):
         if isinstance(pricelist,int):
             pricelist = self.env['product.pricelist'].browse(pricelist)
         chart_line = self.get_pricelist_chart_line(pricelist)
-        price = ''
+        price = '<!-- pre rec price -->'
         if chart_line.pricelist_chart_id.rec_pricelist:
             price = """
-                <div>
+                <div><!-- rec price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" />{price}</span>
                     <span style="display: inline;">{tax}</span>
                 </div>
             """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
                        price=price_format(chart_line.rec_price),
-                       tax=_('(rec incl. tax)') if chart_line.pricelist_chart_id.rec_pricelist.rec_price_tax else _('(rec excl. tax)'))
+                       tax=_('(rec incl. tax)') if chart_line.pricelist_chart_id.rec_price_tax else _('(rec excl. tax)')
+                       )
         if chart_line.pricelist_chart_id.pricelist:
             price += """
-                <div>
+                <div><!-- price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" /><b>{price}</b></span>
                     <span style="display: inline;">{tax}</span>
                 </div>
             """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(chart_line.price),
-                       tax=_('(your incl. tax)') if chart_line.pricelist_chart_id.pricelist.price_tax else _('(your excl. tax)'))
+                       tax=_('(your incl. tax)') if chart_line.pricelist_chart_id.price_tax else _('(your excl. tax)')
+                       )
         return """
             <div class="product_price">
                 <b class="text-muted">
