@@ -32,10 +32,10 @@ Prices pre calculated for products
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['website_sale',],
-    'data': ['sale_view.xml','sale_data.xml',],
+    'data': ['sale_view.xml','sale_data.xml', 'security/ir.model.access.csv'],
     'application': False,
     'installable': True,
     'auto_install': False,
-    
+
 }
 # vim:expandtab:smartindent:tabstop=4s:softtabstop=4:shiftwidth=4:

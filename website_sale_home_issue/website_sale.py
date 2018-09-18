@@ -33,11 +33,9 @@ _logger = logging.getLogger(__name__)
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
-    issue_ids = fields.Many2one(comodel_name='project.issue', string='Issues')
-
     @api.multi
     def last_issue(self):
-        issues = self.env['project.issue'].search([('partner_id', '=', self.commercial_partner_id.id), ('stage_id', 'not in', [self.env.ref('project.project_tt_deployment').id, self.env.ref('project.project_tt_cancel').id])], order='date desc')
+        issues = self.env['project.issue'].search([('partner_id', '=', self.commercial_partner_id.id), ('project_id', '=', self.env.ref('website_sale_home_issue.project_support').id), ('stage_id', 'not in', [self.env.ref('project.project_tt_deployment').id, self.env.ref('project.project_tt_cancel').id])], order='date desc')
         return issues[0] if len(issues) > 0 else None
 
 
@@ -63,5 +61,5 @@ class website_sale_home(http.Controller):
                     'project_id': request.env.ref('website_sale_home_issue.project_support').id,
                 })
                 issue.sudo().message_subscribe_users([request.env.user.id])
-            return True
-        return False
+                return 'new'
+        return 'old'

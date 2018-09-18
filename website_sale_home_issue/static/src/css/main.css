@@ -7,6 +7,23 @@
     padding: 0px 15px !important;
 }
 
+#oe_issue_info {
+    position: relative;
+}
+
+#oe_issue_stage {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 10px;
+    background-color: #000;
+    color: #fff;
+}
+
+#oe_issue_stage h5 {
+    margin: 0px;
+}
+
 #timeline {
     width: 95%;
     height: 15px;
