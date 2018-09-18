@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 2004-2015 Vertel AB (<http://vertel.se>).
+#    Copyright (C) 2004-2018 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -46,18 +46,18 @@ class pricelist_chart_type(models.Model):
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included')
 
     @api.multi
-    def calc(self,product):
+    def calc(self,product_id):
         for pl_type in self:
-            pl = self.env['product.pricelist_chart'].search([('product_id','=',product.id),('pricelist_chart_id','=',pl_type.id)])
+            pl = self.env['product.pricelist_chart'].search([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
             if not pl:
-                pl = self.env['product.pricelist_chart'].create({'product_id': product.id,'pricelist_chart_id': pl_type.id})
-            pl.price = pl_type.pricelist.price_get(product.id, 1)[pl_type.pricelist.id]
+                pl = self.env['product.pricelist_chart'].create({'product_id': product_id,'pricelist_chart_id': pl_type.id})
+            pl.price = pl_type.pricelist.price_get(product_id, 1)[pl_type.pricelist.id]
             _logger.warn('price %s' % pl.price)
             if pl_type.price_tax:
                 pl.price + sum(map(lambda x: x.get('amount', 0.0), pl_type.price_tax.compute_all(pl.price, 1, None, self.env.user.partner_id)['taxes']))
                 pl.price_tax = True
             if pl_type.rec_pricelist:
-                pl.rec_price = pl_type.rec_pricelist.price_get(product.id, 1)[pl_type.rec_pricelist.id]
+                pl.rec_price = pl_type.rec_pricelist.price_get(product_id, 1)[pl_type.rec_pricelist.id]
                 if pl_type.rec_price_tax:
                     pl.rec_price + sum(map(lambda x: x.get('amount', 0.0), pl_type.rec_price_tax.compute_all(pl.rec_price, 1, None, self.env.user.partner_id)['taxes']))
                     pl.rec_price_tax = True
@@ -73,17 +73,17 @@ class product_product(models.Model):
     @api.multi
     def calc_pricelist_chart(self):
         for product in self:
-            self.env['pricelist_chart.type'].search([]).calc(product)
-
+            self.env['pricelist_chart.type'].search([]).calc(product.id)
+ 
     @api.model
     def calc_pricelist_chart_all(self):
         for product in self.env['product.product'].search([('sale_ok','=',True)]):
-            self.env['pricelist_chart.type'].search([]).calc(product)
-
+            self.env['pricelist_chart.type'].search([]).calc(product.id)
+            
 
     @api.multi
     def get_pricelist_chart_line(self,pricelist):
-        """ returns pricelist line  """
+        """ returns pricelist line-object  """
         pl_ids = self.env['product.pricelist_chart'].browse()
         for product in self:
             pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
@@ -91,9 +91,76 @@ class product_product(models.Model):
                 pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
             pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
             if not pl:
-                pl = pl_type.calc(product)
+                pl = pl_type.calc(product.id)
             pl_ids |= pl
         return pl_ids
+
+
+    @api.model
+    def get_pricelist_chart_rec(self,product_id,pricelist_id):
+        """ returns pricelist rec  """
+        pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist_id)])
+        if not pl_type:
+            pricelist = self.env['product.pricelist'].browse(pricelist_id)
+            pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
+        pl = self.env['product.pricelist_chart'].search_read([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
+        if not pl:
+            pl_type.calc(product.id)
+            pl = self.env['product.pricelist_chart'].search_read([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
+        return pl
+            
+    @api.multi
+    def get_html_price_long(self,pricelist):
+        def price_format(self, price, dp=None):
+            if not dp:
+                dp = request.env['res.lang'].search_read([('code', '=', request.env.lang)], ['decimal_point'])
+                dp = dp and dp[0]['decimal_point'] or '.'
+            return ('%.2f' %price).replace('.', dp)
+        def price_txt_format(self,price,currency):
+            return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
+                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
+                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
+                post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
+            ).format(
+                symbol=currency.symbol,
+            )
+        
+        if isinstance(pricelist,int):
+            pricelist = self.env['product.pricelist'].browse(pricelist)
+        chart_line = self.get_pricelist_chart_line(pricelist)
+        price = ''
+        if chart_line.pricelist_chart_id.rec_pricelist:
+            price = """
+                <div>
+                    <span style="white-space: nowrap;" />{name}</span>
+                    <span style="white-space: nowrap;" />{price}</span>
+                    <span style="display: inline;">{tax}</span>
+                </div>
+            """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
+                       price=price_format(chart_line.rec_price),
+                       tax=_('(rec incl. tax)') if chart_line.pricelist_chart_id.rec_pricelist.rec_price_tax else _('(rec excl. tax)'))
+        if chart_line.pricelist_chart_id.pricelist:
+            price += """
+                <div>
+                    <span style="white-space: nowrap;" />{name}</span>
+                    <span style="white-space: nowrap;" /><b>{price}</b></span>
+                    <span style="display: inline;">{tax}</span>
+                </div>
+            """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
+                       price=price_format(chart_line.price),
+                       tax=_('(your incl. tax)') if chart_line.pricelist_chart_id.pricelist.price_tax else _('(your excl. tax)'))
+        return """
+            <div class="product_price">
+                <b class="text-muted">
+                    <h5>{price_from}</h5>
+                    <h4>
+                        <div>
+                            {price}
+                        </div>
+                    </h4>
+                </b>
+            </div>
+        """.format(price_from=_('Price From'),price=price)
 
 class product_pricelist_chart(models.Model):
     _name = 'product.pricelist_chart'
@@ -127,7 +194,25 @@ class product_pricelist_chart(models.Model):
     rec_price  = fields.Float()
     rec_price_tax = fields.Boolean()
     rec_price_txt  = fields.Char(compute='_price_txt')
-    rec_price_txt_chort  = fields.Char(compute='_price_txt')
+    rec_price_txt_short  = fields.Char(compute='_price_txt')
+    
+    
+    @api.model
+    def get_pricelist_chart_html(self,product_id,pricelist_id):
+        """ returns pricelist html  """
+        
+        pl_ids = self.env['product.pricelist_chart'].browse()
+        for product in self:
+            pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
+            if not pl_type:
+                pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
+            pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
+            if not pl:
+                pl = pl_type.calc(product.id)
+            pl_ids |= pl
+        return pl_ids
+
+    
 
 class product_template(models.Model):
     _inherit = 'product.template'
