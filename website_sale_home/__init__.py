@@ -1,1 +1,2 @@
 import website_sale
+import res_partner

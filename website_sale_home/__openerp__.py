@@ -36,6 +36,7 @@ A home page for logged in user
         'security/security_data.xml',
         'website_sale_template.xml',
         'website_sale_data.xml',
+        'res_partner_view.xml',
     ],
     'installable': True,
 }
