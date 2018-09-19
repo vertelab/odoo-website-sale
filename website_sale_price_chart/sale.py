@@ -54,12 +54,12 @@ class pricelist_chart_type(models.Model):
             pl.price = pl_type.pricelist.price_get(product_id, 1)[pl_type.pricelist.id]
             _logger.warn('price %s' % pl.price)
             if pl_type.price_tax:
-                pl.price + sum(map(lambda x: x.get('amount', 0.0), pl_type.price_tax.compute_all(pl.price, 1, None, self.env.user.partner_id)['taxes']))
+                pl.price += sum(map(lambda x: x.get('amount', 0.0), pl_type.price_tax.compute_all(pl.price, 1, None, self.env.user.partner_id)['taxes']))
                 pl.price_tax = True
             if pl_type.rec_pricelist:
                 pl.rec_price = pl_type.rec_pricelist.price_get(product_id, 1)[pl_type.rec_pricelist.id]
                 if pl_type.rec_price_tax:
-                    pl.rec_price + sum(map(lambda x: x.get('amount', 0.0), pl_type.rec_price_tax.compute_all(pl.rec_price, 1, None, self.env.user.partner_id)['taxes']))
+                    pl.rec_price += sum(map(lambda x: x.get('amount', 0.0), pl_type.rec_price_tax.compute_all(pl.rec_price, 1, None, self.env.user.partner_id)['taxes']))
                     pl.rec_price_tax = True
             else:
                 pl.rec_price = None
