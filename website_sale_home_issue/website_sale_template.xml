@@ -155,40 +155,42 @@
                                 </form>
                             </div>
                             <div class="row">
-                                <h3>
-                                    <t t-esc="issue.name" />
-                                </h3>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h4>Issue name</h4>
-                                </div>
-                                <div class="col-md-8">
-                                    <t t-esc="issue.name" />
+                                <div class="col-md-12">
+                                    <h3>
+                                        <t t-esc="issue.name" />
+                                    </h3>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <strong>Date</strong>
+                                    <h4><strong>Issue name</strong></h4>
                                 </div>
                                 <div class="col-md-8">
-                                    <t t-esc="issue.date" />
+                                    <h4 t-esc="issue.name" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <h4>Responsible</h4>
+                                    <h4><strong>Date</strong></h4>
                                 </div>
                                 <div class="col-md-8">
-                                    <t t-esc="issue.user_id.name"/>
+                                    <h4 t-esc="issue.date" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <h4>Status</h4>
+                                    <h4><strong>Responsible</strong></h4>
                                 </div>
                                 <div class="col-md-8">
-                                    <t t-esc="issue.stage_id.name"/>
+                                    <h4 t-esc="issue.user_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4><strong>Status</strong></h4>
+                                </div>
+                                <div class="col-md-8">
+                                    <h4 t-esc="issue.stage_id.name"/>
                                 </div>
                             </div>
                         </div>
