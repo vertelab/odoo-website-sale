@@ -26,6 +26,7 @@ import werkzeug
 import base64
 import sys
 import traceback
+from openerp.addons.website_sale_home.website_sale import website_sale_home
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -63,3 +64,15 @@ class website_sale_home(http.Controller):
                 issue.sudo().message_subscribe_users([request.env.user.id])
                 return 'new'
         return 'old'
+
+
+class website_sale_home(website_sale_home):
+
+    @http.route(['/home/<model("res.users"):home_user>/issue/<model("project.issue"):issue>',], type='http', auth="user", website=True)
+    def home_page_order(self, home_user=None, issue=None, tab='issues', **post):
+        # ~ self.validate_user(home_user)
+        return request.render('website_sale_home_issue.page_issue', {
+            'home_user': home_user,
+            'issue': issue,
+            'tab': tab,
+        })

@@ -54,6 +54,13 @@
     margin-top: 5px;
 }
 
+.issue_detail {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+
 @media (max-width: 700px) {
     .msg_avatar img {
         width: 20px;
