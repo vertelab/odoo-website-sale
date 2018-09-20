@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <template id="message_issue" name="Message Issue">
-            <div id="oe_issue_message_box" class="mt64">
+            <div id="oe_issue_message_box" class="mt64 hidden">
                 <t t-set="last_issue" t-value="commercial_partner_id.sudo().last_issue()" />
                 <t t-if="last_issue">
                     <div id="issue_info" t-att-data-issue_id="last_issue.id" class="container" style="padding: 0px;">
