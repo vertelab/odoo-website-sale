@@ -11,7 +11,7 @@
                     <field name="is_home_admin" />
                 </field>
                 <h4 class="oe_partner_heading" position="inside">
-                    <i class="fa fa-user" attrs="{'invisible': [('has_account', '=', False)]}" title="Has Account" />
+                    <i class="fa fa-user" attrs="{'invisible': [('has_account', '=', False)]}" title="Has Account" style="margin-left: 5px;" />
                     <i class="fa fa-wrench" attrs="{'invisible': [('is_home_admin', '=', False)]}" title="Home Admin" />
                 </h4>
             </field>
