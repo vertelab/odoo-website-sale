@@ -50,7 +50,7 @@ class pricelist_chart_type(models.Model):
         for pl_type in self:
             pl = self.env['product.pricelist_chart'].search([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
             if not pl:
-                pl = self.env['product.pricelist_chart'].create({'product_id': product_id,'pricelist_chart_id': pl_type.id})
+                pl = self.env['product.pricelist_chart'].sudo().create({'product_id': product_id,'pricelist_chart_id': pl_type.id})
             pl.price = pl_type.pricelist.price_get(product_id, 1)[pl_type.pricelist.id]
             _logger.warn('price %s' % pl.price)
             if pl_type.price_tax:
@@ -88,7 +88,7 @@ class product_product(models.Model):
         for product in self:
             pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
             if not pl_type:
-                pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
+                pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
             pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
             if not pl:
                 pl = pl_type.calc(product.id)
@@ -102,7 +102,7 @@ class product_product(models.Model):
         pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist_id)])
         if not pl_type:
             pricelist = self.env['product.pricelist'].browse(pricelist_id)
-            pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
+            pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
         pl = self.env['product.pricelist_chart'].search_read([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
         if not pl:
             pl_type.calc(product.id)
@@ -207,7 +207,7 @@ class product_pricelist_chart(models.Model):
         for product in self:
             pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
             if not pl_type:
-                pl_type = self.env['pricelist_chart.type'].create({'name': pricelist.name,'pricelist': pricelist.id})
+                pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
             pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
             if not pl:
                 pl = pl_type.calc(product.id)
