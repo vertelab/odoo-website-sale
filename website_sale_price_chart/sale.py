@@ -164,6 +164,50 @@ class product_product(models.Model):
             </div>
         """.format(price_from=_('Price From'),price=price)
 
+    @api.model
+    def get_html_price_short(self,product_id,pricelist):
+        def price_format(price, dp=None):
+            if not dp:
+                dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
+                dp = dp and dp[0]['decimal_point'] or '.'
+            return ('%.2f' %price).replace('.', dp)
+        def price_txt_format(self,price,currency):
+            return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
+                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
+                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
+                post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
+            ).format(
+                symbol=currency.symbol,
+            )
+
+        if isinstance(pricelist,int):
+            pricelist = self.env['product.pricelist'].browse(pricelist)
+        product = self.env['product.product'].browse(product_id)
+        chart_line = product.get_pricelist_chart_line(pricelist)
+        price = ''
+        if chart_line.pricelist_chart_id.pricelist:
+            price += """
+                <h5><!-- price -->
+                    <span style="white-space: nowrap;" /><b>{price}</b></span>
+                    <span style="white-space: nowrap;" />{name}</span>
+                </h5>
+            """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
+                       price=price_format(chart_line.price),
+                      
+                       )
+        if chart_line.pricelist_chart_id.rec_pricelist:
+            price += """
+                <h5><!-- rec price -->
+                    (<span style="white-space: nowrap;" />{price}</span>
+                    <span style="white-space: nowrap;" />{name}</span>)
+                </h5>
+            """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
+                       price=price_format(chart_line.rec_price),
+                       )
+
+        return price
+
+
 class product_pricelist_chart(models.Model):
     _name = 'product.pricelist_chart'
 
