@@ -110,7 +110,7 @@ class product_product(models.Model):
         return pl
 
     @api.multi
-    def get_html_price_long(self,pricelist):
+    def get_html_price_long(self, pricelist):
         def price_format(price, dp=None):
             if not dp:
                 dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
@@ -131,10 +131,10 @@ class product_product(models.Model):
         price = '<!-- pre rec price -->'
         if chart_line.pricelist_chart_id.rec_pricelist:
             price = """
-                <div><!-- rec price -->
-                    <span style="white-space: nowrap;" />{name}</span>
-                    <span style="white-space: nowrap;" />{price}</span>
-                    <span style="display: inline;">{tax}</span>
+                <div style="white-space: nowrap;"><!-- rec price -->
+                    <span>{name}</span>
+                    <span>{price}</span>
+                    <span>{tax}</span>
                 </div>
             """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
                        price=price_format(chart_line.rec_price),
@@ -142,27 +142,20 @@ class product_product(models.Model):
                        )
         if chart_line.pricelist_chart_id.pricelist:
             price += """
-                <div><!-- price -->
-                    <span style="white-space: nowrap;" />{name}</span>
-                    <span style="white-space: nowrap;" /><b>{price}</b></span>
-                    <span style="display: inline;">{tax}</span>
+                <div style="white-space: nowrap;"><!-- price -->
+                    <span>{name}</span>
+                    <span><b>{price}</b></span>
+                    <span>{tax}</span>
                 </div>
             """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(chart_line.price),
                        tax=_('(your incl. tax)') if chart_line.pricelist_chart_id.price_tax else _('(your excl. tax)')
                        )
         return """
-            <div class="product_price">
-                <b class="text-muted">
-                    <h5>{price_from}</h5>
-                    <h4>
-                        <div>
-                            {price}
-                        </div>
-                    </h4>
-                </b>
+            <div>
+                {price}
             </div>
-        """.format(price_from=_('Price From'),price=price)
+        """.format(price=price)
 
     @api.model
     def get_html_price_short(self,product_id,pricelist):
@@ -269,7 +262,7 @@ class product_template(models.Model):
         return self.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=lambda p: p.price, reverse=False)[0]
 
     @api.model
-    def get_html_price_long(self,product_id,pricelist):
+    def get_html_price_long(self, product_id, pricelist):
         def price_format(price, dp=None):
             if not dp:
                 dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
@@ -311,14 +304,7 @@ class product_template(models.Model):
                        tax=_('(your incl. tax)') if chart_line.pricelist_chart_id.price_tax else _('(your excl. tax)')
                        )
         return """
-            <div class="product_price">
-                <b class="text-muted">
-                    <h5>{price_from}</h5>
-                    <h4>
-                        <div>
-                            {price}
-                        </div>
-                    </h4>
-                </b>
+            <div>
+                {price}
             </div>
-        """.format(price_from=_('Price From'),price=price)
+        """.format(price=price)
