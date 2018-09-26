@@ -92,6 +92,8 @@ class product_product(models.Model):
             pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
             if not pl:
                 pl = pl_type.calc(product.id)
+            if len(pl) > 1:
+                pl = pl[0]
             pl_ids |= pl
         return pl_ids
 
