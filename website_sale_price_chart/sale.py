@@ -82,11 +82,11 @@ class product_product(models.Model):
 
 
     @api.multi
-    def get_pricelist_chart_line(self,pricelist):
+    def get_pricelist_chart_line(self, pricelist):
         """ returns pricelist line-object  """
         pl_ids = self.env['product.pricelist_chart'].browse()
         for product in self:
-            pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
+            pl_type = self.env['pricelist_chart.type'].sudo().search([('pricelist','=',pricelist.id)])
             if not pl_type:
                 pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
             pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
@@ -259,7 +259,8 @@ class product_template(models.Model):
     @api.multi
     def get_pricelist_chart_line(self, pricelist):
         """ returns cheapest pricelist line  """
-        return self.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=lambda p: p.price, reverse=False)[0]
+        if self.product_variant_ids:
+            return self.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=lambda p: p.price, reverse=False)[0]
 
     @api.model
     def get_html_price_long(self, product_id, pricelist):
@@ -281,7 +282,9 @@ class product_template(models.Model):
             pricelist = self.env['product.pricelist'].browse(pricelist)
         chart_line = self.env['product.template'].browse(product_id).get_pricelist_chart_line(pricelist)
         price = '<!-- pre rec price -->'
-        if chart_line.pricelist_chart_id.rec_pricelist:
+        if not chart_line:
+            price += _("No price available")
+        if chart_line and chart_line.pricelist_chart_id.rec_pricelist:
             price = """
                 <div><!-- rec price -->
                     <span style="white-space: nowrap;" />{name}</span>
@@ -292,7 +295,7 @@ class product_template(models.Model):
                        price=price_format(chart_line.rec_price),
                        tax=_('(rec incl. tax)') if chart_line.pricelist_chart_id.rec_price_tax else _('(rec excl. tax)')
                        )
-        if chart_line.pricelist_chart_id.pricelist:
+        if chart_line and chart_line.pricelist_chart_id.pricelist:
             price += """
                 <div><!-- price -->
                     <span style="white-space: nowrap;" />{name}</span>
