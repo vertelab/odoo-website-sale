@@ -40,7 +40,7 @@ class pricelist_chart_type(models.Model):
     _description = "Pricelist Chart Type"
 
     name = fields.Char()
-    pricelist = fields.Many2one(comodel_name='product.pricelist',help='This pricelist is used to choose price-listing')
+    pricelist = fields.Many2one(comodel_name='product.pricelist',help='This pricelist is used to choose price-listing', required=True)
     price_tax  = fields.Many2one(comodel_name='account.tax',help="Use this tax for price calculatopon, none if tax is not included.")
     rec_pricelist = fields.Many2one(comodel_name='product.pricelist')
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included')
@@ -186,7 +186,7 @@ class product_product(models.Model):
                 </h5>
             """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(chart_line.price),
-                      
+
                        )
         if chart_line.pricelist_chart_id.rec_pricelist:
             price += """
