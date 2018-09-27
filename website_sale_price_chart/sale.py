@@ -224,10 +224,10 @@ class product_pricelist_chart(models.Model):
     def _price_txt(self):
 
         self.price_txt_short = self._price_txt_format(self.price,self.pricelist_chart_id.pricelist.currency_id)
-        self.price_txt       = '%s %s' % (self.price_txt_short + _('ca price') if self.price_tax else _('ca Price excl. tax')  )
+        self.price_txt       = '%s %s' % (self.price_txt_short + _('your price') if self.price_tax else _('your price excl. tax')  )
 
         self.rec_price_txt_short = self._price_txt_format(self.rec_price,self.pricelist_chart_id.rec_pricelist.currency_id)
-        self.rec_price_txt       = '%s %s' % (self.rec_price_txt_short + _('ca price') if self.rec_price_tax else _('ca Price excl. tax')  )
+        self.rec_price_txt       = '%s %s' % (self.rec_price_txt_short + _('ca price') if self.rec_price_tax else _('ca price excl. tax')  )
         self.rec_price_txt_short = '(%s)' % self.rec_price_txt_short
 
     price_txt  = fields.Char(compute='_price_txt')
@@ -295,9 +295,9 @@ class product_template(models.Model):
                 </div>
             """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
                        price=price_format(chart_line.rec_price),
-                       tax=_('(rec incl. tax)') if chart_line.pricelist_chart_id.rec_price_tax else _('(rec excl. tax)')
+                       tax=_('(ca price)') if chart_line.pricelist_chart_id.rec_price_tax else _('(ca price excl. tax)')
                        )
-        if chart_line and chart_line.pricelist_chart_id.pricelist:
+        if chart_line and chart_line.pricelist_chart_id.pricelist and chart_line.pricelist_chart_id.pricelist.for_reseller:
             price += """
                 <div><!-- price -->
                     <span style="white-space: nowrap;" />{name}</span>
@@ -306,7 +306,18 @@ class product_template(models.Model):
                 </div>
             """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(chart_line.price),
-                       tax=_('(ca price)') if chart_line.pricelist_chart_id.price_tax else _('(ca price tax)')
+                       tax=_('(your price incl. tax)') if chart_line.pricelist_chart_id.price_tax else _('(your price excl. tax)')
+                       )
+        if chart_line and chart_line.pricelist_chart_id.pricelist and not chart_line.pricelist_chart_id.pricelist.for_reseller:
+            price += """
+                <div><!-- public price -->
+                    <span style="white-space: nowrap;" />{name}</span>
+                    <span style="white-space: nowrap;" /><b>{price}</b></span>
+                    <span style="display: inline;">{tax}</span>
+                </div>
+            """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
+                       price=price_format(chart_line.price),
+                       tax=_('(ca price)') if chart_line.pricelist_chart_id.price_tax else _('(ca price excl. tax)')
                        )
         return """
             <div>
