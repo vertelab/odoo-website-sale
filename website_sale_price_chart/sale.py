@@ -288,7 +288,7 @@ class product_template(models.Model):
             price += _("No price available")
         if chart_line and chart_line.pricelist_chart_id.rec_pricelist:
             price = """
-                <div><!-- rec price -->
+                <div style="white-space: nowrap;font-size: 0.8em;"><!-- rec price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" />{price}</span>
                     <span style="display: inline;">{tax}</span>
@@ -299,7 +299,7 @@ class product_template(models.Model):
                        )
         if chart_line and chart_line.pricelist_chart_id.pricelist and chart_line.pricelist_chart_id.pricelist.for_reseller:
             price += """
-                <div><!-- price -->
+                <div style="white-space: nowrap;font-size: 0.8em;"><!-- price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" /><b>{price}</b></span>
                     <span style="display: inline;">{tax}</span>
@@ -310,7 +310,7 @@ class product_template(models.Model):
                        )
         if chart_line and chart_line.pricelist_chart_id.pricelist and not chart_line.pricelist_chart_id.pricelist.for_reseller:
             price += """
-                <div><!-- public price -->
+                <div style="white-space: nowrap;font-size: 0.8em;"><!-- public price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" /><b>{price}</b></span>
                     <span style="display: inline;">{tax}</span>
