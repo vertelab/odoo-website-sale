@@ -98,111 +98,6 @@ class product_product(models.Model):
         return pl_ids
 
 
-    @api.model
-    def get_pricelist_chart_rec(self,product_id,pricelist_id):
-        """ returns pricelist rec  """
-        pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist_id)])
-        if not pl_type:
-            pricelist = self.env['product.pricelist'].browse(pricelist_id)
-            pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
-        pl = self.env['product.pricelist_chart'].search_read([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
-        if not pl:
-            pl_type.calc(product.id)
-            pl = self.env['product.pricelist_chart'].search_read([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
-        return pl
-
-    @api.multi
-    def get_html_price_long(self, pricelist):
-        def price_format(price, dp=None):
-            if not dp:
-                dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
-                dp = dp and dp[0]['decimal_point'] or '.'
-            return ('%.2f' %price).replace('.', dp)
-        def price_txt_format(self,price,currency):
-            return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
-                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
-                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
-                post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
-            ).format(
-                symbol=currency.symbol,
-            )
-
-        if isinstance(pricelist,int):
-            pricelist = self.env['product.pricelist'].browse(pricelist)
-        chart_line = self.get_pricelist_chart_line(pricelist)
-        price = '<!-- pre rec price -->'
-        if chart_line.pricelist_chart_id.rec_pricelist:
-            price = """
-                <div style="white-space: nowrap;"><!-- rec price -->
-                    <span>{name}</span>
-                    <span>{price}</span>
-                    <span>{tax}</span>
-                </div>
-            """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
-                       price=price_format(chart_line.rec_price),
-                       tax=_('(rec incl. tax)') if chart_line.pricelist_chart_id.rec_price_tax else _('(rec excl. tax)')
-                       )
-        if chart_line.pricelist_chart_id.pricelist:
-            price += """
-                <div style="white-space: nowrap;"><!-- price -->
-                    <span>{name}</span>
-                    <span><b>{price}</b></span>
-                    <span>{tax}</span>
-                </div>
-            """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
-                       price=price_format(chart_line.price),
-                       tax=_('(ca price)') if chart_line.pricelist_chart_id.price_tax else _('(ca price excl. tax)')
-                       )
-        return """
-            <div>
-                {price}
-            </div>
-        """.format(price=price)
-
-    @api.model
-    def get_html_price_short(self,product_id,pricelist):
-        def price_format(price, dp=None):
-            if not dp:
-                dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
-                dp = dp and dp[0]['decimal_point'] or '.'
-            return ('%.2f' %price).replace('.', dp)
-        def price_txt_format(self,price,currency):
-            return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
-                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
-                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
-                post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
-            ).format(
-                symbol=currency.symbol,
-            )
-
-        if isinstance(pricelist,int):
-            pricelist = self.env['product.pricelist'].browse(pricelist)
-        product = self.env['product.product'].browse(product_id)
-        chart_line = product.get_pricelist_chart_line(pricelist)
-        price = ''
-        if chart_line.pricelist_chart_id.pricelist:
-            price += """
-                <h5><!-- price -->
-                    <span style="white-space: nowrap;" /><b>{price}</b></span>
-                    <span style="white-space: nowrap;" />{name}</span>
-                </h5>
-            """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
-                       price=price_format(chart_line.price),
-
-                       )
-        if chart_line.pricelist_chart_id.rec_pricelist:
-            price += """
-                <h5><!-- rec price -->
-                    (<span style="white-space: nowrap;" />{price}</span>
-                    <span style="white-space: nowrap;" />{name}</span>)
-                </h5>
-            """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
-                       price=price_format(chart_line.rec_price),
-                       )
-
-        return price
-
-
 class product_pricelist_chart(models.Model):
     _name = 'product.pricelist_chart'
 
@@ -238,34 +133,23 @@ class product_pricelist_chart(models.Model):
     rec_price_txt_short  = fields.Char(compute='_price_txt')
 
 
-    @api.model
-    def get_pricelist_chart_html(self,product_id,pricelist_id):
-        """ returns pricelist html  """
+    # ~ @api.model
+    # ~ def get_pricelist_chart_html(self,product_id,pricelist_id):
+        # ~ """ returns pricelist html  """
 
-        pl_ids = self.env['product.pricelist_chart'].browse()
-        for product in self:
-            pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
-            if not pl_type:
-                pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
-            pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
-            if not pl:
-                pl = pl_type.calc(product.id)
-            pl_ids |= pl
-        return pl_ids
-
-
-
-class product_template(models.Model):
-    _inherit = 'product.template'
+        # ~ pl_ids = self.env['product.pricelist_chart'].browse()
+        # ~ for product in self:
+            # ~ pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
+            # ~ if not pl_type:
+                # ~ pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
+            # ~ pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
+            # ~ if not pl:
+                # ~ pl = pl_type.calc(product.id)
+            # ~ pl_ids |= pl
+        # ~ return pl_ids
 
     @api.multi
-    def get_pricelist_chart_line(self, pricelist):
-        """ returns cheapest pricelist line  """
-        if self.product_variant_ids:
-            return self.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=lambda p: p.price, reverse=False)[0]
-
-    @api.model
-    def get_html_price_long(self, product_id, pricelist):
+    def get_html_price_long(self):
         def price_format(price, dp=None):
             if not dp:
                 dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
@@ -280,47 +164,93 @@ class product_template(models.Model):
                 symbol=currency.symbol,
             )
 
-        if isinstance(pricelist,int):
-            pricelist = self.env['product.pricelist'].browse(pricelist)
-        chart_line = self.env['product.template'].browse(product_id).get_pricelist_chart_line(pricelist)
+        # ~ if isinstance(pricelist,int):
+            # ~ pricelist = self.env['product.pricelist'].browse(pricelist)
+        # ~ chart_line = self.env['product.template'].browse(product_id).get_pricelist_chart_line(pricelist)
         price = '<!-- pre rec price -->'
-        if not chart_line:
-            price += _("No price available")
-        if chart_line and chart_line.pricelist_chart_id.rec_pricelist:
+        if self.pricelist_chart_id.rec_pricelist:
             price = """
-                <div style="white-space: nowrap;font-size: 0.8em;"><!-- rec price -->
+                <div style="white-space: nowrap"><!-- rec price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" />{price}</span>
                     <span style="display: inline;">{tax}</span>
                 </div>
-            """.format(name=chart_line.pricelist_chart_id.rec_pricelist.currency_id.name,
-                       price=price_format(chart_line.rec_price),
-                       tax=_('(ca price)') if chart_line.pricelist_chart_id.rec_price_tax else _('(ca price excl. tax)')
+            """.format(name=self.pricelist_chart_id.rec_pricelist.currency_id.name,
+                       price=price_format(self.rec_price),
+                       tax=_('(ca price)') if self.pricelist_chart_id.rec_price_tax else _('(ca price excl. tax)')
                        )
-        if chart_line and chart_line.pricelist_chart_id.pricelist and chart_line.pricelist_chart_id.pricelist.for_reseller:
+        if self.pricelist_chart_id.pricelist and self.pricelist_chart_id.pricelist.for_reseller:
             price += """
-                <div style="white-space: nowrap;font-size: 0.8em;"><!-- price -->
+                <div style="white-space: nowrap"><!-- price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" /><b>{price}</b></span>
                     <span style="display: inline;">{tax}</span>
                 </div>
-            """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
-                       price=price_format(chart_line.price),
-                       tax=_('(your price incl. tax)') if chart_line.pricelist_chart_id.price_tax else _('(your price excl. tax)')
+            """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
+                       price=price_format(self.price),
+                       tax=_('(your price incl. tax)') if self.pricelist_chart_id.price_tax else _('(your price excl. tax)')
                        )
-        if chart_line and chart_line.pricelist_chart_id.pricelist and not chart_line.pricelist_chart_id.pricelist.for_reseller:
+        if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
             price += """
-                <div style="white-space: nowrap;font-size: 0.8em;"><!-- public price -->
+                <div style="white-space: nowrap"><!-- public price -->
                     <span style="white-space: nowrap;" />{name}</span>
                     <span style="white-space: nowrap;" /><b>{price}</b></span>
                     <span style="display: inline;">{tax}</span>
                 </div>
-            """.format(name=chart_line.pricelist_chart_id.pricelist.currency_id.name,
-                       price=price_format(chart_line.price),
-                       tax=_('(ca price)') if chart_line.pricelist_chart_id.price_tax else _('(ca price excl. tax)')
+            """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
+                       price=price_format(self.price),
+                       tax=_('(ca price)') if self.pricelist_chart_id.price_tax else _('(ca price excl. tax)')
                        )
         return """
             <div>
                 {price}
             </div>
         """.format(price=price)
+
+    @api.multi
+    def get_html_price_short(self):
+        def price_format(price, dp=None):
+            if not dp:
+                dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
+                dp = dp and dp[0]['decimal_point'] or '.'
+            return ('%.2f' %price).replace('.', dp)
+        def price_txt_format(self,price,currency):
+            return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
+                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
+                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
+                post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
+            ).format(
+                symbol=currency.symbol,
+            )
+        price = ''
+        if self.pricelist_chart_id.pricelist:
+            price += """
+                <h5><!-- price -->
+                    <span style="white-space: nowrap;" /><b>{price}</b></span>
+                    <span style="white-space: nowrap;" />{name}</span>
+                </h5>
+            """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
+                       price=price_format(self.price),
+
+                       )
+        if self.pricelist_chart_id.rec_pricelist:
+            price += """
+                <h5><!-- rec price -->
+                    (<span style="white-space: nowrap;" />{price}</span>
+                    <span style="white-space: nowrap;" />{name}</span>)
+                </h5>
+            """.format(name=self.pricelist_chart_id.rec_pricelist.currency_id.name,
+                       price=price_format(self.rec_price),
+                       )
+
+        return price
+
+
+class product_template(models.Model):
+    _inherit = 'product.template'
+
+    @api.multi
+    def get_pricelist_chart_line(self, pricelist):
+        """ returns cheapest pricelist line  """
+        if self.product_variant_ids:
+            return self.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=lambda p: p.price, reverse=False)[0]
