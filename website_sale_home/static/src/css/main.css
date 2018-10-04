@@ -19,8 +19,8 @@ div.home_tab_menu{
 }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{
-  background-color: #CB683F;
-  background-image: #CB683F;
+  background-color: #ddd;
+  background-image: #ddd;
   color: #ffffff;
 }
 
@@ -33,11 +33,11 @@ div.home_tab_menu{
   border-left: 0;
   border-bottom: 13px solid transparent;
   border-top: 13px solid transparent;
-  border-left: 10px solid #CB683F;
+  border-left: 10px solid #ddd;
 }
 
 .nav-pills > li.active > a {
-    border-color: #CB683F;
+    border-color: #ddd;
 }
 
 .input_readonly {
