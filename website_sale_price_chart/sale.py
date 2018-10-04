@@ -47,10 +47,9 @@ class pricelist_chart_type(models.Model):
 
     @api.multi
     def calc(self, product_id):
+        self.env['product.pricelist_chart'].search([('product_id','=',product_id)]).unlink()
         for pl_type in self:
-            pl = self.env['product.pricelist_chart'].search([('product_id','=',product_id),('pricelist_chart_id','=',pl_type.id)])
-            if not pl:
-                pl = self.env['product.pricelist_chart'].sudo().create({'product_id': product_id,'pricelist_chart_id': pl_type.id})
+            pl = self.env['product.pricelist_chart'].sudo().create({'product_id': product_id,'pricelist_chart_id': pl_type.id})
             pl.price = pl_type.pricelist.price_get(product_id, 1)[pl_type.pricelist.id]
             _logger.warn('price %s' % pl.price)
             if pl_type.price_tax:
