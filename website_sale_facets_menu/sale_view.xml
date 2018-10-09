@@ -77,7 +77,7 @@
                         <div class="modal-content">
                             <div class="modal-header hidden"/>
                             <div class="modal-body" style="padding: 0px;">
-                                <form t-att-action="'/dn_list' if url == '/dn_list' else '/dn_shop'" method="post">
+                                <form action="/webshop" method="post">
                                     <div class="container">
                                         <t t-set="facets" t-value="request.env['product.facet'].search([])"/>
                                         <t t-set="first_facet" t-value="0"/>
@@ -132,7 +132,7 @@
                         <div class="modal-content">
                             <div class="modal-header hidden"/>
                             <div class="modal-body">
-                                <form t-att-action="'/dn_list' if url == '/dn_list' else '/dn_shop'" method="post">
+                                <form action="/webshop" method="post">
                                     <div class="container">
                                         <ul>
                                             <li>
