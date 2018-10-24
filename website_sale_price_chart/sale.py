@@ -83,6 +83,8 @@ class product_product(models.Model):
     @api.multi
     def get_pricelist_chart_line(self, pricelist):
         """ returns pricelist line-object  """
+        if isinstance(pricelist,int):
+            pricelist = self.env['product.pricelist'].browse(pricelist)
         pl_ids = self.env['product.pricelist_chart'].browse()
         for product in self:
             pl_type = self.env['pricelist_chart.type'].sudo().search([('pricelist','=',pricelist.id)])
@@ -251,5 +253,8 @@ class product_template(models.Model):
     @api.multi
     def get_pricelist_chart_line(self, pricelist):
         """ returns cheapest pricelist line  """
-        if self.product_variant_ids:
-            return self.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=lambda p: p.price, reverse=False)[0]
+        pl_ids = self.env['product.pricelist_chart'].browse()
+        for product in self:
+            if product.product_variant_ids:
+                pl_ids |= product.product_variant_ids.get_pricelist_chart_line(pricelist).sorted(key=lambda p: p.price, reverse=False)[0]
+        return pl_ids
