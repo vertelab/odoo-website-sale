@@ -46,7 +46,7 @@ class sale_order_minvalue(models.Model):
     info_text = fields.Text(translate=True)
     info_html = fields.Html(translate=True)
     sample_order = fields.Boolean(string="Sample order",help="Allow a sample order (first one) without any fee or block.")
-
+    payment_term_ids = fields.Many2many(comodel_name='account.payment.term', string='Payment Term', help='Payment terms excluded.')
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
     @api.multi
     def get_minimum_order_value(self):
         self.ensure_one()
-        return self.env['sale.order.minvalue'].search([('destination_ids', 'in', [self.partner_shipping_id.country_id.id or self.env.ref('base.se').id]), ('pricelist_ids', 'in', [self.pricelist_id.id])], limit=1)
+        return self.env['sale.order.minvalue'].search([('destination_ids', 'in', [self.partner_shipping_id.country_id.id or self.env.ref('base.se').id]), ('pricelist_ids', 'in', [self.pricelist_id.id]), ('payment_term_ids', 'not in', self.payment_term.id)], limit=1)
 
     @api.multi
     def check_minimum_order_value(self, minvalue=None):

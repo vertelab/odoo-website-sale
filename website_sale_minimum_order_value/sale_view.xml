@@ -23,6 +23,7 @@
           <field name="name" />
 -->
           <field name="min_value" />
+          <field name="payment_term_ids" widget="many2many_tags"/>
           <field name="destination_ids" widget="many2many_tags"/>
           <field name="pricelist_ids" widget="many2many_tags"/>
           <label for="product_id"/>
@@ -32,9 +33,9 @@
           </div>
           <field name="min_allowed_web_order" />
           <field name="sample_order" />
-          
+
             </group>
-          <notebook>            
+          <notebook>
               <page string="Text">
                 <field name="info_text" />
               </page>
@@ -61,9 +62,11 @@
         <tree string="Minimum Order Value" >
           <field name="name" />
           <field name="min_value" />
+          <field name="payment_term_ids" widget="many2many_tags"/>
           <field name="destination_ids" widget="many2many_tags"/>
           <field name="pricelist_ids" widget="many2many_tags"/>
           <field name="order_fee" />
+          <field name="sample_order" />
         </tree>
       </field>
     </record>
@@ -110,7 +113,7 @@
     </record>
 -->
     <menuitem action="action_minimum_order" id="menu_minimum_order" parent="base.menu_sales" sequence="99" groups="base.group_sale_salesman,base.group_sale_manager"/>
-    
+
     <!-- Sale Order -->
         <record id="view_order_minimum_value_form" model="ir.ui.view">
             <field name="name">sale.order_mimimum_value.form.view</field>
@@ -131,7 +134,7 @@
                 </xpath>
             </field>
         </record>
-    
+
     <record model="ir.ui.view" id="view_minimum_order_dialog_form">
         <field name="name">Minimum Order Value Dialog</field>
         <field name="model">sale.order.minvalue.dialog</field>
@@ -148,7 +151,7 @@
             </form>
         </field>
     </record>
-  
+
     <record id="action_minimum_order_dialog" model="ir.actions.act_window">
         <field name="name">Minimum Order Value Dialog</field>
         <field name="res_model">sale.order.minvalue.dialog</field>
