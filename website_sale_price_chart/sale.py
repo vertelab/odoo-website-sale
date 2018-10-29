@@ -43,8 +43,8 @@ class pricelist_chart_type(models.Model):
     pricelist = fields.Many2one(comodel_name='product.pricelist',help='This pricelist is used to choose price-listing', required=True)
     price_tax  = fields.Many2one(comodel_name='account.tax',help="Use this tax for price calculatopon, none if tax is not included.")
     rec_pricelist = fields.Many2one(comodel_name='product.pricelist')
-    rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included')
-    rec_price_product_tax  = fields.Boolean(string="Use Product Tax",comodel_name='account.tax',help='Use product tax for rec price')
+    rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included. (unless Use product Tax is checked)')
+    rec_price_product_tax  = fields.Boolean(string="Use Product Tax",comodel_name='account.tax',help='Use product tax for rec price instread of tax for rec price in this record')
 
     @api.multi
     def calc(self, product_id):
