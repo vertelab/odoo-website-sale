@@ -37,13 +37,14 @@ class pricelist_chart_type(models.Model):
 
     """
     _name = "pricelist_chart.type"
-    _description = "Pricelist Chart Type"
+    _description = "Pripricecelist Chart Type"
 
     name = fields.Char()
     pricelist = fields.Many2one(comodel_name='product.pricelist',help='This pricelist is used to choose price-listing', required=True)
     price_tax  = fields.Many2one(comodel_name='account.tax',help="Use this tax for price calculatopon, none if tax is not included.")
     rec_pricelist = fields.Many2one(comodel_name='product.pricelist')
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included')
+    rec_price_product_tax  = fields.Boolean(string="Use Product Tax",comodel_name='account.tax',help='Use product tax for rec price')
 
     @api.multi
     def calc(self, product_id):
@@ -57,7 +58,11 @@ class pricelist_chart_type(models.Model):
                 pl.price_tax = True
             if pl_type.rec_pricelist:
                 pl.rec_price = pl_type.rec_pricelist.price_get(product_id, 1)[pl_type.rec_pricelist.id]
-                if pl_type.rec_price_tax:
+                if pl_type.rec_price_product_tax:
+                    for tax in self.env['product.product'].browse(product_id).taxes_id:
+                        pl.rec_price += sum(map(lambda x: x.get('amount', 0.0),tax.compute_all(pl.rec_price, 1, None, self.env.user.partner_id)['taxes']))
+                    pl.rec_price_tax = True
+                elif pl_type.rec_price_tax:
                     pl.rec_price += sum(map(lambda x: x.get('amount', 0.0), pl_type.sudo().rec_price_tax.compute_all(pl.rec_price, 1, None, self.env.user.partner_id)['taxes']))
                     pl.rec_price_tax = True
             else:

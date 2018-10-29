@@ -12,6 +12,7 @@
       	              <field name="pricelist" />
       	              <field name="price_tax" />
       	              <field name="rec_pricelist" />
+      	              <field name="rec_price_product_tax" />
       	              <field name="rec_price_tax" />
       	          </group>
       	      </form>
@@ -27,6 +28,7 @@
       	              <field name="pricelist" />
       	              <field name="price_tax" />
       	              <field name="rec_pricelist" />
+      	              <field name="rec_price_product_tax" />
       	              <field name="rec_price_tax" />
       	      </tree>
       	  </field>
