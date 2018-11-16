@@ -1,5 +1,0 @@
-id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_product_pricelist_chart_manager,product.pricelist_chart.manager,model_product_pricelist_chart,base.group_sale_manager,1,1,1,1
-access_product_pricelist_chart_all,product.pricelist_chart.all,model_product_pricelist_chart,,1,1,1,1
-access_pricelist_chart_type_manager,product.chart_type.manager,model_pricelist_chart_type,base.group_sale_manager,1,0,0,0
-access_pricelist_chart_type_all,product.chart_type.all,model_pricelist_chart_type,,1,0,0,0

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    
+    
+    <record id="view_kr_product_import" model="ir.ui.view">
+        <field name="name">product.kr.import.view</field>
+        <field name="model">kr.product.import</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Import Products">
+                <group>
+                    <field name="import_file"/>
+                </group>
+                <footer>
+                    <button name="import_products" string="Import" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_kr_import" model="ir.actions.act_window">
+        <field name="name">KR Product Import</field>
+        <field name="res_model">kr.product.import</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_kr_product_import"/>
+    </record>
+    
+    <menuitem action="action_kr_import" id="menu_kr_import" parent="sales_team.menu_sale_config" sequence="100"/>
+    
+    <record id="product_product_view_form_campaign_price" model="ir.ui.view">
+        <field name="name">product.product.campaign.price</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="lst_price" position="after">
+                <field name="campaign_price"/>
+            </field>
+        </field>
+    </record>
+    
+</data>
+</odoo>
