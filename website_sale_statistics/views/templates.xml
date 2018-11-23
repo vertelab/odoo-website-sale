@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="statistics_layout" inherit_id="website.layout">
+            <xpath expr="//header" position="attributes">
+                <attribute name="t-att-class">'hidden' if hide_header else ''</attribute>
+            </xpath>
+            <xpath expr="//footer" position="attributes">
+                <attribute name="t-att-class">'hidden' if hide_footer else ''</attribute>
+            </xpath>
+        </template>
+        <template id="statistics" name="Statistics">
+            <t t-call="website_sale_statistics.statistics_layout">
+                <t t-set="hide_header" t-value="True"/>
+                <t t-set="hide_footer" t-value="True"/>
+                <div id="wrap" class="oe_structure oe_empty">
+                    <section>
+                        <h1 class="text-center">Statistics</h1>
+                        <div class="container" t-if="len(cols) &gt; 0">
+                            <t t-set="categs" t-value="cols.keys()" />
+                            <t t-set="teams" t-value="cols.get(cols.keys()[0])" />
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#day">Day</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#month">Month</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="day" class="tab-pane fade in active">
+                                    <table class="table table-responsive table-striped">
+                                        <thead>
+                                            <th />
+                                            <t t-foreach="teams" t-as="team">
+                                                <th>
+                                                    <t t-esc="team" />
+                                                </th>
+                                            </t>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="categs" t-as="categ">
+                                                <tr>
+                                                    <td>
+                                                        <t t-esc="categ" />
+                                                    </td>
+                                                    <t t-foreach="cols[categ]" t-as="team">
+                                                        <td>
+                                                            <t t-esc="cols[categ][team][0]" /><br/>
+                                                            <b><t t-esc="cols[categ][team][1]" /></b>
+                                                        </td>
+                                                    </t>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="month" class="tab-pane fade">
+                                    <table class="table table-responsive table-striped">
+                                        <thead>
+                                            <th />
+                                            <t t-foreach="teams" t-as="team">
+                                                <th>
+                                                    <t t-esc="team" />
+                                                </th>
+                                            </t>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="categs" t-as="categ">
+                                                <tr>
+                                                    <td>
+                                                        <t t-esc="categ" />
+                                                    </td>
+                                                    <t t-foreach="cols[categ]" t-as="team">
+                                                        <td>
+                                                            <t t-esc="cols[categ][team][2]" /><br/>
+                                                            <b><t t-esc="cols[categ][team][3]" /></b>
+                                                        </td>
+                                                    </t>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
