@@ -3,19 +3,95 @@
     <data>
         <template id="statistics_layout" inherit_id="website.layout">
             <xpath expr="//header" position="attributes">
-                <attribute name="t-att-class">'hidden' if hide_header else ''</attribute>
+                <attribute name="t-att-style">'display: none;' if hide_header else ''</attribute>
             </xpath>
             <xpath expr="//footer" position="attributes">
-                <attribute name="t-att-class">'hidden' if hide_footer else ''</attribute>
+                <attribute name="t-att-style">'display: none;' if hide_footer else ''</attribute>
             </xpath>
         </template>
         <template id="statistics" name="Statistics">
             <t t-call="website_sale_statistics.statistics_layout">
                 <t t-set="hide_header" t-value="True"/>
                 <t t-set="hide_footer" t-value="True"/>
+                <div class="navbar navbar-inverse navbar-static-top">
+                    <div id="report-header" class="container">
+                        <div class="col-xs-12">
+                            <h2 id="header-text" class="text-center"><b>Report</b></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt32 mb32">
+                    <div class="col-xs-12 sale-table">
+                        <h3 class="sale-header"><b>Sales</b></h3>
+                        <h3 class="sale-option"><b>Today</b> <a href="/sale/statistics/report?interval=today"><i class="fa fa-angle-right pull-right"/></a></h3>
+                        <h3 class="sale-option"><b>Yesterday</b> <a href="/sale/statistics/report?interval=yesterday"><i class="fa fa-angle-right pull-right"/></a></h3>
+                        <h3 class="sale-option"><b>Week</b> <a href="/sale/statistics/report?interval=week"><i class="fa fa-angle-right pull-right"/></a></h3>
+                        <h3 class="sale-option"><b>Month</b> <a href="/sale/statistics/report?interval=month"><i class="fa fa-angle-right pull-right"/></a></h3>
+                        <h3 class="sale-option"><b>Year</b> <a href="/sale/statistics/report?interval=year"><i class="fa fa-angle-right pull-right"/></a></h3>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <template id="statistics_report" name="Statistics Report">
+            <t t-call="website_sale_statistics.statistics_layout">
+                <t t-set="hide_header" t-value="True"/>
+                <t t-set="hide_footer" t-value="True"/>
+                <div class="navbar navbar-inverse navbar-static-top">
+                    <div id="report-header" class="container">
+                        <div class="col-xs-3">
+                            <a id="back-btn" href="/sale/statistics" class="btn btn-lg btn-default pull-left"><i class="fa fa-angle-left"/> Back</a>
+                        </div>
+                        <div class="col-xs-6">
+                            <h2 id="header-text" class="text-center"><b>Report</b></h2>
+                        </div>
+                        <div class="col-xs-3">
+                            <button id="update-btn" class="btn btn-lg btn-default pull-right" onclick="window.location.reload();"><i class="fa fa-refresh"/> Update</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="wrap" class="oe_structure oe_empty">
+                    <h3 class="text-center mt32"><t t-esc="date_str"/></h3>
+                    <div class="container mt32">
+                        <div class="col-xs-12 sale-table">
+                            <h3 class="sale-header"><b>Sales in SEK excl. tax</b></h3>
+                            <t t-foreach="table.get('line_total')" t-as="line">
+                                <h3 class="sale-option"><b><span t-esc="line[0]"/>:</b> <span t-esc="line[1]" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" class="pull-right"/></h3>
+                            </t>
+                            <h3 class="sale-footer"><b><span t-esc="table.get('sale_total')[0]"/>:</b> <span t-esc="table.get('sale_total')[1]" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" class="pull-right"/></h3>
+                        </div>
+                    </div>
+                    <div class="container mt16 mb32">
+                        <div class="col-xs-12 sale-table">
+                            <h3 class="sale-header"><b>Sales in total</b></h3>
+                            <t t-foreach="table.get('line_count')" t-as="line">
+                                <h3 class="sale-option"><b><span t-esc="line[0]"/>:</b> <span t-esc="line[1]" class="pull-right"/></h3>
+                            </t>
+                            <h3 class="sale-footer"><b><span t-esc="table.get('sale_count')[0]"/>:</b> <span t-esc="table.get('sale_count')[1]" class="pull-right"/></h3>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+<!--
+        <template id="statistics_report" name="Statistics Report">
+            <t t-call="website_sale_statistics.statistics_layout">
+                <t t-set="hide_header" t-value="True"/>
+                <t t-set="hide_footer" t-value="True"/>
+                <div class="navbar navbar-inverse navbar-static-top">
+                    <div class="container">
+                        <div class="col-xs-3">
+                            <a id="back-btn" href="/sale/statistics" class="btn btn-default pull-left"><i class="fa fa-angle-left"/> Back</a>
+                        </div>
+                        <div class="col-xs-6">
+                            <h2 id="header-text" class="text-center">Report</h2>
+                        </div>
+                        <div class="col-xs-3">
+                            <button id="update-btn" class="btn btn-default pull-right" onclick="window.location.reload();"><i class="fa fa-refresh"/> Update</button>
+                        </div>
+                    </div>
+                </div>
                 <div id="wrap" class="oe_structure oe_empty">
                     <section>
-                        <h1 class="text-center">Statistics</h1>
                         <div class="container" t-if="len(cols) &gt; 0">
                             <t t-set="categs" t-value="cols.keys()" />
                             <t t-set="teams" t-value="cols.get(cols.keys()[0])" />
@@ -87,6 +163,13 @@
                     </section>
                 </div>
             </t>
+        </template>
+-->
+        <template id="website_sale_statistics_assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Statistics Assets Frontend">
+            <xpath expr="." position="inside">
+                <link href="/website_sale_statistics/static/src/css/main.less" rel="stylesheet" type="text/css" />
+                <script src="/website_sale_statistics/static/src/js/main.js" type="text/javascript"/>
+            </xpath>
         </template>
     </data>
 </odoo>
