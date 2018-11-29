@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <template id="web_layout" inherit_id="web.layout">
+            <xpath expr="//head" position="inside">
+                <meta name="viewport" content="width=device-width, initial-scale=0.7"/>
+            </xpath>
+        </template>
         <template id="statistics_layout" inherit_id="website.layout">
             <xpath expr="//header" position="attributes">
                 <attribute name="t-att-style">'display: none;' if hide_header else ''</attribute>
