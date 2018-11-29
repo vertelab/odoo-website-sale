@@ -38,37 +38,44 @@ class Main(http.Controller):
 
     @http.route('/sale/statistics/report', type='http', auth='user', website=True)
     def sale_statistics_report(self, **post):
-        pcs = _('pcs')
-        date_domain = [('order_id.date_order', '>=', fields.Date.today() + ' 00:00:00'), ('order_id.date_order', '<=', fields.Date.today() + ' 23:59:59')]
+        pcs = _('pc(s)')
+        sale_order_date_domain = [('order_id.confirmation_date', '>=', fields.Date.today() + ' 00:00:00'), ('order_id.confirmation_date', '<=', fields.Date.today() + ' 23:59:59')]
+        pos_order_date_domain = [('order_id.date_order', '>=', fields.Date.today() + ' 00:00:00'), ('order_id.date_order', '<=', fields.Date.today() + ' 23:59:59')]
         date_str = fields.Date.today()
         interval = post.get('interval')
         if interval:
             if interval == 'yesterday':
                 today = fields.Date.from_string(fields.Date.today())
                 yesterday = fields.Date.to_string(today - timedelta(days=1))
-                date_domain = [('order_id.date_order', '>=', yesterday + ' 00:00:00'), ('order_id.date_order', '<=', yesterday + ' 23:59:59')]
+                sale_order_date_domain = [('order_id.confirmation_date', '>=', yesterday + ' 00:00:00'), ('order_id.confirmation_date', '<=', yesterday + ' 23:59:59')]
+                pos_order_date_domain = [('order_id.date_order', '>=', yesterday + ' 00:00:00'), ('order_id.date_order', '<=', yesterday + ' 23:59:59')]
                 date_str = yesterday
             if interval == 'week':
                 today = fields.Date.from_string(fields.Date.today())
                 monday = fields.Date.to_string(today + timedelta(days=-today.weekday(), weeks=0))
                 sunday = fields.Date.to_string(today + timedelta(days=+today.weekday(), weeks=0))
-                date_domain = [('order_id.date_order', '>=', monday + ' 00:00:00'), ('order_id.date_order', '<=', fields.Date.today() + ' 23:59:59')]
+                sale_order_date_domain = [('order_id.confirmation_date', '>=', monday + ' 00:00:00'), ('order_id.confirmation_date', '<=', fields.Date.today() + ' 23:59:59')]
+                pos_order_date_domain = [('order_id.date_order', '>=', monday + ' 00:00:00'), ('order_id.date_order', '<=', fields.Date.today() + ' 23:59:59')]
                 date_str = '%s → %s' %(monday, sunday)
             if interval == 'month':
-                date_domain = [('order_id.date_order', '>=', fields.Date.today()[:8] + '01 00:00:00'), ('order_id.date_order', '<=', fields.Date.today() + ' 23:59:59')]
-                date_str = '%s01 → %s%s' %(fields.Date.today()[:8], fields.Date.today()[:8], calendar.monthrange(int(fields.Date.today()[:4]), int(fields.Date.today()[5:7]))[1])
+                month_end = '%s%s' %(fields.Date.today()[:8], calendar.monthrange(int(fields.Date.today()[:4]), int(fields.Date.today()[5:7]))[1])
+                sale_order_date_domain = [('order_id.confirmation_date', '>=', fields.Date.today()[:8] + '01 00:00:00'), ('order_id.confirmation_date', '<=', month_end + ' 23:59:59')]
+                pos_order_date_domain = [('order_id.date_order', '>=', fields.Date.today()[:8] + '01 00:00:00'), ('order_id.date_order', '<=', month_end + ' 23:59:59')]
+                date_str = '%s01 → %s' %(fields.Date.today()[:8], month_end)
             if interval == 'year':
-                date_domain = [('order_id.date_order', '>=', fields.Date.today()[:5] + '01-01 00:00:00'), ('order_id.date_order', '<=', fields.Date.today() + ' 23:59:59')]
-                date_str = '%s-01-01 → %s-12-31' %(fields.Date.today()[:4], fields.Date.today()[:4])
+                year_end = '%s-12-31' %fields.Date.today()[:4]
+                sale_order_date_domain = [('order_id.confirmation_date', '>=', fields.Date.today()[:5] + '01-01 00:00:00'), ('order_id.confirmation_date', '<=', year_end + ' 23:59:59')]
+                pos_order_date_domain = [('order_id.date_order', '>=', fields.Date.today()[:5] + '01-01 00:00:00'), ('order_id.date_order', '<=', year_end + ' 23:59:59')]
+                date_str = '%s-01-01 → %s' %(fields.Date.today()[:4], year_end)
         table = {'line_total': [], 'line_count': []}
-        sale_order_lines = request.env['sale.order.line'].search([('order_id.state', 'not in', ['draft', 'cancel'])] + date_domain)
-        pos_order_lines = request.env['pos.order.line'].search([('order_id.state', 'not in', ['draft', 'cancel'])] + date_domain)
+        sale_order_lines = request.env['sale.order.line'].search([('order_id.state', 'not in', ['draft', 'sent', 'cancel'])] + sale_order_date_domain)
+        pos_order_lines = request.env['pos.order.line'].search([('order_id.state', 'not in', ['draft', 'cancel'])] + pos_order_date_domain)
         order_lines_total = 0.0
         order_lines_count = 0
         for sale_team in request.env['crm.team'].search([]):
-            sale_order_lines = sale_order_lines.with_context(team_id=sale_team).filtered(lambda l: l.order_id.team_id == l._context.get('team_id'))
-            sale_total = sum(sale_order_lines.mapped('price_subtotal')) if sale_order_lines else 0.0
-            sale_count = len(sale_order_lines)
+            order_lines = sale_order_lines.with_context(team_id=sale_team).filtered(lambda l: l.order_id.team_id == l._context.get('team_id'))
+            sale_total = sum(order_lines.mapped('price_subtotal')) if order_lines else 0.0
+            sale_count = len(order_lines)
             table['line_total'].append(tuple((sale_team.name, sale_total)))
             table['line_count'].append(tuple((sale_team.name, '%s %s' %(sale_count, pcs))))
             order_lines_total += sale_total

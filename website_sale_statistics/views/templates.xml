@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div id="wrap" class="oe_structure oe_empty">
-                    <h3 class="text-center mt32"><t t-esc="date_str"/></h3>
+                    <h3 class="text-center mt32"><b><span t-esc="date_str"/></b></h3>
                     <div class="container mt32">
                         <div class="col-xs-12 sale-table">
                             <h3 class="sale-header"><b>Sales in SEK excl. tax</b></h3>
