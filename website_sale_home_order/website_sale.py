@@ -138,7 +138,13 @@ class website_sale_home(website_sale_home):
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
-        for line in order.order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True ):
+        try:
+            order_lines = order.order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True )
+        except Exception as e:
+            order_lines = []
+            _logger.warn('Order Copy Error %s' % e)
+
+        for line in order_lines:
             if line.sale_home_confirm_copy():
                 request.env['sale.order.line'].sudo().create({
                         'order_id': sale_order.id,
