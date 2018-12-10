@@ -42,9 +42,10 @@ class pricelist_chart_type(models.Model):
     name = fields.Char()
     pricelist = fields.Many2one(comodel_name='product.pricelist',help='This pricelist is used to choose price-listing', required=True)
     price_tax  = fields.Many2one(comodel_name='account.tax',help="Use this tax for price calculatopon, none if tax is not included.")
+    price_product_tax  = fields.Boolean(string="Use Product Tax",comodel_name='account.tax',help='Use product tax for price instread of tax for price in this record')
     rec_pricelist = fields.Many2one(comodel_name='product.pricelist')
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included. (unless Use product Tax is checked)')
-    rec_price_product_tax  = fields.Boolean(string="Use Product Tax",comodel_name='account.tax',help='Use product tax for rec price instread of tax for rec price in this record')
+    rec_price_product_tax  = fields.Boolean(string="Use Product Tax (Rec)",comodel_name='account.tax',help='Use product tax for rec price instread of tax for rec price in this record')
 
     @api.multi
     def calc(self, product_id):
@@ -53,9 +54,16 @@ class pricelist_chart_type(models.Model):
             pl = self.env['product.pricelist_chart'].sudo().create({'product_id': product_id,'pricelist_chart_id': pl_type.id})
             pl.price = pl_type.pricelist.price_get(product_id, 1)[pl_type.pricelist.id]
             _logger.warn('price %s' % pl.price)
-            if pl_type.price_tax:
-                pl.price += sum(map(lambda x: x.get('amount', 0.0), pl_type.sudo().price_tax.compute_all(pl.price, 1, None, self.env.user.partner_id)['taxes']))
-                pl.price_tax = True
+            if pl_type.price_product_tax:
+                taxes = self.env['product.product'].browse(product_id).taxes_id
+                if len(taxes) > 0:
+                    for tax in taxes:
+                        pl.price += sum(map(lambda x: x.get('amount', 0.0),tax.compute_all(pl.price, 1, None, self.env.user.partner_id)['taxes']))
+                    pl.price_tax = True
+            else:
+                if pl_type.price_tax:
+                    pl.price += sum(map(lambda x: x.get('amount', 0.0), pl_type.sudo().price_tax.compute_all(pl.price, 1, None, self.env.user.partner_id)['taxes']))
+                    pl.price_tax = True
             if pl_type.rec_pricelist:
                 pl.rec_price = pl_type.rec_pricelist.price_get(product_id, 1)[pl_type.rec_pricelist.id]
                 if pl_type.rec_price_product_tax:
