@@ -3,6 +3,7 @@
 <data>
     
     
+<!--
     <record id="view_kr_product_import" model="ir.ui.view">
         <field name="name">product.kr.import.view</field>
         <field name="model">kr.product.import</field>
@@ -30,17 +31,134 @@
     </record>
     
     <menuitem action="action_kr_import" id="menu_kr_import" parent="sales_team.menu_sale_config" sequence="100"/>
+-->
     
-    <record id="product_product_view_form_campaign_price" model="ir.ui.view">
-        <field name="name">product.product.campaign.price</field>
+    <record id="product_template_common_wkg_form_view" model="ir.ui.view">
+        <field name="name">product.template.common.wkg.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_ok']/.." position="before">
+                <div>
+                    <field name="wkg_product"/>
+                    <label for="wkg_product"/>
+                </div>
+            </xpath>
+            <notebook position="inside">
+                <page string="Wikinggruppen">
+                    <group>
+                        <field name="wkg_productid"/>
+                        <field name="wkg_description"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    
+    <record id="product_normal_wkg_form_view" model="ir.ui.view">
+        <field name="name">product.product.wkg.form</field>
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <field name="lst_price" position="after">
-                <field name="campaign_price"/>
+            <field name="wkg_productid" position="after">
+                <field name="wkg_id"/>
             </field>
         </field>
     </record>
+    
+    <record id="product_public_category_wkg_form_view" model="ir.ui.view">
+        <field name="name">product.public.category.wkg.form</field>
+        <field name="model">product.public.category</field>
+        <field name="inherit_id" ref="website_sale.product_public_category_form_view"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="after">
+                <field name="wkg_id"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="view_delivery_carrier_wkg_form" model="ir.ui.view">
+        <field name="name">delivery.carrier.wkg.form</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Wikinggruppen" name="wkg_page">
+                    <group>
+                        <field name="wkg_id"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    
+    <record id="product_pricelist_wkg_view" model="ir.ui.view">
+        <field name="name">product.pricelist.wkg.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="after">
+                <field name="wkg_pricelist"/>
+                <field name="wkg_campaign_pricelist"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="view_order_wkg_form" model="ir.ui.view">
+        <field name="name">sale.order.wkg.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Wikinggruppen" name="wkg_page">
+                    <group>
+                        <field name="wkg_id"/>
+                        <field name="wkg_payment_method"/>
+                        <field name="wkg_status_id"/>
+                        <field name="wkg_time"/>
+                        <field name="wkg_currency_rate"/>
+                        <field name="wkg_warnings"/>
+                    </group>
+                    <field name="wkg_klarna"/><label for="wkg_klarna"/>
+                    <group attrs="{'invisible': [('wkg_klarna', '=', False)]}">
+                        <field name="wkg_klarna_api"/>
+                        <field name="wkg_klarna_reservation"/>
+                        <field name="wkg_klarna_eid"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    
+    <record id="view_wkg_wizard_form" model="ir.ui.view">
+        <field name="name">wkg.wizard.form</field>
+        <field name="model">wkg.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Wikinggruppen Sync Wizard">
+                <group col="3">
+                    <field name="wkg_id"/>
+                    <button name="action_sync_by_id" string="Sync by Id" type="object" class="btn-primary"/>
+                    <field name="from_time"/>
+                    <button name="action_sync_by_from_time" string="Sync by Time" type="object" class="btn-primary"/>
+                </group>
+                <footer>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_wkg_wizard" model="ir.actions.act_window">
+        <field name="name">WKG Sync Tool</field>
+        <field name="res_model">wkg.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_wkg_wizard_form"/>
+    </record>
+    
+    <menuitem action="action_wkg_wizard" id="menu_wkg_wizard" parent="sales_team.menu_sale_config" sequence="1000"/>
     
 </data>
 </odoo>
