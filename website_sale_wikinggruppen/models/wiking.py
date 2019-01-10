@@ -746,17 +746,18 @@ class SaleOrder(models.Model):
             # ~ order.onchange_partner_shipping_id()                        # partner_shipping_id, partner_id
             for line in order.order_line:
                 l = filter(lambda l: l[2]['wkg_id'] == line.wkg_id, lines)[0][2]
-                line._onchange_eval('product_id', "1", {})                              # product_id
-                # Reset to price from WKG.
-                line.price_unit = l['price_unit']
-                # Do we want to reset product name and taxes?
-                #line.name = l['name']
-                #line.tax_id = l['tax_id']
-                for field in ('product_uom', 'product_uom_qty', 'price_unit', 'tax_id'):
+                # Perform onchanges
+                for field in ('product_id', 'product_uom', 'product_uom_qty'):
                     line._onchange_eval(field, "1", {})
-                line.product_uom_change()                               # product_uom, product_uom_qty
-                # Is this needed?
-                line._onchange_discount()                               # product_id, price_unit, product_uom, product_uom_qty, tax_id
+                # Reset to price, tax and name from WKG.
+                line.write({
+                    'price_unit': l['price_unit'],
+                    'tax_id': l['tax_id'],
+                    'name': l['name'],
+                })
+                # Perform onchanges for tax and price
+                for field in ('price_unit', 'tax_id'):
+                    line._onchange_eval(field, "1", {})
             for field in ('fiscal_position_id', 'order_line'):
                 order._onchange_eval(field, "1", {})
             # ~ order._compute_tax_id()                                     # fiscal_position_id
