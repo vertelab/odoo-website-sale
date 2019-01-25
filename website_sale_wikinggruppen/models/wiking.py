@@ -68,7 +68,7 @@ class WikinggruppenAPI84(object):
         self.env = env
     
     def wkg_function(self, method, params):
-        """Perform a WKG API function."""
+        """Perform a WGR API function."""
         data = {'jsonrpc': '2.0', 'method': method, 'params': params}
         username = self.env['ir.config_parameter'].get_param('wikinggruppen.api_key')
         password = self.env['ir.config_parameter'].get_param('wikinggruppen.passwd')
@@ -83,11 +83,11 @@ class WikinggruppenAPI84(object):
         except:
             e = sys.exc_info()
             tb = ''.join(traceback.format_exception(e[0], e[1], e[2]))
-            _logger.warn("Connection to WKG Failed!\nmethod: %s\nparams: %s\n%s" % (method, params, tb))
-            raise Warning(_("Connection to WKG Failed!") + "\nmethod: %s\nparams: %s" % (method, params))
+            _logger.warn("Connection to WGR Failed!\nmethod: %s\nparams: %s\n%s" % (method, params, tb))
+            raise Warning(_("Connection to WGR Failed!") + "\nmethod: %s\nparams: %s" % (method, params))
         if not 'result' in json_data:
-            _logger.warn("Connection to WKG Failed!\nstatus_code: %s\nmethod: %s\nerror: %s\nparams: %s\njson_data: %s" % (response.status_code, method, json_data.get('error'), params, json_data))
-            raise Warning(_("Connection to WKG Failed!") + "\nstatus_code: %s\nmethod: %s\nmessage: %s\nparams: %s" % (response.status_code, method, json_data.get('error', {}).get('message'), params))
+            _logger.warn("Connection to WGR Failed!\nstatus_code: %s\nmethod: %s\nerror: %s\nparams: %s\njson_data: %s" % (response.status_code, method, json_data.get('error'), params, json_data))
+            raise Warning(_("Connection to WGR Failed!") + "\nstatus_code: %s\nmethod: %s\nmessage: %s\nparams: %s" % (response.status_code, method, json_data.get('error', {}).get('message'), params))
         return json_data.get('result')
     
     def article_get(self, id=None, article_nr=None):
@@ -166,8 +166,8 @@ class Website(models.Model):
     # ~ @api.model
     # ~ def wkg_str2html(self, inp):
         # ~ # Doesn't look like this is needed. Description fields are
-        # ~ # automagically cleaned up on the WKG end. Comparisions between
-        # ~ # Odoo and WKG values are tricky though, so we'll end up .
+        # ~ # automagically cleaned up on the WGR end. Comparisions between
+        # ~ # Odoo and WGR values are tricky though, so we'll end up .
         # ~ mapping = {
             # ~ u'å': '&aring;',
             # ~ u'Å': '&Aring;',
@@ -210,13 +210,13 @@ class Website(models.Model):
 class ProductPricelist(models.Model):
     _inherit = 'product.pricelist'
     
-    wkg_pricelist = fields.Boolean(string='WKG Pricelist', help="Checking this makes this a pricelist for Wikinggruppen. Only one pricelist per currency.")
-    wkg_campaign_pricelist = fields.Boolean(string='WKG Campaign Pricelist', help="Checking this makes this a campaign pricelist for Wikinggruppen. Only one campaign pricelist per currency.")
+    wkg_pricelist = fields.Boolean(string='WGR Pricelist', help="Checking this makes this a pricelist for Wikinggruppen. Only one pricelist per currency.")
+    wkg_campaign_pricelist = fields.Boolean(string='WGR Campaign Pricelist', help="Checking this makes this a campaign pricelist for Wikinggruppen. Only one campaign pricelist per currency.")
 
 class ProductPublicCategory(models.Model):
     _inherit = 'product.public.category'
     
-    wkg_id = fields.Integer(string='WKG ID', help="The ID of this category in Wikinggruppen.")
+    wkg_id = fields.Integer(string='WGR ID', help="The ID of this category in Wikinggruppen.")
     
     _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "The Wikinggruppen category must be unique.")]
     
@@ -277,7 +277,7 @@ class ProductPublicCategory(models.Model):
 class ProductCategory(models.Model):
     _inherit = 'product.category'
     
-    wkg_id = fields.Integer(string='WKG ID', help="The ID of this category in Wikinggruppen.")
+    wkg_id = fields.Integer(string='WGR ID', help="The ID of this category in Wikinggruppen.")
     
     _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "The Wikinggruppen category must be unique.")]
     
@@ -339,10 +339,10 @@ class ProductCategory(models.Model):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
-    wkg_product = fields.Boolean('WKG Product', help="This product should be copied to Wikinggruppen.", default=False)
-    wkg_productid = fields.Integer('WKG Parent ID', help="productId. The id corresponding to a template. Seems completely useless in all practical matters, but here it is.")
-    wkg_parent_code = fields.Char('WKG Parent Code', help="externalParentArticleNumber. This is how WKG actually identifies templates.")
-    wkg_description = fields.Text('WKG Description', translate=True)
+    wkg_product = fields.Boolean('WGR Product', help="This product should be copied to Wikinggruppen.", default=False)
+    wkg_productid = fields.Integer('WGR Parent ID', help="productId. The id corresponding to a template. Seems completely useless in all practical matters, but here it is.")
+    wkg_parent_code = fields.Char('WGR Parent Code', help="externalParentArticleNumber. This is how WGR actually identifies templates.")
+    wkg_description = fields.Text('WGR Description', translate=True)
 
     
     @api.one
@@ -358,8 +358,8 @@ class ResPartner(models.Model):
     
     wkg_id_number = fields.Char('Organization Number')                  # *sigh* This doesn't appear to actually be used in the orders we get from the webshop.
     wkg_vat = fields.Char('VAT Number')
-    wkg_customer = fields.Boolean('WKG Customer', help="This checkbox will be checked if this customer was synced from Wikinggruppen.")
-    # ~ wkg_id = fields.Integer('WKG Id', help="The ID of this product in Wikinggruppen.")
+    wkg_customer = fields.Boolean('WGR Customer', help="This checkbox will be checked if this customer was synced from Wikinggruppen.")
+    # ~ wkg_id = fields.Integer('WGR Id', help="The ID of this product in Wikinggruppen.")
     
     # ~ _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "The Wikinggruppen category must be unique.")]
     
@@ -408,7 +408,7 @@ class ResPartner(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
     
-    wkg_id = fields.Integer(string='WKG Id', help="The ID of this product in Wikinggruppen.")
+    wkg_id = fields.Integer(string='WGR Id', help="The ID of this product in Wikinggruppen.")
     
     _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "The Wikinggruppen category must be unique.")]
     
@@ -471,10 +471,10 @@ class ProductProduct(models.Model):
             wkg_values = wkg_values[0]
             self.wkg_id = wkg_values['id']
             if self.wkg_productid and (self.wkg_productid != wkg_values['productId']):
-                raise Warning(_("Mismatch between Odoo and WKG when syncing %s (%s). Products WKG Product ID (%s) doesn't match the productId from WKG (%s).") % (self.name, self.id, self.wkg_productid, wkg_values['productId']))
+                raise Warning(_("Mismatch between Odoo and WGR when syncing %s (%s). Products WGR Product ID (%s) doesn't match the productId from WGR (%s).") % (self.name, self.id, self.wkg_productid, wkg_values['productId']))
             self.wkg_productid = wkg_values['productId']
             if self.wkg_parent_code and (self.wkg_parent_code != wkg_values['externalParentArticleNumber']):
-                raise Warning(_("Mismatch between Odoo and WKG when syncing %s (%s). Products WKG Parent Code (%s) doesn't match the externalParentArticleNumber from WKG (%s).") % (self.name, self.id, self.wkg_parent_code, wkg_values['externalParentArticleNumber']))
+                raise Warning(_("Mismatch between Odoo and WGR when syncing %s (%s). Products WGR Parent Code (%s) doesn't match the externalParentArticleNumber from WGR (%s).") % (self.name, self.id, self.wkg_parent_code, wkg_values['externalParentArticleNumber']))
             self.wkg_parent_code = wkg_values['externalParentArticleNumber']
     
     @api.one
@@ -518,7 +518,7 @@ class ProductProduct(models.Model):
             raise Warning(_("%s (%s) is missing Internal Reference (default_code).") % (self.name, self.id))
         if not self.wkg_parent_code:
             if self.wkg_productid:
-                raise Warning(_("%s (%s) can not be synced to WKG, because the product template has no externalParentArticleNumber."))
+                raise Warning(_("%s (%s) can not be synced to WGR, because the product template has no externalParentArticleNumber."))
             self.wkg_parent_code = self.default_code
         values = self.wkg_mapping()
         values.update({
@@ -556,12 +556,12 @@ class ProductProduct(models.Model):
 class DeliveryCarrier(models.Model):
     _inherit = 'delivery.carrier'
     
-    wkg_id = fields.Integer(string='WKG Id', help="The ID of this shipping method in Wikinggruppen.")
+    wkg_id = fields.Integer(string='WGR Id', help="The ID of this shipping method in Wikinggruppen.")
 
 class SaleOrderWkgStatus(models.Model):
     _name = 'sale.order.wkg.status'
     
-    wkg_id = fields.Integer(string='WKG Id', help="The ID of this order status in Wikinggruppen.", required=True)
+    wkg_id = fields.Integer(string='WGR Id', help="The ID of this order status in Wikinggruppen.", required=True)
     name = fields.Char(required=True)
     
     _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "Wikinggruppen saleorder id must be unique.")]
@@ -580,14 +580,14 @@ class SaleOrderWkgStatus(models.Model):
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
-    wkg_id = fields.Integer(string='WKG Id', help="The ID of this order line in Wikinggruppen.")
+    wkg_id = fields.Integer(string='WGR Id', help="The ID of this order line in Wikinggruppen.")
             
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    wkg_id = fields.Integer(string='WKG Id', help="The ID of this order in Wikinggruppen.")
-    wkg_time = fields.Datetime('WKG Time', help="The time when the order was created in Wikinggruppen.")
-    wkg_status_id = fields.Many2one(string='WKG Status', comodel_name='sale.order.wkg.status')
+    wkg_id = fields.Integer(string='WGR Id', help="The ID of this order in Wikinggruppen.")
+    wkg_time = fields.Datetime('WGR Time', help="The time when the order was created in Wikinggruppen.")
+    wkg_status_id = fields.Many2one(string='WGR Status', comodel_name='sale.order.wkg.status')
     wkg_warnings = fields.Text('Warnings', help="These warnings were generated when importing from Wikinggruppen.")
     wkg_currency_rate = fields.Float('Currency Rate')
     wkg_payment_method = fields.Char('Payment Method')
@@ -596,8 +596,9 @@ class SaleOrder(models.Model):
     wkg_klarna_reservation = fields.Char('Reservation Id')
     wkg_klarna_eid = fields.Char('Merchant Id')
     
-    _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "Wikinggruppen saleorder id must be unique.")]
-
+    # This works poorly because Odoo insists on writing 0 to all integer/float columns. Thanks a lot, Odoobama.
+    #_sql_constraints = [('wkg_id_uniq', 'wkg_id = 0 OR unique (wkg_id)', "Wikinggruppen saleorder id must be unique.")]
+    
     @api.model
     def wkg_get_order_customer(self, values):
         # Fields from Customer object that are missing on the order client:
@@ -749,7 +750,7 @@ class SaleOrder(models.Model):
                 # Perform onchanges
                 for field in ('product_id', 'product_uom', 'product_uom_qty'):
                     line._onchange_eval(field, "1", {})
-                # Reset to price, tax and name from WKG.
+                # Reset to price, tax and name from WGR.
                 line.write({
                     'price_unit': l['price_unit'],
                     'tax_id': l['tax_id'],
@@ -768,7 +769,7 @@ class WikinggruppenWizard(models.TransientModel):
     _name = 'wkg.wizard'
     _description = 'Wikinggruppen Wizard'
     
-    wkg_id = fields.Integer('WKG Id', help="Id of the order you want to sync.")
+    wkg_id = fields.Integer('WGR Id', help="Id of the order you want to sync.")
     from_time = fields.Datetime('From Time', help="Sync all orders from this date (and time).")
     
     def sync_orders(self, id=None, from_time=None):
