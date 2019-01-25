@@ -595,6 +595,7 @@ class SaleOrder(models.Model):
     wkg_klarna_api = fields.Char('API version')
     wkg_klarna_reservation = fields.Char('Reservation Id')
     wkg_klarna_eid = fields.Char('Merchant Id')
+    wgr_best_message = fields.Char('Best Message')
     
     # This works poorly because Odoo insists on writing 0 to all integer/float columns. Thanks a lot, Odoobama.
     #_sql_constraints = [('wkg_id_uniq', 'wkg_id = 0 OR unique (wkg_id)', "Wikinggruppen saleorder id must be unique.")]
@@ -732,6 +733,7 @@ class SaleOrder(models.Model):
                 'wkg_payment_method': wkg_values['payMethod'],
                 'note': wkg_values['message'],
                 'wkg_warnings': '\n'.join(warnings),
+                'wgr_best_message': wkg_values.get('bestMessage'),
             }
             klarna = wkg_values.get('klarna')
             if klarna:

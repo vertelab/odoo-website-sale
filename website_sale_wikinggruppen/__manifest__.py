@@ -38,6 +38,7 @@ Not supported:
     'init_xml': [],
     'data': [
         'views/wiking_view.xml',
+        'security/ir.model.access.csv',
     ],
     'demo_xml' : [],
     'installable': True,
