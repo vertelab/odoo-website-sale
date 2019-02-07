@@ -221,16 +221,17 @@ class ProductPublicCategory(models.Model):
     _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "The Wikinggruppen category must be unique.")]
     
     @api.multi
-    def wkg_update_id(self):
+    def wkg_update_id(self, overwrite=False):
         """Try to match this category to the corresponding category in Wikinggruppen."""
         connector = self.env['website'].wkg_get_connector()
         lang = (self.env.context.get('lang') or self.env.user.lang).split('_')[0]
         remote_categs = connector.wkg_function('Category.get', {})
+        wgr_top_category = self.env.ref('website_sale_wikinggruppen.wgr_top_category')
         # Filtering is specific to KR. Special Brand categories.
         if self._name == 'product.public.category':
-            trash = set(c['id'] for c in filter(lambda c: c['parentId'] == 0 and (u'Varumärken - ' in c['metaTitle_sv']), remote_categs))
-        elif self._name == 'product.category':
             trash = set(c['id'] for c in filter(lambda c: c['parentId'] == 0 and (u'Varumärken - ' not in c['metaTitle_sv']), remote_categs))
+        elif self._name == 'product.category':
+            trash = set(c['id'] for c in filter(lambda c: c['parentId'] == 0 and (u'Varumärken - ' in c['metaTitle_sv']), remote_categs))
         done = False
         while not done:
             done = True
@@ -245,8 +246,11 @@ class ProductPublicCategory(models.Model):
                     i += 1
 
         for categ in self:
-            if categ.wkg_id:
-                break
+            if not self.search_count([('id', '=', categ.id), ('parent_id', 'child_of', wgr_top_category.id)]):
+                # Not a WGR category
+                continue
+            if categ.wkg_id and not overwrite:
+                continue
             for rcat in remote_categs:
                 if rcat['title_%s' % lang] != categ.name:
                     continue
@@ -266,6 +270,9 @@ class ProductPublicCategory(models.Model):
                         match = False
                         break
                     cur_categ = cur_categ.parent_id
+                if match and cur_categ != wgr_top_category:
+                    # Check that we're at the top of the Odoo category tree as well
+                    match = False
                 if match:
                     _logger.debug('matched %s (%s) with wkg_id %s' % (
                         categ.name,
@@ -282,16 +289,17 @@ class ProductCategory(models.Model):
     _sql_constraints = [('wkg_id_uniq', 'unique (wkg_id)', "The Wikinggruppen category must be unique.")]
     
     @api.multi
-    def wkg_update_id(self):
+    def wkg_update_id(self, overwrite=False):
         """Try to match this category to the corresponding category in Wikinggruppen."""
         connector = self.env['website'].wkg_get_connector()
         lang = (self.env.context.get('lang') or self.env.user.lang).split('_')[0]
         remote_categs = connector.wkg_function('Category.get', {})
         # Filtering is specific to KR. Special Brand categories.
         if self._name == 'product.public.category':
-            trash = set(c['id'] for c in filter(lambda c: c['parentId'] == 0 and (u'Varumärken - ' in c['metaTitle_sv']), remote_categs))
-        elif self._name == 'product.category':
             trash = set(c['id'] for c in filter(lambda c: c['parentId'] == 0 and (u'Varumärken - ' not in c['metaTitle_sv']), remote_categs))
+        elif self._name == 'product.category':
+            trash = set(c['id'] for c in filter(lambda c: c['parentId'] == 0 and (u'Varumärken - ' in c['metaTitle_sv']), remote_categs))
+        _logger.warn(trash)
         done = False
         while not done:
             done = True
@@ -307,8 +315,8 @@ class ProductCategory(models.Model):
                     i += 1
 
         for categ in self:
-            if categ.wkg_id:
-                break
+            if categ.wkg_id and not overwrite:
+                continue
             for rcat in remote_categs:
                 if rcat['title_%s' % lang] != categ.name:
                     continue
@@ -596,6 +604,9 @@ class SaleOrder(models.Model):
     wkg_klarna_reservation = fields.Char('Reservation Id')
     wkg_klarna_eid = fields.Char('Merchant Id')
     wgr_best_message = fields.Char('Best Message')
+    wgr_message = fields.Char('Delivery Message')
+    wgr_delivery_date = fields.Char('Delivery Date')
+    wgr_door_code = fields.Char('Door Code')
     
     # This works poorly because Odoo insists on writing 0 to all integer/float columns. Thanks a lot, Odoobama.
     #_sql_constraints = [('wkg_id_uniq', 'wkg_id = 0 OR unique (wkg_id)', "Wikinggruppen saleorder id must be unique.")]
@@ -734,6 +745,9 @@ class SaleOrder(models.Model):
                 'note': wkg_values['message'],
                 'wkg_warnings': '\n'.join(warnings),
                 'wgr_best_message': wkg_values.get('bestMessage'),
+                'wgr_message': wkg_values.get('message'),
+                'wgr_delivery_date': wkg_values.get('deliveryDate'),
+                'wgr_door_code': wkg_values.get('doorCode'),
             }
             klarna = wkg_values.get('klarna')
             if klarna:

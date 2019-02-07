@@ -117,7 +117,10 @@
                         <field name="wkg_status_id"/>
                         <field name="wkg_time"/>
                         <field name="wkg_currency_rate"/>
+                        <field name="wgr_message"/>
+                        <field name="wgr_delivery_date"/>
                         <field name="wgr_best_message"/>
+                        <field name="wgr_door_code"/>
                         <field name="wkg_warnings"/>
                     </group>
                     <field name="wkg_klarna"/><label for="wkg_klarna"/>

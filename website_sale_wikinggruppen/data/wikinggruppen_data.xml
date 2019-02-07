@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="wgr_top_category" model="product.public.category">
+            <field name="name">Wikinggruppen</field>
+        </record>
+        
+    </data>
+</odoo>
