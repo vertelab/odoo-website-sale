@@ -70,8 +70,8 @@ class website_sale_home(http.Controller):
     # can be overridden with more company field
     def get_company_post(self, post):
         value = {}
-        if post.get('invoicetype'):
-            value['property_invoice_type'] = int(post.get('invoicetype'))
+        # ~ if post.get('invoicetype'):
+            # ~ value['property_invoice_type'] = int(post.get('invoicetype'))
         return value
 
     # can be overridden with more company field
@@ -219,8 +219,8 @@ class website_sale_home(http.Controller):
                 translated_text = request.env['ir.translation'].search([('name', '=', 'res.partner,website_short_description'), ('type', '=', 'model'), ('lang', '=', request.env.lang), ('res_id', '=', home_user.partner_id.commercial_partner_id.id)])
                 if translated_text:
                     translated_text.write({'value': post.get('website_short_description')})
-            if post.get('invoicetype'):
-                company.write({'property_invoice_type': int(post.get('invoicetype'))})
+            # ~ if post.get('invoicetype'):
+                # ~ company.write({'property_invoice_type': int(post.get('invoicetype'))})
             company.write(self.get_company_post(post))
             children_dict = self.save_children(company, post)
             children = children_dict['children']
