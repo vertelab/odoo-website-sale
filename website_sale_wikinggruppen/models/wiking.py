@@ -429,12 +429,12 @@ class ProductProduct(models.Model):
         connector = website.wkg_get_connector()
         if not self.public_categ_ids:
             raise Warning(_("%s (%s) must have at least one public category!") % (self.name, self.id))
-        if not all(c.wkg_id for c in self.public_categ_ids):
+        if not all(c.wkg_id for c in self.env['product.public.category'].search([('id', 'in', self.public_categ_ids._ids), ('parent_id', 'child_of', self.env.ref('website_sale_wikinggruppen.wgr_top_category').id)])):
             raise Warning(_("%s (%s) category must have a wkg_id!") % (self.public_categ_ids[0].name, self.public_categ_ids[0].id))
         warehouse = website.wkg_get_warehouse()
         wh_rule = self.env['stock.warehouse.orderpoint'].search([('product_id', '=', self.id), ('warehouse_id', '=', warehouse.id)], limit=1)
         quantities = self.with_context(warehouse=warehouse.id)._compute_quantities_dict(None, None, None)[self.id]
-        categories = sorted(list(set([c.wkg_id for c in self.public_categ_ids] + ([self.categ_id.wkg_id] if self.categ_id else []))))
+        categories = sorted(list(set([c.wkg_id for c in self.public_categ_ids] + [c.wkg_id for c in self.categ_id if c.wkg_id])))
         values = {
             'articleNumber': self.default_code,
             'EANCode': self.barcode or '',
@@ -597,7 +597,7 @@ class SaleOrder(models.Model):
     wkg_time = fields.Datetime('WGR Time', help="The time when the order was created in Wikinggruppen.")
     wkg_status_id = fields.Many2one(string='WGR Status', comodel_name='sale.order.wkg.status')
     wkg_warnings = fields.Text('Warnings', help="These warnings were generated when importing from Wikinggruppen.")
-    wkg_currency_rate = fields.Float('Currency Rate')
+    wgr_currency_rate = fields.Float('Currency Rate')
     wkg_payment_method = fields.Char('Payment Method')
     wkg_klarna = fields.Boolean('Klarna')
     wkg_klarna_api = fields.Char('API version')
@@ -683,12 +683,16 @@ class SaleOrder(models.Model):
         for carrier in self.env['delivery.carrier'].search_read([('wkg_id', '!=', False)], ['wkg_id']):
             wkg_carriers[carrier['wkg_id']] = carrier['id']
         for wkg_values in wkg_orders:
+            _logger.warn('\n\nhanterar %s\n' % wkg_values['id'])
             order = self.search([('wkg_id', '=', wkg_values['id'])])
             if order:
+                _logger.warn('\n\nordern existerar\n')
                 # Order already exists. Update values?
-                order.wkg_warnings = '\n'.join([order.wkg_warnings or '', '', fields.Datetime.now(), "Got new values for order %s. No changes have been made." % wkg_values['id'], str(wkg_values)])
-                orders |= order
-                continue
+                if order.state in ('sale', 'done', 'cancel'):
+                    _logger.warn(u'\n\ninga ändringar\n')
+                    order.wkg_warnings = '\n'.join([fields.Datetime.now(), _("Got new values for order %s, but state was already in %s. No changes have been made.\n\nvalues: %s") % (wkg_values['id'], order.state, unicode(wkg_values)), '', order.wkg_warnings or ''])
+                    orders |= order
+                    continue
             customer, warnings = self.wkg_get_order_customer(wkg_values['client'])
             # Update customer language
             for language in languages:
@@ -731,8 +735,7 @@ class SaleOrder(models.Model):
                     'product_uom_qty': row['quantity'],
                     'price_unit': float(row['price']),
                 }))
-            if warnings:
-                warnings = [fields.Datetime.now()] + warnings
+            
             values = {
                 'partner_id': customer.id,
                 'wkg_id': wkg_values['id'],
@@ -743,11 +746,11 @@ class SaleOrder(models.Model):
                 'wkg_status_id': wkg_statuses.get(wkg_values['orderStatus'], False),
                 'wkg_payment_method': wkg_values['payMethod'],
                 'note': wkg_values['message'],
-                'wkg_warnings': '\n'.join(warnings),
                 'wgr_best_message': wkg_values.get('bestMessage'),
                 'wgr_message': wkg_values.get('message'),
                 'wgr_delivery_date': wkg_values.get('deliveryDate'),
                 'wgr_door_code': wkg_values.get('doorCode'),
+                'wgr_currency_rate': wkg_values[u'currencyRate'],
             }
             klarna = wkg_values.get('klarna')
             if klarna:
@@ -755,12 +758,21 @@ class SaleOrder(models.Model):
                 values['wkg_klarna_api'] = klarna['api']
                 values['wkg_klarna_reservation'] = klarna['reservation']
                 values['wkg_klarna_eid'] = klarna['eid']
-            order = self.env['sale.order'].create(values)
+            if order:
+                _logger.warn('\n\nwriting %s\n' % order.id)
+                values['order_line'] = [(5, 0, 0)] + values['order_line']
+                order.write(values)
+            else:
+                order = self.env['sale.order'].create(values)
+                _logger.warn('\n\ncreated %s\n' % order.id)
             # Recompute everything to get correct values
-            for field in ('partner_id', 'partner_shipping_id', 'partner_invoice_id'):
+            order._onchange_eval('partner_id', "1", {})
+            # TODO: Change customer handling and specify billing ans shipping addresses here
+            # ~ order.write({'partner_shipping_id': delivery_partner.id, 'partner_invoice_id': invoice_partner.id})
+            for field in ('partner_shipping_id', 'partner_invoice_id', 'fiscal_position_id'):
                 order._onchange_eval(field, "1", {})
-            # ~ order.onchange_partner_id()                                 # partner_id
-            # ~ order.onchange_partner_shipping_id()                        # partner_shipping_id, partner_id
+            order.carrier_id = carrier
+            order._onchange_eval('carrier_id', "1", {})
             for line in order.order_line:
                 l = filter(lambda l: l[2]['wkg_id'] == line.wkg_id, lines)[0][2]
                 # Perform onchanges
@@ -775,11 +787,27 @@ class SaleOrder(models.Model):
                 # Perform onchanges for tax and price
                 for field in ('price_unit', 'tax_id'):
                     line._onchange_eval(field, "1", {})
-            for field in ('fiscal_position_id', 'order_line'):
+            for field in ('order_line',):
                 order._onchange_eval(field, "1", {})
-            # ~ order._compute_tax_id()                                     # fiscal_position_id
+            if wkg_values[u'totalAmount'] != order.amount_total:
+                warnings = [u"%s\nTotal amount from WGR (%s) doesn't match total amount on order (%s)!" % (
+                    fields.Datetime.now(), wkg_values[u'totalAmount'], order.amount_total)] + warnings
+            if warnings:
+                order.wkg_warnings = '\n'.join([fields.Datetime.now()] + warnings)
+            else:
+                order.wkg_warnings = ''
+                if order.wgr_check_if_confirmed():
+                    order.action_confirm()
             orders |= order
         return orders
+    
+    @api.multi
+    def wgr_check_if_confirmed(self):
+        """Check if we're ready to confirm this order."""
+        if self.wkg_payment_method not in (u'KLARNACHECKOUT', u'PAYPAL', u'DIBS'):
+            #payMethod [u'KLARNACHECKOUT', u'PAYPAL', u'EGEN FAKTURA', u'DIBS', u'POSTFÖRSKOTT', u'FÖRSKOTTSBETALNING']
+            return False
+        return True
 
 class WikinggruppenWizard(models.TransientModel):
     _name = 'wkg.wizard'
