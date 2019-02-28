@@ -93,13 +93,13 @@ class website(models.Model):
             'order_page': '__ORDER_PAGE__',
             'tab': 'orders',
         })
-        pager = self.pager(url='/home/%s' % user.id, total=self.env['sale.order'].search_count(domain), page=order_page, step=OPP, scope=7, url_args=url_args)
+        pager = self.pager(url='/home/%s' % user.id, total=self.env['sale.order'].sudo().search_count(domain), page=order_page, step=OPP, scope=7, url_args=url_args)
         for page in pager["pages"]:
             page['url'] = page['url'].replace('/page/%s' % page['num'], '').replace('__ORDER_PAGE__', str(page['num']))
         for page in ["page", "page_start", "page_previous", "page_next", "page_end"]:
             pager[page]['url'] = pager[page]['url'].replace('/page/%s' % pager[page]['num'], '').replace('__ORDER_PAGE__', str(pager[page]['num']))
         return {
-            'sale_orders': self.env['sale.order'].search(domain, limit=OPP, offset=(order_page - 1) * OPP),
+            'sale_orders': self.env['sale.order'].sudo().search(domain, limit=OPP, offset=(order_page - 1) * OPP),
             'sale_order_pager': pager,
             'order_search': search,
         }
@@ -124,9 +124,18 @@ class website(models.Model):
 
 class website_sale_home(website_sale_home):
 
-    @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>',], type='http', auth="user", website=True)
-    def home_page_order(self, home_user=None, order=None, tab='orders', **post):
+    @http.route(['/home/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
+    def home_page_order(self, home_user=None, order_id=None, tab='orders', **post):
         self.validate_user(home_user)
+        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user) + [('id', '=', order_id)])
+        if not order:
+            html = request.website._render(
+                    'website.403',
+                    {
+                        'status_code': 403,
+                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
+                    })
+            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
         return request.render('website_sale_home_order.page_order', {
             'home_user': home_user,
             'order': order,
@@ -135,6 +144,7 @@ class website_sale_home(website_sale_home):
 
     @http.route(['/home/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
     def home_page_order_copy(self, home_user=None, order=None, **post):
+        self.validate_user(home_user)
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
@@ -152,3 +162,33 @@ class website_sale_home(website_sale_home):
                         'product_uom_qty': line.product_uom_qty,
                 })
         return werkzeug.utils.redirect("/shop/cart")
+
+    def check_document_access(self, report, ids):
+        if report == 'sale.report_saleorder':
+            try:
+                records = request.env['sale.order'].browse(ids)
+                records.check_access_rights('read')
+                records.check_access_rule('read')
+                return True
+            except:
+                # This check failed. Let it go to super to perform other checks.
+                pass
+        elif report == 'account.report_invoice':
+            try:
+                records = request.env['account.invoice'].browse(ids)
+                records.check_access_rights('read')
+                records.check_access_rule('read')
+                return True
+            except:
+                # This check failed. Let it go to super to perform possible other checks.
+                pass
+        elif report == 'stock_delivery_slip.stock_delivery_slip':
+            try:
+                records = request.env['stock.picking'].browse(ids)
+                records.check_access_rights('read')
+                records.check_access_rule('read')
+                return True
+            except:
+                # This check failed. Let it go to super to perform possible other checks.
+                pass
+        return super(website_sale_home, self).check_document_access(report, ids)

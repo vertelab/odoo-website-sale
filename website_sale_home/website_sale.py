@@ -26,6 +26,7 @@ import werkzeug
 import base64
 import sys
 import traceback
+import simplejson
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -202,6 +203,7 @@ class website_sale_home(http.Controller):
         return help
 
     def validate_user(self, user):
+        # TODO: This does nothing?
         if request.uid == request.env.ref('base.public_user').id:
             return request.website.render('website.403')
         if not user:
@@ -412,7 +414,7 @@ class website_sale_home(http.Controller):
     # send reset password to contact
     @http.route(['/home/contact/pw_reset'], type='json', auth='user', website=True)
     def contact_pw_reset(self, home_user=0, partner_id=0, **kw):
-        home_user = request.env['res.users'].sudo().browse(home_user)
+        home_user = request.env['res.users'].browse(home_user)
         company = home_user.partner_id.commercial_partner_id
         user = request.env['res.users'].sudo().search([('partner_id', '=', partner_id)])
         try:
@@ -429,7 +431,7 @@ class website_sale_home(http.Controller):
     # remove contact image
     @http.route(['/home/contact/remove_img_contact'], type='json', auth="public", website=True)
     def contact_remove_img(self, partner_id='0', **kw):
-        partner = request.env['res.partner'].sudo().browse(int(partner_id))
+        partner = request.env['res.partner'].browse(int(partner_id))
         if partner:
             partner.write({'image': None})
             return True
@@ -438,6 +440,8 @@ class website_sale_home(http.Controller):
     # delete contact attachment
     @http.route(['/home/<model("res.users"):home_user>/attachment/<int:attachment>/delete'], type='http', auth='user', website=True)
     def contact_attachment_delete(self, home_user=None, attachment=0, **post):
+        if not check_admin(home_user):
+            return request.website.render('website.403', {})
         company = home_user.partner_id.commercial_partner_id
         if attachment > 0:
             attachment = request.env['ir.attachment'].sudo().browse(attachment)
@@ -446,3 +450,36 @@ class website_sale_home(http.Controller):
                 if partner.parent_id == home_user.partner_id.commercial_partner_id:
                     attachment.unlink()
         return werkzeug.utils.redirect('/home/%s/contact/%s' % (home_user.id, partner.id))
+
+    def check_document_access(self, report, ids):
+        """Override to implement access control."""
+        return False
+    
+    @http.route(['/home/<model("res.users"):home_user>/print/<reportname>/<docids>'], type='http', auth='user', website=True)
+    def print_document(self, reportname, home_user=None, docids=None, **data):
+        """Creates PDF documents with sudo to avoid access rights problems.
+        Implement access control per report type in check_document_access."""
+        if docids:
+            docids = [int(i) for i in docids.split(',')]
+        if not self.check_document_access(reportname, docids):
+            return request.website.render('website.403', {})
+        context = {}
+        options_data = None
+        if data.get('options'):
+            options_data = simplejson.loads(data['options'])
+        if data.get('context'):
+            # Ignore 'lang' here, because the context in data is the one from the webclient *but* if
+            # the user explicitely wants to change the lang, this mechanism overwrites it. 
+            data_context = simplejson.loads(data['context'])
+            if data_context.get('lang'):
+                del data_context['lang']
+            context.update(data_context)
+        # Version 8 of get_pdf takes a recordset but does nothing with it except fetch the ids.
+        dummy = DummyRecordSet(docids)
+        pdf = request.env['report'].sudo().with_context(context).get_pdf(dummy, reportname, data=options_data)
+        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
+        return request.make_response(pdf, headers=pdfhttpheaders)
+
+class DummyRecordSet(object):
+    def __init__(self, ids):
+        self.ids = ids

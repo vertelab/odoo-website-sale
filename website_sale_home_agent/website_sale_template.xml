@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    
+    <template id="page_order" inherit_id="website_sale_home_order.page_order" name="Page Order Agent">
+      <xpath expr="//a[@id='oe_sale_home_copy_order']" position="attributes">
+        <attribute name="t-if">not request.website.sale_home_check_if_agent(order.partner_id, home_user.commercial_partner_id)</attribute>
+      </xpath>
+    </template>
+    
+  </data>
+</openerp>
