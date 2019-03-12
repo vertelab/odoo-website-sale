@@ -11,15 +11,9 @@
 				<div name="website_sale_stock">
 					<separator string="Webshop stock"/>
 					<group title="Default availability mode set on newly created storable products. This can be changed at the product level.">
-<!--
-                        <label for="inventory_availability" string="Default Mode" class="col-lg-3 o_light_label" />
--->
                         <field name="inventory_availability" string="Inventory"/>
                     </group><br/>
                     <group attrs="{'invisible': [('inventory_availability', '!=', 'threshold')]}">
-<!--
-                        <label for="available_threshold" string="Default threshold" class="col-lg-3 o_light_label" />
--->
                         <field name="available_threshold" class="oe_inline" attrs="{'required': [('inventory_availability', '=', 'threshold')]}"/>
                     </group>
 				</div>

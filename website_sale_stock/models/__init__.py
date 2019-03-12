@@ -12,4 +12,3 @@ import product_product
 import product_template
 import res_config_settings
 import sale_order
-import stock_picking

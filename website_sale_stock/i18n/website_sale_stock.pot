@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 13:18+0000\n"
-"PO-Revision-Date: 2018-09-21 13:18+0000\n"
+"POT-Creation-Date: 2019-03-12 10:35+0000\n"
+"PO-Revision-Date: 2019-03-12 10:35+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,82 +16,66 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_sale_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.website_sale_stock_cart_lines
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.website_sale_stock_payment
-msgid "<strong>Warning!</strong>"
+#: view:website:website_sale.cart
+msgid "(line.product_uom_qty + (line.product_id.virtual_available - line.product_id.cart_qty)) if line.product_id.inventory_availability in ['always', 'threshold'] else None"
 msgstr ""
 
 #. module: website_sale_stock
-#: model:ir.model.fields,help:website_sale_stock.field_product_product__inventory_availability
-#: model:ir.model.fields,help:website_sale_stock.field_product_template__inventory_availability
+#: help:product.product,inventory_availability:0
+#: help:product.template,inventory_availability:0
 msgid "Adds an inventory availability status on the web product page."
 msgstr ""
 
 #. module: website_sale_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.product_template_form_view_inherit_website_sale_stock
+#: view:product.template:website_sale_stock.product_template_form_view_inherit_website_sale_stock
 msgid "Availability"
 msgstr ""
 
 #. module: website_sale_stock
-#: model:ir.model.fields,field_description:website_sale_stock.field_product_product__available_threshold
-#: model:ir.model.fields,field_description:website_sale_stock.field_product_template__available_threshold
-#: model:ir.model.fields,field_description:website_sale_stock.field_res_config_settings__available_threshold
+#: field:product.product,available_threshold:0
+#: field:product.template,available_threshold:0
+#: field:sale.config.settings,available_threshold:0
 msgid "Availability Threshold"
 msgstr ""
 
 #. module: website_sale_stock
-#: model:ir.model.fields,field_description:website_sale_stock.field_product_product__cart_qty
-msgid "Cart Qty"
+#: field:product.product,cart_qty:0
+msgid "Cart qty"
 msgstr ""
 
 #. module: website_sale_stock
-#: model:ir.model,name:website_sale_stock.model_res_config_settings
-msgid "Config Settings"
-msgstr ""
-
-#. module: website_sale_stock
-#: model:ir.model.fields,field_description:website_sale_stock.field_product_product__custom_message
-#: model:ir.model.fields,field_description:website_sale_stock.field_product_template__custom_message
+#: field:product.product,custom_message:0
+#: field:product.template,custom_message:0
 msgid "Custom Message"
 msgstr ""
 
 #. module: website_sale_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.res_config_settings_view_form
-msgid "Default Mode"
-msgstr ""
-
-#. module: website_sale_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.res_config_settings_view_form
-msgid "Default availability mode set on newly created storable products. This can be changed at the product level."
-msgstr ""
-
-#. module: website_sale_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.res_config_settings_view_form
-msgid "Default threshold"
-msgstr ""
-
-#. module: website_sale_stock
 #. openerp-web
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:16
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:15
 #, python-format
 msgid "In stock"
 msgstr ""
 
 #. module: website_sale_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.res_config_settings_view_form
+#: view:sale.config.settings:website_sale_stock.view_sale_config_settings
 msgid "Inventory"
 msgstr ""
 
 #. module: website_sale_stock
-#: model:ir.model.fields,field_description:website_sale_stock.field_product_product__inventory_availability
-#: model:ir.model.fields,field_description:website_sale_stock.field_product_template__inventory_availability
-#: model:ir.model.fields,field_description:website_sale_stock.field_res_config_settings__inventory_availability
+#: field:product.product,inventory_availability:0
+#: field:product.template,inventory_availability:0
+#: field:sale.config.settings,inventory_availability:0
 msgid "Inventory Availability"
 msgstr ""
 
 #. module: website_sale_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.res_config_settings_view_form
+#: view:sale.config.settings:website_sale_stock.view_sale_config_settings
 msgid "Manage the inventory of your products and display their availability status on the website."
+msgstr ""
+
+#. module: website_sale_stock
+#: model:ir.model,name:website_sale_stock.model_stock_picking
+msgid "Picking List"
 msgstr ""
 
 #. module: website_sale_stock
@@ -106,7 +90,7 @@ msgstr ""
 
 #. module: website_sale_stock
 #: model:ir.model,name:website_sale_stock.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr ""
 
 #. module: website_sale_stock
@@ -116,25 +100,25 @@ msgstr ""
 
 #. module: website_sale_stock
 #: selection:product.template,inventory_availability:0
-#: selection:res.config.settings,inventory_availability:0
+#: selection:sale.config.settings,inventory_availability:0
 msgid "Sell regardless of inventory"
 msgstr ""
 
 #. module: website_sale_stock
 #: selection:product.template,inventory_availability:0
-#: selection:res.config.settings,inventory_availability:0
+#: selection:sale.config.settings,inventory_availability:0
 msgid "Show inventory below a threshold and prevent sales if not enough stock"
 msgstr ""
 
 #. module: website_sale_stock
 #: selection:product.template,inventory_availability:0
-#: selection:res.config.settings,inventory_availability:0
+#: selection:sale.config.settings,inventory_availability:0
 msgid "Show inventory on website and prevent sales if not enough stock"
 msgstr ""
 
 #. module: website_sale_stock
 #: selection:product.template,inventory_availability:0
-#: selection:res.config.settings,inventory_availability:0
+#: selection:sale.config.settings,inventory_availability:0
 msgid "Show product-specific notifications"
 msgstr ""
 
@@ -146,42 +130,39 @@ msgstr ""
 
 #. module: website_sale_stock
 #. openerp-web
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:22
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:21
 #, python-format
 msgid "Temporarily out of stock"
 msgstr ""
 
 #. module: website_sale_stock
-#: model:ir.model,name:website_sale_stock.model_stock_picking
-msgid "Transfer"
-msgstr ""
-
-#. module: website_sale_stock
 #. openerp-web
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:13
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:22
-#: model:ir.model.fields,field_description:website_sale_stock.field_sale_order__warning_stock
-#: model:ir.model.fields,field_description:website_sale_stock.field_sale_order_line__warning_stock
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.website_sale_stock_cart_lines
-#: model_terms:ir.ui.view,arch_db:website_sale_stock.website_sale_stock_payment
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:12
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:21
+#: field:sale.order,warning_stock:0
+#: field:sale.order.line,warning_stock:0
 #, python-format
 msgid "Warning"
 msgstr ""
 
 #. module: website_sale_stock
+#: view:website:website_sale.cart
+msgid "Warning!"
+msgstr ""
+
+#. module: website_sale_stock
+#: view:sale.config.settings:website_sale_stock.view_sale_config_settings
+msgid "Webshop stock"
+msgstr ""
+
+#. module: website_sale_stock
 #: model:ir.model,name:website_sale_stock.model_website
-#: model:ir.model.fields,field_description:website_sale_stock.field_stock_picking__website_id
 msgid "Website"
 msgstr ""
 
 #. module: website_sale_stock
-#: model:ir.model.fields,help:website_sale_stock.field_stock_picking__website_id
-msgid "Website this picking belongs to."
-msgstr ""
-
-#. module: website_sale_stock
 #. openerp-web
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:19
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:18
 #, python-format
 msgid "You already added"
 msgstr ""
@@ -194,23 +175,22 @@ msgstr ""
 
 #. module: website_sale_stock
 #. openerp-web
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:20
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:19
 #, python-format
 msgid "all"
 msgstr ""
 
 #. module: website_sale_stock
 #. openerp-web
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:9
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:14
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:8
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:13
 #, python-format
 msgid "available"
 msgstr ""
 
 #. module: website_sale_stock
 #. openerp-web
-#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:20
+#: code:addons/website_sale_stock/static/src/xml/website_sale_stock_product_availability.xml:19
 #, python-format
 msgid "in your cart."
 msgstr ""
-

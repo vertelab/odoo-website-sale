@@ -12,7 +12,6 @@
 			<xpath expr="//input[@type='text'][hasclass('js_quantity')]" position="attributes">
 			  <attribute name='t-att-data-max'>(line.product_uom_qty + (line.product_id.virtual_available - line.product_id.cart_qty)) if line.product_id.inventory_availability in ['always', 'threshold'] else None</attribute>
 			</xpath>
-			<!-- <xpath expr="//div[hasclass('css_quantity')]//i[hasclass('fa-plus')]/.." position="replace"> -->
 			<xpath expr="//div[hasclass('input-group')]//i[hasclass('fa-plus')]/.." position="replace">
 			  <t t-if="line._get_stock_warning(clear=False)">
 				<div class="input-group-append">
@@ -25,11 +24,9 @@
 				<t>$0</t>
 			  </t>
 			</xpath>
-			<!-- <xpath expr="//div[hasclass('css_quantity')]" position="after"> -->
 			<xpath expr="//div[hasclass('input-group')]" position="after">
 				<div class='availability_messages'/>
 			</xpath>
-			<!-- <xpath expr="//div[hasclass('js_cart_lines')]" position="after"> -->
 			<xpath expr="//div[hasclass('well-lg')]" position="after">
 			  <t t-if='website_sale_order'>
 				<div t-if='website_sale_order._get_stock_warning(clear=False)' class="alert alert-warning" role="alert">
@@ -46,7 +43,6 @@
 	  </template>
 
 	  <template id="website_sale_stock_payment" inherit_id="website_sale.cart">
-		 <!-- <xpath expr="//table[@id='cart_products']//td[hasclass('td-qty')]" position="inside"> -->
 		 <xpath expr="//table[@id='cart_products']//td[hasclass('text-center')]" position="inside">
 		  <t t-if='line._get_stock_warning(clear=False)'>
 			<i class='fa fa-warning text-warning' t-att-title="line._get_stock_warning()" role="img" aria-label="Warning"/>
@@ -61,18 +57,5 @@
 			</t>
 		</xpath>
 	  </template>
-
-	  <!-- 	Removed this code since it is related to functions not present in Odoo 8
-			<template id="website_sale_stock_modal" inherit_id="sale.product_configurator_configure_optional_products" name="Stocks Modal"> -->
-			<!-- <xpath expr="//input[@type='text'][hasclass('quantity')]" position="attributes"> -->
-			<!-- <xpath expr="//input[@type='text'][hasclass('js_quantity')]" position="attributes">
-			  <attribute name='t-att-data-max'>max(product.sudo().virtual_available - product.cart_qty, 1) if handle_stock and product.type == "product" and product.inventory_availability in ["always", "threshold"] else None</attribute>
-			</xpath>
-			<xpath expr="//div[hasclass('css_quantity')]" position="after">
-			  <t t-if="handle_stock">
-				<div class='availability_messages'/>
-			  </t>
-			</xpath>
-	  </template> -->
 	</data>
 </openerp>
