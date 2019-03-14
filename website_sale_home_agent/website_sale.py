@@ -33,20 +33,12 @@ class website(models.Model):
     _inherit="website"
 
     @api.model
-    def sale_home_order_search_domain(self, user, search=None):
-        domain = super(website, self).sale_home_order_search_domain(user, search=search)
+    def sale_home_order_search_domain_access(self, user, search=None):
+        domain = super(website, self).sale_home_order_search_domain_access(user, search=search)
         parent = user.commercial_partner_id
         if not parent.agent:
             return domain
-        i = 0
-        while i < len(domain):
-            if domain[i][0] == 'partner_id' and domain[i][1] == 'child_of':
-                domain.insert(i, '|')
-                domain.insert(i + 1, ('order_line.agents.agent', 'child_of', parent.id))
-                i += 2
-            i += 1
-        _logger.debug('search_domain: %s' % (domain))
-        return domain
+        return ['|', ('order_line.agents.agent', 'child_of', parent.id)] + domain
     
     def sale_home_check_if_agent(self, customer, agent):
         if not agent.agent:

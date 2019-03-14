@@ -69,16 +69,36 @@ class website(models.Model):
         return res
 
     @api.model
+    def sale_home_order_search_domain_access(self, user, search):
+        """Return a domain that describes which sale orders the user has access to."""
+        return [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
+
+    @api.model
     def sale_home_order_search_domain(self, user, search=None):
-        domain = [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
+        domain = self.sale_home_order_search_domain_access(user, search)
         if search:
             search = search.strip()
             # invoices and picking
-            orders = self.env['sale.order'].search(domain)
-            invoice_ids = orders.mapped('invoice_ids').filtered(lambda i: search in i.name or search in i.number or search in i.date_invoice).mapped('id')
-            picking_ids = orders.mapped('picking_ids').filtered(lambda p: search in p.name).mapped('group_id').mapped('id')
-            for s in ['|', ('invoice_ids', 'in', invoice_ids), '|', ('procurement_group_id', 'in', picking_ids), '|', ('name', 'ilike', search), '|', ('date_order', 'ilike', search),'|', ('client_order_ref', 'ilike', search), ('user_id', 'ilike', search)]:
-                domain.append(s)
+            orders = self.env['sale.order'].sudo().search_read(domain, ['invoice_ids', 'picking_ids'])
+            # ~ _logger.warn('\n\norders: %s\n' % orders)
+            invoice_ids = set()
+            picking_ids = set()
+            for o in orders:
+                invoice_ids |= set(o['invoice_ids'] or [])
+                picking_ids |= set(o['picking_ids'] or [])
+            # ~ _logger.warn('\ninvoice_ids: %s\npicking_ids: %s' % (invoice_ids, picking_ids))
+            # TODO: Date search only works with ISO-format. Find better implementation.
+            invoice_ids = [d['id'] for d in self.env['account.invoice'].sudo().search_read([('id', 'in', list(invoice_ids)), ('name', 'ilike', search), ('number', 'ilike', search), ('date_invoice', 'ilike', search)], ['id'])]
+            picking_ids = self.env['stock.picking'].sudo().search_read([('id', 'in', list(picking_ids)), ('name', 'ilike', search)], ['group_id'])
+            # ~ _logger.warn('\n\ninvoice_ids: %s\n' % invoice_ids)
+            # ~ _logger.warn('\n\npicking_ids: %s\ngroup_ids: %s\n' % (picking_ids, [d['group_id'][0] for d in picking_ids if d['group_id']]))
+            domain += ['|', '|', '|', '|', '|',
+                        ('invoice_ids', 'in', invoice_ids),
+                        ('procurement_group_id', 'in', [d['group_id'][0] for d in picking_ids if d['group_id']]),
+                        ('name', 'ilike', search),
+                        ('date_order', 'ilike', search),
+                        ('client_order_ref', 'ilike', search),
+                        ('user_id', 'ilike', search)]
         _logger.debug('search_domain: %s' % (domain))
         return domain
 
