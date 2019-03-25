@@ -21,7 +21,7 @@ msgstr ""
 #: code:addons/website_sale_price_chart/sale.py:320
 #, python-format
 msgid "(ca price excl. tax)"
-msgstr "(ca pris excl. moms)"
+msgstr "(ca pris exkl. moms)"
 
 #. module: website_sale_price_chart
 #: code:addons/website_sale_price_chart/sale.py:154
@@ -58,8 +58,8 @@ msgstr "(ditt pris inkl. moms)"
 #. module: website_sale_price_chart
 #: code:addons/website_sale_price_chart/sale.py:230
 #, python-format
-msgid "ca price"
-msgstr "ca pris"
+msgid "ca price incl. tax"
+msgstr "ca pris inkl. moms"
 
 #. module: website_sale_price_chart
 #: code:addons/website_sale_price_chart/sale.py:230
