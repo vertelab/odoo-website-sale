@@ -28,8 +28,8 @@ msgstr "(ca pris excl. moms)"
 #: code:addons/website_sale_price_chart/sale.py:298
 #: code:addons/website_sale_price_chart/sale.py:320
 #, python-format
-msgid "(ca price)"
-msgstr "(ca pris)"
+msgid "(ca price incl. tax)"
+msgstr "(ca pris inkl. moms)"
 
 #. module: website_sale_price_chart
 #: code:addons/website_sale_price_chart/sale.py:143
