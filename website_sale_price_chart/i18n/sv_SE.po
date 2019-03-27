@@ -66,13 +66,13 @@ msgid "ca price excl. tax"
 msgstr "ca pris exkl. moms"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:227
+#: code:addons/website_sale_price_chart/sale.py:136
 #, python-format
 msgid "your price"
 msgstr "ditt pris"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:227
+#: code:addons/website_sale_price_chart/sale.py:136
 #, python-format
 msgid "your price excl. tax"
 msgstr "ditt pris exkl. moms"
