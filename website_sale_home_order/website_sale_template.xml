@@ -16,6 +16,10 @@
               <div class="form-inline col-xs-10 col-md-3 col-xs-offset-1 col-md-offset-1">
                 <form t-att-action="'/home/%s' % (home_user.id)" method="post" style="margin-top: 20px; margin-bottom: 20px;">
                   <input type="hidden" name="tab" value="orders"/>
+                  <t t-foreach="order_filters" t-as="order_filter">
+                      <input type="hidden" t-att-name="order_filter['id']" t-att-value="'1' if order_filter.get('active') else ''"/>
+                  </t>
+                  
                   <div class="container">
                     <div class="input-group">
                       <input name="order_search" class="search-query form-control" placeholder="Search..." type="text" t-att-value="order_search" />
@@ -25,6 +29,7 @@
                         </button>
                       </span>
                     </div>
+                    
                   </div>
                 </form>
               </div>
@@ -41,6 +46,19 @@
                     </li>
                 </ul>
             </div>
+            
+            
+            
+            <div class="col-xs-10 col-xs-offset-1" t-if="order_filters">
+                <t t-foreach="order_filters" t-as="order_filter">
+                    <a href="#" t-att-class="'website-home-filter-button%s' % (' active' if order_filter.get('active') else '')" t-att-data-target="'''[name='%s']''' % order_filter['id']">
+                        <span t-esc="order_filter['name']" />
+                    </a>
+                </t>
+            </div>
+            
+            
+            
             </div>  
             <table class="table table-striped">
               <thead>

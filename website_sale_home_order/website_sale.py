@@ -66,17 +66,32 @@ class website(models.Model):
     def sale_home_get_data(self, home_user, post):
         res = super(website, self).sale_home_get_data(home_user, post)
         res.update(self.sale_home_order_get(home_user, post))
+        filters = self.sale_home_order_get_all_filters(home_user)
+        for filter in filters:
+            if post.get(filter['id']):
+                filter['active'] = True
+        res['order_filters'] = filters
         return res
 
+    @api.model
+    def sale_home_order_get_all_filters(self, user):
+        return []
+    
+    @api.model
+    def sale_home_order_filter_domain(self, user, filter, value):
+        """Override to implement filters."""
+        return []
+    
     @api.model
     def sale_home_order_search_domain_access(self, user, search):
         """Return a domain that describes which sale orders the user has access to."""
         return [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
 
     @api.model
-    def sale_home_order_search_domain(self, user, search=None):
+    def sale_home_order_search_domain(self, user, search=None, post=None):
         domain = self.sale_home_order_search_domain_access(user, search)
         if search:
+            post = post or {}
             search = search.strip()
             # invoices and picking
             orders = self.env['sale.order'].sudo().search_read(domain, ['invoice_ids', 'picking_ids'])
@@ -99,14 +114,17 @@ class website(models.Model):
                         ('date_order', 'ilike', search),
                         ('client_order_ref', 'ilike', search),
                         ('user_id', 'ilike', search)]
-        _logger.debug('search_domain: %s' % (domain))
+        for key in post:
+            if key.startswith('order_filter_'):
+                domain += self.sale_home_order_filter_domain(user, key, post[key])
+        # ~ _logger.debug('search_domain: %s' % (domain))
         return domain
 
     @api.model
     def sale_home_order_get(self, user, post):
         OPP = 50 # Orders Per Page
         search = post.get('order_search')
-        domain = self.sale_home_order_search_domain(user, search)
+        domain = self.sale_home_order_search_domain(user, search, post)
         order_page = int(post.get('order_page', '1'))
         url_args = post.copy()
         url_args.update({
@@ -147,7 +165,7 @@ class website_sale_home(website_sale_home):
     @http.route(['/home/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
     def home_page_order(self, home_user=None, order_id=None, tab='orders', **post):
         self.validate_user(home_user)
-        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user) + [('id', '=', order_id)])
+        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
         if not order:
             html = request.website._render(
                     'website.403',

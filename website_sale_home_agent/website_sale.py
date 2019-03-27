@@ -49,6 +49,19 @@ class website(models.Model):
             customer = customer.parent_id
         return False
 
+    @api.model
+    def sale_home_order_get_all_filters(self, user):
+        res = super(website, self).sale_home_order_get_all_filters(user)
+        if user.commercial_partner_id.agent:
+            res.append({'id': 'order_filter_own_orders', 'name': _('My Orders')})
+        return res
+
+    @api.model
+    def sale_home_order_filter_domain(self, user, filter, value):
+        if filter == 'order_filter_own_orders' and value:
+            return [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
+        return super(website, self).sale_home_order_filter_domain(user, filter, value)
+
 class website_sale_home(website_sale_home):
 
     def check_document_access(self, report, ids):
