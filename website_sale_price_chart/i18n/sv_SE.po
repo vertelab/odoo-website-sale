@@ -16,17 +16,15 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:154
-#: code:addons/website_sale_price_chart/sale.py:298
-#: code:addons/website_sale_price_chart/sale.py:320
+#: code:addons/website_sale_price_chart/sale.py:194
+#: code:addons/website_sale_price_chart/sale.py:216
 #, python-format
 msgid "(ca price excl. tax)"
 msgstr "(ca pris exkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:154
-#: code:addons/website_sale_price_chart/sale.py:298
-#: code:addons/website_sale_price_chart/sale.py:320
+#: code:addons/website_sale_price_chart/sale.py:194
+#: code:addons/website_sale_price_chart/sale.py:216
 #, python-format
 msgid "(ca price incl. tax)"
 msgstr "(ca pris inkl. moms)"
@@ -44,37 +42,37 @@ msgid "(rec incl. tax)"
 msgstr "(rek inkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:309
+#: code:addons/website_sale_price_chart/sale.py:205
 #, python-format
 msgid "(your price excl. tax)"
 msgstr "(ditt pris exkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:309
+#: code:addons/website_sale_price_chart/sale.py:205
 #, python-format
 msgid "(your price incl. tax)"
 msgstr "(ditt pris inkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:230
+#: code:addons/website_sale_price_chart/sale.py:139
 #, python-format
 msgid "ca price incl. tax"
 msgstr "ca pris inkl. moms"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:230
+#: code:addons/website_sale_price_chart/sale.py:139
 #, python-format
 msgid "ca price excl. tax"
 msgstr "ca pris exkl. moms"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:227
+#: code:addons/website_sale_price_chart/sale.py:136
 #, python-format
 msgid "your price"
 msgstr "ditt pris"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:227
+#: code:addons/website_sale_price_chart/sale.py:136
 #, python-format
 msgid "your price excl. tax"
 msgstr "ditt pris exkl. moms"
@@ -264,4 +262,3 @@ msgstr "Use this tax for rec price, none if tax is not included"
 #: model:ir.actions.act_window,name:website_sale_price_chart.pricelist_chart_type_action
 msgid "pricelist_chart_type_action"
 msgstr "pricelist_chart_type_action"
-
