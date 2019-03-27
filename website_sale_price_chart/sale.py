@@ -191,7 +191,7 @@ class product_pricelist_chart(models.Model):
                 </div>
             """.format(name=self.pricelist_chart_id.rec_pricelist.currency_id.name,
                        price=price_format(self.rec_price),
-                       tax=_('(ca price incl. tax)') if self.pricelist_chart_id.rec_price_tax else _('(ca price excl. tax)')
+                       tax=_('(ca price incl. tax)') if self.rec_price_tax else _('(ca price excl. tax)')
                        )
         if self.pricelist_chart_id.pricelist and self.pricelist_chart_id.pricelist.for_reseller:
             price += """
@@ -202,7 +202,7 @@ class product_pricelist_chart(models.Model):
                 </div>
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(self.price),
-                       tax=_('(your price incl. tax)') if self.pricelist_chart_id.price_tax else _('(your price excl. tax)')
+                       tax=_('(your price incl. tax)') if self.price_tax else _('(your price excl. tax)')
                        )
         if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
             price += """
@@ -213,7 +213,7 @@ class product_pricelist_chart(models.Model):
                 </div>
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(self.price),
-                       tax=_('(ca price incl. tax)') if self.pricelist_chart_id.price_tax else _('(ca price excl. tax)')
+                       tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
                        )
         return """
             <div>
