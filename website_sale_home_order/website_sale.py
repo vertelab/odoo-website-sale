@@ -90,8 +90,8 @@ class website(models.Model):
     @api.model
     def sale_home_order_search_domain(self, user, search=None, post=None):
         domain = self.sale_home_order_search_domain_access(user, search)
+        post = post or {}
         if search:
-            post = post or {}
             search = search.strip()
             # invoices and picking
             orders = self.env['sale.order'].sudo().search_read(domain, ['invoice_ids', 'picking_ids'])
