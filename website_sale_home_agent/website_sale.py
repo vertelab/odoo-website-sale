@@ -33,20 +33,12 @@ class website(models.Model):
     _inherit="website"
 
     @api.model
-    def sale_home_order_search_domain(self, user, search=None):
-        domain = super(website, self).sale_home_order_search_domain(user, search=search)
+    def sale_home_order_search_domain_access(self, user, search=None):
+        domain = super(website, self).sale_home_order_search_domain_access(user, search=search)
         parent = user.commercial_partner_id
         if not parent.agent:
             return domain
-        i = 0
-        while i < len(domain):
-            if domain[i][0] == 'partner_id' and domain[i][1] == 'child_of':
-                domain.insert(i, '|')
-                domain.insert(i + 1, ('order_line.agents.agent', 'child_of', parent.id))
-                i += 2
-            i += 1
-        _logger.debug('search_domain: %s' % (domain))
-        return domain
+        return ['|', ('order_line.agents.agent', 'child_of', parent.id)] + domain
     
     def sale_home_check_if_agent(self, customer, agent):
         if not agent.agent:
@@ -56,6 +48,19 @@ class website(models.Model):
                 return True
             customer = customer.parent_id
         return False
+
+    @api.model
+    def sale_home_order_get_all_filters(self, user):
+        res = super(website, self).sale_home_order_get_all_filters(user)
+        if user.commercial_partner_id.agent:
+            res.append({'id': 'order_filter_own_orders', 'name': _('My Orders')})
+        return res
+
+    @api.model
+    def sale_home_order_filter_domain(self, user, filter, value):
+        if filter == 'order_filter_own_orders' and value:
+            return [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
+        return super(website, self).sale_home_order_filter_domain(user, filter, value)
 
 class website_sale_home(website_sale_home):
 

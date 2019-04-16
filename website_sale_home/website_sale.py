@@ -153,7 +153,7 @@ class website_sale_home(http.Controller):
             for field in PARTNER_FIELDS:
                 validation['%s_%s' %(address_type, field)] = 'has-success'
             res['child'] |= child
-        _logger.warn(child_dicts)
+        # ~ _logger.warn(child_dicts)
         for id in child_dicts:
             d = child_dicts[id]
             if address_type != 'contact':

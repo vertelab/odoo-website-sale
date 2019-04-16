@@ -33,8 +33,6 @@ List sale order history for agents
     'website': 'http://www.vertel.se',
     'depends': ['website_sale_home_order', 'sale_commission'],
     'data': [
-        'security/ir.model.access.csv',
-        'security/portal_security.xml',
         'website_sale_template.xml',
     ],
     'installable': True,
