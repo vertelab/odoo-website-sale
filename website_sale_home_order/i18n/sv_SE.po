@@ -1,19 +1,21 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* website_sale_home_order
+# 	* website_sale_home_order
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0-20170901\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-07 11:57+0000\n"
-"PO-Revision-Date: 2018-03-07 11:57+0000\n"
+"POT-Creation-Date: 2019-04-16 09:36+0000\n"
+"PO-Revision-Date: 2019-04-16 11:37+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"Language: sv_SE\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
@@ -46,10 +48,16 @@ msgid "Back To My Account"
 msgstr "Åter till kontot"
 
 #. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:40
+#: code:addons/website_sale_home_order/website_sale.py:48
 #, python-format
 msgid "Cancelled"
 msgstr "Avbruten"
+
+#. module: website_sale_home_order
+#: code:addons/website_sale_home_order/website_sale.py:54
+#, python-format
+msgid "Cart"
+msgstr "Kundvagn"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
@@ -72,7 +80,7 @@ msgid "Delivery method"
 msgstr "Leveransmetod"
 
 #. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:42
+#: code:addons/website_sale_home_order/website_sale.py:50
 #, python-format
 msgid "Exception"
 msgstr "Undantag"
@@ -111,16 +119,10 @@ msgstr "Beställare"
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "Orders"
-msgstr "Ordrar"
+msgstr "Order"
 
 #. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:54
-#, python-format
-msgid "Ready for picking"
-msgstr "Klar att plockas"
-
-#. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:51
+#: code:addons/website_sale_home_order/website_sale.py:61
 #, python-format
 msgid "Paid"
 msgstr "Betald"
@@ -146,7 +148,13 @@ msgid "Quantity"
 msgstr "Antal"
 
 #. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:44
+#: code:addons/website_sale_home_order/website_sale.py:56
+#, python-format
+msgid "Ready for picking"
+msgstr "Klar att plockas"
+
+#. module: website_sale_home_order
+#: code:addons/website_sale_home_order/website_sale.py:52
 #, python-format
 msgid "Received"
 msgstr "Mottagen"
@@ -157,12 +165,17 @@ msgid "Sale Order"
 msgstr "Kundorder"
 
 #. module: website_sale_home_order
+#: model:ir.model,name:website_sale_home_order.model_sale_order_line
+msgid "Sale Order line"
+msgstr "Kundorderrad"
+
+#. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "Search..."
 msgstr "Sök..."
 
 #. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:49
+#: code:addons/website_sale_home_order/website_sale.py:59
 #, python-format
 msgid "Shipped and invoiced"
 msgstr "Levererad och fakturerad"
@@ -175,7 +188,7 @@ msgstr "Leverans:"
 #. module: website_sale_home_order
 #: view:website:website_sale_home.home_page
 msgid "State"
-msgstr "Status"
+msgstr "Skapad datum"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
@@ -191,7 +204,7 @@ msgstr "Moms:"
 #: view:website:website_sale_home.home_page
 #: view:website:website_sale_home_order.page_order
 msgid "Total"
-msgstr "Totalt"
+msgstr "Total"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
@@ -202,4 +215,3 @@ msgstr "Total:"
 #: model:ir.model,name:website_sale_home_order.model_website
 msgid "Website"
 msgstr "Webbplats"
-

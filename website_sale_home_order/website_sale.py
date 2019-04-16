@@ -48,8 +48,10 @@ class SaleOrder(models.Model):
             state = _('Cancelled')
         elif self.state in ('shipping_except', 'invoice_except'):
             state = _('Exception')
-        elif self.state in ('draft', 'sent'):
+        elif self.state in ('sent'):
             state = _('Received')
+        elif self.state in ('draft'):
+            state = _('Cart')
         else:
             state = _('Ready for picking')
             for invoice in self.invoice_ids:

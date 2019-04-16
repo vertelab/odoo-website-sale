@@ -11,14 +11,15 @@ class website_sale(website_sale):
 
         product = request.env['product.product'].browse(int(product_id))
         
-        return {'qty_available'         :product.qty_available, 
-                'inventory_availability':product.inventory_availability,
-                'available_threshold'   :product.available_threshold,
-                'custom_message'        :product.custom_message,
-                'product_type'          :product.type,
-                'virtual_available'     :product.virtual_available,
+        return {'qty_available'         :product.qty_available,                 # qty available for sale
+                'inventory_availability':product.inventory_availability,        # 'always', 'threshold', 'never'
+                'available_threshold'   :product.available_threshold,           # int if 'inventory_availability' is 'threshold' 
+                'custom_message'        :product.custom_message,                # used for setting a custom availability message
+                'product_type'          :product.type,                          # 'product', 'consumable', etc.
+                'virtual_available'     :product.virtual_available,             # ???
                 'product_template'      :product.product_tmpl_id.id,
                 'uom_name'              :product.uom_id.name,
-                'cart_qty'              :product.cart_qty,
-                'product_type'          :product.type,
+                'cart_qty'              :product.cart_qty,                      # qty in current customer's cart
+                # ~ 'product_type'          :product.type,                          # duplicate? removed without testing...
+                'is_edu_purchase'       :False,
                 }
