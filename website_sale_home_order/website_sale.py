@@ -87,7 +87,7 @@ class website(models.Model):
     @api.model
     def sale_home_order_search_domain_access(self, user, search):
         """Return a domain that describes which sale orders the user has access to."""
-        return [('partner_id','child_of', user.partner_id.commercial_partner_id.id)]
+        return [('partner_id','child_of', user.partner_id.commercial_partner_id.id), ('state','!=','draft')]
 
     @api.model
     def sale_home_order_search_domain(self, user, search=None, post=None):
