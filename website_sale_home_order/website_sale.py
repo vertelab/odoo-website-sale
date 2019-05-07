@@ -204,31 +204,25 @@ class website_sale_home(website_sale_home):
         return werkzeug.utils.redirect("/shop/cart")
 
     def check_document_access(self, report, ids):
+        partner = request.env.user.commercial_partner_id
+        model = None
         if report == 'sale.report_saleorder':
+            model = 'sale.order'
+        elif report == 'account.report_invoice':
+            model = 'account.invoice'
+        elif report == 'stock_delivery_slip.stock_delivery_slip':
+            model = 'stock.picking'
+        if model:
             try:
-                records = request.env['sale.order'].browse(ids)
+                records = request.env[model].browse(ids)
+                # Check partner_id.
+                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
+                    return True
+                # Check ordinary access controls
                 records.check_access_rights('read')
                 records.check_access_rule('read')
                 return True
             except:
                 # This check failed. Let it go to super to perform other checks.
-                pass
-        elif report == 'account.report_invoice':
-            try:
-                records = request.env['account.invoice'].browse(ids)
-                records.check_access_rights('read')
-                records.check_access_rule('read')
-                return True
-            except:
-                # This check failed. Let it go to super to perform possible other checks.
-                pass
-        elif report == 'stock_delivery_slip.stock_delivery_slip':
-            try:
-                records = request.env['stock.picking'].browse(ids)
-                records.check_access_rights('read')
-                records.check_access_rule('read')
-                return True
-            except:
-                # This check failed. Let it go to super to perform possible other checks.
                 pass
         return super(website_sale_home, self).check_document_access(report, ids)
