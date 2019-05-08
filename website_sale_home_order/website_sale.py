@@ -92,6 +92,7 @@ class website(models.Model):
     @api.model
     def sale_home_order_search_domain(self, user, search=None, post=None):
         domain = self.sale_home_order_search_domain_access(user, search)
+        # ~ _logger.warn('\n\ndomain: %s\n' % domain)
         post = post or {}
         if search:
             search = search.strip()

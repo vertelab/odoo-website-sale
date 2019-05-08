@@ -38,7 +38,7 @@ class website(models.Model):
         parent = user.commercial_partner_id
         if not parent.agent:
             return domain
-        return ['|', ('order_line.agents.agent', 'child_of', parent.id)] + domain
+        return ['|', ('partner_id.commercial_partner_id.agents', '=', parent.id)] + domain
     
     def sale_home_check_if_agent(self, customer, agent):
         if not agent.agent:
