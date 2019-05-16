@@ -37,7 +37,7 @@ class pricelist_chart_type(models.Model):
 
     """
     _name = "pricelist_chart.type"
-    _description = "Pripricecelist Chart Type"
+    _description = "Pricelist Chart Type"
 
     name = fields.Char()
     pricelist = fields.Many2one(comodel_name='product.pricelist',help='This pricelist is used to choose price-listing', required=True)
@@ -76,6 +76,14 @@ class pricelist_chart_type(models.Model):
             else:
                 pl.rec_price = None
         return pl
+
+    @api.multi
+    def price_get(self, product):
+        price = product.pricelist_chart_ids.filtered(lambda p: p.pricelist_chart_id in self).mapped('price')
+        if len(price)>0:
+            return price[0]
+        else:
+            return 0
 
 class product_product(models.Model):
     _inherit = 'product.product'
