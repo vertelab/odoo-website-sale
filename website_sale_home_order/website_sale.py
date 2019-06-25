@@ -189,8 +189,14 @@ class website_sale_home(website_sale_home):
         sale_order = request.website.sale_get_order()
         if not sale_order:
             sale_order = request.website.sale_get_order(force_create=True)
+        order_lines = request.env['sale.order.line']
         try:
-            order_lines = order.order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True )
+            for line in order.sudo().order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True):
+                # Check access rights
+                try:
+                    order_lines += order_lines.browse(line.id)
+                except:
+                    pass # Probably access error.
         except Exception as e:
             order_lines = []
             _logger.warn('Order Copy Error %s' % e)
