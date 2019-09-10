@@ -455,8 +455,10 @@ class website_sale_home(http.Controller):
         """Override to implement access control."""
         return False
     
-    @http.route(['/home/<model("res.users"):home_user>/print/<reportname>/<docids>'], type='http', auth='user', website=True)
-    def print_document(self, reportname, home_user=None, docids=None, **data):
+    @http.route(['/home/<model("res.users"):home_user>/print/<reportname>/<docids>',
+                 '/home/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
+                 ], type='http', auth='user', website=True)
+    def print_document(self, reportname, home_user=None, docids=None, docname=None, **data):
         """Creates PDF documents with sudo to avoid access rights problems.
         Implement access control per report type in check_document_access."""
         if docids:
