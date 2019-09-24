@@ -70,8 +70,12 @@ class document_directory_content(models.Model):
 class website_sale_home(website_sale_home):
 
     # ~ @http.route(['/home/<model("res.users"):home_user>/document/<model("ir.attachment"):document>','/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
-    @http.route(['/home/<model("res.users"):home_user>/document/<int:document>','/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>','/home/<model("res.users"):home_user>/documents'], type='http', auth="user", website=True)
-    def home_page_document(self, home_user=None, document=None,report=None, tab='document', **post):
+    @http.route(['/home/<model("res.users"):home_user>/document/<int:document>',
+                 '/home/<model("res.users"):home_user>/document/<int:document>/<docname>',
+                 '/home/<model("res.users"):home_user>/document_report/<model("document.directory.content"):report>',
+                 '/home/<model("res.users"):home_user>/documents'
+                 ], type='http', auth="user", website=True)
+    def home_page_document(self, home_user=None, document=None,report=None, docname=None, tab='document', **post):
         self.validate_user(home_user)
 
         if report:
