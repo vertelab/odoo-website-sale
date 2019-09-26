@@ -1,7 +1,8 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2018 Vertel (<http://www.vertel.se>).
+#    OpenERP, Open Source Management Solution, third party addon
+#    Copyright (C) 2004-2015 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,30 +19,18 @@
 #
 ##############################################################################
 
-
 {
-    'name': 'Wikinggruppen Integration',
-    'version': '1.0',
-    'category': 'Sale',
-    'description': """Share products, orders and more with Wikinggruppen webshop.
-Supported versions:
-* 8.4.
-
-Not supported:
-* 8.3.0
-* 11.0   
+    'name': 'Product template tags',
+    'version': '0.1',
+    'category': 'other',
+    'license': 'AGPL-3',
+    'summary': 'Adds tags to product templates',
+    'description': """
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'category': '',
-    'depends': ['website_sale'],
-    'init_xml': [],
-    'data': [
-        'views/wiking_view.xml',
-        'data/wikinggruppen_data.xml',
-        'security/ir.model.access.csv',
-    ],
-    'demo_xml' : [],
+    'depends': ['sale','account',],
+    'data': ['product_view.xml','security/ir.model.access.csv',],
     'installable': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+# vim:expandtab:smartindent:tabstop=4s:softtabstop=4:shiftwidth=4:
