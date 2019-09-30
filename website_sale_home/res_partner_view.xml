@@ -23,10 +23,15 @@
             <field name="arch" type="xml">
                 <field name="parent_id" position="before">
                     <div>
-                        <label for="has_account">Has Account</label>
-                        <field name="has_account" />
-                        <label for="is_home_admin">Home Admin</label>
-                        <field name="is_home_admin" />
+                        <!--
+                             <label for="has_account">Has Account</label>
+                             <field name="has_account" />
+                        -->
+                        <strong>Has account [xx] Is home admin [xx]</strong>
+                        <!--
+                             <label for="is_home_admin">Home Admin</label>
+                             <field name="is_home_admin" />
+                        -->
                     </div>
                 </field>
             </field>
