@@ -200,6 +200,10 @@ class website_sale_home(http.Controller):
         help['help_contact_phone'] = _('')
         help['help_contact_email'] = _('Your email will also be used as your login name.')
         help['help_contact_attachment'] = _('If you have more information or a diploma, you can attach it here. You can add more than one, but you have to save each one separate.')
+        help['help_social_media_facebook'] = _('')
+        help['help_social_media_instagram'] = _('')
+        help['help_social_media_youtube'] = _('')
+        help['help_social_media_twitter'] = _('')
         return help
 
     def validate_user(self, user):
