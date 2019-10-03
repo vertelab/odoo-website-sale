@@ -4,6 +4,7 @@
         <template id="company_info_form" name="Website Home Company Info Form">
             <div class="col-md-12 mt32 mb32" style="padding: 0px;">
                 <ul class="nav nav-tabs">
+                    <!-- ## CLIENT INTERFACE :: TABS FOR SETTINGS -->
                     <li id="nav_delivery" class="active">
                         <a data-toggle="tab" href="#delivery" class="hidden-xs">Delivery Address</a>
                         <a data-toggle="tab" href="#delivery" class="hidden-lg hidden-md hidden-sm">
@@ -23,6 +24,7 @@
                         </a>
                     </li>
                     <li id="nav_social_media" class="">
+                        <!-- ## SOCIAL MEDIA :: CLIENT INTERFACE -->
                         <a data-toggle="tab" href="#social_media" class="hidden-xs">Social Media</a>
                         <a data-toggle="tab" href="#social_media" class="hidden-lg hidden-md hidden-sm">
                             <i class="fa fa-social_media" />
