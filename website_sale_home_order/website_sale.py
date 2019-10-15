@@ -84,7 +84,7 @@ class SaleOrder(models.Model):
                     if invoices[0].state == 'open' and invoices[0].residual == invoices[0].amount_total:
                         state.append(_('Shipped and invoiced'))
                     elif invoices[0].state == 'open' and invoices[0].residual != invoices[0].amount_total:
-                        state.append(_('Partly paid'))
+                        state.append(_('Partially paid'))
                     elif invoices[0].state == 'paid':
                         state.append(_('Paid'))
                 # only print invoice numbers if there are several
