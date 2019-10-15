@@ -58,7 +58,7 @@ class SaleOrder(models.Model):
                 if invoice.state == 'open' and invoice.residual == invoice.amount_total:
                     state = _('Shipped and invoiced')
                 elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
-                    state = _('Partly paid')
+                    state = _('Partially paid')
                 elif invoice.state == 'paid':
                     state = _('Paid')
         return state
@@ -96,7 +96,7 @@ class SaleOrder(models.Model):
                             if invoice.state == 'open' and invoice.residual == invoice.amount_total:
                                 state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Shipped and invoiced'))
                             elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
-                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Partly paid'))
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Partially paid'))
                             elif invoice.state == 'paid':
                                 state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Paid'))
         return state

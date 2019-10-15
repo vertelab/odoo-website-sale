@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-16 09:36+0000\n"
-"PO-Revision-Date: 2019-04-16 11:37+0200\n"
+"POT-Creation-Date: 2019-10-15 11:52+0000\n"
+"PO-Revision-Date: 2019-10-15 13:53+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -49,12 +49,14 @@ msgstr "Åter till kontot"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:48
+#: code:addons/website_sale_home_order/website_sale.py:71
 #, python-format
 msgid "Cancelled"
 msgstr "Avbruten"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:54
+#: code:addons/website_sale_home_order/website_sale.py:77
 #, python-format
 msgid "Cart"
 msgstr "Kundvagn"
@@ -80,10 +82,24 @@ msgid "Delivery method"
 msgstr "Leveransmetod"
 
 #. module: website_sale_home_order
+#: field:sale.order,accepted_educational_purchase:0
+msgid "Educational Purchase Terms accepted"
+msgstr "Educational Purchase Terms accepted"
+
+#. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:50
+#: code:addons/website_sale_home_order/website_sale.py:73
 #, python-format
 msgid "Exception"
 msgstr "Undantag"
+
+#. module: website_sale_home_order
+#: code:addons/website_sale_home_order/website_sale.py:97
+#: code:addons/website_sale_home_order/website_sale.py:99
+#: code:addons/website_sale_home_order/website_sale.py:101
+#, python-format
+msgid "Invoice"
+msgstr "Faktura"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
@@ -122,10 +138,21 @@ msgid "Orders"
 msgstr "Order"
 
 #. module: website_sale_home_order
-#: code:addons/website_sale_home_order/website_sale.py:61
+#: code:addons/website_sale_home_order/website_sale.py:63
+#: code:addons/website_sale_home_order/website_sale.py:88
+#: code:addons/website_sale_home_order/website_sale.py:93
+#: code:addons/website_sale_home_order/website_sale.py:101
 #, python-format
 msgid "Paid"
 msgstr "Betald"
+
+#. module: website_sale_home_order
+#: code:addons/website_sale_home_order/website_sale.py:61
+#: code:addons/website_sale_home_order/website_sale.py:86
+#: code:addons/website_sale_home_order/website_sale.py:99
+#, python-format
+msgid "Partially paid"
+msgstr "Delvis betald"
 
 #. module: website_sale_home_order
 #: view:website:website_sale_home_order.page_order
@@ -149,12 +176,14 @@ msgstr "Antal"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:56
+#: code:addons/website_sale_home_order/website_sale.py:79
 #, python-format
 msgid "Ready for picking"
 msgstr "Klar att plockas"
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:52
+#: code:addons/website_sale_home_order/website_sale.py:75
 #, python-format
 msgid "Received"
 msgstr "Mottagen"
@@ -176,6 +205,8 @@ msgstr "Sök..."
 
 #. module: website_sale_home_order
 #: code:addons/website_sale_home_order/website_sale.py:59
+#: code:addons/website_sale_home_order/website_sale.py:84
+#: code:addons/website_sale_home_order/website_sale.py:97
 #, python-format
 msgid "Shipped and invoiced"
 msgstr "Levererad och fakturerad"
