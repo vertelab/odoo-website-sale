@@ -1,0 +1,145 @@
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+.website-home-filter-button {
+    background-color: #9F9F9;
+    border: 1px solid #AFAFB6;
+    border-radius: 3px;
+    color: #333;
+    padding: 5px 15px;
+}
+
+.website-home-filter-button.active {
+    background-color: #E6E6E6;
+    border: 2px solid #AFAFB6;
+    color: #333;
+}
+
+.order-detail-header-link-box {
+    text-align: right;
+}
+.order-detail-header-link-box > a{
+    margin: 15px;
+}
+
+#orders_div {
+    padding: 15px 0px;
+}
+
+.order_div {
+    background-color: #eee;
+    position: relative;
+    padding: 15px;
+    margin: 10px 0px;
+}
+
+.order_state {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 10px;
+}
+.picking_state {
+    position: absolute;
+    top: 30px;
+    right: 0px;
+    padding: 5px 10px;
+}
+.invoice_state {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    padding: 5px 10px;
+}
+
+
+
+.state_ {
+    background-color: #DD3333;
+    color: #000;
+}
+
+.state_open {
+    background-color: #DD3333;
+    color: #000;
+}
+
+
+.state_open a {
+    color: #fff;
+}
+
+
+.state_draft {
+    background-color: #F7F7F7;
+    color: #000;
+}
+
+.state_sent {
+    background-color: #5BC0DE;
+    color: #fff;
+}
+
+.state_confirmed {
+    background-color: #0275D8;
+    color: #fff;
+}
+
+.state_cancel {
+    background-color: #000;
+    color: #fff;
+}
+
+.state_waiting_date {
+    background-color: #FFFF00;
+    color: #000;
+}
+
+.state_manual {
+    background-color: #7F7F7F;
+    color: #fff;
+}
+
+.state_shipping_except {
+    background-color: #D9534F;
+    color: #000;
+}
+
+.state_invoice_except {
+    background-color: #F0AD4E;
+    color: #000;
+}
+
+.state_done {
+    background-color: #5CB85C;
+    color: #fff;
+}
+
+.state_paid {
+    background-color: #5CB85C;
+    color: #000;
+}
+
+.state_paid a {
+    color: #fff;
+}
+
+
+.state_progress {
+    background-color: #0275D8;
+    color: #fff;
+}
+
+.order_detail {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+    #orders_div {
+        padding: 15px 0px;
+    }
+}
