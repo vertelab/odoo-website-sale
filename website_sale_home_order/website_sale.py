@@ -89,7 +89,7 @@ class SaleOrder(models.Model):
                         state.append(_('Paid'))
                 # only print invoice numbers if there are several
                 else:
-                    # check if all invoices for order are fully paid.             
+                    # check if all invoices for order are fully paid.
                     if all([invoice.state == "paid" for invoice in invoices]):
                         state.append(_('Paid'))
                     else:
