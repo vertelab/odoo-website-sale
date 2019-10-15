@@ -104,7 +104,15 @@
                       <span t-field="order.partner_id.name" />
                   </td>
                   <td>
-                    <span t-esc="order.order_state_frontend()" />
+                    <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />
+                    <t t-if="len(invoice_list) > 1">
+                      <t t-foreach="invoice_list" t-as="invoice_status">
+                        <span t-esc="invoice_status" /><br/>
+                      </t>
+                    </t>
+                    <t t-if="len(invoice_list) == 1">
+                      <span t-esc="invoice_list[0]" />
+                    </t>
                   </td>
                   <td>
                     <!-- TODO: make this correct for all currencies. Look at website_sale. -->

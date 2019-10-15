@@ -55,10 +55,50 @@ class SaleOrder(models.Model):
         else:
             state = _('Ready for picking')
             for invoice in self.invoice_ids:
-                if invoice.state == 'open':
+                if invoice.state == 'open' and invoice.residual == invoice.amount_total:
                     state = _('Shipped and invoiced')
+                elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
+                    state = _('Partly paid')
                 elif invoice.state == 'paid':
                     state = _('Paid')
+        return state
+        
+    @api.multi
+    def order_state_per_invoice_frontend(self):
+        """Get a customer friendly order state per invoice."""
+        state = []
+        if self.state == 'cancel':
+            state.append(_('Cancelled'))
+        elif self.state in ('shipping_except', 'invoice_except'):
+            state.append(_('Exception'))
+        elif self.state in ('sent'):
+            state.append(_('Received'))
+        elif self.state in ('draft'):
+            state.append(_('Cart'))
+        else:
+            state.append(_('Ready for picking'))
+            if self.invoice_ids:
+                state = []
+                if len(self.invoice_ids) == 1:
+                    if self.invoice_ids[0].state == 'open' and self.invoice_ids[0].residual == self.invoice_ids[0].amount_total:
+                        state.append(_('Shipped and invoiced'))
+                    elif self.invoice_ids[0].state == 'open' and self.invoice_ids[0].residual != self.invoice_ids[0].amount_total:
+                        state.append(_('Partly paid'))
+                    elif self.invoice_ids[0].state == 'paid':
+                        state.append(_('Paid'))
+                # only print invoice numbers if there are several
+                else:
+                    # check if all invoices for order are fully paid.             
+                    if all([invoice.state == "paid" for invoice in self.invoice_ids]):
+                        state.append(_('Paid'))
+                    else:
+                        for invoice in self.invoice_ids:
+                            if invoice.state == 'open' and invoice.residual == invoice.amount_total:
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Shipped and invoiced'))
+                            elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Partly paid'))
+                            elif invoice.state == 'paid':
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Paid'))
         return state
 
 class website(models.Model):
