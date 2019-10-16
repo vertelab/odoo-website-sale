@@ -97,8 +97,8 @@
                                             <div t-att-class="'form-group %s' %validation.get('delivery_id%s_email' % deliv.id, '')">
                                                 <label class="col-md-3 col-sm-4 control-label" for="delivery_email">Email</label>
                                                 <div class="col-md-7 col-sm-8">
-                                                    <input type="email" class="form-control" t-att-name="'delivery_id%s_email' % deliv.id" t-att-value="deliv.email" placeholder="" t-att="input_attrs" />
-                                                    <small t-esc="help.get('help_delivery_wmail', '')" />
+                                                    <input type="email" class="form-control" t-att-name="'delivery_id%s_email' % deliv.id" t-att-value="deliv.email" placeholder=""/>
+                                                    <small t-esc="help.get('help_delivery_email', '')" />
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +158,7 @@
                             <div t-att-class="'form-group %s' %validation.get('delivery_email', '')">
                                 <label class="col-md-3 col-sm-4 control-label" for="delivery_email">Email</label>
                                 <div class="col-md-7 col-sm-8">
-                                    <input type="email" class="form-control" name="delivery_email" t-att-value="delivery.email if delivery else home_user.partner_id.commercial_partner_id.email" placeholder="" t-att="input_attrs" />
+                                    <input type="email" class="form-control" name="delivery_email" t-att-value="delivery.email if delivery else ''" placeholder="" />
                                     <small t-esc="help.get('help_delivery_email', '')" />
                                 </div>
                             </div>
@@ -269,7 +269,7 @@
                                                 <label class="col-md-3 col-sm-4 control-label" for="invoice_email">Email</label>
                                                 <div class="col-md-7 col-sm-8">
                                                     <input type="email" class="form-control" t-att-name="'invoice_id%s_email' % invoic.id" t-att-value="invoic.email" placeholder="" t-att="input_attrs" />
-                                                    <small t-esc="help.get('help_invoice_wmail', '')" />
+                                                    <small t-esc="help.get('help_invoice_email', '')" />
                                                 </div>
                                             </div>
                                         </div>
@@ -330,7 +330,7 @@
                                 <label class="col-md-3 col-sm-4 control-label" for="invoice_email">Email</label>
                                 <div class="col-md-7 col-sm-8">
                                     <input type="email" class="form-control" name="invoice_email" t-att-value="invoice.email if invoice else home_user.partner_id.commercial_partner_id.email" placeholder="" t-att="input_attrs" />
-                                    <small t-esc="help.get('help_invoice_wmail', '')" />
+                                    <small t-esc="help.get('help_invoice_email', '')" />
                                 </div>
                             </div>
                         </t>

@@ -183,7 +183,7 @@ class website_sale_home(http.Controller):
         help['help_delivery_zip'] = _('')
         help['help_delivery_city'] = _('')
         help['help_delivery_phone'] = _('')
-        help['help_delivery_email'] = _('')
+        help['help_delivery_email'] = _('This e-mail will be used to send tracking information of orders.')
         help['help_invoice_street'] = _('')
         help['help_invoice_street2'] = _('')
         help['help_invoice_zip'] = _('')
@@ -227,6 +227,34 @@ class website_sale_home(http.Controller):
                     translated_text.write({'value': post.get('website_short_description')})
             # ~ if post.get('invoicetype'):
                 # ~ company.write({'property_invoice_type': int(post.get('invoicetype'))})
+            
+            address_types = self.get_children_by_address_type(company)
+            if len(address_types['delivery']) == 0:
+                # Create new delivery address if email is updated 
+                # without an existing delivery address
+                if post.get('delivery_email'):
+                    delivery_params = {
+                        'name': 'delivery',
+                        'parent_id': company.id,
+                        'use_parent_address': True,
+                        'email': post.get('delivery_email'),
+                        'type': 'delivery',
+                    }
+                    
+                    request.env['res.partner'].sudo().create(delivery_params)
+                    
+            elif len(address_types['delivery']) == 1:
+                # Update email for delivery address if only one
+                if post.get('delivery_email'):
+                    address_types['delivery'].email = post.get('delivery_email')
+            else:
+                # Update email for each delivery address if several
+                for deliv in address_types['delivery']:
+                    if post.get('delivery_id%s_email' % deliv.id):
+                        deliv.email = post.get('delivery_id%s_email' % deliv.id)
+                    
+                    
+                    
             company.write(self.get_company_post(post))
             children_dict = self.save_children(company, post)
             children = children_dict['children']
