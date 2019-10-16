@@ -1,34 +1,37 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * website_sale_home
+# 	* website_sale_home
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0-20170901\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-28 07:37+0000\n"
-"PO-Revision-Date: 2018-03-28 07:37+0000\n"
+"POT-Creation-Date: 2019-10-16 09:23+0000\n"
+"PO-Revision-Date: 2019-10-16 11:38+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"Language: en\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #. module: website_sale_home
-#: view:website:website_sale_home.contact_form
-msgid "e.g. 0123-45 67 89"
-msgstr "t.ex. 0123-45 67 89"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.contact_form
-msgid "e.g. 0709-99 99 99"
-msgstr "t.ex. 0709-99 99 99"
+#: code:addons/website_sale_home/website_sale.py:424
+#, python-format
+msgid "%s wants to delete <a href=\"/web?debug=#id=%s&view_type=form&model=res.partner\">%s</a> because '%s'."
+msgstr "%s vill ta bort <a href=\"/web?debug=#id=%s&view_type=form&model=res.partner\">%s</a> på grund av '%s'."
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 msgid "Address Type"
 msgstr "Addresstyp"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Administrator"
+msgstr "Administratör"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -38,7 +41,7 @@ msgstr "Bilaga"
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
 msgid "Attachments"
-msgstr "Bilaga"
+msgstr "Bilagor"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -46,11 +49,16 @@ msgid "Back"
 msgstr "Tillbaka"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:391
-#: code:addons/website_sale_home/website_sale.py:392
+#: view:website:website_sale_home.home_page
+msgid "Cancel"
+msgstr "Avbryt"
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:460
+#: code:addons/website_sale_home/website_sale.py:461
 #, python-format
 msgid "Cannot send mail to %s. Please check your mail server configuration."
-msgstr "Cannot send mail to %s. Please check your mail server configuration."
+msgstr "Misslyckades att skicka mail till %s. Vänligen kontrollera din emailserverkonfiguration."
 
 #. module: website_sale_home
 #: view:website:website_sale_home.company_info_form
@@ -64,19 +72,9 @@ msgid "City"
 msgstr "Stad"
 
 #. module: website_sale_home
-#: view:website:website_sale_home.company_info_form
-msgid "New Contact"
-msgstr "Ny kontakt"
-
-#. module: website_sale_home
 #: view:website:website_sale_home.home_page
-msgid "Company Information"
-msgstr "Företagsinformation"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Company Name"
-msgstr "Bolagsnamn"
+msgid "Close message box"
+msgstr "Stäng meddelande"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
@@ -85,43 +83,13 @@ msgstr "Företagsbeskrivning"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
-msgid "Invoice Type"
-msgstr "Fakturatyper"
+msgid "Company Information"
+msgstr "Bolagsinformation"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
-msgid "Has Webshop?"
-msgstr "Har webbutik?"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Webshop Website"
-msgstr "Webbutik webbplats"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Send a message"
-msgstr "Skicka ett meddelande"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Close message box"
-msgstr "Stäng meddelande rutan"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Write your message here..."
-msgstr "Skriv ditt meddelande här..."
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Send"
-msgstr "Skicka"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.contact_form
-msgid "Competences"
-msgstr "Kompetenser"
+msgid "Company Name"
+msgstr "Bolagsnamn"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -129,10 +97,16 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:385
+#: code:addons/website_sale_home/website_sale.py:425
+#, python-format
+msgid "Contact %s inactivated"
+msgstr "Kontakt %s avaktiverad"
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:454
 #, python-format
 msgid "Contact '%s' has no user."
-msgstr "Contact '%s' has no user."
+msgstr "Kontakt '%s' har ingen användare."
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -140,31 +114,10 @@ msgid "Contact Information"
 msgstr "Kontaktinformation"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:132
-#, python-format
-msgid "Contatcs Cell"
-msgstr "Kontakt mobil"
-
-#. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:133
-#, python-format
-msgid "Contatcs phone"
-msgstr "Kontakt telefon"
-
-#. module: website_sale_home
 #: view:website:website_sale_home.children_info
+#: view:website:website_sale_home.company_info_form
 msgid "Country"
 msgstr "Land"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Logged in as"
-msgstr "Inloggad som"
-
-#. module: website_sale_home
-#: view:website:website_sale_home.home_page
-msgid "Organization Number"
-msgstr "Organisationsnummer"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
@@ -180,6 +133,18 @@ msgstr "Datum"
 #: view:website:website_sale_home.children_info
 msgid "Default"
 msgstr "Standard"
+
+#. module: website_sale_home
+#. openerp-web
+#: code:addons/website_sale_home/static/src/js/main.js:105
+#, python-format
+msgid "Delete "
+msgstr "Ta bort"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Delete Contact"
+msgstr "Ta bort kontakt"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -200,8 +165,8 @@ msgstr "E-post"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.company_info_form
-msgid "Password Reset"
-msgstr "Återställa lösenord"
+msgid "Facebook"
+msgstr "Facebook"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -211,7 +176,17 @@ msgstr "Fil att ladda upp pdf/jpg/png"
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
 msgid "Given and family name"
-msgstr "Ange ett efternamn"
+msgstr "För- och efternamn"
+
+#. module: website_sale_home
+#: field:res.partner,has_account:0
+msgid "Has account"
+msgstr "Har konto"
+
+#. module: website_sale_home
+#: view:res.partner:website_sale_home.view_partner_form
+msgid "Has account [xx] Is home admin [xx]"
+msgstr "Has account [xx] Is home admin [xx]"
 
 #. module: website_sale_home
 #: model:res.groups,name:website_sale_home.group_home_admin
@@ -219,15 +194,20 @@ msgid "Home Admin"
 msgstr "Home Admin"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:135
+#: code:addons/website_sale_home/website_sale.py:202
 #, python-format
 msgid "If you have more information or a diploma, you can attach it here. You can add more than one, but you have to save each one separate."
-msgstr "If you have more information or a diploma, you can attach it here. You can add more than one, but you have to save each one separate."
+msgstr "Ytterligare information eller diplom kan bifogas här. Du kan lägga till fler än en fil, men behöver spara varje fil separat."
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
 msgid "Image"
 msgstr "Bild"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Instagram"
+msgstr "Instagram"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -240,16 +220,20 @@ msgid "Invoice Address"
 msgstr "Fakturaadress"
 
 #. module: website_sale_home
-#: view:website:website_sale_home.children_info
-#: view:website:website_sale_home.contact_form
-msgid "e.g. masseur"
-msgstr "t.ex. massör"
+#: field:res.partner,is_home_admin:0
+msgid "Is home admin"
+msgstr "Is home admin"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 #: view:website:website_sale_home.contact_form
 msgid "Job Position"
 msgstr "Jobbtitel"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Logged in as"
+msgstr "Inloggad som"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -276,7 +260,12 @@ msgstr "Namn"
 #. module: website_sale_home
 #: view:website:website_sale_home.company_info_form
 msgid "New Contact"
-msgstr "Ny kontakt"
+msgstr "Ny Kontakt"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Organization Number"
+msgstr "Organisationsnummer"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -284,34 +273,43 @@ msgid "Other"
 msgstr "Övrigt"
 
 #. module: website_sale_home
-#: view:website:website_sale_home.company_info_form
-msgid "Password Reset"
-msgstr "Lösenordsåterställning"
+#: model:ir.model,name:website_sale_home.model_res_partner
+msgid "Partner"
+msgstr "Företag"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:387
+#: view:website:website_sale_home.company_info_form
+msgid "Password Reset"
+msgstr "Återställ lösenord"
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:456
 #, python-format
 msgid "Password reset has been sent to user %s by email"
-msgstr "Lösenordsåterställning har skickats till användaren % s via e-post"
+msgstr "Instruktioner för att återställa lösenord har skickats till användare  %s via epost"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 #: view:website:website_sale_home.company_info_form
 #: view:website:website_sale_home.contact_form
 msgid "Phone"
-msgstr "Telefon"
+msgstr "Telefone"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:131
+#: code:addons/website_sale_home/website_sale.py:198
 #, python-format
-msgid "Please a picture of you. This makes it more personal."
-msgstr "Vänligen en bild av dig. Detta gör det mer personligt."
+msgid "Please provide a picture of yourself. This makes it more personal."
+msgstr "Vänligen ladda upp en bild på dig själv. Det blir mer personligt så."
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:134
-#, python-format
-msgid "Please add an email address"
-msgstr "Lägg till en e-postadress"
+#: view:website:website_sale_home.home_page
+msgid "Reason"
+msgstr "Anledning"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Reason for deleting this contact"
+msgstr "Anledning till att kontakten tas bort"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -321,8 +319,28 @@ msgstr "Spara"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.home_page
+msgid "Send"
+msgstr "Skicka"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Send a message"
+msgstr "Skicka ett meddelande"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
 msgid "Settings"
 msgstr "Inställningar"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Social Media"
+msgstr "Sociala medier"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Social media link"
+msgstr "Social media link"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.company_info_form
@@ -332,7 +350,7 @@ msgstr "Gata"
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 msgid "Street 1"
-msgstr "Gata 1"
+msgstr "Street 1"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -341,10 +359,42 @@ msgid "Street row 2"
 msgstr "Gata rad 2"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:299
+#: code:addons/website_sale_home/website_sale.py:345
 #, python-format
-msgid "This email already exists. Choose another one or contact the administrator."
-msgstr "Denna e-post existerar redan. Välj en annan eller kontakta administratören."
+msgid "The email %s alreay exists. Choose another one or contact the administrator."
+msgstr "The email %s alreay exists. Choose another one or contact the administrator."
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:186
+#, python-format
+msgid "This e-mail will be used to send tracking information of orders."
+msgstr "Eposten används för att skicka spårningsinformation om sändningar."
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:342
+#, python-format
+msgid "This email alreay exists. Choose another one or contact the administrator."
+msgstr "This email alreay exists. Choose another one or contact the administrator."
+
+#. module: website_sale_home
+#: help:res.partner,has_account:0
+msgid "This partner has an account"
+msgstr "Denna partner har ett konto"
+
+#. module: website_sale_home
+#: help:res.partner,is_home_admin:0
+msgid "This partner has home admin right"
+msgstr "This partner has home admin right"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Title"
+msgstr "Titel"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Twitter"
+msgstr "Twitter"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.contact_form
@@ -354,12 +404,40 @@ msgstr "Typ"
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
 msgid "Use Company Address"
-msgstr "Använd företagsadress"
+msgstr "Använd företagets adress"
 
 #. module: website_sale_home
 #: model:ir.model,name:website_sale_home.model_website
 msgid "Website"
 msgstr "Webbplats"
+
+#. module: website_sale_home
+#: view:website:website_sale_home.home_page
+msgid "Write your message here..."
+msgstr "Skriv ditt meddelande här"
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:64
+#, python-format
+msgid "You have not access right to edit or create contact for your company. Please contact us."
+msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta oss."
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:62
+#, python-format
+msgid "You have not access right to edit or create contact for your company. Please contact your administrator: %s. or "
+msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta din administratör: %s. eller "
+
+#. module: website_sale_home
+#: code:addons/website_sale_home/website_sale.py:201
+#, python-format
+msgid "Your email will also be used as your login name."
+msgstr "Din epost kommer även vara ditt inloggningsnamn."
+
+#. module: website_sale_home
+#: view:website:website_sale_home.company_info_form
+msgid "Youtube"
+msgstr "Youtube"
 
 #. module: website_sale_home
 #: view:website:website_sale_home.children_info
@@ -368,18 +446,16 @@ msgid "Zip"
 msgstr "Postnummer"
 
 #. module: website_sale_home
-#: view:website:website_sale_home.company_info_form
-msgid "Administrator"
-msgstr "Administratör"
+#: view:website:website_sale_home.contact_form
+msgid "e.g. 0123-45 67 89"
+msgstr "t.ex. 0123-45 67 89"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:62
-#, python-format
-msgid "You have not access right to edit or create contact for your company. Please contact us."
-msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta oss."
+#: view:website:website_sale_home.contact_form
+msgid "e.g. 0709-99 99 99"
+msgstr "t.ex. 0709-99 99 99"
 
 #. module: website_sale_home
-#: code:addons/website_sale_home/website_sale.py:60
-#, python-format
-msgid "You have not access right to edit or create contact for your company. Please contact your administrator: %s. or "
-msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta din administratör: %s. eller "
+#: view:website:website_sale_home.contact_form
+msgid "e.g. masseur"
+msgstr "t.ex. massör"
