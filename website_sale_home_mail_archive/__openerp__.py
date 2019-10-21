@@ -34,6 +34,7 @@ Mail Archive
     'depends': ['website_sale_home','website_mass_mailing'],
     'data': [
         'mail_archive.xml',
+        'mass_mailing_data.xml',
     ],
     'installable': True,
 }

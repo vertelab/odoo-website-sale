@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="mail.mass_mailing.category" id="category_news_letter">
+            <field name="name">news letter</field>
+        </record>
+    </data>
+</openerp>
