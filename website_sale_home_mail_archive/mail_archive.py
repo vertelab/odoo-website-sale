@@ -36,7 +36,7 @@ class website(models.Model):
 class mass_mailing(models.Model):
     _inherit='mail.mass_mailing'
     
-    category_ids = fields.Many2many(comodel_name='mail.mass_mailing.category', string='Category')
+    category_ids = fields.Many2many(comodel_name='mail.mass_mailing.category', string='Category', relation='mail_mass_mailing_category2_rel')
 
 
 # ~ class mass_mailing_category(models.Model):

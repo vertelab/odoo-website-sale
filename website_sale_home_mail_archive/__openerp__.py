@@ -35,6 +35,7 @@ Mail Archive
     'data': [
         'mail_archive.xml',
         'mass_mailing_data.xml',
+        'mass_mailing_view.xml',
     ],
     'installable': True,
 }
