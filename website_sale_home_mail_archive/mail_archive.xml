@@ -23,7 +23,7 @@
                                 <tr t-foreach="request.env['mail.mass_mailing'].sudo().search([('category_ids', 'in', request.env.ref('reseller_news_letter').id )])" t-as="mail">
                                 <tr t-foreach="request.env['mail.mass_mailing'].sudo().search([('name', '>', '') )])" t-as="mail">
                                 -->
-                                <tr t-foreach="request.env['mail.mass_mailing'].sudo().search([('category_ids', 'in', request.env.ref('reseller_news_letter').id)])" t-as="mail">
+                                <tr t-foreach="request.env['mail.mass_mailing'].sudo().search([('category_ids', 'in', request.env.ref('website_sale_home_mail_archive.reseller_news_letter').id )])" t-as="mail">
                                     <td>
                                         <a t-att-href="'/mass_mailing/%s/token/%s?referer=mail_archive' %(mail.id, mail.token)">
                                             <t t-esc="mail.name" />
