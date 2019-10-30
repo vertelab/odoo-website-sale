@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- [2223] Nyhetsbrev - Arkiv under Mitt konto till webbaserade nyhetsbrev -->
+        <record model="mail.mass_mailing.category" id="reseller_news_letter">
+            <field name="name">Reseller news letter</field>
+        </record>
+        <record model="mail.mass_mailing.category" id="public_news_letter">
+            <field name="name">Public news letter</field>
+        </record>
+        <record model="mail.mass_mailing.category" id="vip_news_letter">
+            <field name="name">VIP news letter</field>
+        </record>
+
+    </data>
+</openerp>

@@ -33,6 +33,16 @@ _logger = logging.getLogger(__name__)
 class website(models.Model):
     _inherit="website"
 
-  
+class mass_mailing(models.Model):
+    _inherit='mail.mass_mailing'
+    
+    category_ids = fields.Many2many(comodel_name='mail.mass_mailing.category', string='Category', relation='mail_mass_mailing_category2_rel')
+
+
+# ~ class mass_mailing_category(models.Model):
+    # ~ _name='mail.mass_mailing.category'
+    
+    # ~ name=fields.Char(string='Category')
     
     
+

@@ -266,7 +266,10 @@ class website_sale_home(http.Controller):
     @http.route(['/home','/home/<model("res.users"):home_user>'], type='http', auth="user", website=True)
     def home_page(self, home_user=None, **post):
         if not home_user:
-            return werkzeug.utils.redirect("/home/%s" % request.env.user.id)
+            url = "/home/%s" % request.env.user.id
+            if request.httprequest.query_string:
+                url += '?%s' % request.httprequest.query_string
+            return werkzeug.utils.redirect(url)
         self.validate_user(home_user)
         company = home_user.partner_id.commercial_partner_id
         value = request.website.sale_home_get_data(home_user, post)

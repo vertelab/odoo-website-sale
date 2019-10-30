@@ -1,1 +1,1 @@
-# ~ import mail_archive
+import mail_archive
