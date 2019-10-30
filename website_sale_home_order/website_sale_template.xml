@@ -28,11 +28,11 @@
                           <i class="fa fa-search" />
                         </button>
                       </span>
-                    </div>
-                    
+                    </div> 
                   </div>
                 </form>
               </div>
+
               <div class="col-xs-12 col-md-7 col-md-offset-1 text-center">
                 <ul t-if="sale_order_pager['page_count'] &gt; 1" t-attf-class="#{ classname or '' } pagination" style="margin-left: auto; margin-right: auto;">
                     <li t-att-class=" 'disabled' if sale_order_pager['page']['num'] == 1 else '' ">
@@ -160,10 +160,21 @@
                 </form>
                 <div>
                   <div class="col-xs-12 col-md-5 col-lg-5">
+                    <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />
                     <h3>
-                      <t t-esc="order.name" /> - <t t-esc="order.order_state_frontend()"/>
+                      <!-- TODO -->
+                      <t t-esc="order.name" /> 
+                      <t t-if="len(invoice_list) == 1">
+                         - <span t-esc="invoice_list[0]" />
+                      </t>
                     </h3>
+                    <t t-if="len(invoice_list) > 1">
+                      <t t-foreach="invoice_list" t-as="invoice_status">
+                        &amp;emsp;<span t-esc="invoice_status" /><br/>
+                      </t>
+                    </t>
                   </div>
+                  
                   <div class="order-detail-header-link-box col-xs-12 col-md-7 col-lg-7">
                     <a t-att-href="'/home/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download order</a>
                     <t t-foreach="order.invoice_ids" t-as="invoice">
