@@ -120,6 +120,7 @@ class website_sale_home(http.Controller):
         return children
 
     def write_child(self, partner_id, address_type, post):
+        # ~ _logger.warn(post)
         # TODO: Implement controls for which fields can be written here. This is very not secure.
         validation = {}
         child_dict = {k.split('_', 1)[1]:v for k,v in post.items() if k.split('_')[0] == address_type}
@@ -138,15 +139,16 @@ class website_sale_home(http.Controller):
             del child_dict[key]
         res = {'child': request.env['res.partner'].browse([]), 'validation': validation}
         if child_dict:
+            # ~ _logger.warn('child_dict\n%s' % child_dict)
             if address_type != 'contact':
                 child_dict['name'] = address_type
-            child_dict['parent_id'] = partner_id.id
             child_dict['type'] = address_type
             child_dict['use_parent_address'] = False
             if child_dict.get('country_id'):
                 child_dict['country_id'] = int(child_dict['country_id'])
             child = partner_id.child_ids.filtered(lambda c: c.type == address_type)
             if not child:
+                child_dict['parent_id'] = partner_id.id
                 child = request.env['res.partner'].sudo().create(child_dict)
             else:
                 child[0].write(child_dict)
