@@ -7,6 +7,8 @@ from openerp.http import request
 
 from openerp.addons.website_portal_1028.controllers.main import website_account
 
+import logging
+_logger = logging.getLogger(__name__)
 
 class website_account(website_account):
 
@@ -50,14 +52,16 @@ class website_account(website_account):
         SaleOrder = request.env['sale.order']
 
         domain = [
-            ('message_partner_ids', 'child_of', [partner.commercial_partner_id.id]),
+            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
             ('state', 'in', ['sent', 'cancel'])
         ]
 
-        archive_groups = self._get_archive_groups('sale.order', domain)
+        # archive_groups = self._get_archive_groups('sale.order', domain)
+        archive_groups = ""
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
+        _logger.warn("DAER: %s" % domain)
         # count for pager
         quotation_count = SaleOrder.search_count(domain)
         # make pager
@@ -87,10 +91,11 @@ class website_account(website_account):
         SaleOrder = request.env['sale.order']
 
         domain = [
-            ('message_partner_ids', 'child_of', [partner.commercial_partner_id.id]),
+            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
             ('state', 'in', ['sale', 'done'])
         ]
-        archive_groups = self._get_archive_groups('sale.order', domain)
+        archive_groups = ""
+        # archive_groups = self._get_archive_groups('sale.order', domain)
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 

@@ -82,14 +82,14 @@
                         <td>
                             <a t-attf-href="/my/orders/#{quotation.id}?#{keep_query()}"><t t-esc="quotation.name"/></a>
                         </td>
-                        <td><span t-field="quotation.validity_date"/></td>
+                        <td><span t-field="quotation.date_order"/></td>
                         <td>
                           <t t-if="quotation.state == 'cancel'">
                             <span class="label label-default"><i class="fa fa-fw fa-remove"/> Cancelled</span>
                           </t>
-                          <t t-if="quotation.validity_date and quotation.validity_date &lt; date">
+                          <!-- <t t-if="quotation.validity_date and quotation.validity_date &lt; date">
                             <span class="label label-default"><i class="fa fa-fw fa-clock-o"/> Expired</span>
-                          </t>
+                          </t> -->
                         </td>
                         <td><span t-field="quotation.amount_total" t-options='{"widget": "monetary", "display_currency": quotation.pricelist_id.currency_id}'/>
                         </td>
