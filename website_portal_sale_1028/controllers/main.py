@@ -57,11 +57,10 @@ class website_account(website_account):
         ]
 
         # archive_groups = self._get_archive_groups('sale.order', domain)
-        archive_groups = ""
+        archive_groups = "" # DAER: Ugg not understand, Ugg remove.
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
-        _logger.warn("DAER: %s" % domain)
         # count for pager
         quotation_count = SaleOrder.search_count(domain)
         # make pager
@@ -94,7 +93,7 @@ class website_account(website_account):
             ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
             ('state', 'in', ['sale', 'done'])
         ]
-        archive_groups = ""
+        archive_groups = "" # DAER: Ugg not understand, Ugg remove.
         # archive_groups = self._get_archive_groups('sale.order', domain)
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
@@ -151,10 +150,11 @@ class website_account(website_account):
 
         domain = [
             ('type', 'in', ['out_invoice', 'out_refund']),
-            ('message_partner_ids', 'child_of', [partner.commercial_partner_id.id]),
+            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
             ('state', 'in', ['open', 'paid', 'cancel'])
         ]
-        archive_groups = self._get_archive_groups('account.invoice', domain)
+        archive_groups = "" # DAER: Ugg not understand, Ugg remove.
+        # archive_groups = self._get_archive_groups('account.invoice', domain)
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
