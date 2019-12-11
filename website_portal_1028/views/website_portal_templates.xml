@@ -195,7 +195,7 @@
 
     <template id="my_account_link" name="Link to frontend portal" inherit_id="website.layout">
         <xpath expr="//ul[@id='top_menu']" position="inside">
-            <li><a href="/my/home" role="menuitem">My Account (new)</a></li>
+            <li><a href="/my/home" role="menuitem">My Pages</a></li>
         </xpath>
     </template>
     </data>
