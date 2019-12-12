@@ -37,7 +37,7 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="/my/home">
-                            My Account
+                            My Pages
                         </a>
                     </div>
                     <div class="collapse navbar-collapse" id="oe-help-navbar-collapse">
@@ -68,7 +68,7 @@
         </t>
     </template>
 
-    <template id="portal_my_home" name="My Portal">
+    <template id="portal_my_home" name="My Pages">
         <t t-call="website_portal_1028.portal_layout">
             <div class="o_my_home_content">
                 <div class="oe_structure"></div>
