@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         # fetch the partner's id and subscribe the partner to the sale order
         for order in self:
-            if order.partner_id not in order.message_partner_ids:
+            if order.partner_id not in order.message_follower_ids:
                 order.message_subscribe([order.partner_id.id])
         return super(SaleOrder, self).action_confirm()
 

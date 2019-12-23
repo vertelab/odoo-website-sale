@@ -11,7 +11,8 @@ class AccountInvoice(models.Model):
     def invoice_validate(self):
         # fetch the partner's id and subscribe the partner to the invoice
         for invoice in self:
-            if invoice.partner_id not in invoice.message_partner_ids:
+            # if invoice.partner_id not in invoice.message_partner_ids:
+            if invoice.partner_id not in invoice.message_follower_ids:
                 invoice.message_subscribe([invoice.partner_id.id])
         return super(AccountInvoice, self).invoice_validate()
 
