@@ -48,7 +48,7 @@ class TestPortal(TestMail):
             'partner_ids': [(4, partner_carine.id)], 'send_mail': True})
         mail_invite.add_followers()
         # Test: Pigs followers should contain Admin and Bert
-        self.assertEqual(group_pigs.message_partner_ids, partner_carine)
+        self.assertEqual(group_pigs.message_follower_ids, partner_carine)
         # Test: partner must have been prepared for signup
         # TDE FIXME: invite email for portal users should be fixed / improved / rethought
         # self.assertTrue(partner_carine.signup_valid, 'partner has not been prepared for signup')
