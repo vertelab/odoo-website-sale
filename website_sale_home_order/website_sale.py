@@ -147,7 +147,14 @@ class website(models.Model):
                 picking_ids |= set(o['picking_ids'] or [])
             # ~ _logger.warn('\ninvoice_ids: %s\npicking_ids: %s' % (invoice_ids, picking_ids))
             # TODO: Date search only works with ISO-format. Find better implementation.
-            invoice_ids = [d['id'] for d in self.env['account.invoice'].sudo().search_read([('id', 'in', list(invoice_ids)), ('name', 'ilike', search), ('number', 'ilike', search), ('date_invoice', 'ilike', search)], ['id'])]
+            invoice_ids = [d['id'] for d in self.env['account.invoice'].sudo().search_read([
+					('id', 'in', list(invoice_ids)),
+					'|',
+						'|',
+							('name', 'ilike', search),
+							('number', 'ilike', search),
+						('date_invoice', 'ilike', search)
+				], ['id'])]
             picking_ids = self.env['stock.picking'].sudo().search_read([('id', 'in', list(picking_ids)), ('name', 'ilike', search)], ['group_id'])
             # ~ _logger.warn('\n\ninvoice_ids: %s\n' % invoice_ids)
             # ~ _logger.warn('\n\npicking_ids: %s\ngroup_ids: %s\n' % (picking_ids, [d['group_id'][0] for d in picking_ids if d['group_id']]))
