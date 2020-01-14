@@ -73,7 +73,10 @@ class SaleOrder(models.Model):
 
     @api.multi
     def check_minimum_order_value(self, minvalue=None):
+        """Check if order value is above the limit where a fee is applied."""
         self.ensure_one()
+        if self.check_min_value_exception():
+            return True
         minvalue = minvalue or self.get_minimum_order_value()
         if minvalue:
             if minvalue.sample_order and self.env['sale.order'].search_count([('partner_id.commercial_partner_id', '=', self.partner_id.commercial_partner_id.id)]) == 0:
@@ -86,21 +89,8 @@ class SaleOrder(models.Model):
         return True
 
     @api.multi
-    def check_min_allowed_web_order(self, minvalue=None):
-        self.ensure_one()
-        minvalue = minvalue or self.get_minimum_order_value()
-        if minvalue:
-            if minvalue.sample_order and self.env['sale.order'].search_count([('partner_id.commercial_partner_id', '=', self.partner_id.commercial_partner_id.id)]) == 0:
-                return True
-            value = 0.0
-            for line in self.order_line:
-                if not line.is_min_order_fee and not line.is_delivery:
-                    value += line.price_subtotal
-            return value >= minvalue.min_allowed_web_order
-        return True
-
-    @api.multi
-    def minimum_order_get_allowed(self):
+    def check_min_value_exception(self):
+        """Check if order should be excepted from fee."""
         event_line = False
         not_event_line = False
         for line in self.order_line:
@@ -110,8 +100,24 @@ class SaleOrder(models.Model):
                 not_event_line = True
         if event_line and not not_event_line:
             return True
-        else:
-            return self.check_min_allowed_web_order()
+        return False
+
+    @api.multi
+    def minimum_order_get_allowed(self):
+        """Check if order value is so low that order should be refused."""
+        self.ensure_one()
+        if self.check_min_value_exception():
+            return True
+        minvalue = self.get_minimum_order_value()
+        if minvalue:
+            if minvalue.sample_order and self.env['sale.order'].search_count([('partner_id.commercial_partner_id', '=', self.partner_id.commercial_partner_id.id)]) == 0:
+                return True
+            value = 0.0
+            for line in self.order_line:
+                if not line.is_min_order_fee and not line.is_delivery:
+                    value += line.price_subtotal
+            return value >= minvalue.min_allowed_web_order
+        return True
 
     @api.multi
     def action_button_confirm(self):
@@ -138,62 +144,14 @@ class SaleOrder(models.Model):
                 return line.price_subtotal
         return 0.0
 
-
-    @api.multi
-    def Xminimum_order_value_set(self):
-        line_ids = []
-        for order in self:
-            del_lines = order.order_line.filtered(lambda l: l.is_min_order_fee)
-            if del_lines:
-                del_lines.unlink()
-            if order.check_minimum_order_value():
-                continue
-            if order.state not in ('draft', 'sent'):
-                raise Warning(_('Order not in Draft State!'), _('The order state have to be draft to add minimum order value lines.'))
-            minvalue = order.get_minimum_order_value()
-            price_unit = minvalue.product_id.list_price
-            if order.company_id.currency_id.id != order.pricelist_id.currency_id.id:
-                price_unit = self.env['res.currency'].compute(order.company_id.currency_id.id, order.pricelist_id.currency_id.id, price_unit,date=order.date_order)
-            values = {
-                'order_id': order.id,
-                'product_uom_qty': 1,
-                'product_uom': minvalue.product_id.uom_id.id,
-                'product_id': minvalue.product_id.id,
-                'is_min_order_fee': True,
-            }
-            res = self.env['sale.order.line'].product_id_change(order.pricelist_id.id, values['product_id'],
-                                             qty=values['product_uom_qty'], uom=False, qty_uos=0, uos=False, name='', partner_id=order.partner_id.id,
-                                             lang=False, update_tax=True, date_order=False, packaging=False, fiscal_position=order.fiscal_position.id, flag=False,)
-            #Warning: {
-            #    'domain': {'product_uos': [('category_id', '=', False)], 'product_uom': [('category_id', '=', 2)]}, 
-            #    'warning': False, 
-            #    'value': {
-            #        'product_uos_qty': 1, 
-            #        'name': u'[2828] Handeling Fee', 
-            #        'product_uom': 1, 'price_unit': 75.0, 'event_ok': False, 'event_type_id': False, 'th_weight': 0.0, 'product_uos': False, 'purchase_price': 0.0, 
-            #        'tax_id': [2]}
-            #    }
-            
-            
-            #{'product_uos_qty': 1, 'product_id': 2828, 'product_uom': 1, 'order_id': 95292, 'price_unit': 75.0, 'product_uom_qty': 1, 'purchase_price': 0.0, 'event_type_id': False, 
-            #'th_weight': 0.0, 'product_uos': False, 'is_min_order_fee': True, 'tax_id': [2], 
-            #'event_ok': False, 'name': u'[2828] Handeling Fee'}
-
-            
-            values.update(res['value'])
-            values['price_unit'] = price_unit
-            if order.order_line:
-                values['sequence'] = order.order_line[-1].sequence + 1
-            line_id = self.env['sale.order.line'].create(values)
-            line_ids.append(line_id)
-            raise Warning(line_ids)
-        return line_ids
-
     @api.one
     def minimum_order_value_set(self):
+        """Check minimum order value and apply fee"""
+        # Remove current min order fee
         del_lines = self.order_line.filtered(lambda l: l.is_min_order_fee)
         if del_lines:
             del_lines.unlink()
+        # Check if order is above min value
         if self.check_minimum_order_value():
             return
         if self.state not in ('draft', 'sent'):
