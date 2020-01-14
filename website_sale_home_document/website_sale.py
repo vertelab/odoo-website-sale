@@ -74,7 +74,7 @@ class website(models.Model):
             elif 'Excel' in doc.name:
                 suffix = 'xls'
         _logger.warn(suffix)
-        return ('/' + doc.id + '.' + suffix) if suffix else ''
+        return (('/%s' % doc.id) + '.' + suffix) if suffix else ''
 
     @api.model
     def sale_home_directory_get(self, user):
