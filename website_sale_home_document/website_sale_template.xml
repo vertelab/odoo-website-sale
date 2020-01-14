@@ -25,7 +25,9 @@
                     
                      <t t-if='doc.type == "binary"'>
                     <div style='font-size: 24px; font-weight: 500;'>
-                      <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, ('/' + doc.name + '.pdf') if doc.mimetype == 'application/pdf' else '')">
+                      <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, ('/' + doc.name + '.pdf') if doc.mimetype == 'application/pdf' else '')"> -->
+                      <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, website.sale_home_document_type_get(doc))">
+                      <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, '')"> -->
                         <i class="fa fa-download" />
                         &amp;nbsp;
                         <t t-esc="doc.name" />
@@ -132,6 +134,17 @@
         <group position="inside">
           <field name="document_directory" />
         </group>
+      </field>
+    </record>
+
+    <record id="view_attachment_form" model="ir.ui.view">
+      <field name="name">ir.attachment.form.home</field>
+      <field name="model">ir.attachment</field>
+      <field name="inherit_id" ref="base.view_attachment_form" />
+      <field name="arch" type="xml">
+        <field name="datas_fname" position="after">
+          <field name="mimetype" attrs="{'invisible':[('type','!=','binary')]}"/>
+        </field>
       </field>
     </record>
   </data>

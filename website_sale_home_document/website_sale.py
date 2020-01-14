@@ -46,7 +46,6 @@ class knowledge_config_settings(models.TransientModel):
     def get_params(self, fields):
         return {'document_directory': self.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')}
 
-
 class website(models.Model):
     _inherit="website"
 
@@ -55,6 +54,27 @@ class website(models.Model):
         if not domain:
             domain = "[('parent_id.name', '=', 'public')]"
         return self.env['ir.attachment'].sudo().search(eval(domain))
+
+    @api.model
+    def sale_home_document_type_get(self, doc):
+        suffix = ''
+        mime_to_type = {'application/pdf': 'pdf',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+                        'application/vnd.ms-excel': 'xls',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+                        'application/vnd.ms-office': 'xlm',
+                        }
+
+        suffix = mime_to_type.get(doc.mimetype)
+        if not suffix: 
+            suffix = mime_to_type.get(doc.file_type)
+        if not suffix:
+            if 'PDF' in doc.name:
+                suffix = 'pdf'
+            elif 'Excel' in doc.name:
+                suffix = 'xls'
+        _logger.warn(suffix)
+        return ('.' + suffix) if suffix else ''
 
     @api.model
     def sale_home_directory_get(self, user):
