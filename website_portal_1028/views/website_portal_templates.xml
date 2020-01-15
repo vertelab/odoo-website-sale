@@ -4,7 +4,8 @@
     <template id="assets_frontend" inherit_id="website.assets_frontend" name="Account Manager">
       <xpath expr="." position="inside">
           <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.less'/>
-          <script type="text/javascript" src="/website_portal_1028/static/src/js/website_portal_1028.js"></script>
+          <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.css'/>
+     <script type="text/javascript" src="/website_portal_1028/static/src/js/website_portal_1028.js"></script> 
       </xpath>
     </template>
 
@@ -26,46 +27,26 @@
         </ul>
     </template>
 
+
     <template id="portal_layout" name="Portal Layout">
         <t t-call="website.layout">
             <div class="container mt16">
-                <div class="navbar navbar-default">
+                <div class="navbar navbar-light">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#oe-help-navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="/my/home">
-                            My Pages
-                        </a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="oe-help-navbar-collapse">
+                 <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.css'/>
+                    </div> 
+                    <div class="" id="">
                         <ul class="nav navbar-nav o_portal_submenu">
                         </ul>
                     </div>
                 </div>
             </div>
-            <div id="wrap">
-                <div class="container mb64">
-                    <div class="col-md-8">
-                        <t t-raw="0"/>
-                    </div>
-                    <div id="o_my_sidebar" class="col-md-3 col-md-offset-1 o_my_sidebar">
-                        <div class="o_my_contact" t-if="sales_rep">
-                            <t t-call="website_portal_1028.contact"/>
-                        </div>
-                        <div class="o_my_details">
-                            <h3 class="page-header">Your Details <a href="/my/account" class="btn btn-default btn-xs">Change</a></h3>
-                            <div t-field="user.partner_id" t-options='{"widget": "contact", "fields": ["email", "phone", "address", "name"]}'/>
-                        </div>
-                        <div class="o_my_archives" t-if="archive_groups">
-                            <t t-call="website_portal_1028.portal_archive_groups"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </t>
+        
+<!--     <div id="wrap" class="oe_structure oe_empty">
+   </div> -->
+      <t t-raw="0"/>
+      </t>   
+
     </template>
 
     <template id="portal_my_home" name="My Pages">
@@ -73,8 +54,258 @@
             <div class="o_my_home_content">
                 <div class="oe_structure"></div>
             </div>
-            <div class="col-md-12 oe_structure"/>
-        </t>
+            <div class="col-md-12 oe_structure"></div>
+        <section>
+        <div class="container black_section_title">
+          <h4>AKTUELLA ERBJUDANDEN</h4>
+        </div>
+      </section>
+      <section class="all">  
+    
+        <div class="container">
+          <div class="col-sm-6 offers_table">
+            <div class="first_row row">
+              <div class="col-sm-5 col-sm-6 col-xs-5">
+                <h5>KONSUMENTERBJUDANDE:</h5>
+              </div>
+              <div class="col-sm-2 col-sm-6 col-xs-2">
+                <h5>UTPRIS:</h5>
+              </div>
+              <div class="col-sm-2 col-sm-6 col-xs-2">
+                <h5>VÄRDE</h5>
+              </div>
+              <div class="col-sm-3 col-sm-6 col-xs-3">
+                <h5>SÄLJPERIOD:</h5>
+              </div>
+            </div>
+            <section class="rows">
+              <div class="campaigns_rows row">
+                <div class="col-sm-5 col-sm-6 col-xs-5">
+                  <a>Eyebrow set</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>249 kr</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>349 kr</a>
+                </div>
+                <div class="col-sm-3 col-sm-6 col-xs-3">
+                  <a>1 sep -31 okt</a>
+                </div>
+              </div>
+              <div class="campaigns_rows row">
+                <div class="col-sm-5 col-sm-6 col-xs-5">
+                  <a>Eyebrow set</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>249 kr</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>349 kr</a>
+                </div>
+                <div class="col-sm-3 col-sm-6 col-xs-3">
+                  <a>1 sep -31 okt</a>
+                </div>
+              </div>
+              <div class="campaigns_rows row">
+                <div class="col-sm-5 col-sm-6 col-xs-5">
+                  <a>Eyebrow set</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>249 kr</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>349 kr</a>
+                </div>
+                <div class="col-sm-3 col-sm-6 col-xs-3">
+                  <a>1 sep -31 okt</a>
+                </div>
+              </div>
+              <div class="campaigns_rows row">
+                <div class="col-sm-5 col-sm-6 col-xs-5">
+                  <a>Eyebrow set</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>249 kr</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>349 kr</a>
+                </div>
+                <div class="col-sm-3 col-sm-6 col-xs-3">
+                  <a>1 sep -31 okt</a>
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="first_row row">
+                <div class="col-sm-5 col-sm-6 col-xs-5">
+                  <h5>SALONGSERBJUDANDE:</h5>
+                </div>
+                <div class="col-sm-2  col-xs-2">
+                  <h5>UTPRIS:</h5>
+                </div>
+                <div class="col-sm-2 col-xs-2">
+                  <h5>VÄRDE</h5>
+                </div>
+                <div class="col-sm-3 col-xs-3">
+                  <h5>SÄLJPERIOD:</h5>
+                </div>
+              </div>
+            </section>
+            <section class="rows">
+              <div class="campaigns_rows row">
+                <div class="col-sm-5 col-sm-6 col-xs-5">
+                  <a>Eyebrow set</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>249 kr</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>349 kr</a>
+                </div>
+                <div class="col-sm-3 col-sm-6 col-xs-3">
+                  <a>1 sep -31 okt</a>
+                </div>
+              </div>
+              <div class="campaigns_rows row">
+                <div class="col-sm-5 col-sm-6 col-xs-5">
+                  <a>Eyebrow set</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>249 kr</a>
+                </div>
+                <div class="col-sm-2 col-sm-6 col-xs-2">
+                  <a>349 kr</a>
+                </div>
+                <div class="col-sm-3 col-sm-6 col-xs-3">
+                  <a>1 sep -31 okt</a>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <section class="para_large">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12 d-none d-sm-block">
+                      <div class="o_margin_l pull-right">
+                        <div class="o_container">
+                          <img alt="Odoo Members" class="img img-responsive" src="/website/static/src/img/odoo.jpg" style="" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="container black_section_title">
+          <h4>SENASTE NYTT</h4>
+        </div>
+      </section>
+      <section class="all">
+        <div class="container">
+          <div class="latest_mail col-sm-6 col-xs-12">
+            <div class="o_container">
+              <div class="row mail_first_line">
+                <div class="col-sm-3 col-xs-3 p-3">
+                  <img alt="Odoo Members" class="img img-responsive" src="/website/image/ir.attachment/250848_9618f28/datas" />
+                </div>
+                <div class="col-sm-9 col-xs-9">
+                  <h4>DU HAR VÄL KOLLAT MAILEN?</h4>
+                </div>
+              </div>
+            </div>
+            <t t-set="mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'res.partner'), ('res_id', '=', request.env.user.partner_id.id)], limit=8, order='sent DESC')" />
+            <t t-set="show_all_mails" t-value="request.env['mail.mass_mailing'].sudo().search([('category_ids', 'in', request.env.ref('website_sale_home_mail_archive.reseller_news_letter').id ), ('state', '=', 'done' )])" />
+
+            <div class="row mail_lists_line">
+              <div class="col-sm-3 col-xs-3">
+                <t t-if="mails">
+                  <t t-foreach="mails" t-as="mail">
+                    <li>
+                      <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                        <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
+                      </a>
+                    </li>
+                  </t>
+                </t>
+              </div>
+              <div class="col-sm-9 col-xs-9">
+                <t t-if="mails">
+                  <t t-foreach="mails" t-as="mail">
+                    <li>
+                      <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                        <t t-esc="mail.mass_mailing_id.name" />
+                      </a>
+                    </li>
+                  </t>
+                </t>
+              </div>
+
+               <div class="show_all">
+                  <li>
+                    <a t-att-href="'/mass_mailing/%stoken' % show_all_mails.id">
+                      Visa alla
+                    </a>
+                  </li>
+              </div> 
+
+<!-- <div class="show_all">
+                  <li>
+
+              <t t-foreach="request.env['mail.mass_mailing'].sudo().search([('category_ids', 'in', request.env.ref('website_sale_home_mail_archive.reseller_news_letter').id ), ('state', '=', 'done' )])" t-as="mail">
+                                  
+                <a t-att-href="'/mass_mailing/%s/token/%s?referer=mail_archive' %(mail.id, mail.token)">
+                  <t t-esc="mail.name" />
+                   </a>  
+                   Visa alla        
+                              
+                  <span t-esc="'' if not mail.sent_date else mail.sent_date[:10]" />
+      
+                               </t>
+                           </li>
+                       </div> -->
+
+
+            </div>
+          </div>
+          <div class="gift_section col-sm-3 col-xs-6 ">
+            <h4>HÄR FINNS ALLT MATERIAL DU BEHÖVER</h4>
+            <section class="gift_rows">
+              <div class="row">
+                <t t-set="categ_others" t-value="request.env.ref('website_sale.categ_others')" />
+                <t t-foreach="categ_others.child_id[:8]" t-as="category">
+                    <div class="col-sm-12">
+                      <a>
+                  <t t-esc="category.name" />
+                </a>
+                </div>
+                </t>
+              </div>
+              <div class="show_all">
+                  <li>
+                    <a t-att-href="'/webshop/category/%s' % categ_others.id">
+                      Visa alla
+                    </a>
+                  </li>
+              </div>
+            </section>
+          </div>
+          <div class="col-sm-3 col-xs-6 ">
+            <div class="o_container">
+              <img alt="Odoo Members" class="img img-responsive" src="/website/image/ir.attachment/250831_184c2e1/datas" style="" />
+            </div>
+          </div>
+        </div>
+      </section>
+        <div id="wrap" class="oe_structure oe_empty"/>
+ </t>   
+ 
     </template>
 
     <template id="custom_panel" inherit_id="portal_layout" customize_show="True" name="Portal Editable Panel" active="False">
@@ -146,7 +377,7 @@
                                     <div t-attf-class="form-group #{error.get('street') and 'has-error' or ''} col-lg-6">
                                         <label class="control-label label-optional" for="street">Street</label>
                                         <input type="text" name="street" class="form-control" t-att-value="street or partner.street"/>
-                                    </div>
+                                    </div>my/quotes
                                     <div t-attf-class="form-group #{error.get('city') and 'has-error' or ''} col-lg-6">
                                         <label class="control-label" for="city">City</label>
                                         <input type="text" name="city" class="form-control" t-att-value="city or partner.city" />
@@ -192,11 +423,50 @@
             </div>
         </t>
     </template>
+    
+        <template id="website_theme_aktuellt" inherit_id="website.layout" name="Website Theme aktuellt" priority="100">
+            <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
+               <a href="/my/home">AKTUELLT</a>
+                <a href="/my/salon">MIN SALONG</a>
+                <a href="/my/orders">MINA ORDRAR</a>
+                <a href="/my/orders">MINA REKLAMATIONER</a>
+                <a href="/my/orders">UTGÅENDE PRODUKTER</a>
+                <a href="/my/orders">KÖPINFORMATION</a>
+                    <li class="dropdown-submenu">
+            <a class="test" href="#">MEDIA</a>
+            <ul class="dropdown-menu">
+              <li><a href="#">3rd level dropdown</a></li>
+              <li><a href="#">3rd level dropdown</a></li>
+            </ul>
+          </li>
+            </xpath>
+        </template>
 
-    <template id="my_account_link" name="Link to frontend portal" inherit_id="website.layout">
-        <xpath expr="//ul[@id='top_menu']" position="inside">
-            <li><a href="/my/home" role="menuitem">My Pages</a></li>
+
+<!--         <template id="website_theme_aktuellt2" inherit_id="website.layout" name="Website Theme aktuellt2" priority="100">
+            <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
+               <a href="/my/home">Aktuellt</a>
+            </xpath>
+        </template>
+  -->
+<!--     <template id="my_account_link" name="Link to frontend portal" inherit_id="website.layout">
+        <xpath expr="//ul[@class='dropdown-menu js_usermenu']/" position="inside">
+            <li><a href="/my/home" role="menuitem">Aktuellt</a></li>
         </xpath>
-    </template>
+    </template>  -->
+<!-- 
+-->
+
+<!--
+
+    <xpath expr="//a[@href='/web']/.." position="replace">
+        <div class="product_children">
+          <label>
+          <li>
+            <a class="dn-home-menu-option" href="/home" role="menuitem">Aktuellt</a>
+          </li>
+        </label>
+    </div> -->
+
     </data>
 </openerp>

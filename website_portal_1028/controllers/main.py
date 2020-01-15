@@ -16,6 +16,18 @@ class website_account(http.Controller):
 
     _items_per_page = 20
 
+
+    def get_campaign_products(self, reseller=True, limit=8):
+
+        request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', True), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
+
+        ctch = request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', reseller), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
+        campaign_products = request.env['product.product'].search([('id', 'in', (ctch.mapped('variant_id') | ctch.mapped('product_id').mapped('product_variant_ids')).mapped('id'))], limit=limit)
+        for campaign_product in campaign_products:
+            helper = ctch.filtered(lambda h: h.variant_id == campaign_product) or ctch.filtered(lambda h: campaign_product in h.product_id.product_variant_ids)
+
+
+
     def _prepare_portal_layout_values(self):
         """ prepare the values to render portal layout """
         partner = request.env.user.partner_id
@@ -30,6 +42,7 @@ class website_account(http.Controller):
             'user': request.env.user
         }
         return values
+
 
     def _get_archive_groups(self, model, domain=None, fields=None, groupby="create_date", order="create_date desc"):
         if not model:
