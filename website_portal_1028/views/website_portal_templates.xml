@@ -423,20 +423,23 @@
             </div>
         </t>
     </template>
-    
+
         <template id="website_theme_aktuellt" inherit_id="website.layout" name="Website Theme aktuellt" priority="100">
             <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
                <a href="/my/home">AKTUELLT</a>
                 <a href="/my/salon">MIN SALONG</a>
                 <a href="/my/orders">MINA ORDRAR</a>
-                <a href="/my/orders">MINA REKLAMATIONER</a>
-                <a href="/my/orders">UTGÅENDE PRODUKTER</a>
-                <a href="/my/orders">KÖPINFORMATION</a>
+                <a href="/my/obsolete">UTGÅENDE PRODUKTER</a>
+                <a href="/my/buyinfo">KÖPINFORMATION</a>
                     <li class="dropdown-submenu">
             <a class="test" href="#">MEDIA</a>
             <ul class="dropdown-menu">
-              <li><a href="#">3rd level dropdown</a></li>
-              <li><a href="#">3rd level dropdown</a></li>
+              <li><a href="#">Bildarkiv</a></li>
+              <li><a href="#">Prislistor</a></li>
+              <li><a href="#">Nyheter &amp; erbjudanden</a></li>
+              <li><a href="#">Event &amp; behandlingar</a></li>
+              <li><a href="#">Kompendium</a></li>
+              <li><a href="#">Övrigt</a></li>
             </ul>
           </li>
             </xpath>

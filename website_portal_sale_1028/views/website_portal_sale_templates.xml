@@ -40,9 +40,17 @@
               </li>
             </div>
             <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/media">Media</a>
-              </li>
+            <li class="dropdown-submenu">
+            <a class="test" href="#">media</a>
+            <ul class="dropdown-menu">
+              <li><a href="/my/media/imagearchive">Bildarkiv</a></li>
+              <li><a href="/my/media/pricelist">Prislistor</a></li>
+              <li><a href="/my/media/news">Nyheter &amp; erbjudanden</a></li>
+              <li><a href="/my/media/events">Event &amp; behandlingar</a></li>
+              <li><a href="/my/media/compendium">Kompendium</a></li>
+              <li><a href="/my/media/other">Övrigt</a></li>
+            </ul>
+          </li>
             </div>
           </div>
         </div>
@@ -68,9 +76,17 @@
         <li>
           <a href="/my/mail">Mail &amp; Prenumeranter</a>
         </li>
-        <li>
-          <a href="/my/media">Media</a>
-        </li>
+     <li class="dropdown-submenu">
+            <a class="test" href="#">media</a>
+            <ul class="dropdown-menu">
+              <li><a href="/my/media/imagearchive">Bildarkiv</a></li>
+              <li><a href="/my/media/pricelist">Prislistor</a></li>
+              <li><a href="/my/media/news">Nyheter &amp; erbjudanden</a></li>
+              <li><a href="/my/media/events">Event &amp; behandlingar</a></li>
+              <li><a href="/my/media/compendium">Kompendium</a></li>
+              <li><a href="/my/media/other">Övrigt</a></li>
+            </ul>
+          </li>
       </div>
     </template>
     <template id="portal_my_salon" name="My salon">
@@ -82,7 +98,7 @@
             <h3 class="page-header">Min salong</h3>
           </div>
 
-            <t t-call="website_portal_1028.home_page_order"/>
+           <!--  <t t-call="website_portal_1028.home_page_order"/> -->
 
         </div>
       </t>
@@ -188,7 +204,7 @@
               <table class="table table-hover o_my_status_table">
                 <thead>
                   <tr class="active">
-                    <th>Sale Order trjrtjh#</th>
+                    <th>Sale Order#</th>
                     <th>Order Date</th>
                     <th />
                     <th>Total</th>
