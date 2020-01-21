@@ -15,10 +15,8 @@ Add your sales document in the frontend portal. Your customers will be able to c
     ],
     'data': [
         'views/website_portal_sale_templates.xml',
+        'views/mailing_list_view.xml',
         'security/ir.model.access.csv',
-    ],
-    'demo': [
-        'data/sale_demo.xml'
     ],
     'installable': True,
 }

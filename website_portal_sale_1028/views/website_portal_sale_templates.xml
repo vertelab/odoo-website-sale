@@ -458,9 +458,7 @@
           <h1 class="">MAIL &amp; PRENUMERATIONER</h1>
 
 
-          <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]"/>
-          <t t-set="mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=8, order='sent DESC')"/>
-          <t t-set="show_all_mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')"/>
+          
 
           <div class="col-md-6">
               <h3 class="">Våra mailutskick</h3>
@@ -493,6 +491,22 @@
         </div>
          <div class="col-md-8">
     <h3 class="page-header">Mina prenumerationer</h3>
+ 
+     
+              <!-- <t t-if="subscribed">
+                <t t-foreach="subscribed" t-as="list">
+                <div class="row mail_lists_lines">
+       
+                  <div class="col-sm-7 col-xs-7">
+      
+                      <t t-esc="list.name"/>
+
+                </div>
+              </div>
+            </t>
+          </t> -->
+
+
   </div>
 
 
@@ -501,6 +515,15 @@
     </t>
   </template>
 
+
+
+
+<!--        <template id="subscribed_field" inherit_id="website.layout" name="Mega Menu">
+      <xpath expr="//body" position="before">
+
+      </xpath>
+    </template>
+ -->
       
     <!-- <template id="portal_my_quotations" name="My Quotations">
          <t t-call="website_portal_1028.portal_layout">

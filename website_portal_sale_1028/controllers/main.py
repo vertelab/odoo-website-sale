@@ -173,7 +173,7 @@ class website_account(website_account):
 
     @http.route(['/my/mail'], type='http', auth="user", website=True)
     def portal_my_mail(self, **kw):
-        values = request._prepare_portal_layout_values()
+        # values = request._prepare_portal_layout_values()
         email = request.env.user.email
         mailing_lists = []
         for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True)]):
