@@ -40,17 +40,29 @@
               </li>
             </div>
             <div class="col-md-2 col-sm-6 col-xs-4">
-            <li class="dropdown-submenu">
-            <a class="test" href="#">media</a>
-            <ul class="dropdown-menu">
-              <li><a href="/my/media/imagearchive">Bildarkiv</a></li>
-              <li><a href="/my/media/pricelist">Prislistor</a></li>
-              <li><a href="/my/media/news">Nyheter &amp; erbjudanden</a></li>
-              <li><a href="/my/media/events">Event &amp; behandlingar</a></li>
-              <li><a href="/my/media/compendium">Kompendium</a></li>
-              <li><a href="/my/media/other">Övrigt</a></li>
-            </ul>
-          </li>
+              <li class="dropdown-submenu">
+                <a class="test" href="#">Media</a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/my/media/imagearchive">Bildarkiv</a>
+                  </li>
+                  <li>
+                    <a href="/my/media/pricelist">Prislistor</a>
+                  </li>
+                  <li>
+                    <a href="/my/media/news">Nyheter &amp; erbjudanden</a>
+                  </li>
+                  <li>
+                    <a href="/my/media/events">Event &amp; behandlingar</a>
+                  </li>
+                  <li>
+                    <a href="/my/media/compendium">Kompendium</a>
+                  </li>
+                  <li>
+                    <a href="/my/media/other">Övrigt</a>
+                  </li>
+                </ul>
+              </li>
             </div>
           </div>
         </div>
@@ -76,41 +88,343 @@
         <li>
           <a href="/my/mail">Mail &amp; Prenumeranter</a>
         </li>
-     <li class="dropdown-submenu">
-            <a class="test" href="#">media</a>
-            <ul class="dropdown-menu">
-              <li><a href="/my/media/imagearchive">Bildarkiv</a></li>
-              <li><a href="/my/media/pricelist">Prislistor</a></li>
-              <li><a href="/my/media/news">Nyheter &amp; erbjudanden</a></li>
-              <li><a href="/my/media/events">Event &amp; behandlingar</a></li>
-              <li><a href="/my/media/compendium">Kompendium</a></li>
-              <li><a href="/my/media/other">Övrigt</a></li>
-            </ul>
+        <li>
+          <a class="test" href="#">Media</a>
+        </li>
+        <ul class="mega_menu_children">
+          <li>
+            <a href="/my/media/imagearchive">Bildarkiv</a>
           </li>
+          <li>
+            <a href="/my/media/pricelist">Prislistor</a>
+          </li>
+          <li>
+            <a href="/my/media/news">Nyheter &amp; erbjudanden</a>
+          </li>
+          <li>
+            <a href="/my/media/events">Event &amp; behandlingar</a>
+          </li>
+          <li>
+            <a href="/my/media/compendium">Kompendium</a>
+          </li>
+          <li>
+            <a href="/my/media/other">Övrigt</a>
+          </li>
+        </ul>
       </div>
     </template>
     <template id="portal_my_salon" name="My salon">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <div class="order_table col-md-9">
-
-            <h3 class="page-header">Min salong</h3>
+          <div class="col-md-9">
+            <h1> Min salong</h1>
+            <div id="info_div" t-if="company_form">
+              <h2 class="text-center">Company Information</h2>
+              <!--
+                   <h4 class="text-center">(* = Required)</h4>
+              -->
+              <form id="info_form" t-att-action="'/my/salon/%s/info_update' % (home_user.id if home_user else user_id.id)" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
+                <input type="hidden" name="home_user" t-att-value="home_user.id" />
+                <div class="form-group">
+                  <label class="col-md-3 col-sm-4 control-label" for="foobar1">Customer Number</label>
+                  <div class="col-md-7 col-sm-8">
+                    <p class="form-control-static" name="foobar1">
+                      <t t-esc="home_user.partner_id.commercial_partner_id.customer_no" />
+                    </p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 col-sm-4 control-label" for="foobar2">Logged in as</label>
+                  <div class="col-md-7 col-sm-8">
+                    <p class="form-control-static" name="foobar2">
+                      <t t-esc="home_user.name" />
+                      (
+                      <t t-esc="home_user.login" />
+                      )
+                    </p>
+                  </div>
+                </div>
+                <div t-att-class="'form-group'">
+                  <label class="col-md-3 col-sm-4 control-label" for="company_name">Company Name</label>
+                  <div class="col-md-7 col-sm-8">
+                    <input type="text" class="form-control" name="company_name" readonly="" t-att-value="home_user.partner_id.commercial_partner_id.name" placeholder="" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 col-sm-4 control-label" for="vat">Organization Number</label>
+                  <div class="col-md-7 col-sm-8">
+                    <p class="form-control-static" name="vat">
+                      <t t-esc="home_user.partner_id.commercial_partner_id.vat" />
+                    </p>
+                  </div>
+                </div>
+                <div t-att-class="'form-group'">
+                  <label class="col-md-3 col-sm-4 control-label" for="website_short_description">Company Description</label>
+                  <div class="col-md-7 col-sm-8">
+                    <textarea type="text" class="form-control" name="website_short_description" rows="10" cols="70">
+                      <t t-set="translated_text" t-value="request.env['ir.translation'].search([('name', '=', 'res.partner,website_short_description'), ('type', '=', 'model'), ('lang', '=', request.env.lang), ('res_id', '=', home_user.partner_id.commercial_partner_id.id)])" />
+                      <t t-if="translated_text">
+                        <t t-esc="translated_text.value" />
+                      </t>
+                    </textarea>
+                  </div>
+                </div>
+                <!--
+                     <div class="form-group">
+                     <label class="col-md-3 col-sm-4 control-label" for="invoicetype">Invoice Type</label>
+                     <div class="col-md-7 col-sm-8">
+                     <select class="form-control" name="invoicetype">
+                     <t t-foreach="invoice_type_selection" t-as="type">
+                     <option t-att-value="type[0]" t-att="{'selected': '1'} if type[0] == (home_user.partner_id.property_invoice_type and home_user.partner_id.property_invoice_type.id) else {}"><t t-esc="type[1]"/></option>
+                     </t>
+                     </select>
+                     </div>
+                     </div>
+                     <div t-attf-class="form-group #{error and 'email' in error and 'has-error' or ''}">
+                     <label class="col-md-3 col-sm-4 control-label" for="email">Email *</label>
+                     <div class="col-md-7 col-sm-8">
+                     <input type="email" class="form-control" name="email" required="True" t-att-value="home_user.partner_id.email"/>
+                     </div>
+                     </div>
+                     <div t-attf-class="form-group #{error and 'login' in error and 'has-error' or ''}">
+                     <label class="col-md-3 col-sm-4 control-label" for="login">Name For Login *</label>
+                     <div class="col-md-7 col-sm-8">
+                     <input type="text" class="form-control" name="login" required="True" t-att-value="home_user.login"/>
+                     </div>
+                     </div>
+                     <div t-attf-class="form-group #{error and 'password' in error and 'has-error' or ''}">
+                     <label class="col-md-3 col-sm-4 control-label" for="password">New Password *</label>
+                     <div class="col-md-7 col-sm-8">
+                     <input id="password" type="password" class="form-control" name="password" placeholder="Password (only when you want to change)" />
+                     </div>
+                     </div>
+                     <div t-attf-class="form-group #{error and 'password' in error and 'has-error' or ''}">
+                     <label class="col-md-3 col-sm-4 control-label" for="confirm_password">Confirm Password *</label>
+                     <div class="col-md-7 col-sm-8">
+                     <input id="confirm_password" type="password" class="form-control" name="confirm_password" placeholder="Same password (only when you want to change)" />
+                     </div>
+                     </div>
+                -->
+                <t t-call="website_sale_home.company_info_form" />
+                <div class="col-md-12">
+                  <div class="pull-right mb16">
+                    <div class="">
+                      <button id="submit_btn" class="btn btn-primary btn-lg">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div id="oe_sale_home_message_box" class="mt64">
+                <p>
+                  <u id="oe_sale_home_open_msgbox">Send a message</u>
+                </p>
+                <p>
+                  <u id="oe_sale_home_close_msgbox" class="hidden">Close message box</u>
+                </p>
+                <textarea id="oe_sale_home_msgbox" class="form-control hidden" rows="3" placeholder="Write your message here..." />
+                <button id="oe_sale_home_send_msgbox" type="button" class="btn btn-primary mt4 mb4 hidden" t-att-data-value="home_user.partner_id.commercial_partner_id.id">Send</button>
+                <div t-foreach="home_user.partner_id.commercial_partner_id.sudo().message_ids.with_context(partner_id = request.env.user.partner_id.id).filtered(lambda msg: (msg._context['partner_id'] == msg.author_id.id) or (msg._context['partner_id'] in msg.notified_partner_ids._ids))" t-as="message">
+                  <div class="container mt4 mb4 oe_dark">
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                      <img style="width: 32px; margin: 4px; border-radius: 2px;" t-att-src="('data:image/png;base64,%s' % message.author_avatar) if message.author_avatar else '/base/static/src/img/avatar.png'" />
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-10">
+                      <h4 t-esc="message.subject" />
+                      <div t-raw="message.body" />
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                      <small>
+                        <b t-esc="message.author_id.name" />
+                      </small>
+                      <span>•</span>
+                      <small t-esc="message.write_date" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="contact_div" t-if="contact_form">
+              <form id="info_form" t-att-action="'/my/salon/%s/contact/%s' %(home_user.id if home_user else user_id.id, contact.id if contact else 'new')" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
+                <t t-call="website_portal_sale_1028.contact_form" />
+              </form>
+            </div>
           </div>
+        </div>
+      </t>
+    </template>
+    <template id="children_info">
+      <div class="container">
+        <ul class="nav nav-pills">
+          <t t-foreach="home_user.partner_id.child_ids" t-as="child">
+            <li t-att-class="'active' if child_index == 0 else ''">
+              <a t-att-href="'#child_%s' %child.id" data-toggle="tab" class="list-group-item text-center">
+                <span t-esc="child.name" class="hidden-xs" />
+                <span t-esc="child.name[0]" class="hidden-lg hidden-md hidden-sm" />
+              </a>
+            </li>
+          </t>
+        </ul>
+        <div class="tab-content">
+          <t t-foreach="home_user.partner_id.child_ids" t-as="child">
+            <div t-att-id="'child_%s' %child.id" t-att-class="'mt16 tab-pane fade %s' %('in active' if child_index == 0 else '')">
+              <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_function' %child.id">Job Position</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="text" class="form-control" t-att-name="'%s_function' %child.id" t-att-value="child.function" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_email' %child.id">Email</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="email" class="form-control" t-att-name="'%s_email' %child.id" t-att-value="child.email" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_phone' %child.id">Phone</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="text" class="form-control" t-att-name="'%s_phone' %child.id" t-att-value="child.phone" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_mobile' %child.id">Mobile</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="text" class="form-control" t-att-name="'%s_mobile' %child.id" t-att-value="child.mobile" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_use_parent_address' %child.id">Use Company Address</label>
+                <div class="col-md-7 col-sm-8">
+                  <input id="use_parent_address" type="checkbox" t-att-name="'%s_use_parent_address' %child.id" value="1" t-att="{'checked': '1'} if child.use_parent_address else {}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_type' %child.id">Address Type</label>
+                <div class="col-md-7 col-sm-8">
+                  <select class="form-control" t-att-name="'%s_type' %child.id">
+                    <option value="default" t-att="{'selected': 'checked'} if child.type == 'default' else {}">Default</option>
+                    <option value="invoice" t-att="{'selected': 'checked'} if child.type == 'invoice' else {}">Invoice</option>
+                    <option value="delivery" t-att="{'selected': 'checked'} if child.type == 'delivery' else {}">Delivery</option>
+                    <option value="contact" t-att="{'selected': 'checked'} if child.type == 'contact' else {}">Contact</option>
+                    <option value="other" t-att="{'selected': 'checked'} if child.type == 'other' else {}">Other</option>
+                  </select>
+                </div>
+              </div>
+              <!-- this fileds should hide if child use parent address -->
+              <div t-att-id="'child_street_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_street' %child.id">Street 1</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="text" class="form-control" t-att-name="'%s_street' %child.id" t-att-value="child.street" />
+                </div>
+              </div>
+              <div t-att-id="'child_street2_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_street2' %child.id">Street row 2</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="text" class="form-control" t-att-name="'%s_street2' %child.id" t-att-value="child.street2" />
+                </div>
+              </div>
+              <div t-att-id="'child_zip_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_zip' %child.id">Zip</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="text" class="form-control" t-att-name="'%s_zip' %child.id" t-att-value="child.zip" />
+                </div>
+              </div>
+              <div t-att-id="'child_city_%s' %child.id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_city' %child.id">City</label>
+                <div class="col-md-7 col-sm-8">
+                  <input type="text" class="form-control" t-att-name="'%s_city' %child.id" t-att-value="child.city" />
+                </div>
+              </div>
+              <div t-att-id="'child_country_id_%s' %child_id" t-att-class="'form-group %s' %('hidden' if child.use_parent_address else '')">
+                <label class="col-md-3 col-sm-4 control-label" t-att-for="'%s_country_id' %child.id">Country</label>
+                <div class="col-md-7 col-sm-8">
+                  <select class="form-control" t-att-name="'%s_country_id' % child.id">
+                    <t t-foreach="country_selection" t-as="country">
+                      <option t-att-value="country[0]" t-att="{'selected': '1'} if (not child or not child.country_id and country[0] == default_country) or (country[0] == child.country_id.id) else {}">
+                        <t t-esc="country[1]" />
+                      </option>
+                    </t>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </t>
+        </div>
+      </div>
+    </template>
+    <template id="portal_my_image_archive" name="My image archive">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <h1>Bildarkiv &amp; videos</h1>
 
-           <!--  <t t-call="website_portal_1028.home_page_order"/> -->
+             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')" />
+             <t t-foreach="website.sale_home_document_get(home_user, document_search_domain or None)" t-as="doc">
 
+                  <t t-if='doc.type == "url"'>
+                    <div style='font-size: 24px; font-weight: 500;'>
+                      <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
+                        <i class="fa fa-link" />
+                        &amp;nbsp;
+                        <t t-esc="doc.name" />
+                      </a>
+                    </div>
+                  </t>
+      
+                  <t t-if='doc.type == "youtube"'>
+                    <div style='font-size: 24px; font-weight: 500;'>
+                      <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''" >
+                        <i class="fa fa-youtube-square" />
+                        &amp;nbsp;
+                        <t t-esc="doc.name" />
+                      </a>
+                    </div>
+                  </t>
+                </t>
+
+          </div>
         </div>
       </t>
     </template>
 
-   
-    <template id="portal_my_media" name="My Media">
+        <template id="portal_my_pricelist" name="My pricelist">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <div class="order_table col-md-9">
-            <h3 class="page-header">Media</h3>
+          <div class="col-md-9">
+            <h1>PRISLISTOR</h1>
+
+             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')" />
+             <t t-foreach="website.sale_home_document_get(home_user, document_search_domain or None)" t-as="doc">
+
+
+                     <t t-if='doc.type == "binary"'>
+                    <div style='font-size: 24px; font-weight: 500;'>
+                      <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, ('/' + doc.name + '.pdf') if doc.mimetype == 'application/pdf' else '')"> -->
+                       <!--<a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, website.sale_home_document_type_get(doc))">-->
+                      <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, '')"> -->
+                        <i class="fa fa-download" />
+                        &amp;nbsp;
+                        <t t-esc="doc.name" />
+                 <!--   </a> --> 
+                    </div>
+                  </t>
+      
+       
+                </t>
+
+          </div>
+        </div>
+      </t>
+    </template>
+        <template id="portal_my_buy_info" name="My buy info">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <h1>KÖPINFORMATION</h1>
+            <div id="wrap" class="oe_structure oe_empty" />
           </div>
         </div>
       </t>
@@ -119,8 +433,8 @@
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <div class="order_table col-md-9">
-            <h3 class="page-header">Köpinformation</h3>
+          <div class="col-md-9">
+            <h1>KÖPINFORMATION</h1>
             <div id="wrap" class="oe_structure oe_empty" />
           </div>
         </div>
@@ -130,67 +444,118 @@
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <h3 class="page-header">Obsolete</h3>
-          <div class="order_table col-md-9">
+          <h1>UTGÅENDE PRODUKTER</h1>
+          <div class="col-md-9">
             <div id="wrap" class="oe_structure oe_empty" />
           </div>
         </div>
       </t>
     </template>
-    <!-- <template id="portal_my_quotations" name="My Quotations">
+       <template id="portal_my_mail" name="My mail">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <div class="order_table col-md-9">
-            <h3 class="page-header">Your Quotes</h3>
-            <t t-if="not quotations">
-              <p>There are currently no quotes for your account.</p>
-            </t>
-            <t t-if="quotations">
-              <table class="table table-hover o_my_status_table">
-                <thead>
-                  <tr class="active">
-                    <th>Quotation #</th>
-                    <th>Valid Until</th>
-                    <th />
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <t t-foreach="quotations" t-as="quotation">
-                  <tr>
-                    <td>
-                      <a t-attf-href="/my/orders/#{quotation.id}?#{keep_query()}">
-                        <t t-esc="quotation.name" />
-                      </a>
-                    </td>
-                    <td>
-                      <span t-field="quotation.date_order" />
-                    </td>
-                    <td>
-                      <t t-if="quotation.state == 'cancel'">
-                        <span class="label label-default">
-                          <i class="fa fa-fw fa-remove" />
-                          Cancelled
-                        </span>
-                      </t>
-                      <!- <t t-if="quotation.validity_date and quotation.validity_date &lt; date">
-                           <span class="label label-default"><i class="fa fa-fw fa-clock-o"/> Expired</span>
-                           </t> -->
-                   <!--  </td>
-                    <td>
-                      <span t-field="quotation.amount_total" t-options='{"widget": "monetary", "display_currency": quotation.pricelist_id.currency_id}' />
-                    </td>
-                  </tr>
-                </t>
-              </table>
-              <div t-if="pager" class="o_portal_pager text-center">
-                <t t-call="website.pager" />
+          <h1 class="">MAIL &amp; PRENUMERATIONER</h1>
+
+
+          <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]"/>
+          <t t-set="mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=8, order='sent DESC')"/>
+          <t t-set="show_all_mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')"/>
+
+          <div class="col-md-6">
+              <h3 class="">Våra mailutskick</h3>
+
+
+              <t t-if="mails">
+                <t t-foreach="mails" t-as="mail">
+                <div class="row mail_lists_lines">
+                  <div class="col-sm-2 col-xs-2">
+                  <li>
+                    <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                      <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')"/>
+                    </a>
+                  </li>
+                </div>
+                    <div class="col-sm-7 col-xs-7">
+                  <li>
+                    <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                      <t t-esc="mail.mass_mailing_id.name"/>
+                    </a>
+                  </li>
+                </div>
               </div>
             </t>
-          </div>
+          </t>
         </div>
-      </t>
-    </template> -->
+
+         <div class="col-md-2">
+          Filtrera
+        </div>
+         <div class="col-md-8">
+    <h3 class="page-header">Mina prenumerationer</h3>
+  </div>
+
+
+
+      </div>
+    </t>
+  </template>
+
+      
+    <!-- <template id="portal_my_quotations" name="My Quotations">
+         <t t-call="website_portal_1028.portal_layout">
+         <div class="container">
+         <t t-call="website_portal_sale_1028.my_menu" />
+         <div class="order_table col-md-9">
+         <h3 class="page-header">Your Quotes</h3>
+         <t t-if="not quotations">
+         <p>There are currently no quotes for your account.</p>
+         </t>
+         <t t-if="quotations">
+         <table class="table table-hover o_my_status_table">
+         <thead>
+         <tr class="active">
+         <th>Quotation #</th>
+         <th>Valid Until</th>
+         <th />
+         <th>Total</th>
+         </tr>
+         </thead>
+         <t t-foreach="quotations" t-as="quotation">
+         <tr>
+         <td>
+         <a t-attf-href="/my/orders/#{quotation.id}?#{keep_query()}">
+         <t t-esc="quotation.name" />
+         </a>
+         </td>
+         <td>
+         <span t-field="quotation.date_order" />
+         </td>
+         <td>
+         <t t-if="quotation.state == 'cancel'">
+         <span class="label label-default">
+         <i class="fa fa-fw fa-remove" />
+         Cancelled
+         </span>
+         </t>
+         <!- <t t-if="quotation.validity_date and quotation.validity_date &lt; date">
+         <span class="label label-default"><i class="fa fa-fw fa-clock-o"/> Expired</span>
+         </t> -->
+    <!--  </td>
+         <td>
+         <span t-field="quotation.amount_total" t-options='{"widget": "monetary", "display_currency": quotation.pricelist_id.currency_id}' />
+         </td>
+         </tr>
+         </t>
+         </table>
+         <div t-if="pager" class="o_portal_pager text-center">
+         <t t-call="website.pager" />
+         </div>
+         </t>
+         </div>
+         </div>
+         </t>
+         </template> -->
     <template id="portal_my_orders" name="My Sales Orders">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -257,7 +622,7 @@
     <template id="portal_my_invoices" name="My Invoices and Payments">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
-            <t t-call="website_portal_sale_1028.my_menu" />
+          <t t-call="website_portal_sale_1028.my_menu" />
           <div class="invoice_table col-md-9">
             <h3 class="page-header">Your Invoices and Payments</h3>
             <t t-if="not invoices">
@@ -337,12 +702,12 @@
               <div class="col-sm-4">
                 <ol class="breadcrumb mt8">
                   <li>
-                    <a href="/my/home">
+                    <a href="/my/salon">
                       <i class="fa fa-home" />
                     </a>
                   </li>
                   <li>
-                    <a t-attf-href="/my/#{'quotes' if order.state == 'sent' else 'orders'}?{{ keep_query()}}">
+                    <a t-attf-href="/my/salon/#{'quotes' if order.state == 'sent' else 'orders'}?{{ keep_query()}}">
                       <t t-if="order.state == 'sent'">My Quotes</t>
                       <t t-if="order.state != 'sent'">My Orders</t>
                     </a>

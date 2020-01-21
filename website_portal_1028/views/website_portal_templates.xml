@@ -216,60 +216,50 @@
                   <img alt="Odoo Members" class="img img-responsive" src="/website/image/ir.attachment/250848_9618f28/datas" />
                 </div>
                 <div class="col-sm-9 col-xs-9">
-                  <h4>DU HAR VÄL KOLLAT MAILEN?</h4>
-                </div>
+               <h4>DU HAR VÄL KOLLAT MAILEN?</h4>
               </div>
             </div>
-            <t t-set="mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'res.partner'), ('res_id', '=', request.env.user.partner_id.id)], limit=8, order='sent DESC')" />
-            <t t-set="show_all_mails" t-value="request.env['mail.mass_mailing'].sudo().search([('category_ids', 'in', request.env.ref('website_sale_home_mail_archive.reseller_news_letter').id ), ('state', '=', 'done' )])" />
+          </div>
+          <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]"/>
+<t t-set="mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=8, order='sent DESC')"/>
+                   <t t-set="show_all_mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')"/>
 
-            <div class="row mail_lists_line">
-              <div class="col-sm-3 col-xs-3">
-                <t t-if="mails">
-                  <t t-foreach="mails" t-as="mail">
-                    <li>
-                      <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                        <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
-                      </a>
-                    </li>
-                  </t>
-                </t>
-              </div>
-              <div class="col-sm-9 col-xs-9">
-                <t t-if="mails">
-                  <t t-foreach="mails" t-as="mail">
-                    <li>
-                      <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                        <t t-esc="mail.mass_mailing_id.name" />
-                      </a>
-                    </li>
-                  </t>
-                </t>
-              </div>
-
-               <div class="show_all">
+          <div class="row mail_lists_line">
+            <div class="col-sm-3 col-xs-3">
+              <t t-if="mails">
+                <t t-foreach="mails" t-as="mail">
                   <li>
-                    <a t-att-href="'/mass_mailing/%stoken' % show_all_mails.id">
-                      Visa alla
+                    <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                      <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')"/>
                     </a>
                   </li>
-              </div> 
-
-<!-- <div class="show_all">
+                </t>
+              </t>
+            </div>
+            <div class="col-sm-9 col-xs-9">
+              <t t-if="mails">
+                <t t-foreach="mails" t-as="mail">
                   <li>
+                    <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                      <t t-esc="mail.mass_mailing_id.name"/>
+                    </a>
+                  </li>
+                </t>
+              </t>
+            </div>
 
-              <t t-foreach="request.env['mail.mass_mailing'].sudo().search([('category_ids', 'in', request.env.ref('website_sale_home_mail_archive.reseller_news_letter').id ), ('state', '=', 'done' )])" t-as="mail">
-                                  
-                <a t-att-href="'/mass_mailing/%s/token/%s?referer=mail_archive' %(mail.id, mail.token)">
-                  <t t-esc="mail.name" />
-                   </a>  
-                   Visa alla        
-                              
-                  <span t-esc="'' if not mail.sent_date else mail.sent_date[:10]" />
+           <div class="show_all">
+                <t t-if="show_all_mails">
+                <t t-foreach="show_all_mails" t-as="show_mails">
+                  <li>
+                    <a t-att-data-value="show_mails.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (show_mails.mass_mailing_id.id, show_mails.mass_mailing_id.token)">
+                    Visa alla
+                    </a>
+                  </li>
+                </t>
+              </t>
       
-                               </t>
-                           </li>
-                       </div> -->
+              </div> 
 
 
             </div>
@@ -304,7 +294,7 @@
         </div>
       </section>
         <div id="wrap" class="oe_structure oe_empty"/>
- </t>   
+    </t>   
  
     </template>
 
@@ -434,12 +424,12 @@
                     <li class="dropdown-submenu">
             <a class="test" href="#">MEDIA</a>
             <ul class="dropdown-menu">
-              <li><a href="#">Bildarkiv</a></li>
-              <li><a href="#">Prislistor</a></li>
-              <li><a href="#">Nyheter &amp; erbjudanden</a></li>
-              <li><a href="#">Event &amp; behandlingar</a></li>
-              <li><a href="#">Kompendium</a></li>
-              <li><a href="#">Övrigt</a></li>
+              <li><a href="/my/media/imagearchive">Bildarkiv</a></li>
+              <li><a href="/my/media/pricelist">Prislistor</a></li>
+              <li><a href="/my/media/news">Nyheter &amp; erbjudanden</a></li>
+              <li><a href="/my/media/events">Event &amp; behandlingar</a></li>
+              <li><a href="/my/media/compendium">Kompendium</a></li>
+              <li><a href="/my/media/other">Övrigt</a></li>
             </ul>
           </li>
             </xpath>
