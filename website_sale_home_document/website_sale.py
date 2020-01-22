@@ -101,23 +101,22 @@ class website_sale_home(website_sale_home):
         if report:
             #~ raise Warning(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'))
             #~ pdf = request.env['report'].get_pdf(request.env['res.partner'].search([]),report.get_external_id()[report.id], data=None)
-            pdf = report.sudo().report_id.render_report(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'),report.report_id.report_name, data={})[0]
+            pdf = report.sudo().report_id.render_report(request.env[report.report_id.model].search(eval(report.domain or '[]')).mapped('id'), report.report_id.report_name, data={})[0]
             #return http.send_file(StringIO(pdf), filename='min file.pdf', mimetype='application/pdf', as_attachment=True)
             return request.make_response(pdf, headers=[('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))])
 
         if document:
-            document = request.env['ir.attachment'].search([('id','=',document)])
+            document = request.env['ir.attachment'].search([('id', '=', document)])
             if not document:
                 _logger.warn('cannot read document')
             else:
-                document = request.env['ir.attachment'].sudo().search([('id','=',document.id)]) #TODO better security-check  check:225 ir_attachment.py  check:71 document.py
+                document = request.env['ir.attachment'].sudo().search([('id', '=', document.id)]) #TODO better security-check  check:225 ir_attachment.py  check:71 document.py
                 _logger.warn('Try to send %s' % document)
-                fname = document.datas_fname.replace(' ', '_') if document.datas_fname else 'file'
+                fname = (docname or document.datas_fname or document.name).encode('ascii', 'replace')
                 mime = mimetype=document.mimetype or ''
                 write_date=document.write_date
                 data = document.datas.decode('base64')
-                # ~ _logger.warn('%s %s %s'%(document.datas_fname.replace(' ', '_'),document.mimetype,document.write_date))
-                _logger.warn('%s %s %s %s'%(fname,mime,write_date,len(data)))
+                # ~ _logger.warn('%s %s %s %s'%(fname, mime, write_date, len(data)))
                 return http.send_file(StringIO(data), filename=fname, mimetype=mime, mtime=write_date, as_attachment=True)
                 # ~ return http.send_file(StringIO(data), filename=fname, mimetype=mime, mtime=write_date)
         return request.website.render('website_sale_home_document.page_documents', {
