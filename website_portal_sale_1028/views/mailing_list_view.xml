@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+      <record model = "ir.ui.view" id="view_mail_mass_mailing_list_form">
+         <field name ="name">mail.mass_mailing.list.website_portal_sale.form</field>
+         <field name = "model">mail.mass_mailing.list</field>
+         <field name = "inherit_id" ref="mass_mailing.view_mail_mass_mailing_list_form"></field>
+         <field name="arch" type="xml">
+            <div class="oe_title" position="after">
+                <group>
+                    <field name="website_published"/>
+                </group>
+            </div>
+        </field>
+      </record>
+
+      <record model = "ir.ui.view" id="view_mail_mass_mailing_list_tree">
+         <field name ="name">mail.mass_mailing.list.website_portal_sale.tree</field>
+         <field name = "model">mail.mass_mailing.list</field>
+         <field name = "inherit_id" ref="mass_mailing.view_mail_mass_mailing_list_tree"></field>
+         <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="website_published"/>
+            </field>
+        </field>
+      </record>
+   </data>
+</openerp>

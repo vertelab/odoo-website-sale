@@ -279,3 +279,21 @@ div.row.mail_lists_lines:nth-child(2n+1) {
 .row.mail_lists_lines {
     padding: 5px;
 }
+
+.mega_menu_children li{
+    font-family: futura-pt-light, sans-serif !important;
+}
+
+.breadcrumb.dn_breadcrumb {
+    margin-top: 0px !important;
+}
+
+.my_subscribers {
+    border-top: 1px solid gray;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.my_subscribers .row {
+    padding-top: 10px;
+}

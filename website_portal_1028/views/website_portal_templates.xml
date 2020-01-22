@@ -247,7 +247,7 @@
                 </t>
               </t>
             </div>
-
+<!-- 
            <div class="show_all">
                 <t t-if="show_all_mails">
                 <t t-foreach="show_all_mails" t-as="show_mails">
@@ -259,7 +259,7 @@
                 </t>
               </t>
       
-              </div> 
+              </div>  -->
 
 
             </div>
@@ -421,7 +421,7 @@
                 <a href="/my/orders">MINA ORDRAR</a>
                 <a href="/my/obsolete">UTGÅENDE PRODUKTER</a>
                 <a href="/my/buyinfo">KÖPINFORMATION</a>
-                <a href="/my/buyinfo">MAIL &AMP; PRENUMERATIONER</a>
+                <a href="/my/buyinfo">MAIL &amp; PRENUMERATIONER</a>
                     <li class="dropdown-submenu">
             <a class="test" href="#">MEDIA</a>
             <ul class="dropdown-menu">

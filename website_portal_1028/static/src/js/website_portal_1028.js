@@ -1,9 +1,9 @@
-
-odoo.define('website_portal', function(require) {
+(function(){
     'use strict';
-    require('website.website');
+    var website=openerp.website;
 
-    if(!$('.o_website_portal_details').length) {
+    website.ready().done(function(){
+        if(!$('.o_website_portal_details').length) {
         return $.Deferred().reject("DOM doesn't contain '.o_website_portal_details'");
     }
 
@@ -16,4 +16,5 @@ odoo.define('website_portal', function(require) {
         select.parent().toggle(nb>=1);
     });
     $('.o_website_portal_details').find("select[name='country_id']").change();
-});
+    });
+}());

@@ -395,24 +395,23 @@
           <div class="col-md-9">
             <h1>PRISLISTOR</h1>
 
-             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')" />
-             <t t-foreach="website.sale_home_document_get(home_user, document_search_domain or None)" t-as="doc">
+         <t t-foreach="website.get_portal_documents(pricelists)" t-as="doc"> 
 
 
-                     <t t-if='doc.type == "binary"'>
-                    <div style='font-size: 24px; font-weight: 500;'>
+                   <t t-if='doc.type == "binary"'> 
+<!--                     <div style='font-size: 24px; font-weight: 500;'> -->
                       <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, ('/' + doc.name + '.pdf') if doc.mimetype == 'application/pdf' else '')"> -->
                        <!--<a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, website.sale_home_document_type_get(doc))">-->
                       <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, '')"> -->
-                        <i class="fa fa-download" />
-                        &amp;nbsp;
-                        <t t-esc="doc.name" />
+                        <i class="fa fa-download" /> 
+                   &amp;nbsp; 
+                    <t t-esc="doc.name" /> 
                  <!--   </a> --> 
-                    </div>
-                  </t>
+                    <!-- </div> -->
+              </t> 
       
        
-                </t>
+               </t> 
 
           </div>
         </div>
@@ -457,12 +456,8 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <h1 class="">MAIL &amp; PRENUMERATIONER</h1>
 
-
-          
-
           <div class="col-md-6">
               <h3 class="">Våra mailutskick</h3>
-
 
               <t t-if="mails">
                 <t t-foreach="mails" t-as="mail">
@@ -489,42 +484,45 @@
          <div class="col-md-2">
           Filtrera
         </div>
-         <div class="col-md-8">
-    <h3 class="page-header">Mina prenumerationer</h3>
- 
-     
-              <!-- <t t-if="subscribed">
-                <t t-foreach="subscribed" t-as="list">
-                <div class="row mail_lists_lines">
-       
-                  <div class="col-sm-7 col-xs-7">
-      
-                      <t t-esc="list.name"/>
-
-                </div>
-              </div>
-            </t>
-          </t> -->
-
-
-  </div>
-
-
-
+         <div class="col-md-6 my_subscribers">
+          <div class="row">
+    <h3 class="col-md-6">Mina prenumerationer</h3>
+        <h4 class="col-md-4">Ja, jag vill ha dessa prenumerationer</h4>
       </div>
-    </t>
-  </template>
+   
+              <t t-if="mailing_lists">
+                <t t-foreach="mailing_lists" t-as="mailing_list">
+                  <div class="row mail_lists_lines">
+                    <div class="col-sm-7 col-xs-7">
+                  <li>
+                      <t t-esc="mailing_list['name']"/>
+                  </li>
+                </div>
+          
+            <div class="col-md-2">
+            <input type="checkbox" class="subscribe_for_mail col-md-1 col-sm-1" name="subscription box" value="" data-oe-id="6692" data-oe-model="ir.ui.view" data-oe-field="arch" data-oe-xpath="/t[1]/div[1]/div[2]/div[1]/div[1]/h4[1]/input[1]">
+            </input>
+             </div>
+           </div>
+
+           </t>
+         </t>
+
+           </div>
+         </div>
+       </t>
+     </template>
 
 
+              
 
 
-<!--        <template id="subscribed_field" inherit_id="website.layout" name="Mega Menu">
-      <xpath expr="//body" position="before">
+        <!--     <input type="checkbox" class="heading_checkbox col-md-1 col-sm-1" name="current_offer" value="current_offer" data-oe-id="6692" data-oe-model="ir.ui.view" data-oe-field="arch" data-oe-xpath="/t[1]/div[1]/div[2]/div[1]/div[1]/h4[1]/input[1]">
+            </input> -->
+ 
 
-      </xpath>
-    </template>
- -->
-      
+       
+
     <!-- <template id="portal_my_quotations" name="My Quotations">
          <t t-call="website_portal_1028.portal_layout">
          <div class="container">
@@ -583,12 +581,106 @@
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
+          
           <div class="order_table col-md-9">
+            
             <h3 class="page-header">Your Orders</h3>
             <t t-if="not orders">
               <p>There are currently no orders for your account.</p>
             </t>
-            <t t-if="orders">
+
+
+              <div class="col-xs-10 col-xs-offset-1" t-if="order_filters">
+                <t t-foreach="order_filters" t-as="order_filter">
+                    <a href="#" t-att-class="'website-home-filter-button%s' % (' active' if order_filter.get('active') else '')" t-att-data-target="'''[name='%s']''' % order_filter['id']">
+                        <span t-esc="order_filter['name']" />
+                    </a>
+                </t>
+            </div>
+
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <td>
+                    <b>
+                      Order number
+                    </b>
+                  </td>
+                  <td>
+                    <b>
+                      Date
+                    </b>
+                  </td>
+                  <td>
+                    <b>
+                      Orderer
+                    </b>
+                  </td>
+                  <td>
+                    <b>
+                      State
+                    </b>
+                  </td>
+                  <td>
+                    <b>
+                      Tracking
+                    </b>
+                  </td>
+                  <td>
+                    <b>
+                      Total
+                    </b>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr t-foreach="sale_orders" t-as="order">
+                  <td>
+                      <a t-att-href="'/home/%s/order/%s' %(home_user.id, order.id)">
+                        <t t-esc="order.name" />
+                      </a>
+                  </td>
+                  <td>
+                      <span t-esc="order.date_order[:10]" />
+                  </td>
+                  <td>
+                      <span t-field="order.partner_id.name" />
+                  </td>
+                  <td>
+                    <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />
+                    <t t-if="len(invoice_list) > 1">
+                      <t t-foreach="invoice_list" t-as="invoice_status">
+                        <span t-esc="invoice_status" /><br/>
+                      </t>
+                    </t>
+                    <t t-if="len(invoice_list) == 1">
+                      <span t-esc="invoice_list[0]" />
+                    </t>
+                  </td>
+                  <td>
+                    <t t-foreach="order.picking_ids" t-as="picking">
+                      <t t-if="picking.unifaun_track_and_trace_url()">
+                        <a t-att-href="picking.unifaun_track_and_trace_url()" t-att-title="picking.name" target="_blank"><span class="text-center fa fa-map-marker"/></a>
+                      </t>
+                    </t>
+                  </td>
+                  <td>
+                    <!-- TODO: make this correct for all currencies. Look at website_sale. -->
+                      <span t-field="order.amount_total" />
+                      <span t-field="order.currency_id.name" />
+                  </td>
+<!--
+                  <td>
+                      <a t-att-href="website.sale_home_order_get_picking(order)[0]" target="_blank">Picking <t t-esc="website.sale_home_order_get_picking(order)[1]"/> <t t-esc="website.sale_home_order_get_picking(order)[2]"/></a>
+                      <a t-att-href="website.sale_home_order_get_invoice(order)[0]" target="_blank">Invoice <t t-esc="website.sale_home_order_get_invoice(order)[1]"/> <t t-esc="website.sale_home_order_get_invoice(order)[2]"/></a>
+                  </td>
+-->
+                </tr>
+              </tbody>
+            </table>
+
+
+   <!--          <t t-if="orders">
               <table class="table table-hover o_my_status_table">
                 <thead>
                   <tr class="active">
@@ -637,7 +729,7 @@
               <div t-if="pager" class="o_portal_pager text-center">
                 <t t-call="website.pager" />
               </div>
-            </t>
+            </t> -->
           </div>
         </div>
       </t>

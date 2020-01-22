@@ -3,7 +3,7 @@
 
 from openerp import http, _
 from openerp.exceptions import AccessError
-from openerp.http import request
+from openerp.http import request, Controller
 
 from openerp.addons.website_portal_1028.controllers.main import website_account
 
@@ -14,11 +14,114 @@ import sys
 import traceback
 import simplejson
 
-
 import logging
 _logger = logging.getLogger(__name__)
 
 PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
+
+
+import logging
+_logger = logging.getLogger(__name__)
+
+class SaleOrderLine(models.Model):
+    _inherit='sale.order.line'
+
+    @api.multi
+    def sale_home_confirm_copy(self):
+        """Check if this order line should be copied. Override to handle fees and whatnot."""
+        return True
+
+class SaleOrder(models.Model):
+    _inherit='sale.order'
+
+    @api.multi
+    def order_state_frontend(self):
+        """Get a customer friendly order state."""
+        state = None
+        if self.state == 'cancel':
+            state = _('Cancelled')
+        elif self.state in ('shipping_except', 'invoice_except'):
+            state = _('Exception')
+        elif self.state in ('sent'):
+            state = _('Received')
+        elif self.state in ('draft'):
+            state = _('Cart')
+        else:
+            state = _('Ready for picking')
+            for invoice in self.invoice_ids:
+                if invoice.state == 'open' and invoice.residual == invoice.amount_total:
+                    state = _('Shipped and invoiced')
+                elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
+                    state = _('Partially paid')
+                elif invoice.state == 'paid':
+                    state = _('Paid')
+        return state
+        
+    @api.multi
+    def order_state_per_invoice_frontend(self):
+        """Get a customer friendly order state per invoice."""
+        state = []
+        if self.state == 'cancel':
+            state.append(_('Cancelled'))
+        elif self.state in ('shipping_except', 'invoice_except'):
+            state.append(_('Exception'))
+        elif self.state in ('sent'):
+            state.append(_('Received'))
+        elif self.state in ('draft'):
+            state.append(_('Cart'))
+        else:
+            state.append(_('Ready for picking'))
+            invoices = self.invoice_ids.filtered(lambda i: i.state not in ('draft', 'proforma', 'proforma2'))
+            if invoices:
+                state = []
+                if len(invoices) == 1:
+                    if invoices[0].state == 'open' and invoices[0].residual == invoices[0].amount_total:
+                        state.append(_('Shipped and invoiced'))
+                    elif invoices[0].state == 'open' and invoices[0].residual != invoices[0].amount_total:
+                        state.append(_('Partially paid'))
+                    elif invoices[0].state == 'paid':
+                        state.append(_('Paid'))
+                # only print invoice numbers if there are several
+                else:
+                    # check if all invoices for order are fully paid.
+                    if all([invoice.state == "paid" for invoice in invoices]):
+                        state.append(_('Paid'))
+                    else:
+                        for invoice in invoices:
+                            if invoice.state == 'open' and invoice.residual == invoice.amount_total:
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Shipped and invoiced'))
+                            elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Partially paid'))
+                            elif invoice.state == 'paid':
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Paid'))
+        return state
+
+    
+
+    def check_document_access(self, report, ids):
+        partner = request.env.user.commercial_partner_id
+        model = None
+        if report == 'sale.report_saleorder':
+            model = 'sale.order'
+        elif report == 'account.report_invoice':
+            model = 'account.invoice'
+        elif report == 'stock_delivery_slip.stock_delivery_slip':
+            model = 'stock.picking'
+        if model:
+            try:
+                records = request.env[model].browse(ids)
+                # Check partner_id.
+                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
+                    return True
+                # Check ordinary access controls
+                records.check_access_rights('read')
+                records.check_access_rule('read')
+                return True
+            except:
+                # This check failed. Let it go to super to perform other checks.
+                pass
+        return super(website_sale_home, self).check_document_access(report, ids)
+
 
 class website_account(website_account):
 
@@ -51,85 +154,52 @@ class website_account(website_account):
         })
         return response
 
-    #
-    # Quotations and Sale Orders
-    #
-
-    # @http.route(['/my/quotes', '/my/quotes/page/<int:page>'], type='http', auth="user", website=True)
-    # def portal_my_quotes(self, page=1, date_begin=None, date_end=None, **kw):
-    #     values = self._prepare_portal_layout_values()
-    #     partner = request.env.user.partner_id
-    #     SaleOrder = request.env['sale.order']
-
-    #     domain = [
-    #         ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
-    #         ('state', 'in', ['sent', 'cancel'])
-    #     ]
-
-    #     # archive_groups = self._get_archive_groups('sale.order', domain)
-    #     archive_groups = "" # DAER: Ugg not understand, Ugg remove.
-    #     if date_begin and date_end:
-    #         domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
-
-    #     # count for pager
-    #     quotation_count = SaleOrder.search_count(domain)
-    #     # make pager
-    #     pager = request.website.pager(
-    #         url="/my/quotes",
-    #         url_args={'date_begin': date_begin, 'date_end': date_end},
-    #         total=quotation_count,
-    #         page=page,
-    #         step=self._items_per_page
-    #     )
-    #     # search the count to display, according to the pager data
-    #     quotations = SaleOrder.search(domain, limit=self._items_per_page, offset=pager['offset'])
-
-    #     values.update({
-    #         'date': date_begin,
-    #         'quotations': quotations,
-    #         'pager': pager,
-    #         'archive_groups': archive_groups,
-    #         'default_url': '/my/quotes',
-    #     })
-    #     return request.render("website_portal_sale_1028.portal_my_quotations", values)
-
     @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_orders(self, page=1, date_begin=None, date_end=None, **kw):
-        values = self._prepare_portal_layout_values()
-        partner = request.env.user.partner_id
-        SaleOrder = request.env['sale.order']
-
-        domain = [
-            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
-            ('state', 'in', ['sale', 'done'])
-        ]
-        archive_groups = "" # DAER: Ugg not understand, Ugg remove.
-        # archive_groups = self._get_archive_groups('sale.order', domain)
-        if date_begin and date_end:
-            domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
-
-        # count for pager
-        order_count = SaleOrder.search_count(domain)
-        # pager
-        pager = request.website.pager(
-            url="/my/orders",
-            url_args={'date_begin': date_begin, 'date_end': date_end},
-            total=order_count,
-            page=page,
-            step=self._items_per_page
-        )
-        # content according to pager and archive selected
-        orders = SaleOrder.search(domain, limit=self._items_per_page, offset=pager['offset'])
-
-        values.update({
-            'date': date_begin,
-            'orders': orders,
-            'page_name': 'order',
-            'pager': pager,
-            'archive_groups': archive_groups,
-            'default_url': '/my/orders',
+    def portal_my_orders(self, page=1, date_begin=None, date_end=None, **post):
+        home_user = request.env.user
+        self.validate_user(home_user)
+        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
+        if not order:
+            html = request.website._render(
+                    'website.403',
+                    {
+                        'status_code': 403,
+                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
+                    })
+            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
+        return request.render(' .page_order', {
+            'home_user': home_user,
+            'order': order,
+            'tab': tab,
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
+
+    @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
+    def home_page_order_copy(self, home_user=None, order=None, **post):
+        self.validate_user(home_user)
+        sale_order = request.website.sale_get_order()
+        if not sale_order:
+            sale_order = request.website.sale_get_order(force_create=True)
+        order_lines = request.env['sale.order.line']
+        try:
+            for line in order.sudo().order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True):
+                # Check access rights
+                try:
+                    order_lines += order_lines.browse(line.id)
+                except:
+                    pass # Probably access error.
+        except Exception as e:
+            order_lines = []
+            _logger.warn('Order Copy Error %s' % e)
+
+        for line in order_lines:
+            if line.sale_home_confirm_copy():
+                request.env['sale.order.line'].sudo().create({
+                        'order_id': sale_order.id,
+                        'product_id': line.product_id.id,
+                        'product_uom_qty': line.product_uom_qty,
+                })
+        return werkzeug.utils.redirect("/shop/cart")
 
     @http.route(['/my/media/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
@@ -173,7 +243,7 @@ class website_account(website_account):
 
     @http.route(['/my/mail'], type='http', auth="user", website=True)
     def portal_my_mail(self, **kw):
-        # values = request._prepare_portal_layout_values()
+        values = self._prepare_portal_layout_values()
         email = request.env.user.email
         mailing_lists = []
         for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True)]):
@@ -217,6 +287,26 @@ class website_account(website_account):
                     contact.opt_out = False
         elif not subscribe and mailing_contact:
             mailing_contact.write({'opt_out': True})
+
+
+    @http.route(['/my/orders/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
+    def home_page_order(self, home_user=None, order_id=None, tab='orders', **post):
+        self.validate_user(home_user)
+        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
+        if not order:
+            html = request.website._render(
+                    'website.403',
+                    {
+                        'status_code': 403,
+                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
+                    })
+            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
+        return request.render(' .page_order', {
+            'home_user': home_user,
+            'order': order,
+            'tab': tab,
+        })
+
 
 
     #Min salong
@@ -762,16 +852,55 @@ class website_account(website_account):
         pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
         return request.make_response(pdf, headers=pdfhttpheaders)
 
+    @http.route(['/my/orders/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
+    def home_page_order(self, home_user=None, order_id=None, tab='orders', **post):
+        self.validate_user(home_user)
+        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
+        if not order:
+            html = request.website._render(
+                    'website.403',
+                    {
+                        'status_code': 403,
+                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
+                    })
+            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
+        return request.render('website_sale_home_order.page_order', {
+            'home_user': home_user,
+            'order': order,
+            'tab': tab,
+        })
+
+    
+
+    def check_document_access(self, report, ids):
+        partner = request.env.user.commercial_partner_id
+        model = None
+        if report == 'sale.report_saleorder':
+            model = 'sale.order'
+        elif report == 'account.report_invoice':
+            model = 'account.invoice'
+        elif report == 'stock_delivery_slip.stock_delivery_slip':
+            model = 'stock.picking'
+        if model:
+            try:
+                records = request.env[model].browse(ids)
+                # Check partner_id.
+                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
+                    return True
+                # Check ordinary access controls
+                records.check_access_rights('read')
+                records.check_access_rule('read')
+                return True
+            except:
+                # This check failed. Let it go to super to perform other checks.
+                pass
+        return super(website_sale_home, self).check_document_access(report, ids)
+
 class DummyRecordSet(object):
     def __init__(self, ids):
         self.ids = ids
 
-
-
-
-
-
-
+    
 
 
 

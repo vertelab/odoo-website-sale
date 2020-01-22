@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>   
+        <record id="catalog_public" model="document.directory">
+            <field name="name">Public</field>
+            <field name="type">directory</field>
+        </record>
+        <record id="catalog_pricelists" model="document.directory">
+            <field name="name">Prislistor</field>
+            <field name="parent_id" ref="catalog_public"/>
+            <field name="type">directory</field>
+        </record>
+
+    </data>
+</openerp>
