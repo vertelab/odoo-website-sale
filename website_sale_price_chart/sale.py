@@ -193,8 +193,8 @@ class product_pricelist_chart(models.Model):
         if self.pricelist_chart_id.rec_pricelist:
             price = """
                 <div style="white-space: nowrap"><!-- rec price -->
-                    <span style="white-space: nowrap;" />{name}</span>
-                    <span style="white-space: nowrap;" />{price}</span>
+                    <span style="white-space: nowrap;" >{name}</span>
+                    <span style="white-space: nowrap;" >{price}</span>
                     <span style="display: inline;">{tax}</span>
                 </div>
             """.format(name=self.pricelist_chart_id.rec_pricelist.currency_id.name,
@@ -204,19 +204,20 @@ class product_pricelist_chart(models.Model):
         if self.pricelist_chart_id.pricelist and self.pricelist_chart_id.pricelist.for_reseller:
             price += """
                 <div style="white-space: nowrap"><!-- price -->
-                    <span style="white-space: nowrap;" />{name}</span>
-                    <span style="white-space: nowrap;" /><b>{price}</b></span>
+                    <span style="white-space: nowrap;" >{name}</span>
+                    <span style="white-space: nowrap;" class="your_price" data-price="{price_float}"><b>{price}</b></span>
                     <span style="display: inline;">{tax}</span>
                 </div>
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(self.price),
+                       price_float=self.price,
                        tax=_('(your price incl. tax)') if self.price_tax else _('(your price excl. tax)')
                        )
         if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
             price += """
                 <div style="white-space: nowrap"><!-- public price -->
-                    <span style="white-space: nowrap;" />{name}</span>
-                    <span style="white-space: nowrap;" /><b>{price}</b></span>
+                    <span style="white-space: nowrap;" >{name}</span>
+                    <span style="white-space: nowrap;" ><b>{price}</b></span>
                     <span style="display: inline;">{tax}</span>
                 </div>
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
@@ -248,18 +249,18 @@ class product_pricelist_chart(models.Model):
         if self.pricelist_chart_id.pricelist:
             price += """
                 <h5><!-- price -->
-                    <span style="white-space: nowrap;" /><b>{price}</b></span>
-                    <span style="white-space: nowrap;" />{name}</span>
+                    <span style="white-space: nowrap;"  class="your_price" data-price="{price_float}"><b>{price}</b></span>
+                    <span style="white-space: nowrap;" >{name}</span>
                 </h5>
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(self.price),
-
+                       price_float=self.price
                        )
         if self.pricelist_chart_id.rec_pricelist:
             price += """
                 <h5><!-- rec price -->
-                    (<span style="white-space: nowrap;" />{price}</span>
-                    <span style="white-space: nowrap;" />{name}</span>)
+                    (<span style="white-space: nowrap;" >{price}</span>
+                    <span style="white-space: nowrap;" >{name}</span>)
                 </h5>
             """.format(name=self.pricelist_chart_id.rec_pricelist.currency_id.name,
                        price=price_format(self.rec_price),
