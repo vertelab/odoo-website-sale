@@ -18,3 +18,7 @@
     $('.o_website_portal_details').find("select[name='country_id']").change();
     });
 }());
+
+
+
+

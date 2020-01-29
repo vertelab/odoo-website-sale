@@ -13,6 +13,7 @@ import base64
 import sys
 import traceback
 import simplejson
+from math import ceil
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -242,7 +243,9 @@ class website_account(website_account):
         return request.render("website_portal_sale_1028.portal_my_obsolete", values)
 
     @http.route(['/my/mail'], type='http', auth="user", website=True)
-    def portal_my_mail(self, **kw):
+    def portal_my_mail(self, page=0, **kw):
+        #/my/mail?page=3
+        mpp = 8 # mails per page
         values = self._prepare_portal_layout_values()
         email = request.env.user.email
         mailing_lists = []
@@ -253,40 +256,91 @@ class website_account(website_account):
                 'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0
             })
         mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]
-        mails = request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=8, order='sent DESC')
+        mails = request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=page*mpp, order='sent DESC')
         show_all_mails = request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')
+        mail_count = request.env['mail.mail.statistics'].search_count([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)])
+        page_count = int(ceil(mail_count / mpp))
         values.update({
             'mailing_lists': mailing_lists,
             'mass_mailing_partners': mass_mailing_partners,
             'mails': mails,
             'show_all_mails': show_all_mails,
+            'page_count': page_count, 
         })
+        total = mails.search_count([])
+        pager = request.website.pager(
+            url='url path',
+            total=total,
+            page=page,
+            step=10,
+        )
         return request.render("website_portal_sale_1028.portal_my_mail", values)
+
+
+
+    # @http.route(['/my/mail'], type='http', auth="user", website=True)
+    # def portal_my_mail(self, page=0, **kw):
+    #     #/my/mail?page=3
+    #     values = self._prepare_portal_layout_values()
+    #     email = request.env.user.email
+    #     mailing_lists = []
+    #     for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True)]):
+    #         mailing_lists.append({
+    #             'name': mailing_list.name,
+    #             'id': mailing_list.id,
+    #             'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0
+    #         })
+    #     mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]
+    #     mails = request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], offset=(page - 1) * 10, limit=10, order='sent DESC')
+    #     total = mails.search_count([])
+    #     pager = request.website.pager(
+    #         url='/my/mail/page',
+    #         total=total,
+    #         page=page,
+    #         step=10,
+    #     )
+
+  
+    #     values.update({
+    #         'mailing_lists': mailing_lists,
+    #         'mass_mailing_partners': mass_mailing_partners,
+    #         'mails': mails, 
+    #     })
+    #     return request.render("website_portal_sale_1028.portal_my_mail", values)
+
+
+
+
+
 
     @http.route(['/my/mail/subscribe'], type='json', auth='user')
     def portal_my_mail_subscribe(self, subscribe=False, mailing_list_id=None):
         """Subscribe / unsubscribe to a mailing list."""
-        email = request.env.user.email
-        mailing_list = request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True), ('id', '=', mailing_list_id)])
-        mailing_contact = request.env['mail.mass_mailing.contact'].sudo().search([('email', '=', email), ('list_id', '=', mailing_list.id)])
-        if subscribe and not mailing_contact:
-            request.env['mail.mass_mailing.contact'].sudo().create({
-                'email': request.env.user.email,
-                'name': request.env.user.name,
-                'list_id': mailing_list.id,
-                })
-        elif subscribe and mailing_contact:
-            # Check for duplicates and delete because why not
-            done = False
-            for contact in mailing_contact:
-                if done:
-                    contact.unlink()
-                    continue
-                done = True
-                if contact.opt_out:
-                    contact.opt_out = False
-        elif not subscribe and mailing_contact:
-            mailing_contact.write({'opt_out': True})
+        try:
+            email = request.env.user.email
+            mailing_list = request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True), ('id', '=', mailing_list_id)])
+            mailing_contact = request.env['mail.mass_mailing.contact'].sudo().search([('email', '=', email), ('list_id', '=', mailing_list.id)])
+            if subscribe and not mailing_contact:
+                request.env['mail.mass_mailing.contact'].sudo().create({
+                    'email': request.env.user.email,
+                    'name': request.env.user.name,
+                    'list_id': mailing_list.id,
+                    })
+            elif subscribe and mailing_contact:
+                # Check for duplicates and delete because why not
+                done = False
+                for contact in mailing_contact:
+                    if done:
+                        contact.unlink()
+                        continue
+                    done = True
+                    if contact.opt_out:
+                        contact.opt_out = False
+            elif not subscribe and mailing_contact:
+                mailing_contact.unlink()
+            return True
+        except:
+            return False
 
 
     @http.route(['/my/orders/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
@@ -443,7 +497,7 @@ class website_account(website_account):
     # can be overridden with more address type
     def get_address_types_readonly(self):
         """These address types are readonly."""
-        return []
+        return ['delivery', 'invoice']
 
     # can be overridden with more address type
     def get_children_by_address_type(self, company):
@@ -536,10 +590,10 @@ class website_account(website_account):
         if home_user == request.env.user:
             home_user = home_user.sudo()
         self.update_info(home_user, post)
-        return werkzeug.utils.redirect("/my/salon/%s" % home_user.id)
+        return werkzeug.utils.redirect("/my/salon")
 
     def create_contact_user(self, values):
-        template = request.env.ref('website_sale_home.contact_template').sudo()
+        template = request.env.ref('website_portal_sale_1028.contact_template').sudo()
         user = template.with_context(no_reset_password=True).copy({
             'name': values.get('name'),
             'login': values.get('email'),

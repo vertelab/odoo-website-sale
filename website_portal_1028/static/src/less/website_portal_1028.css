@@ -187,7 +187,6 @@ border-bottom: 2px solid black;
 
 }
 .left_menu li{
-    border: 1px solid black;
     padding: 8px 15px;
     border-bottom:none;
     border: 1px solid #ddd;
@@ -296,4 +295,16 @@ div.row.mail_lists_lines:nth-child(2n+1) {
 
 .my_subscribers .row {
     padding-top: 10px;
+}
+
+#submit_btn_subscribers {
+    float: right;
+}
+
+/*input[type=checkbox] {
+    transform: scale(1.5);
+}*/
+
+#submit_btn_subscribers {
+    margin: 10px;
 }

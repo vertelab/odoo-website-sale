@@ -18,6 +18,7 @@ Add your sales document in the frontend portal. Your customers will be able to c
         'views/mailing_list_view.xml',
         'security/ir.model.access.csv',
         'data/portal_data.xml',
+        'security/security_data.xml'
     ],
     'installable': True,
 }
