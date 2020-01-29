@@ -6,6 +6,7 @@ from openerp.exceptions import AccessError
 from openerp.http import request, Controller
 
 from openerp.addons.website_portal_1028.controllers.main import website_account
+from openerp.addons.delivery_unifaun_base import delivery
 
 from openerp import api, exceptions, models
 import werkzeug
@@ -155,52 +156,92 @@ class website_account(website_account):
         })
         return response
 
+    # @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
+    # def portal_my_orders(self, page=1, date_begin=None, date_end=None, **post):
+    #     home_user = request.env.user
+    #     self.validate_user(home_user)
+    #     order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
+    #     if not order:
+    #         html = request.website._render(
+    #                 'website.403',
+    #                 {
+    #                     'status_code': 403,
+    #                     'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
+    #                 })
+    #         return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
+    #     return request.render(' .page_order', {
+    #         'home_user': home_user,
+    #         'order': order,
+    #         'tab': tab,
+    #     })
+    #     return request.render("website_portal_sale_1028.portal_my_orders", values)
+
+    # @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
+    # def home_page_order_copy(self, home_user=None, order=None, **post):
+    #     self.validate_user(home_user)
+    #     sale_order = request.website.sale_get_order()
+    #     if not sale_order:
+    #         sale_order = request.website.sale_get_order(force_create=True)
+    #     order_lines = request.env['sale.order.line']
+    #     try:
+    #         for line in order.sudo().order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True):
+    #             # Check access rights
+    #             try:
+    #                 order_lines += order_lines.browse(line.id)
+    #             except:
+    #                 pass # Probably access error.
+    #     except Exception as e:
+    #         order_lines = []
+    #         _logger.warn('Order Copy Error %s' % e)
+
+    #     for line in order_lines:
+    #         if line.sale_home_confirm_copy():
+    #             request.env['sale.order.line'].sudo().create({
+    #                     'order_id': sale_order.id,
+    #                     'product_id': line.product_id.id,
+    #                     'product_uom_qty': line.product_uom_qty,
+    #             })
+    #     return werkzeug.utils.redirect("/shop/cart")
+
     @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_orders(self, page=1, date_begin=None, date_end=None, **post):
-        home_user = request.env.user
-        self.validate_user(home_user)
-        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
-        if not order:
-            html = request.website._render(
-                    'website.403',
-                    {
-                        'status_code': 403,
-                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
-                    })
-            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
-        return request.render(' .page_order', {
-            'home_user': home_user,
-            'order': order,
-            'tab': tab,
+    def portal_my_orders(self, page=1, date_begin=None, date_end=None, **kw):
+        values = self._prepare_portal_layout_values()
+        partner = request.env.user.partner_id
+        SaleOrder = request.env['sale.order']
+
+        domain = [
+            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
+            ('state', 'in', ['sale', 'done'])
+        ]
+        archive_groups = "" # DAER: Ugg not understand, Ugg remove.
+        # archive_groups = self._get_archive_groups('sale.order', domain)
+        if date_begin and date_end:
+            domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
+
+        # count for pager
+        order_count = SaleOrder.search_count(domain)
+        # pager
+        pager = request.website.pager(
+            url="/my/orders",
+            url_args={'date_begin': date_begin, 'date_end': date_end},
+            total=order_count,
+            page=page,
+            step=self._items_per_page
+        )
+        # content according to pager and archive selected
+        orders = SaleOrder.search(domain, limit=self._items_per_page, offset=pager['offset'])
+
+        values.update({
+            'date': date_begin,
+            'orders': orders,
+            'page_name': 'order',
+            'pager': pager,
+            'archive_groups': archive_groups,
+            'default_url': '/my/orders',
+
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
 
-    @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
-    def home_page_order_copy(self, home_user=None, order=None, **post):
-        self.validate_user(home_user)
-        sale_order = request.website.sale_get_order()
-        if not sale_order:
-            sale_order = request.website.sale_get_order(force_create=True)
-        order_lines = request.env['sale.order.line']
-        try:
-            for line in order.sudo().order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True):
-                # Check access rights
-                try:
-                    order_lines += order_lines.browse(line.id)
-                except:
-                    pass # Probably access error.
-        except Exception as e:
-            order_lines = []
-            _logger.warn('Order Copy Error %s' % e)
-
-        for line in order_lines:
-            if line.sale_home_confirm_copy():
-                request.env['sale.order.line'].sudo().create({
-                        'order_id': sale_order.id,
-                        'product_id': line.product_id.id,
-                        'product_uom_qty': line.product_uom_qty,
-                })
-        return werkzeug.utils.redirect("/shop/cart")
 
     @http.route(['/my/media/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
@@ -243,7 +284,7 @@ class website_account(website_account):
         return request.render("website_portal_sale_1028.portal_my_obsolete", values)
 
     @http.route(['/my/mail'], type='http', auth="user", website=True)
-    def portal_my_mail(self, page=0, **kw):
+    def portal_my_mail(self, page=1, **kw):
         #/my/mail?page=3
         mpp = 8 # mails per page
         values = self._prepare_portal_layout_values()
@@ -255,26 +296,48 @@ class website_account(website_account):
                 'id': mailing_list.id,
                 'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0
             })
-        mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]
-        mails = request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=page*mpp, order='sent DESC')
-        show_all_mails = request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')
-        mail_count = request.env['mail.mail.statistics'].search_count([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)])
+        mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]
+        show_all_mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')
+        mail_count = request.env['mail.mail.statistics'].sudo().search_count([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)])
         page_count = int(ceil(mail_count / mpp))
+        pager = request.website.pager(
+            url="/my/mail",
+            total=mail_count,
+            page=page,
+            step=10
+        )
+        mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=pager['offset'], order='sent DESC')
         values.update({
             'mailing_lists': mailing_lists,
             'mass_mailing_partners': mass_mailing_partners,
             'mails': mails,
             'show_all_mails': show_all_mails,
             'page_count': page_count, 
+            'pager': pager,
         })
-        total = mails.search_count([])
-        pager = request.website.pager(
-            url='url path',
-            total=total,
-            page=page,
-            step=10,
-        )
+
         return request.render("website_portal_sale_1028.portal_my_mail", values)
+
+
+    @api.multi
+    def unifaun_track_and_trace_url(self):
+        """Return an URL for Unifaun Track & Trace."""
+        # https://www.unifaunonline.se/ufoweb-prod-201812111106/public/SUP/UO/UO-101-TrackandTrace-en.pdf
+        # TODO: Add support for regions (what does regions even do?)
+        if self.is_unifaun and self.unifaun_shipmentid:
+            parameters = {
+                'apiKey': self.env['ir.config_parameter'].get_param('unifaun.api_key'),
+                'reference': self.get_unifaun_sender_reference(),
+                'templateId': self.env['ir.config_parameter'].get_param('unifaun.templateid')}
+            
+            region = 'se'
+            lang = self.get_unifaun_language()
+            
+            res = 'https://www.unifaunonline.com/ext.uo.%s.%s.track?&%s' % (region, lang, urlencode(parameters).replace('&amp;', '&'))
+        else:
+            res = ''
+        
+        return res
 
 
 

@@ -218,9 +218,9 @@
                   </div>
                 </div>
               </div>
-              <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]" />
-              <t t-set="mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=8, order='sent DESC')" />
-              <t t-set="show_all_mails" t-value="request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')" />
+              <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
+              <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=8, order='sent DESC')" />
+              <t t-set="show_all_mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')" />
               <div class="row mail_lists_line">
                 <div class="col-sm-3 col-xs-3">
                   <t t-if="mails">

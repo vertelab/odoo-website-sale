@@ -308,3 +308,14 @@ div.row.mail_lists_lines:nth-child(2n+1) {
 #submit_btn_subscribers {
     margin: 10px;
 }
+
+.order_table th{
+    background-color: white !important;
+}
+
+.order_table .table thead tr th {
+    vertical-align: bottom;
+    border-bottom: none; 
+}
+
+.order_table .table thead tr.active th
