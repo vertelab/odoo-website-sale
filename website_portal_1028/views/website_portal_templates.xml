@@ -417,7 +417,7 @@
         <a href="/my/orders">MINA BESTÄLLNINGAR</a>
         <a href="/my/obsolete">UTGÅENDE PRODUKTER</a>
         <a href="/my/buyinfo">KÖPINFORMATION</a>
-        <a href="/my/buyinfo">MAIL &amp; PRENUMERATIONER</a>
+        <a href="/my/mail">MAIL &amp; PRENUMERATIONER</a>
         <li class="dropdown-submenu">
           <a class="test" href="#">MEDIA</a>
           <ul class="dropdown-menu">
