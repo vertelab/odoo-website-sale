@@ -22,7 +22,6 @@ from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning, RedirectWarning
 from openerp import http
 from openerp.http import request
-
 import werkzeug
 from openerp.addons.website_sale_home.website_sale import website_sale_home
 # from openerp.addons.website_portal_sale_1028.website_sale import main website_portal_1028
@@ -110,6 +109,7 @@ class website(models.Model):
 
     @api.model
     def sale_home_get_data(self, home_user, post):
+        # Använd ej!
         res = super(website, self).sale_home_get_data(home_user, post)
         res.update(self.sale_home_order_get(home_user, post))
         filters = self.sale_home_order_get_all_filters(home_user)
@@ -120,22 +120,26 @@ class website(models.Model):
         return res
 
     @api.model
-    def sale_home_order_get_all_filters(self, user):
+    def my_order_get_all_filters(self, user):
+        # /odoo-website-sale/website_sale_home_order/website_sale.py sale_home_order_get_all_filters
         return []
     
     @api.model
-    def sale_home_order_filter_domain(self, user, filter, value):
+    def my_order_filter_domain(self, user, filter, value):
         """Override to implement filters."""
+        # /odoo-website-sale/website_sale_home_order/website_sale.py sale_home_order_filter_domain
         return []
     
     @api.model
-    def sale_home_order_search_domain_access(self, user, search):
+    def my_order_search_domain_access(self, user, search):
         """Return a domain that describes which sale orders the user has access to."""
+        # /odoo-website-sale/website_sale_home_order/website_sale.py sale_home_order_search_domain_access
         return [('partner_id','child_of', user.partner_id.commercial_partner_id.id), ('state','!=','draft')]
 
     @api.model
-    def sale_home_order_search_domain(self, user, search=None, post=None):
-        domain = self.sale_home_order_search_domain_access(user, search)
+    def my_order_search_domain(self, user, search=None, post=None):
+        # /odoo-website-sale/website_sale_home_order/website_sale.py sale_home_order_search_domain
+        domain = self.my_order_search_domain_access(user, search)
         # ~ _logger.warn('\n\ndomain: %s\n' % domain)
         post = post or {}
         if search:
@@ -170,7 +174,7 @@ class website(models.Model):
                         ('user_id', 'ilike', search)]
         for key in post:
             if key.startswith('order_filter_'):
-                domain += self.sale_home_order_filter_domain(user, key, post[key])
+                domain += self.my_order_filter_domain(user, key, post[key])
         # ~ _logger.debug('search_domain: %s' % (domain))
         return domain
 
@@ -185,7 +189,7 @@ class website(models.Model):
             'order_page': '__ORDER_PAGE__',
             'tab': 'orders',
         })
-        pager = self.pager(url='/my/orders/%s' % user.id, total=self.env['sale.order'].sudo().search_count(domain), page=order_page, step=OPP, scope=7, url_args=url_args)
+        pager = self.pager(url='/home/%s' % user.id, total=self.env['sale.order'].sudo().search_count(domain), page=order_page, step=OPP, scope=7, url_args=url_args)
         for page in pager["pages"]:
             page['url'] = page['url'].replace('/page/%s' % page['num'], '').replace('__ORDER_PAGE__', str(page['num']))
         for page in ["page", "page_start", "page_previous", "page_next", "page_end"]:

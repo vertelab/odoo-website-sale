@@ -182,7 +182,7 @@ msgstr "Kontaktinformation"
 #: view:website:website_portal_sale_1028.children_info
 #: view:website:website_portal_sale_1028.company_info_form
 msgid "Country"
-msgstr "Land<br>"
+msgstr "Land"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
@@ -359,7 +359,7 @@ msgstr "KÖPINFORMATION"
 #: view:website:website_portal_1028.portal_layout
 #: view:website:website_portal_sale_1028.my_menu
 msgid "Köpinformation"
-msgstr "<section class=\"s_2_column_text oe_structure\"><div class=\"container\"><div class=\"row\"><div class=\"col-md-6\"><h2>Lorem ipsum dolor sit amet</h2><p>Lorem ipsum dolor sit amet, mea id tacimates moderatius referrentur, ea vel nisl dissentias. Per dicat ludus eirmod cu, idque reprimique temporibus at per. Vel ex aeque epicuri partiendo. Sonet consulatu vel at. Commune invenire ut mei, cu sed prompta hendrerit.<br>Ex mel feugiat dissentias, et eam dicta labore epicuri, iisque pertinax vis ne. Ea intellegat voluptatum vis, ei magna consul sea, te his natum oratio. His brute gloriatur cu, et eum ipsum oblique consequat. Justo consulatu ius ei, eu labore possit vim, qui ad essent vocibus. Eu nec delectus oportere vituperatoribus.</p></div><div class=\"col-md-6\"><h2>Lorem ipsum dolor sit amet</h2><p>Lorem ipsum dolor sit amet, mea id tacimates moderatius referrentur, ea vel nisl dissentias. Per dicat ludus eirmod cu, idque reprimique temporibus at per. Vel ex aeque epicuri partiendo. Sonet consulatu vel at. Commune invenire ut mei, cu sed prompta hendrerit.<br>Ex mel feugiat dissentias, et eam dicta labore epicuri, iisque pertinax vis ne. Ea intellegat voluptatum vis, ei magna consul sea, te his natum oratio. His brute gloriatur cu, et eum ipsum oblique consequat. Justo consulatu ius ei, eu labore possit vim, qui ad essent vocibus. Eu nec delectus oportere vituperatoribus.<br></p></div></div></div></section>Köpinformation"
+msgstr "Köpinformation"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon

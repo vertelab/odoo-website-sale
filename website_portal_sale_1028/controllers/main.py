@@ -203,42 +203,45 @@ class website_account(website_account):
     #             })
     #     return werkzeug.utils.redirect("/shop/cart")
 
+    @api.model
+    def sale_home_order_get_all_filters(self, user):
+        return []
+
     @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_orders(self, page=1, date_begin=None, date_end=None, **kw):
+    def portal_my_orders(self, page=1, **post):
+        home_user = request.env.user
+        self.validate_user(home_user)
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
+        filters = request.website.my_order_get_all_filters(home_user)
+        search = post.get('order_search')
+        domain = request.website.sale_home_order_search_domain(home_user, search, post)
+
         SaleOrder = request.env['sale.order']
 
-        domain = [
-            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
-            ('state', 'in', ['sale', 'done'])
-        ]
         archive_groups = "" # DAER: Ugg not understand, Ugg remove.
         # archive_groups = self._get_archive_groups('sale.order', domain)
-        if date_begin and date_end:
-            domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
-
         # count for pager
         order_count = SaleOrder.search_count(domain)
         # pager
         pager = request.website.pager(
             url="/my/orders",
-            url_args={'date_begin': date_begin, 'date_end': date_end},
+            url_args={},
             total=order_count,
             page=page,
-            step=self._items_per_page
+            step=self._items_per_page,
+            scope=7
         )
         # content according to pager and archive selected
-        orders = SaleOrder.search(domain, limit=self._items_per_page, offset=pager['offset'])
+        orders = SaleOrder.sudo().search(domain, limit=self._items_per_page, offset=pager['offset'])
 
         values.update({
-            'date': date_begin,
             'orders': orders,
             'page_name': 'order',
             'pager': pager,
             'archive_groups': archive_groups,
             'default_url': '/my/orders',
-
+            'order_filters': filters,
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
 
@@ -283,10 +286,12 @@ class website_account(website_account):
         values = self._prepare_portal_layout_values()
         return request.render("website_portal_sale_1028.portal_my_obsolete", values)
 
-    @http.route(['/my/mail'], type='http', auth="user", website=True)
-    def portal_my_mail(self, page=1, **kw):
+    @http.route(['/my/mail', '/my/mail/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_my_mail(self, page=1, **post):
         #/my/mail?page=3
         mpp = 8 # mails per page
+        home_user = request.env.user
+        self.validate_user(home_user)
         values = self._prepare_portal_layout_values()
         email = request.env.user.email
         mailing_lists = []
@@ -297,48 +302,24 @@ class website_account(website_account):
                 'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0
             })
         mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]
-        show_all_mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')
         mail_count = request.env['mail.mail.statistics'].sudo().search_count([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)])
         page_count = int(ceil(mail_count / mpp))
         pager = request.website.pager(
             url="/my/mail",
             total=mail_count,
             page=page,
-            step=10
+            step=10,
         )
         mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=pager['offset'], order='sent DESC')
         values.update({
             'mailing_lists': mailing_lists,
             'mass_mailing_partners': mass_mailing_partners,
             'mails': mails,
-            'show_all_mails': show_all_mails,
             'page_count': page_count, 
             'pager': pager,
         })
 
         return request.render("website_portal_sale_1028.portal_my_mail", values)
-
-
-    @api.multi
-    def unifaun_track_and_trace_url(self):
-        """Return an URL for Unifaun Track & Trace."""
-        # https://www.unifaunonline.se/ufoweb-prod-201812111106/public/SUP/UO/UO-101-TrackandTrace-en.pdf
-        # TODO: Add support for regions (what does regions even do?)
-        if self.is_unifaun and self.unifaun_shipmentid:
-            parameters = {
-                'apiKey': self.env['ir.config_parameter'].get_param('unifaun.api_key'),
-                'reference': self.get_unifaun_sender_reference(),
-                'templateId': self.env['ir.config_parameter'].get_param('unifaun.templateid')}
-            
-            region = 'se'
-            lang = self.get_unifaun_language()
-            
-            res = 'https://www.unifaunonline.com/ext.uo.%s.%s.track?&%s' % (region, lang, urlencode(parameters).replace('&amp;', '&'))
-        else:
-            res = ''
-        
-        return res
-
 
 
     # @http.route(['/my/mail'], type='http', auth="user", website=True)
@@ -423,7 +404,6 @@ class website_account(website_account):
             'order': order,
             'tab': tab,
         })
-
 
 
     #Min salong
