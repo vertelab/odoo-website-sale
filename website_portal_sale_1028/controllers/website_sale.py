@@ -23,7 +23,6 @@ from openerp.exceptions import except_orm, Warning, RedirectWarning
 from openerp import http
 from openerp.http import request
 import werkzeug
-from openerp.addons.website_sale_home.website_sale import website_sale_home
 # from openerp.addons.website_portal_sale_1028.website_sale import main website_portal_1028
 
 import math
@@ -195,74 +194,3 @@ class website(models.Model):
             return ('/report/pdf/stock_delivery_slip.stock_delivery_slip/%s' % picking.id, picking.name, picking.state)
         else:
             return ('', 'in progress...', '')
-
-class website_sale_home(website_sale_home):
-
-    @http.route(['/my/orders/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
-    def home_page_order(self, home_user=None, order_id=None, tab='orders', **post):
-        self.validate_user(home_user)
-        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
-        if not order:
-            html = request.website._render(
-                    'website.403',
-                    {
-                        'status_code': 403,
-                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
-                    })
-            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
-        return request.render('website_sale_home_order.page_order', {
-            'home_user': home_user,
-            'order': order,
-            'tab': tab,
-        })
-
-    @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
-    def my_order_copy(self, home_user=None, order=None, **post):
-        self.validate_user(home_user)
-        sale_order = request.website.sale_get_order()
-        if not sale_order:
-            sale_order = request.website.sale_get_order(force_create=True)
-        order_lines = request.env['sale.order.line']
-        try:
-            for line in order.sudo().order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True):
-                # Check access rights
-                try:
-                    order_lines += order_lines.browse(line.id)
-                except:
-                    pass # Probably access error.
-        except Exception as e:
-            order_lines = []
-            _logger.warn('Order Copy Error %s' % e)
-
-        for line in order_lines:
-            if line.sale_home_confirm_copy():
-                request.env['sale.order.line'].sudo().create({
-                        'order_id': sale_order.id,
-                        'product_id': line.product_id.id,
-                        'product_uom_qty': line.product_uom_qty,
-                })
-        return werkzeug.utils.redirect("/shop/cart")
-
-    def check_document_access(self, report, ids):
-        partner = request.env.user.commercial_partner_id
-        model = None
-        if report == 'sale.report_saleorder':
-            model = 'sale.order'
-        elif report == 'account.report_invoice':
-            model = 'account.invoice'
-        elif report == 'stock_delivery_slip.stock_delivery_slip':
-            model = 'stock.picking'
-        if model:
-            try:
-                records = request.env[model].browse(ids)
-                # Check partner_id.
-                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
-                    return True
-                # Check ordinary access controls
-                records.check_access_rights('read')
-                records.check_access_rule('read')
-                return True
-            except:
-                # This check failed. Let it go to super to perform other checks.
-                pass
-        return super(website_sale_home, self).check_document_access(report, ids)

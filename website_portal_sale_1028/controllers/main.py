@@ -478,30 +478,109 @@ class website_account(website_account):
         })
         return user
 
-    @http.route(['/my/orders/<model("sale.order"):order>'], type='http', auth="user", website=True)
-    def orders_followup(self, home_user=None, order=None, order_id=None, tab='orders', **post):
-        try:
-            order.check_access_rights('read')
-            order.check_access_rule('read')
-        except AccessError:
-            return request.render("website.403")
+    @http.route(['/my/orders/<int:order_id>'], type='http', auth="user", website=True)
+    def orders_followup(self, home_user=None, order_id=None, tab='orders', **post):
+        home_user = request.env.user
 
-        order_sudo = order.sudo()
-
-        #ska denna vara här???
-        # order = request.env['sale.order'].sudo().search(request.website.my_order_search_domain(home_user, post) + [('id', '=', order_id)])
-
-        order_invoice_lines = {il.product_id.id: il.invoice_id for il in order_sudo.invoice_ids.mapped('invoice_line')}
+        self.validate_user(home_user)
+        order = request.env['sale.order'].sudo().search(request.website.my_order_search_domain(home_user, post=post) + [('id', '=', order_id)])
+        if not order:
+            html = request.website._render(
+                    'website.403',
+                    {
+                        'status_code': 403,
+                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
+                    })
+            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
 
         return request.render("website_portal_sale_1028.orders_followup", {
-            'order': order_sudo,
-            'order_invoice_lines': order_invoice_lines,
             'home_user': request.env.user,
             'order': order,
             'tab': tab,
         })
+ 
+    @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
+    def my_order_copy(self, home_user=None, order=None, **post):
+        self.validate_user(home_user)
+        sale_order = request.website.sale_get_order()
+        if not sale_order:
+            sale_order = request.website.sale_get_order(force_create=True)
+        order_lines = request.env['sale.order.line']
+        try:
+            for line in order.sudo().order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True):
+                # Check access rights
+                try:
+                    order_lines += order_lines.browse(line.id)
+                except:
+                    pass # Probably access error.
+        except Exception as e:
+            order_lines = []
+            _logger.warn('Order Copy Error %s' % e)
 
-          # new contact, update contact
+        for line in order_lines:
+            if line.sale_home_confirm_copy():
+                request.env['sale.order.line'].sudo().create({
+                        'order_id': sale_order.id,
+                        'product_id': line.product_id.id,
+                        'product_uom_qty': line.product_uom_qty,
+                })
+        return werkzeug.utils.redirect("/shop/cart")
+
+    def check_document_access(self, report, ids):
+        partner = request.env.user.commercial_partner_id
+        model = None
+        if report == 'sale.report_saleorder':
+            model = 'sale.order'
+        elif report == 'account.report_invoice':
+            model = 'account.invoice'
+        elif report == 'stock_delivery_slip.stock_delivery_slip':
+            model = 'stock.picking'
+        if model:
+            try:
+                records = request.env[model].browse(ids)
+                # Check partner_id.
+                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
+                    return True
+                # Check ordinary access controls
+                records.check_access_rights('read')
+                records.check_access_rule('read')
+                return True
+            except:
+                # This check failed. Let it go to super to perform other checks.
+                pass
+        return super(website_sale_home, self).check_document_access(report, ids)
+
+    @http.route(['/my/orders/<model("res.users"):home_user>/print/<reportname>/<docids>',
+                 '/my/orders/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
+                 ], type='http', auth='user', website=True)
+    
+    def print_document(self, reportname, home_user=None, docids=None, docname=None, **data):
+        """Creates PDF documents with sudo to avoid access rights problems.
+        Implement access control per report type in check_document_access."""
+        home_user = home_user or request.env.user
+        self.validate_user(home_user)
+        if docids:
+            docids = [int(i) for i in docids.split(',')]
+        if not self.check_document_access(reportname, docids):
+            return request.website.render('website.403', {})
+        context = {}
+        options_data = None
+        if data.get('options'):
+            options_data = simplejson.loads(data['options'])
+        if data.get('context'):
+            # Ignore 'lang' here, because the context in data is the one from the webclient *but* if
+            # the user explicitely wants to change the lang, this mechanism overwrites it. 
+            data_context = simplejson.loads(data['context'])
+            if data_context.get('lang'):
+                del data_context['lang']
+            context.update(data_context)
+        # Version 8 of get_pdf takes a recordset but does nothing with it except fetch the ids.
+        dummy = DummyRecordSet(docids)
+        pdf = request.env['report'].sudo().with_context(context).get_pdf(dummy, reportname, data=options_data)
+        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
+        return request.make_response(pdf, headers=pdfhttpheaders)
+
+        # new contact, update contact
     @http.route(['/my/salon/<model("res.users"):home_user>/contact/new', '/my/salon/<model("res.users"):home_user>/contact/<model("res.partner"):partner>'], type='http', auth='user', website=True)
     def contact_page(self, home_user=None, partner=None, **post):
         validation = {}
@@ -695,36 +774,12 @@ class website_account(website_account):
     # ~ def check_document_access(self, report, ids):
         # ~ """Override to implement access control."""
         # ~ return False
-    
-    @http.route(['/my/salon/<model("res.users"):home_user>/print/<reportname>/<docids>',
-                 '/my/salon/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
-                 ], type='http', auth='user', website=True)
-    def print_document(self, reportname, home_user=None, docids=None, docname=None, **data):
-        """Creates PDF documents with sudo to avoid access rights problems.
-        Implement access control per report type in check_document_access."""
-        if docids:
-            docids = [int(i) for i in docids.split(',')]
-        if not self.check_document_access(reportname, docids):
-            return request.website.render('website.403', {})
-        context = {}
-        options_data = None
-        if data.get('options'):
-            options_data = simplejson.loads(data['options'])
-        if data.get('context'):
-            # Ignore 'lang' here, because the context in data is the one from the webclient *but* if
-            # the user explicitely wants to change the lang, this mechanism overwrites it. 
-            data_context = simplejson.loads(data['context'])
-            if data_context.get('lang'):
-                del data_context['lang']
-            context.update(data_context)
-        # Version 8 of get_pdf takes a recordset but does nothing with it except fetch the ids.
-        dummy = DummyRecordSet(docids)
-        pdf = request.env['report'].sudo().with_context(context).get_pdf(dummy, reportname, data=options_data)
-        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
-        return request.make_response(pdf, headers=pdfhttpheaders)
 
 
 class DummyRecordSet(object):
     def __init__(self, ids):
         self.ids = ids
+
+
+
 

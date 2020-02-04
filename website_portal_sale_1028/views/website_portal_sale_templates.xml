@@ -959,7 +959,7 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <h1 class="">MAIL &amp; PRENUMERATIONER</h1>
 
-          <div class="col-md-8">
+          <div class="col-md-6">
               <h3 class="">Våra mailutskick</h3>
 
               <t t-if="mails">
@@ -999,7 +999,7 @@
         </div>
          <div class="col-md-6 my_subscribers">
           <div class="row">
-    <h3 class="col-md-8">Mina prenumerationer</h3>
+    <h3 class="col-md-9">Mina prenumerationer</h3>
         <h4 class="col-md-4">Ja, jag vill ha dessa prenumerationer</h4>
       </div>
               <t t-if="mailing_lists">
@@ -1024,8 +1024,7 @@
          </div>
 
          </div>
-             <div class="col-md-3">
-
+             <div class="col-md-3.5">
              </div>
 
             <div class="col-md-6">
@@ -1335,14 +1334,14 @@
                   </div>
                   
                   <div class="order-detail-header-link-box col-xs-12 col-md-7 col-lg-7">
-                    <a t-att-href="'/home/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download order</a>
+                    <a t-att-href="'/my/orders/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download order</a>
                     <t t-foreach="order.invoice_ids" t-as="invoice">
-                      <a t-att-href="'/home/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace'))" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download invoice <t t-esc="invoice.number"/></a>
+                      <a t-att-href="'/my/orders/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace'))" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download invoice <t t-esc="invoice.number"/></a>
                     </t>
                     <t t-foreach="order.picking_ids" t-as="picking">
-                      <a t-att-href="'/home/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download picking<t t-esc="picking.name"/></a>
+                      <a t-att-href="'/my/orders/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download picking<t t-esc="picking.name"/></a>
                     </t>
-                    <a t-att-href="'/home/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_sale_home_copy_order" target="_blank"><i class="fa fa-plus"/>&amp;nbsp;Copy to cart</a>
+                    <a t-att-href="'/my/orders/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_sale_home_copy_order" target="_blank"><i class="fa fa-plus"/>&amp;nbsp;Copy to cart</a>
                   </div>
                 </div>
               </div>
