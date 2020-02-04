@@ -999,7 +999,7 @@
         </div>
          <div class="col-md-6 my_subscribers">
           <div class="row">
-    <h3 class="col-md-9">Mina prenumerationer</h3>
+    <h3 class="col-md-7">Mina prenumerationer</h3>
         <h4 class="col-md-4">Ja, jag vill ha dessa prenumerationer</h4>
       </div>
               <t t-if="mailing_lists">

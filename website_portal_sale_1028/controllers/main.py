@@ -240,7 +240,7 @@ class website_account(website_account):
         home_user = request.env.user
         self.validate_user(home_user)
         company = home_user.partner_id.commercial_partner_id
-        value = request.website.sale_home_get_data(home_user, post)
+        value = request.website.my_orders_get_data(home_user, post)
         value.update({
             'help': self.get_help(),
             'company_form': True,
@@ -591,7 +591,7 @@ class website_account(website_account):
             if not (partner in company.child_ids):
                 partner = request.env['res.partner'].sudo().browse([])
 
-        value = request.website.sale_home_get_data(home_user, post)
+        value = request.website.my_orders_get_data(home_user, post)
         #~ _logger.warn(value)
         values = {}
         if request.httprequest.method == 'POST':
