@@ -43,7 +43,7 @@ class SaleOrder(models.Model):
     _inherit='sale.order'
 
     @api.multi
-    def order_state_frontend(self):
+    def my_order_state_frontend(self):
         """Get a customer friendly order state."""
         state = None
         if self.state == 'cancel':
@@ -66,7 +66,7 @@ class SaleOrder(models.Model):
         return state
         
     @api.multi
-    def order_state_per_invoice_frontend(self):
+    def my_order_state_per_invoice_frontend(self):
         """Get a customer friendly order state per invoice."""
         state = []
         if self.state == 'cancel':
@@ -108,11 +108,11 @@ class website(models.Model):
     _inherit="website"
 
     @api.model
-    def sale_home_get_data(self, home_user, post):
+    def my_orders_get_data(self, home_user, post):
         # Använd ej!
-        res = super(website, self).sale_home_get_data(home_user, post)
-        res.update(self.sale_home_order_get(home_user, post))
-        filters = self.sale_home_order_get_all_filters(home_user)
+        res = super(website, self).my_orders_get_data(home_user, post)
+        res.update(self.portal_my_orders(home_user, post))
+        filters = self.my_order_get_all_filters(home_user)
         for filter in filters:
             if post.get(filter['id']):
                 filter['active'] = True
@@ -179,29 +179,7 @@ class website(models.Model):
         return domain
 
     @api.model
-    def sale_home_order_get(self, user, post):
-        OPP = 50 # Orders Per Page
-        search = post.get('order_search')
-        domain = self.sale_home_order_search_domain(user, search, post)
-        order_page = int(post.get('order_page', '1'))
-        url_args = post.copy()
-        url_args.update({
-            'order_page': '__ORDER_PAGE__',
-            'tab': 'orders',
-        })
-        pager = self.pager(url='/home/%s' % user.id, total=self.env['sale.order'].sudo().search_count(domain), page=order_page, step=OPP, scope=7, url_args=url_args)
-        for page in pager["pages"]:
-            page['url'] = page['url'].replace('/page/%s' % page['num'], '').replace('__ORDER_PAGE__', str(page['num']))
-        for page in ["page", "page_start", "page_previous", "page_next", "page_end"]:
-            pager[page]['url'] = pager[page]['url'].replace('/page/%s' % pager[page]['num'], '').replace('__ORDER_PAGE__', str(pager[page]['num']))
-        return {
-            'sale_orders': self.env['sale.order'].sudo().search(domain, limit=OPP, offset=(order_page - 1) * OPP),
-            'sale_order_pager': pager,
-            'order_search': search,
-        }
-
-    @api.model
-    def sale_home_order_get_invoice(self, order):
+    def my_order_get_invoice(self, order):
         invoice = order.invoice_ids[-1] if order and order.invoice_ids else None
         if invoice:
             document = self.env['ir.attachment'].search([('res_id', '=', invoice.id), ('res_model', '=', 'account.invoice')]).mapped('id')
@@ -211,7 +189,7 @@ class website(models.Model):
         else:
             return ('', 'in progress...', '')
 
-    def sale_home_order_get_picking(self, order):
+    def my_order_get_picking(self, order):
         picking = order.picking_ids[-1] if order and order.picking_ids else None
         if picking:
             return ('/report/pdf/stock_delivery_slip.stock_delivery_slip/%s' % picking.id, picking.name, picking.state)
@@ -239,7 +217,7 @@ class website_sale_home(website_sale_home):
         })
 
     @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
-    def home_page_order_copy(self, home_user=None, order=None, **post):
+    def my_order_copy(self, home_user=None, order=None, **post):
         self.validate_user(home_user)
         sale_order = request.website.sale_get_order()
         if not sale_order:

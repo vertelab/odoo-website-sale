@@ -1194,7 +1194,7 @@
                     
                     </td>
                    <td>
-                    <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />
+                    <t t-set="invoice_list" t-value="order.my_order_state_per_invoice_frontend()" />
                     <t t-if="len(invoice_list) > 1">
                       <t t-foreach="invoice_list" t-as="invoice_status">
                         <span t-esc="invoice_status" /><br/>
@@ -1223,13 +1223,93 @@
       </t>
     </template>
 
-    <template id="page_order" name="Page Order">
-      <t t-call="website.layout">
+   
+    <template id="portal_my_invoices" name="My Invoices and Payments">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="invoice_table col-md-9">
+            <h3 class="page-header">Your Invoices and Payments</h3>
+            <t t-if="not invoices">
+              <p>There are currently no invoices for your account.</p>
+            </t>
+            <t t-if="invoices">
+              <table class="table table-hover o_my_status_table">
+                <thead>
+                  <tr class="active">
+                    <th>Invoice #</th>
+                    <th>Invoice Date</th>
+                    <th>Due Date</th>
+                    <th />
+                    <th />
+                    <th>Amount Due</th>
+                  </tr>
+                </thead>
+                <t t-foreach="invoices" t-as="invoice">
+                  <tr>
+                    <td class= "cell_overflow">
+  <a t-att-href="'/my/invoices/pdf/'+str(invoice.id)" t-att-title="invoice.number">
+                      <t t-esc="invoice.number" />
+                    </a>
+                  </td>
+                  <td>
+                    <span t-field="invoice.date_invoice" />
+                  </td>
+                  <td>
+                    <span t-field="invoice.date_due" />
+                  </td>
+                  <td>
+                    <t t-if="invoice.state == 'open'">
+                      <span class="label label-info">
+                        <i class="fa fa-fw fa-clock-o" />
+                        Waiting for Payment
+                      </span>
+                    </t>
+                    <t t-if="invoice.state == 'paid'">
+                      <span class="label label-default">
+                        <i class="fa fa-fw fa-check" />
+                        Paid
+                      </span>
+                    </t>
+                    <t t-if="invoice.state == 'cancel'">
+                      <span class="label label-default">
+                        <i class="fa fa-fw fa-remove" />
+                        Cancelled
+                      </span>
+                    </t>
+                  </td>
+                  <td>
+                    <a t-if="invoice.state == 'open'" t-attf-href="/website_payment/pay?reference=#{invoice.number}&amp;amount=#{invoice.residual}&amp;currency_id=#{invoice.currency_id.id}&amp;country_id=#{invoice.partner_id.country_id.id}" alt="Pay Now" class="btn btn-xs btn-primary">
+                      <i class="fa fa-arrow-circle-right" />
+                      Pay Now
+                    </a>
+                  </td>
+                  <td>
+                    <span t-field="invoice.residual" t-options='{"widget": "monetary", "display_currency": invoice.currency_id}' />
+                  </td>
+                </tr>
+              </t>
+            </table>
+            <div t-if="pager" class="o_portal_pager text-center">
+              <t t-call="website.pager" />
+            </div>
+          </t>
+        </div>
+      </div>
+    </t>
+  </template>
+  <template id="orders_followup" name="Sales Order">
+        <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+
+
         <div id="wrap" class="oe_structure oe_empty">
           <section>
-            <div class="container order_detail mt32 mb32" t-if="order">
+            <div class="order_detail mt32 mb32" t-if="order">
               <div class="row">
-                <form t-att-action="'/my/order/%s' %home_user.id" method="post">
+                <form t-att-action="'/my/orders'" method="post">
                   <input type="hidden" name="tab" value="orders"/>
                   <button type="submit" class="btn btn-default" style="margin-left: 15px;">
                     <i class="fa fa-angle-left" />
@@ -1239,7 +1319,7 @@
                 </form>
                 <div>
                   <div class="col-xs-12 col-md-5 col-lg-5">
-                    <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />-->
+                    <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />
                     <h3>
                       <!-- TODO -->
                       <t t-esc="order.name" /> 
@@ -1255,14 +1335,14 @@
                   </div>
                   
                   <div class="order-detail-header-link-box col-xs-12 col-md-7 col-lg-7">
-                    <a t-att-href="'/my/orders/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download order</a>
+                    <a t-att-href="'/home/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download order</a>
                     <t t-foreach="order.invoice_ids" t-as="invoice">
                       <a t-att-href="'/home/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace'))" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download invoice <t t-esc="invoice.number"/></a>
                     </t>
                     <t t-foreach="order.picking_ids" t-as="picking">
-                      <a t-att-href="'/my/orders/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download picking<t t-esc="picking.name"/></a>
+                      <a t-att-href="'/home/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank"><i class="fa fa-download"/>&amp;nbsp;Download picking<t t-esc="picking.name"/></a>
                     </t>
-                    <a t-att-href="'/my/orders/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_sale_home_copy_order" target="_blank"><i class="fa fa-plus"/>&amp;nbsp;Copy to cart</a>
+                    <a t-att-href="'/home/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_sale_home_copy_order" target="_blank"><i class="fa fa-plus"/>&amp;nbsp;Copy to cart</a>
                   </div>
                 </div>
               </div>
@@ -1314,6 +1394,19 @@
                           <t t-esc="order.carrier_id.name"/>
                         </div>
                       </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                            <strong>Tracking number</strong>
+                        </div>
+                        <div class="col-md-6">
+                        <t t-foreach="order.picking_ids" t-as="picking">
+                            <t t-if="picking.unifaun_track_and_trace_url()">
+                                <a t-att-href="picking.unifaun_track_and_trace_url()" t-att-title="picking.name" target="_blank"><span class="text-center fa fa-map-marker"/></a>
+                            </t>
+                        </t>
+                        </div>
+                    </div>
+                    
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -1331,7 +1424,7 @@
               </div>
               <div id="order_buttons" class="mt32 mb32"/>
             </div>
-            <div class="container order_detail mt32 mb32">
+            <div class="order_detail mt32 mb32">
               <div class="row">
                   <div class="col-lg-12 col-md-12 col-sm-12">
                     <h4 class="text-center">
@@ -1423,259 +1516,8 @@
               </div>
           </section>
         </div>
-      </t>
-    </template>
-
-    <template id="portal_my_invoices" name="My Invoices and Payments">
-      <t t-call="website_portal_1028.portal_layout">
-        <div class="container">
-          <t t-call="website_portal_sale_1028.my_menu" />
-          <div class="invoice_table col-md-9">
-            <h3 class="page-header">Your Invoices and Payments</h3>
-            <t t-if="not invoices">
-              <p>There are currently no invoices for your account.</p>
-            </t>
-            <t t-if="invoices">
-              <table class="table table-hover o_my_status_table">
-                <thead>
-                  <tr class="active">
-                    <th>Invoice #</th>
-                    <th>Invoice Date</th>
-                    <th>Due Date</th>
-                    <th />
-                    <th />
-                    <th>Amount Due</th>
-                  </tr>
-                </thead>
-                <t t-foreach="invoices" t-as="invoice">
-                  <tr>
-                    <td class= "cell_overflow">
-  <a t-att-href="'/my/invoices/pdf/'+str(invoice.id)" t-att-title="invoice.number">
-                      <t t-esc="invoice.number" />
-                    </a>
-                  </td>
-                  <td>
-                    <span t-field="invoice.date_invoice" />
-                  </td>
-                  <td>
-                    <span t-field="invoice.date_due" />
-                  </td>
-                  <td>
-                    <t t-if="invoice.state == 'open'">
-                      <span class="label label-info">
-                        <i class="fa fa-fw fa-clock-o" />
-                        Waiting for Payment
-                      </span>
-                    </t>
-                    <t t-if="invoice.state == 'paid'">
-                      <span class="label label-default">
-                        <i class="fa fa-fw fa-check" />
-                        Paid
-                      </span>
-                    </t>
-                    <t t-if="invoice.state == 'cancel'">
-                      <span class="label label-default">
-                        <i class="fa fa-fw fa-remove" />
-                        Cancelled
-                      </span>
-                    </t>
-                  </td>
-                  <td>
-                    <a t-if="invoice.state == 'open'" t-attf-href="/website_payment/pay?reference=#{invoice.number}&amp;amount=#{invoice.residual}&amp;currency_id=#{invoice.currency_id.id}&amp;country_id=#{invoice.partner_id.country_id.id}" alt="Pay Now" class="btn btn-xs btn-primary">
-                      <i class="fa fa-arrow-circle-right" />
-                      Pay Now
-                    </a>
-                  </td>
-                  <td>
-                    <span t-field="invoice.residual" t-options='{"widget": "monetary", "display_currency": invoice.currency_id}' />
-                  </td>
-                </tr>
-              </t>
-            </table>
-            <div t-if="pager" class="o_portal_pager text-center">
-              <t t-call="website.pager" />
-            </div>
-          </t>
-        </div>
-      </div>
-    </t>
-  </template>
-  <template id="orders_followup" name="Sales Order">
-    <t t-call="website.layout">
-      <div id="wrap">
-        <div class="container">
-          <div class="oe_structure">
-            <div class="row">
-              <div class="col-sm-4">
-                <ol class="breadcrumb mt8">
-                  <li>
-                    <a href="/my/salon">
-                      <i class="fa fa-home" />
-                    </a>
-                  </li>
-                  <li>
-                    <a t-attf-href="/my/#{'quotes' if order.state == 'sent' else 'orders'}?{{ keep_query()}}">
-                      <t t-if="order.state == 'sent'">My Quotes</t>
-                      <t t-if="order.state != 'sent'">My Orders</t>
-                    </a>
-                  </li>
-                  <li>
-                    <t t-if="order.state == 'sent'">Quotation</t>
-                    <t t-if="order.state != 'sent'">Order</t>
-                    <t t-esc="order.name" />
-                  </li>
-                </ol>
-              </div>
-            </div>
-          </div>
-          <div id="optional_placeholder" />
-          <div class="container">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h4>
-                      <t t-if="order.state == 'sent'">Quotation</t>
-                      <t t-if="order.state != 'sent'">Order</t>
-                      <span t-esc="order.name" />
-                    </h4>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
-                <!-- <hr/> -->
-                <div class="mb8">
-                  <strong>Date:</strong>
-                  <span t-field="order.create_date" t-options='{"widget": "date"}' />
-                </div>
-                <div class='row'>
-                  <div class="col-md-6">
-                    <div>
-                      <strong>Invoicing Address</strong>
-                    </div>
-                    <div>
-                      <address t-field="order.partner_invoice_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
-                    </div>
-                    <t t-set="invoices" t-value="[i for i in order.invoice_ids if i.state not in ['draft', 'cancel']]" />
-                    <t t-if="invoices">
-                      <div>
-                        <strong>Invoices</strong>
-                      </div>
-                      <div>
-                        <t t-foreach="invoices" t-as="i">
-                          <t t-set="report_url" t-value="'/report/pdf/account.report_invoice/%s' % i.id" />
-                          <div>
-                            <a t-att-href="report_url">
-                              <span class="fa fa-download" />
-                            </a>
-                            <a t-att-href="report_url">
-                              <span t-esc="i.number" />
-                            </a>
-                            <span class="text-muted" t-field="i.date_invoice" />
-                            <t t-if="i.state == 'paid'">
-                              <span class="label label-success orders_label_text_align">
-                                <i class="fa fa-fw fa-check" />
-                                Paid
-                              </span>
-                            </t>
-                            <t t-if="i.state != 'paid'">
-                              <span class="label label-info orders_label_text_align">
-                                <i class="fa fa-fw fa-clock-o" />
-                                Waiting
-                              </span>
-                            </t>
-                          </div>
-                        </t>
-                      </div>
-                    </t>
-                  </div>
-                  <div id="shipping_address" class="col-md-6">
-                    <div>
-                      <strong>Shipping Address</strong>
-                    </div>
-                    <div>
-                      <address t-field="order.partner_shipping_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
-                    </div>
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-md-6">
-                    <strong>Product</strong>
-                  </div>
-                  <div class="col-md-2 text-right">
-                    <strong>Unit Price</strong>
-                  </div>
-                  <div class="col-md-2 text-right">
-                    <strong>Quantity</strong>
-                  </div>
-                  <div class="col-md-2 text-right">
-                    <strong>Subtotal</strong>
-                  </div>
-                </div>
-                <t t-foreach="order.order_line" t-as="ol">
-                  <div class="row orders_vertical_align">
-                    <div class="col-md-1 text-center">
-                      <img t-att-src="ol.product_id.image_small and ('data:image/png;base64,' + ol.product_id.image_small) or '/web/static/src/img/placeholder.png'" />
-                    </div>
-                    <div id='product_name' class="col-md-5">
-                      <span t-esc="ol.product_id.name" />
-                    </div>
-                    <div class="col-md-2 text-right">
-                      <span t-field="ol.price_unit" t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}' />
-                    </div>
-                    <div class="col-md-2 text-right">
-                      <t t-if="ol._name == 'sale.order.line'">
-                        <span t-esc="ol.product_uom_qty" />
-                      </t>
-                      <t t-if="ol._name == 'account.invoice.line'">
-                        <span t-esc="ol.quantity" />
-                      </t>
-                    </div>
-                    <div class="col-md-2 text-right">
-                      <span t-field="ol.price_subtotal" t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}' />
-                    </div>
-                  </div>
-                </t>
-                <hr />
-                <div class="row">
-                  <div class="col-md-6">
-                    <div>
-                      <strong>Contact</strong>
-                    </div>
-                    <div t-field="order.user_id.partner_id" t-options='{"widget": "contact", "fields": ["email", "phone"]}' />
-                  </div>
-                  <div class="col-md-6">
-                    <div class="row">
-                      <div class="col-md-10 text-right">Untaxed Amount:</div>
-                      <div class="col-md-2 text-right">
-                        <span t-field="order.amount_untaxed" t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}' />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-10 text-right">Taxes:</div>
-                      <div class="col-md-2 text-right">
-                        <span t-field="order.amount_tax" t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}' />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-10 text-right">
-                        <strong>Total:</strong>
-                      </div>
-                      <div class="col-md-2 text-right">
-                        <strong>
-                          <span t-field="order.amount_total" t-options='{"widget": "monetary", "display_currency": order.pricelist_id.currency_id}' />
-                        </strong>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-         <!--  <div class="oe_structure mb32" /> -->
-        </div>
-      </div>
+    </div>
+</div>
     </t>
   </template>
 

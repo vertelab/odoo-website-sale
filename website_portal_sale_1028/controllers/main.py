@@ -25,105 +25,6 @@ PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
 import logging
 _logger = logging.getLogger(__name__)
 
-class SaleOrderLine(models.Model):
-    _inherit='sale.order.line'
-
-    @api.multi
-    def sale_home_confirm_copy(self):
-        """Check if this order line should be copied. Override to handle fees and whatnot."""
-        return True
-
-class SaleOrder(models.Model):
-    _inherit='sale.order'
-
-    @api.multi
-    def order_state_frontend(self):
-        """Get a customer friendly order state."""
-        state = None
-        if self.state == 'cancel':
-            state = _('Cancelled')
-        elif self.state in ('shipping_except', 'invoice_except'):
-            state = _('Exception')
-        elif self.state in ('sent'):
-            state = _('Received')
-        elif self.state in ('draft'):
-            state = _('Cart')
-        else:
-            state = _('Ready for picking')
-            for invoice in self.invoice_ids:
-                if invoice.state == 'open' and invoice.residual == invoice.amount_total:
-                    state = _('Shipped and invoiced')
-                elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
-                    state = _('Partially paid')
-                elif invoice.state == 'paid':
-                    state = _('Paid')
-        return state
-        
-    @api.multi
-    def order_state_per_invoice_frontend(self):
-        """Get a customer friendly order state per invoice."""
-        state = []
-        if self.state == 'cancel':
-            state.append(_('Cancelled'))
-        elif self.state in ('shipping_except', 'invoice_except'):
-            state.append(_('Exception'))
-        elif self.state in ('sent'):
-            state.append(_('Received'))
-        elif self.state in ('draft'):
-            state.append(_('Cart'))
-        else:
-            state.append(_('Ready for picking'))
-            invoices = self.invoice_ids.filtered(lambda i: i.state not in ('draft', 'proforma', 'proforma2'))
-            if invoices:
-                state = []
-                if len(invoices) == 1:
-                    if invoices[0].state == 'open' and invoices[0].residual == invoices[0].amount_total:
-                        state.append(_('Shipped and invoiced'))
-                    elif invoices[0].state == 'open' and invoices[0].residual != invoices[0].amount_total:
-                        state.append(_('Partially paid'))
-                    elif invoices[0].state == 'paid':
-                        state.append(_('Paid'))
-                # only print invoice numbers if there are several
-                else:
-                    # check if all invoices for order are fully paid.
-                    if all([invoice.state == "paid" for invoice in invoices]):
-                        state.append(_('Paid'))
-                    else:
-                        for invoice in invoices:
-                            if invoice.state == 'open' and invoice.residual == invoice.amount_total:
-                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Shipped and invoiced'))
-                            elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
-                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Partially paid'))
-                            elif invoice.state == 'paid':
-                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Paid'))
-        return state
-
-    
-
-    def check_document_access(self, report, ids):
-        partner = request.env.user.commercial_partner_id
-        model = None
-        if report == 'sale.report_saleorder':
-            model = 'sale.order'
-        elif report == 'account.report_invoice':
-            model = 'account.invoice'
-        elif report == 'stock_delivery_slip.stock_delivery_slip':
-            model = 'stock.picking'
-        if model:
-            try:
-                records = request.env[model].browse(ids)
-                # Check partner_id.
-                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
-                    return True
-                # Check ordinary access controls
-                records.check_access_rights('read')
-                records.check_access_rule('read')
-                return True
-            except:
-                # This check failed. Let it go to super to perform other checks.
-                pass
-        return super(website_sale_home, self).check_document_access(report, ids)
-
 
 class website_account(website_account):
 
@@ -156,56 +57,6 @@ class website_account(website_account):
         })
         return response
 
-    # @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
-    # def portal_my_orders(self, page=1, date_begin=None, date_end=None, **post):
-    #     home_user = request.env.user
-    #     self.validate_user(home_user)
-    #     order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
-    #     if not order:
-    #         html = request.website._render(
-    #                 'website.403',
-    #                 {
-    #                     'status_code': 403,
-    #                     'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
-    #                 })
-    #         return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
-    #     return request.render(' .page_order', {
-    #         'home_user': home_user,
-    #         'order': order,
-    #         'tab': tab,
-    #     })
-    #     return request.render("website_portal_sale_1028.portal_my_orders", values)
-
-    # @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
-    # def home_page_order_copy(self, home_user=None, order=None, **post):
-    #     self.validate_user(home_user)
-    #     sale_order = request.website.sale_get_order()
-    #     if not sale_order:
-    #         sale_order = request.website.sale_get_order(force_create=True)
-    #     order_lines = request.env['sale.order.line']
-    #     try:
-    #         for line in order.sudo().order_line.filtered(lambda l: not (l.event_id or l.sudo().product_id.event_ok) and l.product_id.active == True and l.product_id.sale_ok == True and l.product_id.website_published == True):
-    #             # Check access rights
-    #             try:
-    #                 order_lines += order_lines.browse(line.id)
-    #             except:
-    #                 pass # Probably access error.
-    #     except Exception as e:
-    #         order_lines = []
-    #         _logger.warn('Order Copy Error %s' % e)
-
-    #     for line in order_lines:
-    #         if line.sale_home_confirm_copy():
-    #             request.env['sale.order.line'].sudo().create({
-    #                     'order_id': sale_order.id,
-    #                     'product_id': line.product_id.id,
-    #                     'product_uom_qty': line.product_uom_qty,
-    #             })
-    #     return werkzeug.utils.redirect("/shop/cart")
-
-    @api.model
-    def sale_home_order_get_all_filters(self, user):
-        return []
 
     @http.route(['/my/orders', '/my/orders/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_orders(self, page=1, **post):
@@ -245,7 +96,6 @@ class website_account(website_account):
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
 
-
     @http.route(['/my/media/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
         values = self._prepare_portal_layout_values()
@@ -267,7 +117,7 @@ class website_account(website_account):
         return request.render("website_portal_sale_1028.portal_my_other", values)
 
     @http.route(['/my/media/compendium'], type='http', auth="user", website=True)
-    def portal_my_events(self, **kw):
+    def portal_my_compendium(self, **kw):
         values = self._prepare_portal_layout_values()
         return request.render("website_portal_sale_1028.portal_my_compendium", values)
 
@@ -353,10 +203,6 @@ class website_account(website_account):
     #     return request.render("website_portal_sale_1028.portal_my_mail", values)
 
 
-
-
-
-
     @http.route(['/my/mail/subscribe'], type='json', auth='user')
     def portal_my_mail_subscribe(self, subscribe=False, mailing_list_id=None):
         """Subscribe / unsubscribe to a mailing list."""
@@ -385,25 +231,6 @@ class website_account(website_account):
             return True
         except:
             return False
-
-
-    @http.route(['/my/orders/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
-    def home_page_order(self, home_user=None, order_id=None, tab='orders', **post):
-        self.validate_user(home_user)
-        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
-        if not order:
-            html = request.website._render(
-                    'website.403',
-                    {
-                        'status_code': 403,
-                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
-                    })
-            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
-        return request.render(' .page_order', {
-            'home_user': home_user,
-            'order': order,
-            'tab': tab,
-        })
 
 
     #Min salong
@@ -651,9 +478,8 @@ class website_account(website_account):
         })
         return user
 
-    @http.route(['/my/orders/<int:order>'], type='http', auth="user", website=True)
-    def orders_followup(self, order=None, **kw):
-        order = request.env['sale.order'].browse([order])
+    @http.route(['/my/orders/<model("sale.order"):order>'], type='http', auth="user", website=True)
+    def orders_followup(self, home_user=None, order=None, order_id=None, tab='orders', **post):
         try:
             order.check_access_rights('read')
             order.check_access_rule('read')
@@ -661,13 +487,19 @@ class website_account(website_account):
             return request.render("website.403")
 
         order_sudo = order.sudo()
+
+        #ska denna vara här???
+        # order = request.env['sale.order'].sudo().search(request.website.my_order_search_domain(home_user, post) + [('id', '=', order_id)])
+
         order_invoice_lines = {il.product_id.id: il.invoice_id for il in order_sudo.invoice_ids.mapped('invoice_line')}
 
         return request.render("website_portal_sale_1028.orders_followup", {
             'order': order_sudo,
             'order_invoice_lines': order_invoice_lines,
+            'home_user': request.env.user,
+            'order': order,
+            'tab': tab,
         })
-
 
           # new contact, update contact
     @http.route(['/my/salon/<model("res.users"):home_user>/contact/new', '/my/salon/<model("res.users"):home_user>/contact/<model("res.partner"):partner>'], type='http', auth='user', website=True)
@@ -746,64 +578,6 @@ class website_account(website_account):
             'access_warning': '',
         })
         return request.render('website_portal_sale_1028.portal_my_salon', value)
-
-    #
-    # Invoices
-    #
-
-    # @http.route(['/my/invoices', '/my/invoices/page/<int:page>'], type='http', auth="user", website=True)
-    # def portal_my_invoices(self, page=1, date_begin=None, date_end=None, **kw):
-    #     values = self._prepare_portal_layout_values()
-    #     partner = request.env.user.partner_id
-    #     AccountInvoice = request.env['account.invoice']
-
-    #     domain = [
-    #         ('type', 'in', ['out_invoice', 'out_refund']),
-    #         ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
-    #         ('state', 'in', ['open', 'paid', 'cancel'])
-    #     ]
-    #     archive_groups = "" # DAER: Ugg not understand, Ugg remove.
-    #     # archive_groups = self._get_archive_groups('account.invoice', domain)
-    #     if date_begin and date_end:
-    #         domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
-
-    #     # count for pager
-    #     invoice_count = AccountInvoice.search_count(domain)
-    #     # pager
-    #     pager = request.website.pager(
-    #         url="/my/invoices",
-    #         url_args={'date_begin': date_begin, 'date_end': date_end},
-    #         total=invoice_count,
-    #         page=page,
-    #         step=self._items_per_page
-    #     )
-    #     # content according to pager and archive selected
-    #     invoices = AccountInvoice.search(domain, limit=self._items_per_page, offset=pager['offset'])
-    #     values.update({
-    #         'date': date_begin,
-    #         'invoices': invoices,
-    #         'page_name': 'invoice',
-    #         'pager': pager,
-    #         'archive_groups': archive_groups,
-    #         'default_url': '/my/invoices',
-    #     })
-    #     return request.render("website_portal_sale_1028.portal_my_invoices", values)
-
-    # @http.route(['/my/invoices/pdf/<int:invoice_id>'], type='http', auth="user", website=True)
-    # def portal_get_invoice(self, invoice_id=None, **kw):
-    #     invoice = request.env['account.invoice'].browse([invoice_id])
-    #     try:
-    #         invoice.check_access_rights('read')
-    #         invoice.check_access_rule('read')
-    #     except AccessError:
-    #         return request.render("website.403")
-
-    #     pdf = request.env['report'].sudo().get_pdf([invoice_id], 'account.report_invoice')
-    #     pdfhttpheaders = [
-    #         ('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)),
-    #         ('Content-Disposition', 'attachment; filename=Invoice.pdf;')
-    #     ]
-    #     return request.make_response(pdf, headers=pdfhttpheaders)
 
     def details_form_validate(self, data):
         error, error_message = super(website_account, self).details_form_validate(data)
@@ -918,9 +692,9 @@ class website_account(website_account):
                     attachment.unlink()
         return werkzeug.utils.redirect('/my/salon/%s/contact/%s' % (home_user.id, partner.id))
 
-    def check_document_access(self, report, ids):
-        """Override to implement access control."""
-        return False
+    # ~ def check_document_access(self, report, ids):
+        # ~ """Override to implement access control."""
+        # ~ return False
     
     @http.route(['/my/salon/<model("res.users"):home_user>/print/<reportname>/<docids>',
                  '/my/salon/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
@@ -949,82 +723,8 @@ class website_account(website_account):
         pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
         return request.make_response(pdf, headers=pdfhttpheaders)
 
-    @http.route(['/my/orders/<model("res.users"):home_user>/order/<int:order_id>',], type='http', auth="user", website=True)
-    def home_page_order(self, home_user=None, order_id=None, tab='orders', **post):
-        self.validate_user(home_user)
-        order = request.env['sale.order'].sudo().search(request.website.sale_home_order_search_domain(home_user, post) + [('id', '=', order_id)])
-        if not order:
-            html = request.website._render(
-                    'website.403',
-                    {
-                        'status_code': 403,
-                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
-                    })
-            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
-        return request.render('website_sale_home_order.page_order', {
-            'home_user': home_user,
-            'order': order,
-            'tab': tab,
-        })
-
-    
-
-    def check_document_access(self, report, ids):
-        partner = request.env.user.commercial_partner_id
-        model = None
-        if report == 'sale.report_saleorder':
-            model = 'sale.order'
-        elif report == 'account.report_invoice':
-            model = 'account.invoice'
-        elif report == 'stock_delivery_slip.stock_delivery_slip':
-            model = 'stock.picking'
-        if model:
-            try:
-                records = request.env[model].browse(ids)
-                # Check partner_id.
-                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
-                    return True
-                # Check ordinary access controls
-                records.check_access_rights('read')
-                records.check_access_rule('read')
-                return True
-            except:
-                # This check failed. Let it go to super to perform other checks.
-                pass
-        return super(website_sale_home, self).check_document_access(report, ids)
 
 class DummyRecordSet(object):
     def __init__(self, ids):
         self.ids = ids
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#mail
-
-
-
-
-
-
-
-
-
-
-
-
-
 

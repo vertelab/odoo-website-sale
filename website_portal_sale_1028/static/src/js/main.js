@@ -19,17 +19,11 @@ $("#submit_btn_subscribers").click(function(e) {
         }).done(function(data){
             if (data){
                 $(".sucess_message").removeClass("hidden");
-            }
-              
-});
+            }             
+        });
                 $(".sucess_message").addClass("hidden");
-        
         });
     });
-
-// }); 
-
-// })();
 
 
 function loadHomeMessageBox() {
