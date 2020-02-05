@@ -136,6 +136,16 @@ class website_account(website_account):
         values = self._prepare_portal_layout_values()
         return request.render("website_portal_sale_1028.portal_my_obsolete", values)
 
+    def get_mailing_lists(self, email):
+        mailing_lists = []
+        for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True)]):
+            mailing_lists.append({
+                'name': mailing_list.name,
+                'id': mailing_list.id,
+                'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0,
+            })
+        return mailing_lists
+
     @http.route(['/my/mail', '/my/mail/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_mail(self, page=1, **post):
         #/my/mail?page=3
@@ -144,14 +154,8 @@ class website_account(website_account):
         self.validate_user(home_user)
         values = self._prepare_portal_layout_values()
         email = request.env.user.email
-        mailing_lists = []
-        for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True)]):
-            mailing_lists.append({
-                'name': mailing_list.name,
-                'id': mailing_list.id,
-                'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0
-            })
-        mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]
+        mailing_lists = self.get_mailing_lists(email)
+        mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', email)], ['id'])]
         mail_count = request.env['mail.mail.statistics'].sudo().search_count([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)])
         page_count = int(ceil(mail_count / mpp))
         pager = request.website.pager(
@@ -160,8 +164,11 @@ class website_account(website_account):
             page=page,
             step=10,
         )
+        employees = request.env['res.partner'].search([('id', 'child_of', home_user.commercial_partner_id.id), ('id', '!=', home_user.partner_id.id)])
         mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=pager['offset'], order='sent DESC')
         values.update({
+            'home_user': home_user,
+            'employees': employees,
             'mailing_lists': mailing_lists,
             'mass_mailing_partners': mass_mailing_partners,
             'mails': mails,
@@ -171,43 +178,24 @@ class website_account(website_account):
 
         return request.render("website_portal_sale_1028.portal_my_mail", values)
 
-
-    # @http.route(['/my/mail'], type='http', auth="user", website=True)
-    # def portal_my_mail(self, page=0, **kw):
-    #     #/my/mail?page=3
-    #     values = self._prepare_portal_layout_values()
-    #     email = request.env.user.email
-    #     mailing_lists = []
-    #     for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True)]):
-    #         mailing_lists.append({
-    #             'name': mailing_list.name,
-    #             'id': mailing_list.id,
-    #             'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0
-    #         })
-    #     mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].search_read([('email', '=', request.env.user.email)], ['id'])]
-    #     mails = request.env['mail.mail.statistics'].search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], offset=(page - 1) * 10, limit=10, order='sent DESC')
-    #     total = mails.search_count([])
-    #     pager = request.website.pager(
-    #         url='/my/mail/page',
-    #         total=total,
-    #         page=page,
-    #         step=10,
-    #     )
-
-  
-    #     values.update({
-    #         'mailing_lists': mailing_lists,
-    #         'mass_mailing_partners': mass_mailing_partners,
-    #         'mails': mails, 
-    #     })
-    #     return request.render("website_portal_sale_1028.portal_my_mail", values)
-
-
     @http.route(['/my/mail/subscribe'], type='json', auth='user')
-    def portal_my_mail_subscribe(self, subscribe=False, mailing_list_id=None):
+    def portal_my_mail_subscribe(self, subscribe=False, mailing_list_id=None, partner_id=None):
         """Subscribe / unsubscribe to a mailing list."""
-        try:
+        home_user = request.env.user
+        self.validate_user(home_user)
+        _logger.warn('%s %s' % (subscribe, mailing_list_id))
+        if partner_id:
+            self.check_admin(home_user, request.env.user)
+            same_company = request.env['res.partner'].search_count([
+                ('id', 'child_of', home_user.commercial_partner_id.id),
+                ('id', '=', partner_id)
+            ])
+            if not same_company:
+                raise AccessError('You are not allowed to administrate this user.')
+            email = request.env['res.partner'].sudo().browse(partner_id).email
+        else:
             email = request.env.user.email
+        try:
             mailing_list = request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True), ('id', '=', mailing_list_id)])
             mailing_contact = request.env['mail.mass_mailing.contact'].sudo().search([('email', '=', email), ('list_id', '=', mailing_list.id)])
             if subscribe and not mailing_contact:
@@ -251,9 +239,6 @@ class website_account(website_account):
         value.update(self.get_children_by_address_type(company))
         return request.render("website_portal_sale_1028.portal_my_salon", value)
 
-        values = self._prepare_portal_layout_values()
-        return request.render("website_portal_sale_1028.portal_my_salon", values)
-
         # value.update(self.get_children_by_address_type(company))
         # # pages = [{'name': 'delivery', 'string': 'Delivery Address', 'type': 'contact_form', 'fields': [{'name': 'street1', 'string': 'Street', 'readonly': False, 'placeholder': 'Street 123'}...]}...]
         # return request.render('website_sale_home.home_page', value)
@@ -261,9 +246,17 @@ class website_account(website_account):
     def validate_user(self, user):
         # TODO: This does nothing?
         if request.uid == request.env.ref('base.public_user').id:
-            return request.website.render('website.403')
+            raise AccessError('You are not allowed to administrate this user.')
         if not user:
-            return werkzeug.utils.redirect("/my/salon/%s" % request.uid)
+            raise AccessError('You are not allowed to administrate this user.')
+        # TODO: Find better group? New one maybe.
+        if user.has_group('base.user'):
+            return
+        same_company = request.env['res.partner'].search_count([('id', 'child_of', request.env.user.commercial_partner_id.id), ('id', '=', user.partner_id.id)])
+        if not same_company:
+            raise AccessError('You are not allowed to administrate this user.')
+            
+        
 
     def update_info(self, home_user, post):
         if not self.check_admin(home_user):
@@ -583,6 +576,7 @@ class website_account(website_account):
         # new contact, update contact
     @http.route(['/my/salon/<model("res.users"):home_user>/contact/new', '/my/salon/<model("res.users"):home_user>/contact/<model("res.partner"):partner>'], type='http', auth='user', website=True)
     def contact_page(self, home_user=None, partner=None, **post):
+        self.validate_user(home_user)
         validation = {}
         help_dic = self.get_help()
         company = home_user.partner_id.commercial_partner_id
@@ -595,6 +589,7 @@ class website_account(website_account):
         #~ _logger.warn(value)
         values = {}
         if request.httprequest.method == 'POST':
+            self.check_admin(home_user)
             # Values
             values = {f: post['contact_%s' % f] for f in self.contact_fields() if post.get('contact_%s' % f) and f not in ['attachment','image']}
             if post.get('image'):
@@ -655,8 +650,9 @@ class website_account(website_account):
             'company_form': False,
             'contact_form': True,
             'access_warning': '',
+            'mailing_lists': self.get_mailing_lists(partner.email),
         })
-        return request.render('website_portal_sale_1028.portal_my_salon', value)
+        return request.render('website_portal_sale_1028.contact_form', value)
 
     def details_form_validate(self, data):
         error, error_message = super(website_account, self).details_form_validate(data)

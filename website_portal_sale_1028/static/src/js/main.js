@@ -8,15 +8,15 @@
 $("#submit_btn_subscribers").click(function(e) {
     $('.subscribe_for_mail').each(function(){
         var self = $(this);
-        console.log(self);
         var subscribe = self.prop('checked');
         var mailing_list_id = self.data('mailing-list-id');
-        console.log('hej');
-
-        openerp.jsonRpc('/my/mail/subscribe', 'call', {
+        var partner_id = self.data('partner-id');
+        let values = {
             subscribe: subscribe,
-            mailing_list_id: mailing_list_id
-        }).done(function(data){
+            mailing_list_id: mailing_list_id,
+            partner_id: partner_id
+        }
+        openerp.jsonRpc('/my/mail/subscribe', 'call', values).done(function(data){
             if (data){
                 $(".sucess_message").removeClass("hidden");
             }             
@@ -24,7 +24,6 @@ $("#submit_btn_subscribers").click(function(e) {
                 $(".sucess_message").addClass("hidden");
         });
     });
-
 
 function loadHomeMessageBox() {
     $("div.home_tab_menu>div.list-group>a").click(function(e) {

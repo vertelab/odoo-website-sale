@@ -105,7 +105,7 @@ class website(models.Model):
         }
 
     @api.model
-    def website_sale_home_access_control(self, home_user):
+    def my_orders_access_control(self, home_user):
         def check_admin(home_user):
             if self.env.user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
                 return False
