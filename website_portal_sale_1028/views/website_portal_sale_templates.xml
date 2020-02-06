@@ -978,17 +978,6 @@
           <div class="col-md-6" />
           <div class="col-md-6 my_subscribers">
     
-        <div class="col-md-12 row">
-              <button id="submit_btn_subscribers" class="btn btn-primary btn-lg">Save</button>
-        </div>
-        <br />
-
-        <div class="col-md-4" />
-          <div class="col-md-12">
-            <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
-            <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
-            <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
-          </div>
             <div class="row">
 
               <h3 class="col-md-8">Mina prenumerationer</h3>
@@ -1009,9 +998,7 @@
                 </div>
               </t>
             </t>
-      
       </div>
-
       <div class="col-md-6">
         <div class="row">
             <h3 class="col-md-6">Mina anställda</h3>
@@ -1043,6 +1030,17 @@
               </t>
           </t>
             </t>
+            <div class="col-md-12">
+              <button id="submit_btn_subscribers" class="btn btn-primary btn-lg">Save</button>
+        </div>
+        <br />
+
+        <div class="col-md-4" />
+          <div class="col-md-12">
+            <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
+            <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+            <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+          </div>
       </div>
   </div>
       </t>

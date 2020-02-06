@@ -298,16 +298,14 @@ div.row.mail_lists_lines:nth-child(2n+1) {
 }
 
 #submit_btn_subscribers {
-    float: left;
+    float: right;
+    margin: 10px;
+    margin-top: 10px;
 }
 
 /*input[type=checkbox] {
     transform: scale(1.5);
 }*/
-
-#submit_btn_subscribers {
-    margin: 10px;
-}
 
 .order_table th{
     background-color: white !important;
