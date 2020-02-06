@@ -164,7 +164,10 @@ class website_account(website_account):
             page=page,
             step=10,
         )
-        employees = request.env['res.partner'].search([('id', 'child_of', home_user.commercial_partner_id.id), ('id', '!=', home_user.partner_id.id)])
+        employees_mailing_lists = {}
+        employees = request.env['res.partner'].search([('id', 'child_of', home_user.commercial_partner_id.id), ('type', '=', 'contact'), ('email', '!=', False), ('id', '!=', home_user.partner_id.id)])
+        for employee in employees:
+            employees_mailing_lists[employee.id] = self.get_mailing_lists(employee.email)
         mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=pager['offset'], order='sent DESC')
         values.update({
             'home_user': home_user,
@@ -174,7 +177,8 @@ class website_account(website_account):
             'mails': mails,
             'page_count': page_count, 
             'pager': pager,
-        })
+            'employees_mailing_lists': employees_mailing_lists,
+            })
 
         return request.render("website_portal_sale_1028.portal_my_mail", values)
 
