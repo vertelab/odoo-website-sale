@@ -977,7 +977,20 @@
           <div class="col-md-2" />
           <div class="col-md-6" />
           <div class="col-md-6 my_subscribers">
+    
+        <div class="col-md-12 row">
+              <button id="submit_btn_subscribers" class="btn btn-primary btn-lg">Save</button>
+        </div>
+        <br />
+
+        <div class="col-md-4" />
+          <div class="col-md-12">
+            <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
+            <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+            <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+          </div>
             <div class="row">
+
               <h3 class="col-md-8">Mina prenumerationer</h3>
               <h4 class="col-md-4">Ja, jag vill ha dessa prenumerationer</h4>
             </div>
@@ -991,24 +1004,15 @@
                     </li>
                   </div>
                   <div class="col-md-2">
-                    <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box" value="" t-att-data-value="mailing_list['id']" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
+                    <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box" t-att-data-value="mailing_list['id']" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
                   </div>
                 </div>
               </t>
             </t>
-
-        <div class="col-md-12">
-              <button id="submit_btn_subscribers" class="btn btn-primary btn-lg">Save</button>
-        </div>
-          <div class="col-md-4" />
-          <div class="col-md-12">
-            <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
-            <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
-            <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
-          </div>
+      
       </div>
 
-      <div class="col-md-6 my_subscribers">
+      <div class="col-md-6">
         <div class="row">
             <h3 class="col-md-6">Mina anställda</h3>
         </div>
@@ -1024,7 +1028,7 @@
             </div>
             <t t-if="mailing_lists">
                <t t-foreach="mailing_lists" t-as="mailing_list">
-                     <div class="row mail_lists_lines">
+                    <div class="row mail_lists_lines">
             
                   <div class="col-sm-10 col-xs-10">1
                     <li>
@@ -1032,23 +1036,23 @@
                     </li>
                 </div>
                   <div class="col-md-2">
-                    <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box" value="" t-att-data-value="mailing_list['id']" t-att-data-partner-id="employee.id" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
+                    <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box2" t-att-data-value="mailing_list['id']" t-att-data-partner-id="employee.id" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
                   </div>
               </div>
               </t>
               </t>
             </t>
         </t>
-            <div class="col-md-12">
+           <!--  <div class="col-md-12">
               <button id="submit_btn_subscribers" class="btn btn-primary btn-lg">Save</button>
             </div>
-
-          <div class="col-md-4" />
+ -->
+       <!--    <div class="col-md-4" />
           <div class="col-md-12">
             <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
             <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
             <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
-          </div>
+          </div> -->
       </div>
   </div>
       </t>

@@ -298,7 +298,7 @@ div.row.mail_lists_lines:nth-child(2n+1) {
 }
 
 #submit_btn_subscribers {
-    float: right;
+    float: left;
 }
 
 /*input[type=checkbox] {
@@ -325,9 +325,10 @@ div.row.mail_lists_lines:nth-child(2n+1) {
 
 
 .my_subscribers_borders {
-    border-top: 1px solid #d4d4d4;
+    border-top: 1px solid #f3f3f3;
 }
 
 .employee_row{
-    border-bottom: 1px solid #d4d4d4;
+    border-bottom: 1px solid #f3f3f3;
+    padding-top: 10px;
 }
