@@ -85,7 +85,6 @@ class website_account(website_account):
         )
         # content according to pager and archive selected
         orders = SaleOrder.sudo().search(domain, limit=self._items_per_page, offset=pager['offset'])
-
         values.update({
             'orders': orders,
             'page_name': 'order',
@@ -93,47 +92,73 @@ class website_account(website_account):
             'archive_groups': archive_groups,
             'default_url': '/my/orders',
             'order_filters': filters,
+            'active_menu': 'my_orders'
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
 
-    @http.route(['/my/media/imagearchive'], type='http', auth="user", website=True)
+    @http.route(['/my/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_imagearchive'
+        })
         return request.render("website_portal_sale_1028.portal_my_image_archive", values)
 
-    @http.route(['/my/media/news'], type='http', auth="user", website=True)
+    @http.route(['/my/news'], type='http', auth="user", website=True)
     def portal_my_news(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_news'
+        })
         return request.render("website_portal_sale_1028.portal_my_news", values)
 
-    @http.route(['/my/media/events'], type='http', auth="user", website=True)
+    @http.route(['/my/events'], type='http', auth="user", website=True)
     def portal_my_events(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_events'
+        })
         return request.render("website_portal_sale_1028.portal_my_events", values)
 
-    @http.route(['/my/media/other'], type='http', auth="user", website=True)
+    @http.route(['/my/other'], type='http', auth="user", website=True)
     def portal_my_other(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_other',
+            })
         return request.render("website_portal_sale_1028.portal_my_other", values)
 
-    @http.route(['/my/media/compendium'], type='http', auth="user", website=True)
+    @http.route(['/my/compendium'], type='http', auth="user", website=True)
     def portal_my_compendium(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_compendium',
+            })
         return request.render("website_portal_sale_1028.portal_my_compendium", values)
 
-    @http.route(['/my/media/pricelist'], type='http', auth="user", website=True)
+    @http.route(['/my/pricelist'], type='http', auth="user", website=True)
     def portal_my_pricelist(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_pricelist',
+            })
         return request.render("website_portal_sale_1028.portal_my_pricelist", values)
 
     @http.route(['/my/buyinfo'], type='http', auth="user", website=True)
     def portal_my_buy_info(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_buyinfo',
+            })
         return request.render("website_portal_sale_1028.portal_my_buy_info", values)
 
     @http.route(['/my/obsolete'], type='http', auth="user", website=True)
     def portal_my_obsolete(self, **kw):
         values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_obsolete',
+            })
+
         return request.render("website_portal_sale_1028.portal_my_obsolete", values)
 
     def get_mailing_lists(self, email):
@@ -171,6 +196,7 @@ class website_account(website_account):
         mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=pager['offset'], order='sent DESC')
         values.update({
             'home_user': home_user,
+            'is_admin': self.check_admin(home_user, request.env.user),
             'employees': employees,
             'mailing_lists': mailing_lists,
             'mass_mailing_partners': mass_mailing_partners,
@@ -178,6 +204,7 @@ class website_account(website_account):
             'page_count': page_count, 
             'pager': pager,
             'employees_mailing_lists': employees_mailing_lists,
+            'active_menu': 'my_mail',
             })
 
         return request.render("website_portal_sale_1028.portal_my_mail", values)
@@ -189,13 +216,16 @@ class website_account(website_account):
         self.validate_user(home_user)
         _logger.warn('%s %s' % (subscribe, mailing_list_id))
         if partner_id:
-            self.check_admin(home_user, request.env.user)
+            
             same_company = request.env['res.partner'].search_count([
                 ('id', 'child_of', home_user.commercial_partner_id.id),
                 ('id', '=', partner_id)
             ])
             if not same_company:
                 raise AccessError('You are not allowed to administrate this user.')
+            if partner_id != home_user.partner_id.id:
+                # Non-admin can only edit their own subscriptions
+                raise AccessError('You need to be admin to administrate this user.')
             email = request.env['res.partner'].sudo().browse(partner_id).email
         else:
             email = request.env.user.email
@@ -239,6 +269,7 @@ class website_account(website_account):
             'contact_form': False,
             'address_types_readonly': self.get_address_types_readonly(),
             'invoice_type_selection': [(invoice_type['id'], invoice_type['name']) for invoice_type in request.env['sale_journal.invoice.type'].sudo().search_read([], ['name'])],
+            'active_menu': 'my_salon',
         })
         value.update(self.get_children_by_address_type(company))
         return request.render("website_portal_sale_1028.portal_my_salon", value)
@@ -545,7 +576,7 @@ class website_account(website_account):
             except:
                 # This check failed. Let it go to super to perform other checks.
                 pass
-        return super(website_sale_home, self).check_document_access(report, ids)
+        return super(website_portal_sale_1028, self).check_document_access(report, ids)
 
     @http.route(['/my/orders/<model("res.users"):home_user>/print/<reportname>/<docids>',
                  '/my/orders/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
@@ -654,7 +685,7 @@ class website_account(website_account):
             'company_form': False,
             'contact_form': True,
             'access_warning': '',
-            'mailing_lists': self.get_mailing_lists(partner.email),
+            'mailing_lists': self.get_mailing_lists(partner),
         })
         return request.render('website_portal_sale_1028.contact_form', value)
 

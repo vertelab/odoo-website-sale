@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-29 09:28+0000\n"
-"PO-Revision-Date: 2020-01-29 09:28+0000\n"
+"POT-Creation-Date: 2020-02-10 07:19+0000\n"
+"PO-Revision-Date: 2020-02-10 07:19+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,17 +16,46 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:816
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:429
+#: code:addons/website_portal_sale_1028/controllers/main.py:712
 #, python-format
 msgid "%s wants to delete <a href=\"/web?debug=#id=%s&view_type=form&model=res.partner\">%s</a> because '%s'."
 msgstr "%s wants to delete <a href=\"/web?debug=#id=%s&view_type=form&model=res.partner\">%s</a> because '%s'."
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "&emsp;"
+msgstr "&emsp;"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_image_archive
 #: view:website:website_portal_sale_1028.portal_my_pricelist
 msgid "&nbsp;"
 msgstr "&nbsp;"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "&nbsp;Copy to cart"
+msgstr "&nbsp;Kopiera till varukorgen"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "&nbsp;Download invoice"
+msgstr "&nbsp;Ladda ner faktura"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "&nbsp;Download order"
+msgstr "&nbsp;Ladda ner order"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "&nbsp;Download picking"
+msgstr "&nbsp;Ladda ner plockning"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_my_buy_info
+msgid "A great way to catch your reader's attention is to tell a story. Everything you consider writing can be told as a story."
+msgstr "Ett fantastiskt sätt att fånga läsarens uppmärksamhet är att berätta en historia. Allt du överväger skriva kan berättas som en historia."
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
@@ -56,6 +85,11 @@ msgid "Amount Mismatch (%s)"
 msgstr "Amount Mismatch (%s)"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Article number"
+msgstr "Artikelnummer"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.contact_form
 msgid "Attachment"
 msgstr "Bilaga"
@@ -71,6 +105,16 @@ msgid "Back"
 msgstr "Tillbaka"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Back To My Account"
+msgstr "Åter till kontot"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_my_orders
+msgid "Beställare"
+msgstr "Beställare"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_1028.portal_layout
 #: view:website:website_portal_sale_1028.my_menu
 msgid "Bildarkiv"
@@ -82,33 +126,36 @@ msgid "Bildarkiv & videos"
 msgstr "Bildarkiv & videos"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_1028.portal_layout
+msgid "Buyinfo"
+msgstr "Köpinformation"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
 msgid "Cancel"
 msgstr "Avbryt"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:43
-#: code:addons/website_portal_sale_1028/controllers/main.py:66
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:49
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:72
 #: view:website:website_portal_sale_1028.portal_my_invoices
 #, python-format
 msgid "Cancelled"
 msgstr "Avslutad"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:852
-#: code:addons/website_portal_sale_1028/controllers/main.py:853
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:465
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:466
+#: code:addons/website_portal_sale_1028/controllers/main.py:748
+#: code:addons/website_portal_sale_1028/controllers/main.py:749
 #, python-format
 msgid "Cannot send mail to %s. Please check your mail server configuration."
 msgstr "Cannot send mail to %s. Please check your mail server configuration."
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:49
-#: code:addons/website_portal_sale_1028/controllers/main.py:72
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:55
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:78
 #, python-format
 msgid "Cart"
-msgstr "Cart"
+msgstr "Kundvagn"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
@@ -116,13 +163,13 @@ msgid "Cell"
 msgstr "Mobil"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:773
+#: code:addons/website_portal_sale_1028/controllers/main.py:669
 #, python-format
 msgid "Changing VAT number is not allowed once invoices have been issued for your account. Please contact us directly for this operation."
 msgstr "Changing VAT number is not allowed once invoices have been issued for your account. Please contact us directly for this operation."
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:776
+#: code:addons/website_portal_sale_1028/controllers/main.py:672
 #, python-format
 msgid "Changing your name is not allowed once invoices have been issued for your account. Please contact us directly for this operation."
 msgstr "Changing your name is not allowed once invoices have been issued for your account. Please contact us directly for this operation."
@@ -132,11 +179,6 @@ msgstr "Changing your name is not allowed once invoices have been issued for you
 #: view:website:website_portal_sale_1028.company_info_form
 msgid "City"
 msgstr "Stad"
-
-#. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.portal_my_salon
-msgid "Close message box"
-msgstr "Stäng meddelande rutan"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
@@ -155,20 +197,17 @@ msgstr "Bolagsnamn"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
-#: view:website:website_portal_sale_1028.orders_followup
 msgid "Contact"
 msgstr "Kontakt"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:817
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:430
+#: code:addons/website_portal_sale_1028/controllers/main.py:713
 #, python-format
 msgid "Contact %s inactivated"
 msgstr "Contact %s inactivated"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:846
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:459
+#: code:addons/website_portal_sale_1028/controllers/main.py:742
 #, python-format
 msgid "Contact '%s' has no user."
 msgstr "Contact '%s' has no user."
@@ -190,27 +229,27 @@ msgid "Customer Number"
 msgstr "Kundnummer"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Customer number"
+msgstr "Kundnummer"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.contact_form
 #: view:website:website_portal_sale_1028.portal_my_orders
 msgid "Date"
 msgstr "Datum"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "Date:"
-msgstr "Datum:"
-
-#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
 msgid "Default"
-msgstr "Default"
+msgstr "Standard"
 
 #. module: website_portal_sale_1028
 #. openerp-web
-#: code:addons/website_portal_sale_1028/static/src/js/main.js:139
+#: code:addons/website_portal_sale_1028/static/src/js/main.js:132
 #, python-format
 msgid "Delete "
-msgstr "Delete "
+msgstr "Radera"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
@@ -224,8 +263,14 @@ msgstr "Leverans"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
+#: view:website:website_portal_sale_1028.orders_followup
 msgid "Delivery Address"
 msgstr "Leveransadress"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Delivery method"
+msgstr "Leveransmetod"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_invoices
@@ -246,8 +291,8 @@ msgid "Event & behandlingar"
 msgstr "Event & behandlingar"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:45
-#: code:addons/website_portal_sale_1028/controllers/main.py:68
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:51
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:74
 #, python-format
 msgid "Exception"
 msgstr "Exception"
@@ -260,12 +305,12 @@ msgstr "Facebook"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.contact_form
 msgid "File to upload pdf/jpg/png"
-msgstr "Filen att ladda upp pdf/jpg/png"
+msgstr "Filformat pdf/jpg/png"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.contact_form
 msgid "Given and family name"
-msgstr "Ange ett efternamn"
+msgstr "Given and family name"
 
 #. module: website_portal_sale_1028
 #: help:payment.transaction,so_state:0
@@ -277,13 +322,22 @@ msgstr "Gives the status of the quotation or sales order.              \n"
 "The 'Waiting Schedule' status is set when the invoice is confirmed               but waiting for the scheduler to run on the order date."
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_my_buy_info
+msgid "Great stories are for everyone even when only written for just one person. If you try to write with a wide general audience in mind, your story will ring false and be bland. No one will be interested. Write for one person. If it’s genuine for the one, it’s genuine for the rest. test"
+msgstr "Great stories are for everyone even when only written for just one person. If you try to write with a wide general audience in mind, your story will ring false and be bland. No one will be interested. Write for one person. If it’s genuine for the one, it’s genuine for the rest. test"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_my_buy_info
+msgid "Great stories have personality. Consider telling a great story that provides personality. Writing a story with personality for potential clients will asist with making a relationship connection. This shows up in small quirks like word choices or phrases. Write from your point of view, not from someone else's experience."
+msgstr "Great stories have personality. Consider telling a great story that provides personality. Writing a story with personality for potential clients will asist with making a relationship connection. This shows up in small quirks like word choices or phrases. Write from your point of view, not from someone else's experience."
+
+#. module: website_portal_sale_1028
 #: model:res.groups,name:website_portal_sale_1028.group_home_admin
 msgid "Home Admin"
 msgstr "Home Admin"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:470
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:204
+#: code:addons/website_portal_sale_1028/controllers/main.py:337
 #, python-format
 msgid "If you have more information or a diploma, you can attach it here. You can add more than one, but you have to save each one separate."
 msgstr "If you have more information or a diploma, you can attach it here. You can add more than one, but you have to save each one separate."
@@ -294,14 +348,19 @@ msgid "Image"
 msgstr "Bild"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_my_orders
+msgid "Inga ordrar är gjorda ännu"
+msgstr "Inga ordrar är gjorda ännu"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
 msgid "Instagram"
 msgstr "Instagram"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:93
-#: code:addons/website_portal_sale_1028/controllers/main.py:95
-#: code:addons/website_portal_sale_1028/controllers/main.py:97
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:99
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:101
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:103
 #: model:ir.model,name:website_portal_sale_1028.model_account_invoice
 #: view:website:website_portal_sale_1028.children_info
 #, python-format
@@ -315,6 +374,7 @@ msgstr "Invoice #"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
+#: view:website:website_portal_sale_1028.orders_followup
 msgid "Invoice Address"
 msgstr "Fakturaadress"
 
@@ -324,14 +384,9 @@ msgid "Invoice Date"
 msgstr "Fakturadatum"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "Invoices"
-msgstr "Invoices"
-
-#. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "Invoicing Address"
-msgstr "Invoicing Address"
+#: view:website:website_portal_sale_1028.portal_my_mail
+msgid "Ja, jag vill att användaren ska ha dessa prenumerationer"
+msgstr "Ja, jag vill att användaren ska ha dessa prenumerationer"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_mail
@@ -356,7 +411,6 @@ msgid "KÖPINFORMATION"
 msgstr "KÖPINFORMATION"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_1028.portal_layout
 #: view:website:website_portal_sale_1028.my_menu
 msgid "Köpinformation"
 msgstr "Köpinformation"
@@ -396,8 +450,14 @@ msgid "Min salong"
 msgstr "Min salong"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_my_mail
+msgid "Mina anställda"
+msgstr "Mina anställda"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_1028.portal_layout
 #: view:website:website_portal_sale_1028.my_menu
+#: view:website:website_portal_sale_1028.portal_my_orders
 msgid "Mina beställningar"
 msgstr "Mina beställningar"
 
@@ -418,25 +478,16 @@ msgid "My Employees"
 msgstr "Mina anställda"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "My Orders"
-msgstr "My Orders"
-
-#. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "My Quotes"
-msgstr "My Quotes"
-
-#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
 #: view:website:website_portal_sale_1028.contact_form
+#: view:website:website_portal_sale_1028.orders_followup
 msgid "Name"
 msgstr "Namn"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
 msgid "New Contact"
-msgstr "Ny kontakt"
+msgstr "Ny Kontakt"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_1028.portal_layout
@@ -451,18 +502,19 @@ msgstr "Något gick fel, försök igen."
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.orders_followup
-msgid "Order"
-msgstr "Order"
+msgid "Order date"
+msgstr "Orderdatum"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Order information"
+msgstr "Orderinformation"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
 #: view:website:website_portal_sale_1028.portal_my_orders
 msgid "Order number"
 msgstr "Ordernummer"
-
-#. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.portal_my_orders
-msgid "Orderer"
-msgstr "Beställare"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
@@ -480,20 +532,19 @@ msgid "PRISLISTOR"
 msgstr "PRISLISTOR"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:58
-#: code:addons/website_portal_sale_1028/controllers/main.py:84
-#: code:addons/website_portal_sale_1028/controllers/main.py:89
-#: code:addons/website_portal_sale_1028/controllers/main.py:97
-#: view:website:website_portal_sale_1028.orders_followup
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:64
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:90
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:95
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:103
 #: view:website:website_portal_sale_1028.portal_my_invoices
 #, python-format
 msgid "Paid"
 msgstr "Betalad"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:56
-#: code:addons/website_portal_sale_1028/controllers/main.py:82
-#: code:addons/website_portal_sale_1028/controllers/main.py:95
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:62
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:88
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:101
 #, python-format
 msgid "Partially paid"
 msgstr "Partially paid"
@@ -501,11 +552,10 @@ msgstr "Partially paid"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
 msgid "Password Reset"
-msgstr "Lösenordsåterställning"
+msgstr "Återställ lösenord"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:848
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:461
+#: code:addons/website_portal_sale_1028/controllers/main.py:744
 #, python-format
 msgid "Password reset has been sent to user %s by email"
 msgstr "Password reset has been sent to user %s by email"
@@ -521,18 +571,27 @@ msgid "Payment Transaction"
 msgstr "Betalningstransaktion"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Payment method"
+msgstr "Betalningsmetod"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
 #: view:website:website_portal_sale_1028.company_info_form
 #: view:website:website_portal_sale_1028.contact_form
 msgid "Phone"
-msgstr "telefon"
+msgstr "Telefon"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:466
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:200
+#: code:addons/website_portal_sale_1028/controllers/main.py:333
 #, python-format
 msgid "Please provide a picture of yourself. This makes it more personal."
 msgstr "Please provide a picture of yourself. This makes it more personal."
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Price"
+msgstr "Pris"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_1028.portal_layout
@@ -542,13 +601,13 @@ msgstr "Prislistor"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.orders_followup
-msgid "Product"
-msgstr "Produkt"
+msgid "Products"
+msgstr "Produkter"
 
 #. module: website_portal_sale_1028
 #: field:mail.mass_mailing.list,website_published:0
 msgid "Published"
-msgstr "Published"
+msgstr "Publicerad"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.orders_followup
@@ -556,16 +615,11 @@ msgid "Quantity"
 msgstr "Antal"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "Quotation"
-msgstr "Quotation"
-
-#. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:51
-#: code:addons/website_portal_sale_1028/controllers/main.py:74
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:57
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:80
 #, python-format
 msgid "Ready for picking"
-msgstr "Ready for picking"
+msgstr "REdo att plockas"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
@@ -578,8 +632,8 @@ msgid "Reason for deleting this contact"
 msgstr "Anledning till att kontakten tas bort"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:47
-#: code:addons/website_portal_sale_1028/controllers/main.py:70
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:53
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:76
 #, python-format
 msgid "Received"
 msgstr "Received"
@@ -592,7 +646,7 @@ msgstr "Kundorder"
 #. module: website_portal_sale_1028
 #: field:payment.transaction,so_state:0
 msgid "Sale Order State"
-msgstr "Sale Order State"
+msgstr "Säljorder status"
 
 #. module: website_portal_sale_1028
 #: model:ir.model,name:website_portal_sale_1028.model_sale_order_line
@@ -607,27 +661,22 @@ msgid "Save"
 msgstr "Spara"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.portal_my_salon
-msgid "Send"
-msgstr "Skicka"
+#: view:website:website_portal_sale_1028.portal_my_orders
+msgid "Search..."
+msgstr "Sök..."
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.portal_my_salon
-msgid "Send a message"
-msgstr "Skicka ett meddelande"
-
-#. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:54
-#: code:addons/website_portal_sale_1028/controllers/main.py:80
-#: code:addons/website_portal_sale_1028/controllers/main.py:93
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:60
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:86
+#: code:addons/website_portal_sale_1028/controllers/website_sale.py:99
 #, python-format
 msgid "Shipped and invoiced"
 msgstr "Shipped and invoiced"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.orders_followup
-msgid "Shipping Address"
-msgstr "Leveransadress"
+msgid "Shipping:"
+msgstr "Leverans:"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
@@ -647,32 +696,36 @@ msgstr "Skapad datum"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
 msgid "Street"
-msgstr "Gata"
+msgstr "Adress"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
 msgid "Street 1"
-msgstr "Street 1"
+msgstr "adress 1"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
 #: view:website:website_portal_sale_1028.company_info_form
 msgid "Street row 2"
-msgstr "Gata rad 2"
+msgstr "Adress rad 2"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_my_buy_info
+msgid "Subrubrik textstycke"
+msgstr "Subrubrik textstycke"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.orders_followup
-msgid "Subtotal"
-msgstr "Subtotal"
+msgid "Sum:"
+msgstr "Summa:"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.orders_followup
-msgid "Taxes:"
+msgid "Tax:"
 msgstr "Moms:"
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:664
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:350
+#: code:addons/website_portal_sale_1028/controllers/main.py:617
 #, python-format
 msgid "The email %s alreay exists. Choose another one or contact the administrator."
 msgstr "The email %s alreay exists. Choose another one or contact the administrator."
@@ -686,26 +739,19 @@ msgstr "The sale order was not confirmed despite response from the acquirer (%s)
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_invoices
 msgid "There are currently no invoices for your account."
-msgstr "There are currently no invoices for your account."
+msgstr "Det finns för närvanarnde inga ordrar."
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.portal_my_orders
-msgid "There are currently no orders for your account."
-msgstr "There are currently no orders for your account."
-
-#. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:454
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:188
+#: code:addons/website_portal_sale_1028/controllers/main.py:321
 #, python-format
 msgid "This e-mail will be used to send tracking information of orders."
-msgstr "This e-mail will be used to send tracking information of orders."
+msgstr "Den här e-postadressen kommer att användas för att skicka spårningsinformation av ordrar."
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:661
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:347
+#: code:addons/website_portal_sale_1028/controllers/main.py:614
 #, python-format
 msgid "This email alreay exists. Choose another one or contact the administrator."
-msgstr "This email alreay exists. Choose another one or contact the administrator."
+msgstr "DEn här e-postadressen finns redan. Välj en anna eller kontakta administratör"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
@@ -713,6 +759,7 @@ msgid "Title"
 msgstr "Titel"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
 #: view:website:website_portal_sale_1028.portal_my_orders
 msgid "Total"
 msgstr "Totalt"
@@ -720,12 +767,17 @@ msgstr "Totalt"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.orders_followup
 msgid "Total:"
-msgstr "Total:"
+msgstr "Totalt:"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_orders
 msgid "Tracking"
 msgstr "Spårning"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.orders_followup
+msgid "Tracking number"
+msgstr "Spårningsnummer"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
@@ -743,19 +795,9 @@ msgid "UTGÅENDE PRODUKTER"
 msgstr "UTGÅENDE PRODUKTER"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "Unit Price"
-msgstr "Enhetspris"
-
-#. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "Untaxed Amount:"
-msgstr "Untaxed Amount:"
-
-#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
 msgid "Use Company Address"
-msgstr "Använd företagets adress"
+msgstr "Använd företagsadress "
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_1028.portal_layout
@@ -769,11 +811,6 @@ msgid "Våra mailutskick"
 msgstr "Våra mailutskick"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.orders_followup
-msgid "Waiting"
-msgstr "Waiting"
-
-#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_invoices
 msgid "Waiting for Payment"
 msgstr "Waiting for Payment"
@@ -781,23 +818,16 @@ msgstr "Waiting for Payment"
 #. module: website_portal_sale_1028
 #: model:ir.model,name:website_portal_sale_1028.model_website
 msgid "Website"
-msgstr "Website"
+msgstr "Webbplats"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.portal_my_salon
-msgid "Write your message here..."
-msgstr "Skriv ditt meddelande här"
-
-#. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:64
-#: code:addons/website_portal_sale_1028/models/website.py:47
+#: code:addons/website_portal_sale_1028/models/website.py:124
 #, python-format
 msgid "You have not access right to edit or create contact for your company. Please contact us."
-msgstr "You have not access right to edit or create contact for your company. Please contact us."
+msgstr "Du har inte rättighet att redigera eller skapa kontakt för ditt företag. Vänligen kontakta oss."
 
 #. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:62
-#: code:addons/website_portal_sale_1028/models/website.py:45
+#: code:addons/website_portal_sale_1028/models/website.py:122
 #, python-format
 msgid "You have not access right to edit or create contact for your company. Please contact your administrator: %s. or "
 msgstr "You have not access right to edit or create contact for your company. Please contact your administrator: %s. or "
@@ -808,16 +838,10 @@ msgid "Your Invoices and Payments"
 msgstr "Your Invoices and Payments"
 
 #. module: website_portal_sale_1028
-#: view:website:website_portal_sale_1028.portal_my_orders
-msgid "Your Orders"
-msgstr "Your Orders"
-
-#. module: website_portal_sale_1028
-#: code:addons/website_portal_sale_1028/controllers/main.py:469
-#: code:addons/website_portal_sale_1028/controllers/website_sale.py:203
+#: code:addons/website_portal_sale_1028/controllers/main.py:336
 #, python-format
 msgid "Your email will also be used as your login name."
-msgstr "Your email will also be used as your login name."
+msgstr "Din e-postadress kommer också användas som inloggningnamn"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form

@@ -119,9 +119,9 @@ class website(models.Model):
                     if self.env.ref('website_sale_home.group_home_admin') in self.env['res.users'].search([('partner_id', '=', contact.id)]).groups_id:
                         company_admin.append(contact.name)
             if len(company_admin) > 0:
-                return _('You have not access right to edit or create contact for your company. Please contact your administrator: %s.' % ' or '.join(a for a in company_admin))
+                return ('You have not access right to edit or create contact for your company. Please contact your administrator: %s.' % ' or '.join(a for a in company_admin))
             else:
-                return _('You have not access right to edit or create contact for your company. Please contact us.')
+                return ('You have not access right to edit or create contact for your company. Please contact us.')
         return ''
 
 class MassMailingList(models.Model):

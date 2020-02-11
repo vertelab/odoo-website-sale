@@ -330,3 +330,32 @@ div.row.mail_lists_lines:nth-child(2n+1) {
     border-bottom: 1px solid #f3f3f3;
     padding-top: 10px;
 }
+
+.left_menu {
+    min-height: 700px;
+}
+
+.left_menu li.active {
+    background-color:black;
+}
+
+.active a{
+    color:white;
+}
+
+.left_menu li.not_active{
+    background-color: white;
+}
+
+.left_menu p{
+    font-family: futura-pt-medium, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 15px 10px 10px 20px;
+    color:black;
+    border: 1px solid #ddd;
+    border-bottom-color: rgb(221, 221, 221);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom: none;
+}

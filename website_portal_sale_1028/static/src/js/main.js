@@ -25,6 +25,16 @@ $("#submit_btn_subscribers").click(function(e) {
         });
     });
 
+
+$(function(){
+    $('.left_menu li').click(function() {
+
+        $(this).siblings('li').removeClass('active');
+        $(this).addClass('active');
+    
+    });
+});
+
 function loadHomeMessageBox() {
     $("div.home_tab_menu>div.list-group>a").click(function(e) {
         e.preventDefault();
