@@ -607,7 +607,7 @@
                     <a t-att-href="'/my/salon/%s/contact/%s' %(home_user.id, contact.id)">
                       <span t-field="contact.name" />
                       <t t-if="request.env['res.users'].search([('partner_id', '=', contact.id)])">
-                        <t t-if="request.env.ref('website_portal_sale_1028.group_home_admin') in request.env['res.users'].search([('partner_id', '=', contact.id)]).groups_id">
+                        <t t-if="request.env.ref('website_portal_sale_1028.group_portal_admin') in request.env['res.users'].search([('partner_id', '=', contact.id)]).groups_id">
                           <i class="fa fa-user" title="Administrator" />
                         </t>
                       </t>
@@ -863,8 +863,8 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Bildarkiv &amp; videos</h1>
-            <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')" />
-            <t t-foreach="website.sale_home_document_get(home_user, document_search_domain or None)" t-as="doc">
+            <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_sale_home.document_directory')" />
+            <t t-foreach="website.portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
               <t t-if='doc.type == "url"'>
                 <div style='font-size: 24px; font-weight: 500;'>
                   <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
@@ -898,12 +898,12 @@
               <t t-if='doc.type == "binary"'>
                 <!--                     <div style='font-size: 24px; font-weight: 500;'> -->
                 <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, ('/' + doc.name + '.pdf') if doc.mimetype == 'application/pdf' else '')"> -->
-                <!--<a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, website.sale_home_document_type_get(doc))">-->
+                <a t-att-href="'/my/pricelist/%s/document/%s%s' % (home_user.id, doc.id, website.portal_sale_document_type_get(doc))">
                 <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, '')"> -->
                 <i class="fa fa-download" />
                 &amp;nbsp;
                 <t t-esc="doc.name" />
-                <!--   </a> -->
+                 </a>
                 <!-- </div> -->
               </t>
             </t>
@@ -1543,6 +1543,41 @@
        <a href="/my/home" role="menuitem">My Account</a>
        </xpath>
        </template> 
+
   -->
+<!-- 
+      <record model="ir.ui.view" id="view_document_directory_form">
+      <field name="name">document.directory</field>
+      <field name="model">document.directory</field>
+      <field name="inherit_id" ref="document.view_document_directory_form" />
+      <field name="arch" type="xml">
+        <form string="Contents" position="inside">
+          <group>
+            <field name="domain" />
+          </group>
+        </form>
+      </field>
+    </record>
+    <record id="view_knowledge_configuration" model="ir.ui.view">
+      <field name="name">Configure Knowledge Inherited website_portal_sale_1028</field>
+      <field name="model">knowledge.config.settings</field>
+      <field name="inherit_id" ref="knowledge.view_knowledge_configuration" />
+      <field name="arch" type="xml">
+        <group position="inside">
+          <field name="document_directory" />
+        </group>
+      </field>
+    </record>
+
+    <record id="view_attachment_form" model="ir.ui.view">
+      <field name="name">ir.attachment.form.home</field>
+      <field name="model">ir.attachment</field>
+      <field name="inherit_id" ref="base.view_attachment_form" />
+      <field name="arch" type="xml">
+        <field name="datas_fname" position="after">
+          <field name="mimetype" attrs="{'invisible':[('type','!=','binary')]}"/>
+        </field>
+      </field>
+    </record> -->
 </data>
 </openerp>

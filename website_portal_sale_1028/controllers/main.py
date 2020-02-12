@@ -198,7 +198,7 @@ class website_account(website_account):
         mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=pager['offset'], order='sent DESC')
         values.update({
             'home_user': home_user,
-            'is_admin': self.check_admin(home_user, request.env.user),
+            'is_admin': self.check_admin_portal(home_user, request.env.user),
             'employees': employees,
             'mailing_lists': mailing_lists,
             'mass_mailing_partners': mass_mailing_partners,
@@ -296,7 +296,7 @@ class website_account(website_account):
         
 
     def update_info(self, home_user, post):
-        if not self.check_admin(home_user):
+        if not self.check_admin_portal(home_user):
             return request.website.render('website.403', {})
         validation = {}
         children = {}
@@ -626,7 +626,7 @@ class website_account(website_account):
         #~ _logger.warn(value)
         values = {}
         if request.httprequest.method == 'POST':
-            self.check_admin(home_user)
+            self.check_admin_portal(home_user)
             # Values
             values = {f: post['contact_%s' % f] for f in self.contact_fields() if post.get('contact_%s' % f) and f not in ['attachment','image']}
             if post.get('image'):
@@ -706,11 +706,11 @@ class website_account(website_account):
         return error, error_message
 
 
-    def check_admin(self, home_user, user=False):
+    def check_admin_portal(self, home_user, user=False):
         user = user or request.env.user
         if user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
             return False
-        if request.env.ref('website_portal_sale_1028.group_home_admin') not in user.groups_id:
+        if request.env.ref('website_portal_sale_1028.group_portal_admin') not in user.groups_id:
             return False
         return True
 
@@ -738,7 +738,7 @@ class website_account(website_account):
         user = request.env['res.users'].sudo().search([('partner_id', '=', partner.id)])
         if user:
             # Not allowed to delete admin user
-            if self.check_admin(home_user, user):
+            if self.check_admin_portal(home_user, user):
                 return request.website.render('website.403', {})
             else:
                 user.active = False
@@ -755,7 +755,7 @@ class website_account(website_account):
         #~ partner = request.env['res.partner'].browse(post.get('partner_id'))
         reason = post.get('reason', '')
         company = home_user.partner_id.commercial_partner_id
-        if not self.check_admin(home_user):
+        if not self.check_admin_portal(home_user):
             return request.website.render('website.403', {})
         if partner and partner in company.child_ids:
             try:
@@ -792,8 +792,8 @@ class website_account(website_account):
 
     # delete contact attachment
     @http.route(['/my/salon/<model("res.users"):home_user>/attachment/<int:attachment>/delete'], type='http', auth='user', website=True)
-    def contact_attachment_delete(self, home_user=None, attachment=0, **post):
-        if not check_admin(home_user):
+    def contact_attachment_delete_portal(self, home_user=None, attachment=0, **post):
+        if not self.check_admin_portal(home_user):
             return request.website.render('website.403', {})
         company = home_user.partner_id.commercial_partner_id
         if attachment > 0:

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="res_partner_kanban_view" model="ir.ui.view">
+            <field name="name">res.partner.kanban.inherited.website_portal_sale_1028</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view" />
+            <field name="arch" type="xml">
+                <field name="has_image" position="after">
+                    <field name="has_account" />
+                    <field name="is_admin" />
+                </field>
+                <h4 class="oe_partner_heading" position="inside">
+                    <i class="fa fa-user" attrs="{'invisible': [('has_account', '=', False)]}" title="Has Account" style="margin-left: 5px;" />
+                    <i class="fa fa-wrench" attrs="{'invisible': [('is_admin', '=', False)]}" title="Portal Home Admin" />
+                </h4>
+            </field>
+        </record>
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form.inherited.website_portal_sale_1028</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="parent_id" position="before">
+                    <div>
+                        <!--
+                             <label for="has_account">Has Account</label>
+                             <field name="has_account" />
+                        -->
+                        <strong>Has account [xx] Is home admin [xx]</strong>
+                        <!--
+                             <label for="is_home_admin">Home Admin</label>
+                             <field name="is_home_admin" />
+                        -->
+                    </div>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

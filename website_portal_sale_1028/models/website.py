@@ -3,9 +3,53 @@
 
 from openerp import api, exceptions, models, fields
 
+class knowledge_config_settings(models.TransientModel):
+    _inherit = 'knowledge.config.settings'
+
+    document_directory = fields.Char(string='Document Directory Domain', help='Specify the document directory domain')
+
+    @api.one
+    def set_params(self):
+        self.env['ir.config_parameter'].set_param('website_sale_home_document.document_directory', self.document_directory)
+
+    @api.model
+    def get_params(self, fields):
+        return {'document_directory': self.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')}
+
 
 class website(models.Model):
     _inherit="website"
+
+    @api.model
+    def portal_sale_document_get(self, user, domain):
+        if not domain:
+            domain = "[('parent_id.name', '=', 'public')]"
+        return self.env['ir.attachment'].sudo().search(eval(domain))
+
+    @api.model
+    def portal_sale_document_type_get(self, doc):
+        suffix = ''
+        mime_to_type = {'application/pdf': 'pdf',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+                        'application/vnd.ms-excel': 'xls',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+                        'application/vnd.ms-office': 'xlm',
+                        }
+
+        suffix = mime_to_type.get(doc.mimetype)
+        if not suffix: 
+            suffix = mime_to_type.get(doc.file_type)
+        if not suffix:
+            if 'PDF' in doc.name:
+                suffix = 'pdf'
+            elif 'Excel' in doc.name:
+                suffix = 'xls'
+        _logger.warn(suffix)
+        return (('/%s' % doc.id) + '.' + suffix) if suffix else ''
+
+    @api.model
+    def portal_sale_directory_get(self, user):
+        return self.env['document.directory'].sudo().search([('name', '=', 'public')])
 
     @api.model
     def my_order_get_all_filters(self, user):
@@ -85,10 +129,10 @@ class website(models.Model):
             return ('', 'in progress...', '')
 
     def get_portal_documents(self, doc_type):
-        #cat_public = self.env.ref('website_portal_Sale_1028.catalog_pricelists')
+        #cat_public = self.env.ref('website_portal_sale_1028.catalog_pricelists')
         catalog = None
         if doc_type == 'pricelists':
-            catalog = self.env.ref('website_portal_Sale_1028.catalog_pricelists')
+            catalog = self.env.ref('website_portal_sale_1028.catalog_pricelists')
         
         if catalog:
             return self.env['ir.attachment'].sudo().search([('parent_id', '=', catalog.id)])
@@ -106,17 +150,17 @@ class website(models.Model):
 
     @api.model
     def my_orders_access_control(self, home_user):
-        def check_admin(home_user):
+        def check_admin_portal(home_user):
             if self.env.user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
                 return False
-            if self.env.ref('website_sale_home.group_home_admin') not in self.env.user.groups_id:
+            if self.env.ref('website_portal_sale_1028.group_portal_admin') not in self.env.user.groups_id:
                 return False
             return True
-        if not check_admin(home_user):
+        if not check_admin_portal(home_user):
             company_admin = []
             for contact in home_user.partner_id.commercial_partner_id.child_ids.filtered(lambda c: c.type == 'contact'):
                 if self.env['res.users'].search([('partner_id', '=', contact.id)]):
-                    if self.env.ref('website_sale_home.group_home_admin') in self.env['res.users'].search([('partner_id', '=', contact.id)]).groups_id:
+                    if self.env.ref('website_portal_sale_1028.group_portal_admin') in self.env['res.users'].search([('partner_id', '=', contact.id)]).groups_id:
                         company_admin.append(contact.name)
             if len(company_admin) > 0:
                 return ('You have not access right to edit or create contact for your company. Please contact your administrator: %s.' % ' or '.join(a for a in company_admin))
