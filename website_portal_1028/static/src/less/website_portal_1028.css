@@ -184,7 +184,6 @@ border-bottom: 2px solid black;
 .menu.menu-my-pages .dropdown-submenu a::after{
     margin-top: 7px;
 }
-
 }
 .left_menu li{
     padding: 8px 15px;
@@ -262,7 +261,6 @@ ul.mega_menu_children {
 .mail_lists_lines .col-sm-2{
     padding: 0;
     max-width: 80px;
-
 }
 
 .mail_lists_lines .col-sm-2{
@@ -288,7 +286,7 @@ div.row.mail_lists_lines:nth-child(2n+1) {
 }
 
 .my_subscribers {
-    border-top: 1px solid gray;
+    border-top: 1px solid #f3f3f3;
     margin-top: 40px;
     margin-bottom: 40px;
 }
@@ -321,13 +319,12 @@ div.row.mail_lists_lines:nth-child(2n+1) {
     background-color: #f9f9f9;
 }
 
-
 .my_subscribers_borders {
     border-top: 1px solid #f3f3f3;
 }
 
 .employee_row{
-    border-bottom: 1px solid #f3f3f3;
+    border-top: 1px solid #f3f3f3;
     padding-top: 10px;
 }
 
@@ -339,7 +336,7 @@ div.row.mail_lists_lines:nth-child(2n+1) {
     background-color:black;
 }
 
-.active a{
+.left_menu .active a{
     color:white;
 }
 

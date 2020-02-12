@@ -189,8 +189,10 @@ class website_account(website_account):
             page=page,
             step=10,
         )
+
         employees_mailing_lists = {}
-        employees = request.env['res.partner'].search([('id', 'child_of', home_user.commercial_partner_id.id), ('type', '=', 'contact'), ('email', '!=', False), ('id', '!=', home_user.partner_id.id)])
+        employees = request.env['res.partner'].search([('parent_id', '=', home_user.commercial_partner_id.id), ('type', '=', 'contact'), ('email', '!=', False), ('id', '!=', home_user.partner_id.id)])
+
         for employee in employees:
             employees_mailing_lists[employee.id] = self.get_mailing_lists(employee.email)
         mails = request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=mpp, offset=pager['offset'], order='sent DESC')
@@ -685,7 +687,7 @@ class website_account(website_account):
             'company_form': False,
             'contact_form': True,
             'access_warning': '',
-            'mailing_lists': self.get_mailing_lists(partner),
+            'mailing_lists': self.get_mailing_lists(partner.email),
         })
         return request.render('website_portal_sale_1028.contact_form', value)
 
@@ -708,7 +710,7 @@ class website_account(website_account):
         user = user or request.env.user
         if user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
             return False
-        if request.env.ref('website_sale_home.group_home_admin') not in user.groups_id:
+        if request.env.ref('website_portal_sale_1028.group_home_admin') not in user.groups_id:
             return False
         return True
 

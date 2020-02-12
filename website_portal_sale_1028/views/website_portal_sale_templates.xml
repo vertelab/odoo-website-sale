@@ -78,7 +78,7 @@
         <li t-att-class="'active' if active_menu == 'my_salon' else ''">
           <a href="/my/salon">Min salong</a>
         </li>
-        <li  t-att-class="'active' if active_menu == 'my_orders' else ''">
+        <li t-att-class="'active' if active_menu == 'my_orders' else ''">
           <a href="/my/orders">Mina beställningar</a>
         </li>
         <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
@@ -90,9 +90,7 @@
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
           <a href="/my/mail">Mail &amp; Prenumeranter</a>
         </li>
-         <p>
-          Media
-        </p>
+        <p>Media</p>
         <ul class="mega_menu_children">
           <li t-att-class="'active' if active_menu == 'my_imagearchive' else ''">
             <a href="/my/imagearchive">Bildarkiv</a>
@@ -120,7 +118,7 @@
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <form id="info_form" t-att-action="'/home/%s/contact/%s' %(home_user.id if home_user else user_id.id, contact.id if contact else 'new')" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
+            <form id="info_form" t-att-action="'/my/salon/%s/contact/%s' %(home_user.id if home_user else user_id.id, contact.id if contact else 'new')" method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="return formValidate();">
               <!--
                    <input name="token" t-att-value="home_user.partner_id.commercial_partner_id.token" type="hidden"/>
               -->
@@ -244,7 +242,7 @@
               </div>
               <div class="container">
                 <div class="pull-right mb16">
-                   <a href="/my/salon" role="button" class="btn btn-default btn-lg">Back</a> 
+                  <a href="/my/salon" role="button" class="btn btn-default btn-lg">Back</a>
                   <button t-if="my_orders_access_control == ''" type="submit" class="btn btn-primary btn-lg">Save</button>
                 </div>
               </div>
@@ -918,7 +916,7 @@
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1>Nyheter</h1>
+            <h1 class="page-header">Nyheter</h1>
             <t t-foreach="website.get_portal_documents(news)" t-as="doc">
               <t t-if='doc.type == "binary"'>
                 <i class="fa fa-download" />
@@ -996,7 +994,7 @@
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <h1 class="page-header">UTGÅENDE PRODUKTER</h1>
+          <h1 class="page-header col-md-8">UTGÅENDE PRODUKTER</h1>
           <div class="col-md-9">
             <div class="col-md-12">
               <t t-foreach="request.env['product.product'].search([('state', '=', 'end'), ('sale_ok', '=', True)])" t-as="variant">
@@ -1045,75 +1043,76 @@
           </div>
           <div class="col-md-2" />
           <div class="col-md-6" />
-          <div class="col-md-6 my_subscribers">
-    
-            <div class="row">
-              <h3 class="col-md-8">Mina prenumerationer</h3>
-              <h4 class="col-md-4">Ja, jag vill ha dessa prenumerationer</h4>
-            </div>
-
-            <t t-if="mailing_lists">
-              <t t-foreach="mailing_lists" t-as="mailing_list">
-                <div class="row mail_lists_lines">
-                  <div class="col-sm-10 col-xs-10">
-                    <li>
-                      <t t-esc="mailing_list['name']" />
-                    </li>
-                  </div>
-                  <div class="col-md-2">
-                    <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box" t-att-data-value="mailing_list['id']" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
-                  </div>
-                </div>
-              </t>
-            </t>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-            <h3 class="col-md-6">Mina anställda</h3>
-        </div>
-            <t t-if="employees">
-            <t t-foreach="employees" t-as="employee">
-                <div class="row employee_row">
-                     <div class="col-md-6">
-                <h2><t t-esc="employee.name" /></h2>
-            </div>
-             <div class="col-md-6">
-                <h4>Ja, jag vill att användaren ska ha dessa prenumerationer</h4>
-            </div>
-            </div>
-            <t t-if="employees_mailing_lists">
-               <t t-foreach="employees_mailing_lists[employee.id]" t-as="mailing_list2">
-                    <div class="row mail_lists_lines">
-            
-                  <div class="col-sm-10 col-xs-10">1
-                    <li>
-                      <t t-esc="mailing_list2['name']" />
-                    </li>
-                </div>
-                  <div class="col-md-2">
-                    <input type="checkbox" t-att-data-mailing-list-id="mailing_list2['id']" class="subscribe_for_mail" name="subscription box2" t-att-data-value="mailing_list2['id']" t-att-data-partner-id="employee.id" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list2['subscribed']}" />
-                  </div>
+          <div class="col-md-offset-3">
+            <div class="col-md-9 my_subscribers">
+              <div class="row">
+                <h3 class="col-md-8">Mina prenumerationer</h3>
+                <h4 class="col-md-4">Ja, jag vill ha dessa prenumerationer</h4>
               </div>
+              <t t-if="mailing_lists">
+                <t t-foreach="mailing_lists" t-as="mailing_list">
+                  <div class="row mail_lists_lines">
+                    <div class="col-sm-10 col-xs-10">
+                      <li>
+                        <t t-esc="mailing_list['name']" />
+                      </li>
+                    </div>
+                    <div class="col-md-2">
+                      <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box" t-att-data-value="mailing_list['id']" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
+                    </div>
+                  </div>
+                </t>
               </t>
+            </div>
+            <div class="col-md-9">
+              <t t-if="is_admin">
+                <div class="row">
+                  <h3 class="col-md-6">Mina anställda</h3>
+                </div>
+                <t t-if="employees">
+                  <t t-foreach="employees" t-as="employee">
+                    <div class="row employee_row">
+                      <div class="col-md-7">
+                        <h2>
+                          <t t-esc="employee.name" />
+                        </h2>
+                      </div>
+                      <div class="col-md-5">
+                        <h4>Ja, jag vill att användaren ska ha dessa prenumerationer</h4>
+                      </div>
+                    </div>
+                    <t t-if="employees_mailing_lists">
+                      <t t-foreach="employees_mailing_lists[employee.id]" t-as="mailing_list2">
+                        <div class="row mail_lists_lines">
+                          <div class="col-sm-10 col-xs-10">
+                            <li>
+                              <t t-esc="mailing_list2['name']" />
+                            </li>
+                          </div>
+                          <div class="col-md-2">
+                            <input type="checkbox" t-att-data-mailing-list-id="mailing_list2['id']" class="subscribe_for_mail" name="subscription box2" t-att-data-value="mailing_list2['id']" t-att-data-partner-id="employee.id" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list2['subscribed']}" />
+                          </div>
+                        </div>
+                      </t>
+                    </t>
+                  </t>
+                </t>
               </t>
-          </t>
-            </t>
-            <div class="col-md-12">
-              <button id="submit_btn_subscribers" class="btn btn-primary btn-lg">Save</button>
-        </div>
-        <br />
-
-        <div class="col-md-4" />
-          <div class="col-md-12">
-            <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
-            <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
-            <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+              <div class="col-md-12">
+                <button id="submit_btn_subscribers" class="btn btn-primary btn-lg">Save</button>
+              </div>
+              <br />
+              <div class="col-md-4" />
+              <div class="col-md-12">
+                <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
+                <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+                <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+              </div>
+            </div>
           </div>
-      </div>
-  </div>
+        </div>
       </t>
     </template>
- 
     <template id="portal_my_orders" name="My Sales Orders">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -1544,4 +1543,3 @@
        </template> 
   -->
 </data>
-</openerp>
