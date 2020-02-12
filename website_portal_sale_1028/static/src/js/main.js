@@ -17,12 +17,19 @@ $("#submit_btn_subscribers").click(function(e) {
             partner_id: partner_id
         }
         openerp.jsonRpc('/my/mail/subscribe', 'call', values).done(function(data){
+            
             if (data){
                 $(".sucess_message").removeClass("hidden");
             }             
+        })
+
+        .fail(function(data){
+            $(".alert-danger").removeClass("hidden");
         });
-                $(".sucess_message").addClass("hidden");
+            $(".sucess_message").addClass("hidden");
+            $(".alert-danger").addClass("hidden");
         });
+
     });
 
 

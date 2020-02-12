@@ -216,7 +216,6 @@ class website_account(website_account):
         """Subscribe / unsubscribe to a mailing list."""
         home_user = request.env.user
         self.validate_user(home_user)
-        _logger.warn('%s %s' % (subscribe, mailing_list_id))
         if partner_id:
             
             same_company = request.env['res.partner'].search_count([
@@ -225,19 +224,22 @@ class website_account(website_account):
             ])
             if not same_company:
                 raise AccessError('You are not allowed to administrate this user.')
-            if partner_id != home_user.partner_id.id:
+            if partner_id != home_user.partner_id.id and not self.check_admin_portal(home_user):
                 # Non-admin can only edit their own subscriptions
                 raise AccessError('You need to be admin to administrate this user.')
-            email = request.env['res.partner'].sudo().browse(partner_id).email
+            partner = request.env['res.partner'].sudo().browse(partner_id)
+            email = partner.email
+            name = partner.name
         else:
             email = request.env.user.email
+            name = request.env.user.name
         try:
             mailing_list = request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True), ('id', '=', mailing_list_id)])
             mailing_contact = request.env['mail.mass_mailing.contact'].sudo().search([('email', '=', email), ('list_id', '=', mailing_list.id)])
             if subscribe and not mailing_contact:
                 request.env['mail.mass_mailing.contact'].sudo().create({
-                    'email': request.env.user.email,
-                    'name': request.env.user.name,
+                    'email': email,
+                    'name': name,
                     'list_id': mailing_list.id,
                     })
             elif subscribe and mailing_contact:
@@ -322,7 +324,6 @@ class website_account(website_account):
                         'email': post.get('delivery_email'),
                         'type': 'delivery',
                     }
-                    
                     request.env['res.partner'].sudo().create(delivery_params)
                     
             elif len(address_types['delivery']) == 1:
@@ -687,7 +688,7 @@ class website_account(website_account):
             'company_form': False,
             'contact_form': True,
             'access_warning': '',
-            'mailing_lists': self.get_mailing_lists(partner.email),
+            'mailing_lists': partner and self.get_mailing_lists(partner.email) or [],
         })
         return request.render('website_portal_sale_1028.contact_form', value)
 
