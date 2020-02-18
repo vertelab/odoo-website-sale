@@ -66,7 +66,7 @@ class website_account(website_account):
         partner = request.env.user.partner_id
         filters = request.website.my_order_get_all_filters(home_user)
         search = post.get('order_search')
-        domain = request.website.sale_home_order_search_domain(home_user, search, post)
+        domain = request.website.my_order_search_domain(home_user, search, post)
 
         SaleOrder = request.env['sale.order']
 
@@ -95,6 +95,15 @@ class website_account(website_account):
             'active_menu': 'my_orders'
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
+
+    @http.route(['/my/reclaim'], type='http', auth="user", website=True)
+    def portal_my_reclaim (self, **kw):
+        values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_reclaim',
+            })
+        return request.render("website_portal_sale_1028.portal_my_reclaim", values)
+
 
     @http.route(['/my/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
@@ -141,6 +150,7 @@ class website_account(website_account):
         values = self._prepare_portal_layout_values()
         values.update({
             'active_menu': 'my_pricelist',
+            # 'pricelist': sale.report_saleorder
             })
         return request.render("website_portal_sale_1028.portal_my_pricelist", values)
 
@@ -295,8 +305,6 @@ class website_account(website_account):
         if not same_company:
             raise AccessError('You are not allowed to administrate this user.')
             
-        
-
     def update_info(self, home_user, post):
         if not self.check_admin_portal(home_user):
             return request.website.render('website.403', {})
@@ -493,8 +501,8 @@ class website_account(website_account):
         self.update_info(home_user, post)
         return werkzeug.utils.redirect("/my/salon")
 
-    def create_contact_user(self, values):
-        template = request.env.ref('website_portal_sale_1028.contact_template').sudo()
+    def create_contact_user_portal(self, values):
+        template = request.env.ref('website_portal_sale_1028.contact_template2').sudo()
         user = template.with_context(no_reset_password=True).copy({
             'name': values.get('name'),
             'login': values.get('email'),
@@ -508,6 +516,7 @@ class website_account(website_account):
             'parent_id': values.get('parent_id'),
         })
         return user
+
 
     @http.route(['/my/orders/<int:order_id>'], type='http', auth="user", website=True)
     def orders_followup(self, home_user=None, order_id=None, tab='orders', **post):

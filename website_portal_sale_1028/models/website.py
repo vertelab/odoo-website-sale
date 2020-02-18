@@ -138,6 +138,16 @@ class website(models.Model):
             return self.env['ir.attachment'].sudo().search([('parent_id', '=', catalog.id)])
         return []
 
+    def get_portal_documents_news(self, doc_type):
+        #cat_public = self.env.ref('website_portal_sale_1028.catalog_pricelists')
+        catalog = None
+        if doc_type == 'news':
+            catalog = self.env.ref('website_portal_sale_1028.catalog_news')
+        
+        if catalog:
+            return self.env['ir.attachment'].sudo().search([('parent_id', '=', catalog.id)])
+        return []
+
     @api.model
     def my_orders_get_data(self, home_user, post):
         return {

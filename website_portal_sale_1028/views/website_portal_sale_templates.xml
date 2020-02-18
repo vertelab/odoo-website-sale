@@ -31,6 +31,11 @@
                 <a href="/my/obsolete">Utgående produkter</a>
               </li>
             </div>
+              <div class="col-md-2 col-sm-6 col-xs-4">
+              <li>
+                <a href="/my/reclaim">Reklamationer</a>
+              </li>
+            </div>
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/buyinfo">Buyinfo</a>
@@ -86,6 +91,9 @@
         </li>
         <li t-att-class="'active' if active_menu == 'my_buyinfo' else ''">
           <a href="/my/buyinfo">Köpinformation</a>
+        </li>
+          <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
+          <a href="/my/reclaim">Mina reklamationer</a>
         </li>
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
           <a href="/my/mail">Mail &amp; Prenumeranter</a>
@@ -888,36 +896,61 @@
         </div>
       </t>
     </template>
-    <template id="portal_my_pricelist" name="My pricelist">
+
+     <template id="portal_my_pricelist" name="My pricelist">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">PRISLISTOR</h1>
-            <t t-foreach="website.get_portal_documents(pricelists)" t-as="doc">
-              <t t-if='doc.type == "binary"'>
-                <!--                     <div style='font-size: 24px; font-weight: 500;'> -->
-                <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, ('/' + doc.name + '.pdf') if doc.mimetype == 'application/pdf' else '')"> -->
+           <!--  <t t-foreach="website.get_portal_documents(pricelists)" t-as="doc"> -->
+              <!-- <t t-if='doc.type == "binary"'> -->
+<!-- 
                 <a t-att-href="'/my/pricelist/%s/document/%s%s' % (home_user.id, doc.id, website.portal_sale_document_type_get(doc))">
-                <!-- <a t-att-href="'/home/%s/document/%s%s' % (home_user.id, doc.id, '')"> -->
+
                 <i class="fa fa-download" />
                 &amp;nbsp;
                 <t t-esc="doc.name" />
-                 </a>
-                <!-- </div> -->
-              </t>
-            </t>
+                 </a> -->
+
+             <!--  </t> -->
+            <!--  <t t-call="sale.report_saleorder_document" /> -->
+
+
+
+            <!-- </t> -->
           </div>
         </div>
       </t>
     </template>
+
+
+<!--      <template id="portal_my_pricelist" name="My pricelist">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <h1 class="page-header">PRISLISTOR</h1>
+
+             <t t-foreach="request.env['sale.report_saleorder']" t-as="report">
+              <t t-esc="report.name" />
+
+
+             </t>
+            
+
+          </div>
+        </div>
+      </t>
+    </template> -->
+
     <template id="portal_my_news" name="My news">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Nyheter</h1>
-            <t t-foreach="website.get_portal_documents(news)" t-as="doc">
+            <t t-foreach="website.get_portal_documents_news(news)" t-as="doc">
               <t t-if='doc.type == "binary"'>
                 <i class="fa fa-download" />
                 &amp;nbsp;
@@ -952,6 +985,23 @@
           <div class="col-md-9">
             <h1 class="page-header">Compendium</h1>
             <t t-foreach="website.get_portal_documents(compendium)" t-as="doc">
+              <t t-if='doc.type == "binary"'>
+                <i class="fa fa-download" />
+                &amp;nbsp;
+                <t t-esc="doc.name" />
+              </t>
+            </t>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="portal_my_reclaim" name="My reclaim">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <h1 class="page-header">Mina reklamationer</h1>
+            <t t-foreach="website.get_portal_documents(reclaim)" t-as="doc">
               <t t-if='doc.type == "binary"'>
                 <i class="fa fa-download" />
                 &amp;nbsp;
@@ -1356,7 +1406,7 @@
                           <t t-esc="picking.name" />
                         </a>
                       </t>
-                      <a t-att-href="'/my/orders/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_sale_home_copy_order" target="_blank">
+                      <a t-att-href="'/my/orders/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_portal_sale_copy_order" target="_blank">
                         <i class="fa fa-plus" />
                         &amp;nbsp;Copy to cart
                       </a>

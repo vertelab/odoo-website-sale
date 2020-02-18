@@ -2,7 +2,7 @@
 <openerp>
     <data noupdate="1">
         
-        <record id="contact_template" model="res.users">
+        <record id="contact_template2" model="res.users">
                 <field name="name">Contact Template</field>
                 <field name="login">contacttemplate</field>
                 <field name="active" eval="False"/>
