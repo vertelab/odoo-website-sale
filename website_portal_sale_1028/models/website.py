@@ -10,11 +10,11 @@ class knowledge_config_settings(models.TransientModel):
 
     @api.one
     def set_params(self):
-        self.env['ir.config_parameter'].set_param('website_sale_home_document.document_directory', self.document_directory)
+        self.env['ir.config_parameter'].set_param('website_portal_sale_1028.document_directory', self.document_directory)
 
     @api.model
     def get_params(self, fields):
-        return {'document_directory': self.env['ir.config_parameter'].get_param('website_sale_home_document.document_directory')}
+        return {'document_directory': self.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')}
 
 
 class website(models.Model):
@@ -131,22 +131,29 @@ class website(models.Model):
     def get_portal_documents(self, doc_type):
         #cat_public = self.env.ref('website_portal_sale_1028.catalog_pricelists')
         catalog = None
-        if doc_type == 'pricelists':
-            catalog = self.env.ref('website_portal_sale_1028.catalog_pricelists')
-        
-        if catalog:
-            return self.env['ir.attachment'].sudo().search([('parent_id', '=', catalog.id)])
-        return []
-
-    def get_portal_documents_news(self, doc_type):
-        #cat_public = self.env.ref('website_portal_sale_1028.catalog_pricelists')
-        catalog = None
+        if doc_type == 'event':
+            catalog = self.env.ref('website_portal_sale_1028.catalog_event')
         if doc_type == 'news':
             catalog = self.env.ref('website_portal_sale_1028.catalog_news')
+        if doc_type == 'compendium':
+            catalog = self.env.ref('website_portal_sale_1028.catalog_compendium')
+        if doc_type == 'other':
+            catalog = self.env.ref('website_portal_sale_1028.catalog_other')
         
         if catalog:
             return self.env['ir.attachment'].sudo().search([('parent_id', '=', catalog.id)])
-        return []
+        # return []
+
+
+    # def get_portal_documents_news(self, doc_type):
+    #     #cat_public = self.env.ref('website_portal_sale_1028.catalog_pricelists')
+    #     catalog_news = None
+    #     if doc_type == 'news':
+    #         catalog_news = self.env.ref('website_portal_sale_1028.catalog_news')
+        
+    #     if catalog_news:
+    #         return self.env['ir.attachment'].sudo().search([('parent_id', '=', catalog_news.id)])
+    #     return []
 
     @api.model
     def my_orders_get_data(self, home_user, post):

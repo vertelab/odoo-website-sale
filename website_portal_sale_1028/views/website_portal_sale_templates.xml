@@ -871,7 +871,7 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Bildarkiv &amp; videos</h1>
-            <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_sale_home.document_directory')" />
+            <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
             <t t-foreach="website.portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
               <t t-if='doc.type == "url"'>
                 <div style='font-size: 24px; font-weight: 500;'>
@@ -896,66 +896,31 @@
         </div>
       </t>
     </template>
-
      <template id="portal_my_pricelist" name="My pricelist">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">PRISLISTOR</h1>
-           <!--  <t t-foreach="website.get_portal_documents(pricelists)" t-as="doc"> -->
-              <!-- <t t-if='doc.type == "binary"'> -->
-<!-- 
-                <a t-att-href="'/my/pricelist/%s/document/%s%s' % (home_user.id, doc.id, website.portal_sale_document_type_get(doc))">
-
-                <i class="fa fa-download" />
-                &amp;nbsp;
-                <t t-esc="doc.name" />
-                 </a> -->
-
-             <!--  </t> -->
-            <!--  <t t-call="sale.report_saleorder_document" /> -->
-
-
-
-            <!-- </t> -->
+            <li>
+              <i class="fa fa-download" />
+              <a href="/my/pricelist/pdf">Prislista</a>
+            </li>
           </div>
         </div>
       </t>
     </template>
-
-
-<!--      <template id="portal_my_pricelist" name="My pricelist">
-      <t t-call="website_portal_1028.portal_layout">
-        <div class="container">
-          <t t-call="website_portal_sale_1028.my_menu" />
-          <div class="col-md-9">
-            <h1 class="page-header">PRISLISTOR</h1>
-
-             <t t-foreach="request.env['sale.report_saleorder']" t-as="report">
-              <t t-esc="report.name" />
-
-
-             </t>
-            
-
-          </div>
-        </div>
-      </t>
-    </template> -->
-
     <template id="portal_my_news" name="My news">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Nyheter</h1>
-            <t t-foreach="website.get_portal_documents_news(news)" t-as="doc">
-              <t t-if='doc.type == "binary"'>
+
+            <t t-foreach="website.get_portal_documents('news')" t-as="news">
                 <i class="fa fa-download" />
                 &amp;nbsp;
-                <t t-esc="doc.name" />
-              </t>
+                <t t-esc="news.name" />
             </t>
           </div>
         </div>
@@ -967,12 +932,12 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Event</h1>
-            <t t-foreach="website.get_portal_documents(events)" t-as="doc">
-              <t t-if='doc.type == "binary"'>
+            <t t-foreach="website.get_portal_documents('event')" t-as="events">
+       
                 <i class="fa fa-download" />
                 &amp;nbsp;
-                <t t-esc="doc.name" />
-              </t>
+                <t t-esc="events.name" />
+
             </t>
           </div>
         </div>
@@ -984,12 +949,10 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Compendium</h1>
-            <t t-foreach="website.get_portal_documents(compendium)" t-as="doc">
-              <t t-if='doc.type == "binary"'>
+            <t t-foreach="website.get_portal_documents('compendium')" t-as="compendium">
                 <i class="fa fa-download" />
                 &amp;nbsp;
-                <t t-esc="doc.name" />
-              </t>
+               <t t-esc="compendium.name" />
             </t>
           </div>
         </div>
@@ -1001,13 +964,11 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Mina reklamationer</h1>
-            <t t-foreach="website.get_portal_documents(reclaim)" t-as="doc">
-              <t t-if='doc.type == "binary"'>
-                <i class="fa fa-download" />
-                &amp;nbsp;
-                <t t-esc="doc.name" />
-              </t>
-            </t>
+
+        <!--     <t t-foreach="request.env['crm.claim'].search([('name', '=', 'name')])" t-as="reclaim">
+              <t t-esc="reclaim.display_name" />
+            </t> -->
+            
           </div>
         </div>
       </t>
@@ -1018,12 +979,12 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Others</h1>
-            <t t-foreach="website.get_portal_documents(other)" t-as="doc">
-              <t t-if='doc.type == "binary"'>
+            <t t-foreach="website.get_portal_documents('other')" t-as="other">
+
                 <i class="fa fa-download" />
                 &amp;nbsp;
-                <t t-esc="doc.name" />
-              </t>
+                <t t-esc="other.name" />
+
             </t>
           </div>
         </div>
@@ -1301,7 +1262,7 @@
                 <t t-foreach="invoices" t-as="invoice">
                   <tr>
                     <td class= "cell_overflow">
-  <a t-att-href="'/my/invoices/pdf/'+str(invoice.id)" t-att-title="invoice.number">
+                      <a t-att-href="'/my/invoices/pdf/'+str(invoice.id)" t-att-title="invoice.number">
                       <t t-esc="invoice.number" />
                     </a>
                   </td>

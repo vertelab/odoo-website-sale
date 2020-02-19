@@ -12,6 +12,7 @@ Add your sales document in the frontend portal. Your customers will be able to c
     'depends': [
         'website_portal_1028',
         'website_payment',
+        'product_pricelist_dermanord'
     ],
     'data': [
         'views/website_portal_sale_templates.xml',
@@ -20,7 +21,7 @@ Add your sales document in the frontend portal. Your customers will be able to c
         #'views/res_partner_view.xml',
         'security/ir.model.access.csv',
         'data/portal_data.xml',
-        'security/security_data.xml'
+        'security/security_data.xml',
     ],
     'installable': True,
 }

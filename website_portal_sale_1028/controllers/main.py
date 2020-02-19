@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from openerp import http, _
+from openerp import http, _, fields
 from openerp.exceptions import AccessError
 from openerp.http import request, Controller
 
 from openerp.addons.website_portal_1028.controllers.main import website_account
 from openerp.addons.delivery_unifaun_base import delivery
+from openerp.addons.web.controllers.main import content_disposition
 
 from openerp import api, exceptions, models
 import werkzeug
@@ -145,13 +146,35 @@ class website_account(website_account):
             })
         return request.render("website_portal_sale_1028.portal_my_compendium", values)
 
+    @http.route(['/my/pricelist/pdf'], type='http', auth="user", website=True)
+    def portal_my_pricelist_print(self, **kw):
+        home_user = request.env.user
+        self.validate_user(home_user)
+        report = request.env['product.pricelist.dermanord'].sudo()
+        report = report.create({
+            'date': fields.Date.today(), 
+            'pricelist_title_one': _('Your price'),
+            'fiscal_position_id_one': request.env.user.commercial_partner_id.property_account_position.sudo().id,
+            'pricelist_id_one': request.env.user.commercial_partner_id.property_product_pricelist.sudo().id,
+            'pricelist_title_two': _('Selling price'),
+            })
+        action = report.print_report()
+        pdf = report.env['report'].sudo().with_context(report_lang=request.env.context.get('lang'), translatable=True).get_pdf(report.env['product.product'].browse(), action['report_name'], data=action['data'])
+        # product_pricelist_dermanord.report_pricelist None {'lang': u'sv_SE', 'tz': u'Europe/Stockholm', 'uid': 1, u'active_model': u'product.pricelist.dermanord', u'translatable': True, u'report_lang': u'sv_SE', u'params': {u'action': 4209}, u'search_disable_custom_filters': True, u'active_ids': [120], u'active_id': 120}
+        filename = _("Pricelist Maria Åkerberg")
+        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)), ('Content-Disposition', content_disposition('%s.pdf' % filename))]
+        return request.make_response(pdf, headers=pdfhttpheaders)
+        
     @http.route(['/my/pricelist'], type='http', auth="user", website=True)
     def portal_my_pricelist(self, **kw):
+        home_user = request.env.user
+        self.validate_user(home_user)
         values = self._prepare_portal_layout_values()
         values.update({
             'active_menu': 'my_pricelist',
-            # 'pricelist': sale.report_saleorder
+
             })
+
         return request.render("website_portal_sale_1028.portal_my_pricelist", values)
 
     @http.route(['/my/buyinfo'], type='http', auth="user", website=True)

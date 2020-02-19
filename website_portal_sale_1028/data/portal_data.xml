@@ -5,8 +5,23 @@
             <field name="name">Public</field>
             <field name="type">directory</field>
         </record>
-        <record id="catalog_pricelists" model="document.directory">
-            <field name="name">Prislistor</field>
+        <record id="catalog_news" model="document.directory">
+            <field name="name">Nyheter och erbjudanden</field>
+            <field name="parent_id" ref="catalog_public"/>
+            <field name="type">directory</field>
+        </record>
+         <record id="catalog_event" model="document.directory">
+            <field name="name">Event &amp; behandlingar</field>
+            <field name="parent_id" ref="catalog_public"/>
+            <field name="type">directory</field>
+        </record>
+        <record id="catalog_compendium" model="document.directory">
+            <field name="name">Kompendium</field>
+            <field name="parent_id" ref="catalog_public"/>
+            <field name="type">directory</field>
+        </record>
+        <record id="catalog_other" model="document.directory">
+            <field name="name">Övriga</field>
             <field name="parent_id" ref="catalog_public"/>
             <field name="type">directory</field>
         </record>
