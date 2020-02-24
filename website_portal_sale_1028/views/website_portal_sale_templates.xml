@@ -918,9 +918,12 @@
             <h1 class="page-header">Nyheter</h1>
 
             <t t-foreach="website.get_portal_documents('news')" t-as="news">
+              <a t-att-href="'%s' %(news.url)" t-att-target="'_blank' if news.open_new_window else ''">
                 <i class="fa fa-download" />
                 &amp;nbsp;
+            
                 <t t-esc="news.name" />
+              </a>
             </t>
           </div>
         </div>
@@ -933,11 +936,11 @@
           <div class="col-md-9">
             <h1 class="page-header">Event</h1>
             <t t-foreach="website.get_portal_documents('event')" t-as="events">
-       
+           <a t-att-href="'%s' %(events.url)" t-att-target="'_blank' if events.open_new_window else ''">
                 <i class="fa fa-download" />
                 &amp;nbsp;
                 <t t-esc="events.name" />
-
+              </a>
             </t>
           </div>
         </div>
@@ -950,9 +953,11 @@
           <div class="col-md-9">
             <h1 class="page-header">Compendium</h1>
             <t t-foreach="website.get_portal_documents('compendium')" t-as="compendium">
+              <a t-att-href="'%s' %(compendium.url)" t-att-target="'_blank' if compendium.open_new_window else ''">
                 <i class="fa fa-download" />
                 &amp;nbsp;
                <t t-esc="compendium.name" />
+             </a>
             </t>
           </div>
         </div>
@@ -980,11 +985,11 @@
           <div class="col-md-9">
             <h1 class="page-header">Others</h1>
             <t t-foreach="website.get_portal_documents('other')" t-as="other">
-
+             <a t-att-href="'%s' %(other.url)">
                 <i class="fa fa-download" />
                 &amp;nbsp;
                 <t t-esc="other.name" />
-
+              </a>
             </t>
           </div>
         </div>

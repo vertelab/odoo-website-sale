@@ -3,8 +3,8 @@
     <data noupdate="1">
         
         <record id="contact_template2" model="res.users">
-                <field name="name">Contact Template</field>
-                <field name="login">contacttemplate</field>
+                <field name="name">Contact Template2</field>
+                <field name="login">contacttemplate2</field>
                 <field name="active" eval="False"/>
                 <!-- Avoid auto-including this user in any default group, just like a typical portal member -->
                 <field name="groups_id" eval="[(6, 0,  [ref('base.group_portal')])]"/>

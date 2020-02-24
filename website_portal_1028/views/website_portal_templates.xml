@@ -443,7 +443,7 @@
         </li>
       </xpath>
     </template>
-    <!--         <template id="website_theme_aktuellt2" inherit_id="website.layout" name="Website Theme aktuellt2" priority="100">
+    <!-- <template id="website_theme_aktuellt2" inherit_id="website.layout" name="Website Theme aktuellt2" priority="100">
          <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
          <a href="/my/home">Aktuellt</a>
          </xpath>

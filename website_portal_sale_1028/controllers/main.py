@@ -685,7 +685,7 @@ class website_account(website_account):
                 if not partner:
                     # Create new partner and user.
                     try:
-                        user = self.create_contact_user(values)
+                        user = self.create_contact_user_portal(values)
                         partner = user.partner_id
                     except Exception as e:
                         err = sys.exc_info()
