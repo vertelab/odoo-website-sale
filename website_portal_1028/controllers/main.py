@@ -17,14 +17,24 @@ class website_account(http.Controller):
     _items_per_page = 20
 
 
-    def get_campaign_products(self, reseller=True, limit=8):
+    def get_campaign_products(self, salon=True, limit=8):
+        res = [
+            {
+                'product': 'En produkt',
+                'price': '99 kr',
+                'price_origin': '199 kr',
+                'period': '1 sept - 31 okt',
+            }
+        ]
+        if salon:
+            res[0]['product'] = 'En salongsprodukt'
+        return res
+        # request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', True), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
 
-        request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', True), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
-
-        ctch = request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', reseller), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
-        campaign_products = request.env['product.product'].search([('id', 'in', (ctch.mapped('variant_id') | ctch.mapped('product_id').mapped('product_variant_ids')).mapped('id'))], limit=limit)
-        for campaign_product in campaign_products:
-            helper = ctch.filtered(lambda h: h.variant_id == campaign_product) or ctch.filtered(lambda h: campaign_product in h.product_id.product_variant_ids)
+        # ctch = request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', reseller), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
+        # campaign_products = request.env['product.product'].search([('id', 'in', (ctch.mapped('variant_id') | ctch.mapped('product_id').mapped('product_variant_ids')).mapped('id'))], limit=limit)
+        # for campaign_product in campaign_products:
+        #     helper = ctch.filtered(lambda h: h.variant_id == campaign_product) or ctch.filtered(lambda h: campaign_product in h.product_id.product_variant_ids)
 
 
 
