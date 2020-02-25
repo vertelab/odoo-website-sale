@@ -18,16 +18,17 @@ class website_account(http.Controller):
 
 
     def get_campaign_products(self, salon=True, limit=8):
-        res = [
-            {
-                'product': 'En produkt',
-                'price': '99 kr',
-                'price_origin': '199 kr',
-                'period': '1 sept - 31 okt',
-            }
-        ]
+        name = 'Produkt %s'
         if salon:
-            res[0]['product'] = 'En salongsprodukt'
+            name = 'Salongsprodukt %s'
+        res = []
+        for i in range(limit):
+            res.append({
+                'product': name % i,
+                'price': '%s99 kr' % i,
+                'price_origin': '%s99 kr' % (i+1),
+                'period': '1 sept - 31 okt',
+            })
         return res
         # request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', True), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
 
@@ -76,6 +77,8 @@ class website_account(http.Controller):
     @http.route(['/my', '/my/home'], type='http', auth="user", website=True)
     def account(self, **kw):
         values = self._prepare_portal_layout_values()
+        values['offers_salon'] = self.get_campaign_products(salon=True, limit=8)
+        values['offers_consumer'] = self.get_campaign_products(salon=False, limit=8)
         return request.render("website_portal_1028.portal_my_home", values)
 
     @http.route(['/my/account'], type='http', auth='user', website=True)
