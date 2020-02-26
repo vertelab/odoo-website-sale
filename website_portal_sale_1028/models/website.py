@@ -132,7 +132,7 @@ class website(models.Model):
         #cat_public = self.env.ref('website_portal_sale_1028.catalog_pricelists')
         catalog = None
         if doc_type == 'event':
-            catalog = self.env.ref('website_portal_sale_1028.catalog_event')
+            catalog = self.env.ref('website_portal_sale_1028.catalog_event')  
         if doc_type == 'news':
             catalog = self.env.ref('website_portal_sale_1028.catalog_news')
         if doc_type == 'compendium':

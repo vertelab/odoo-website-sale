@@ -26,5 +26,9 @@
             <field name="type">directory</field>
         </record>
 
+        <record id="fiscal_position_tax_free" model="account.fiscal.position">
+            <field name="name">Momsfritt</field>
+        </record>
+
     </data>
 </openerp>

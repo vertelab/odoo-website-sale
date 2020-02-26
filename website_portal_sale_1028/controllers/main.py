@@ -150,13 +150,29 @@ class website_account(website_account):
     def portal_my_pricelist_print(self, **kw):
         home_user = request.env.user
         self.validate_user(home_user)
+        partner = request.env.user.commercial_partner_id
         report = request.env['product.pricelist.dermanord'].sudo()
+        pricelist = request.env.user.commercial_partner_id.property_product_pricelist.sudo()
+        pricelist_version = None
+        today = fields.Date.today()
+        for version in pricelist.version_id:
+            if not version.active:
+                continue
+            if version.date_start and version.date_start > today:
+                continue
+            if version.date_end and version.date_end < today:
+                continue
+            pricelist_version = version
+            break
         report = report.create({
-            'date': fields.Date.today(), 
-            'pricelist_title_one': _('Your price'),
-            'fiscal_position_id_one': request.env.user.commercial_partner_id.property_account_position.sudo().id,
-            'pricelist_id_one': request.env.user.commercial_partner_id.property_product_pricelist.sudo().id,
-            'pricelist_title_two': _('Selling price'),
+            'date': pricelist_version.date_start and version.date_start or today,
+            'pricelist_title_one': _('Your price (excl. tax)'),
+            'pricelist_title_two': pricelist.rec_pricelist_id and _('Rec. price (incl. tax)') or None,
+            'fiscal_position_id_one': (partner.is_company and request.env.ref('website_portal_sale_1028.fiscal_position_tax_free') or partner.property_account_position.sudo()).id,
+            'fiscal_position_id_two': pricelist.rec_pricelist_id and partner.property_account_position.sudo().id or None,
+            'pricelist_id_one': pricelist.id,
+            'pricelist_id_two': pricelist.rec_pricelist_id and pricelist.rec_pricelist_id.id or None,
+
             })
         action = report.print_report()
         pdf = report.env['report'].sudo().with_context(report_lang=request.env.context.get('lang'), translatable=True).get_pdf(report.env['product.product'].browse(), action['report_name'], data=action['data'])

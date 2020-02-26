@@ -31,11 +31,11 @@
                 <a href="/my/obsolete">Utgående produkter</a>
               </li>
             </div>
-              <div class="col-md-2 col-sm-6 col-xs-4">
+<!--               <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/reclaim">Reklamationer</a>
               </li>
-            </div>
+            </div> -->
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/buyinfo">Buyinfo</a>
@@ -92,9 +92,9 @@
         <li t-att-class="'active' if active_menu == 'my_buyinfo' else ''">
           <a href="/my/buyinfo">Köpinformation</a>
         </li>
-          <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
+     <!--      <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
           <a href="/my/reclaim">Mina reklamationer</a>
-        </li>
+        </li> -->
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
           <a href="/my/mail">Mail &amp; Prenumeranter</a>
         </li>
@@ -865,6 +865,7 @@
         </div>
       </div>
     </template>
+
     <template id="portal_my_image_archive" name="My image archive">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -885,7 +886,7 @@
               <t t-if='doc.type == "youtube"'>
                 <div style='font-size: 24px; font-weight: 500;'>
                   <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
-                    <i class="fa fa-youtube-square" />
+                    <i class="{fa fa-youtube-square}" />
                     &amp;nbsp;
                     <t t-esc="doc.name" />
                   </a>
@@ -896,6 +897,7 @@
         </div>
       </t>
     </template>
+   <!--      $fa-var-file-pdf-o: "\f1c1"; -->
      <template id="portal_my_pricelist" name="My pricelist">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -903,7 +905,7 @@
           <div class="col-md-9">
             <h1 class="page-header">PRISLISTOR</h1>
             <li>
-              <i class="fa fa-download" />
+             <i class="fa fa-download"></i>
               <a href="/my/pricelist/pdf">Prislista</a>
             </li>
           </div>
@@ -916,12 +918,10 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">Nyheter</h1>
-
             <t t-foreach="website.get_portal_documents('news')" t-as="news">
               <a t-att-href="'%s' %(news.url)" t-att-target="'_blank' if news.open_new_window else ''">
                 <i class="fa fa-download" />
                 &amp;nbsp;
-            
                 <t t-esc="news.name" />
               </a>
             </t>
