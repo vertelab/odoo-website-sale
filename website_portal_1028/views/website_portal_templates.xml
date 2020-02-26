@@ -77,62 +77,24 @@
                 </div>
               </div>
               <section class="rows">
-                <div class="campaigns_rows row">
-                  <div class="col-sm-5 col-sm-6 col-xs-5">
-                    <a>Eyebrow set</a>
+                <t t-foreach="offers_consumer" t-as="consumer">
+                  <div class="campaigns_rows row">
+                    <div class="col-sm-5 col-sm-6 col-xs-5">
+                      <a t-att-href="consumer['url']">
+                        <t t-esc="consumer['product']" />
+                      </a>
+                    </div>
+                    <div class="col-sm-2 col-sm-6 col-xs-2">
+                      <t t-esc="consumer['price']" />
+                    </div>
+                    <div class="col-sm-2 col-sm-6 col-xs-2">
+                      <t t-esc="consumer['price_origin']" />
+                    </div>
+                    <div class="col-sm-3 col-sm-6 col-xs-3">
+                      <t t-esc="consumer['period']" />
+                    </div>
                   </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>249 kr</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>349 kr</a>
-                  </div>
-                  <div class="col-sm-3 col-sm-6 col-xs-3">
-                    <a>1 sep -31 okt</a>
-                  </div>
-                </div>
-                <div class="campaigns_rows row">
-                  <div class="col-sm-5 col-sm-6 col-xs-5">
-                    <a>Eyebrow set</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>249 kr</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>349 kr</a>
-                  </div>
-                  <div class="col-sm-3 col-sm-6 col-xs-3">
-                    <a>1 sep -31 okt</a>
-                  </div>
-                </div>
-                <div class="campaigns_rows row">
-                  <div class="col-sm-5 col-sm-6 col-xs-5">
-                    <a>Eyebrow set</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>249 kr</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>349 kr</a>
-                  </div>
-                  <div class="col-sm-3 col-sm-6 col-xs-3">
-                    <a>1 sep -31 okt</a>
-                  </div>
-                </div>
-                <div class="campaigns_rows row">
-                  <div class="col-sm-5 col-sm-6 col-xs-5">
-                    <a>Eyebrow set</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>249 kr</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>349 kr</a>
-                  </div>
-                  <div class="col-sm-3 col-sm-6 col-xs-3">
-                    <a>1 sep -31 okt</a>
-                  </div>
-                </div>
+                </t>
               </section>
               <section>
                 <div class="first_row row">
@@ -151,34 +113,24 @@
                 </div>
               </section>
               <section class="rows">
-                <div class="campaigns_rows row">
-                  <div class="col-sm-5 col-sm-6 col-xs-5">
-                    <a>Eyebrow set</a>
+                <t t-foreach="offers_salon" t-as="salon">
+                  <div class="campaigns_rows row">
+                    <div class="col-sm-5 col-sm-6 col-xs-5">
+                      <a t-att-href="salon['url']">
+                        <t t-esc="salon['product']" />
+                      </a>
+                    </div>
+                    <div class="col-sm-2 col-sm-6 col-xs-2">
+                      <t t-esc="salon['price']" />
+                    </div>
+                    <div class="col-sm-2 col-sm-6 col-xs-2">
+                      <t t-esc="salon['price_origin']" />
+                    </div>
+                    <div class="col-sm-3 col-sm-6 col-xs-3">
+                      <t t-esc="salon['period']" />
+                    </div>
                   </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>249 kr</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>349 kr</a>
-                  </div>
-                  <div class="col-sm-3 col-sm-6 col-xs-3">
-                    <a>1 sep -31 okt</a>
-                  </div>
-                </div>
-                <div class="campaigns_rows row">
-                  <div class="col-sm-5 col-sm-6 col-xs-5">
-                    <a>Eyebrow set</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>249 kr</a>
-                  </div>
-                  <div class="col-sm-2 col-sm-6 col-xs-2">
-                    <a>349 kr</a>
-                  </div>
-                  <div class="col-sm-3 col-sm-6 col-xs-3">
-                    <a>1 sep -31 okt</a>
-                  </div>
-                </div>
+                </t>
               </section>
             </div>
             <div class="row">
@@ -189,7 +141,34 @@
                       <div class="col-md-12 d-none d-sm-block">
                         <div class="o_margin_l pull-right">
                           <div class="o_container">
-                            <img alt="Odoo Members" class="img img-responsive" src="/website/static/src/img/odoo.jpg" style="" />
+                            <div class="col-md-12 oe_structure">
+                              <section>
+                                <div class="carousel slide carousel-fade" data-ride="carousel" id="myCarousel_dermanord_home" style="overflow: hidden;">
+                                  <div class="carousel-inner">
+                                    <t t-set="first_slide" t-value="True" />
+                                    <t t-foreach="offers_salon + offers_consumer" t-as="salon">
+                                      <t t-if="salon['image']">
+                                        <div t-att-class="'item active' if first_slide else 'item oe_dark'" style="">
+                                          <t t-set="first_slide" t-value="False" />
+                                          <img class="img-responsive" t-att-src="salon['image']" style="position: relative;" />
+                                          <div class="container" style="position: absolute; top: 20%; left: 20%;">
+                                            <div class="row content">
+                                              <div class="col-md-6 col-sm-12" />
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </t>
+                                    </t>
+                                  </div>
+                                  <a class="left carousel-control" data-slide="prev" href="#myCarousel_dermanord_home">
+                                    <i class="fa fa-chevron-left" />
+                                  </a>
+                                  <a class="right carousel-control" data-slide="next" href="#myCarousel_dermanord_home">
+                                    <i class="fa fa-chevron-right" style="" />
+                                  </a>
+                                </div>
+                              </section>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -220,7 +199,6 @@
               </div>
               <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
               <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=8, order='sent DESC')" />
-              <t t-set="show_all_mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], order='sent DESC')" />
               <div class="row mail_lists_line">
                 <div class="col-sm-3 col-xs-3">
                   <t t-if="mails">
@@ -244,19 +222,6 @@
                     </t>
                   </t>
                 </div>
-                <!-- 
-                     <div class="show_all">
-                     <t t-if="show_all_mails">
-                     <t t-foreach="show_all_mails" t-as="show_mails">
-                     <li>
-                     <a t-att-data-value="show_mails.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (show_mails.mass_mailing_id.id, show_mails.mass_mailing_id.token)">
-                     Visa alla
-                     </a>
-                     </li>
-                     </t>
-                     </t>
-                     
-                     </div>  -->
               </div>
             </div>
             <div class="gift_section col-sm-3 col-xs-6 ">
@@ -416,7 +381,7 @@
         <a href="/my/orders">MINA BESTÄLLNINGAR</a>
         <a href="/my/obsolete">UTGÅENDE PRODUKTER</a>
         <a href="/my/buyinfo">KÖPINFORMATION</a>
-        <a href="/my/reclaim">MINA REKLAMATIONER</a>
+        <!--  <a href="/my/reclaim">MINA REKLAMATIONER</a> -->
         <a href="/my/mail">MAIL &amp; PRENUMERATIONER</a>
         <li class="dropdown-submenu">
           <a class="test" href="#">MEDIA</a>
@@ -443,28 +408,5 @@
         </li>
       </xpath>
     </template>
-    <!-- <template id="website_theme_aktuellt2" inherit_id="website.layout" name="Website Theme aktuellt2" priority="100">
-         <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
-         <a href="/my/home">Aktuellt</a>
-         </xpath>
-         </template>
-    -->
-<!--     <template id="my_account_link" name="Link to frontend portal" inherit_id="website.layout">
-         <xpath expr="//ul[@class='dropdown-menu js_usermenu']/" position="inside">
-         <li><a href="/my/home" role="menuitem">Aktuellt</a></li>
-         </xpath>
-         </template>   -->
-    <!-- 
-    -->
-    <!--
-         
-         <xpath expr="//a[@href='/web']/.." position="replace">
-         <div class="product_children">
-         <label>
-         <li>
-         <a class="dn-home-menu-option" href="/home" role="menuitem">Aktuellt</a>
-         </li>
-         </label>
-         </div> -->
   </data>
 </openerp>

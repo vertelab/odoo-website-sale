@@ -25,6 +25,8 @@ class website_account(http.Controller):
         for i in range(limit):
             res.append({
                 'product': name % i,
+                'url': '/webshop',
+                'image': '/website/static/src/img/odoo.jpg',
                 'price': '%s99 kr' % i,
                 'price_origin': '%s99 kr' % (i+1),
                 'period': '1 sept - 31 okt',
