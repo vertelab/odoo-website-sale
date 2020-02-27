@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from openerp import http
+from openerp import http, fields, _
 from openerp.http import request
 from openerp import tools
 from openerp.tools.translate import _
 
 from openerp.fields import Date
+from babel.dates import format_date
 
+import logging
+_logger = logging.getLogger()
 
 class website_account(http.Controller):
 
@@ -17,29 +20,57 @@ class website_account(http.Controller):
     _items_per_page = 20
 
 
-    def get_campaign_products(self, salon=True, limit=8):
+    def get_campaign_products(self, salon=True, limit=8, page=0):
+        def pretty_date(date):
+            return format_date(fields.Date.from_string(date), 'D MMM', locale=request.env.context.get('lang')).replace('.', '')
         name = 'Produkt %s'
-        if salon:
-            name = 'Salongsprodukt %s'
         res = []
-        for i in range(limit):
-            res.append({
-                'product': name % i,
-                'url': '/webshop',
-                'image': '/website/static/src/img/odoo.jpg',
-                'price': '%s99 kr' % i,
-                'price_origin': '%s99 kr' % (i+1),
-                'period': '1 sept - 31 okt',
-            })
+        helpers = request.env['crm.tracking.campaign.helper'].sudo().search([
+                ('for_reseller', '=', True),
+                ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id),
+                ('salon', '=', salon)
+            ], limit = limit, offset = limit * page)
+        for helper in helpers:
+            if helper.variant_id:
+                product = helper.variant_id
+            elif helper.product_id:
+                product = helper.product_id
+            else:
+                # This should never happen. Lets pretend like it didn't.
+                continue
+            _logger.warn(helper)
+            line = {
+                'product': helper.campaign_id.name,
+                'image': '',
+                'price_origin':''
+            }
+            res.append(line)
+            if helper.campaign_id.image:
+                line['image'] = '/web/binary/image?id=%s&field=image&model=crm.tracking.campaign' % helper.campaign_id.id
+            if product._name == 'product.template':
+                variant = product.get_default_variant()
+                line['url'] = '/dn_shop/product/%s' % product.id
+            else:
+                variant = product
+                line['url'] = '/dn_shop/variant/%s' % product.id
+            # Find the relevant phase
+            if helper.salon:
+                # Campaign aimed at salons
+                phase = helper.campaign_phase_id
+            else:
+                # Campaign aimed at consumers
+                phase = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
+            date_start = phase.start_date
+            date_stop = phase.end_date
+            if not date_stop:
+                line['period'] = _('until further notice')
+            elif date_start:
+                line['period'] = '%s - %s' % (pretty_date(date_start), pretty_date(date_stop))
+            else:
+                line['period'] = '- %s' % pretty_date(date_stop)
+            # Calculate customers price at campaign start
+            line['price'] = phase.pricelist_id.with_context(date=date_start).price_get(variant.id, 1)[phase.pricelist_id.id]
         return res
-        # request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', True), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
-
-        # ctch = request.env['crm.tracking.campaign.helper'].sudo().search([('for_reseller', '=', reseller), ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id)])
-        # campaign_products = request.env['product.product'].search([('id', 'in', (ctch.mapped('variant_id') | ctch.mapped('product_id').mapped('product_variant_ids')).mapped('id'))], limit=limit)
-        # for campaign_product in campaign_products:
-        #     helper = ctch.filtered(lambda h: h.variant_id == campaign_product) or ctch.filtered(lambda h: campaign_product in h.product_id.product_variant_ids)
-
-
 
     def _prepare_portal_layout_values(self):
         """ prepare the values to render portal layout """

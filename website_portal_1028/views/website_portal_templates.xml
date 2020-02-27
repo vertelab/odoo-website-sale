@@ -69,9 +69,6 @@
                 <div class="col-sm-2 col-sm-6 col-xs-2">
                   <h5>UTPRIS:</h5>
                 </div>
-                <div class="col-sm-2 col-sm-6 col-xs-2">
-                  <h5>VÄRDE</h5>
-                </div>
                 <div class="col-sm-3 col-sm-6 col-xs-3">
                   <h5>SÄLJPERIOD:</h5>
                 </div>
@@ -87,9 +84,6 @@
                     <div class="col-sm-2 col-sm-6 col-xs-2">
                       <t t-esc="consumer['price']" />
                     </div>
-                    <div class="col-sm-2 col-sm-6 col-xs-2">
-                      <t t-esc="consumer['price_origin']" />
-                    </div>
                     <div class="col-sm-3 col-sm-6 col-xs-3">
                       <t t-esc="consumer['period']" />
                     </div>
@@ -103,9 +97,6 @@
                   </div>
                   <div class="col-sm-2  col-xs-2">
                     <h5>UTPRIS:</h5>
-                  </div>
-                  <div class="col-sm-2 col-xs-2">
-                    <h5>VÄRDE</h5>
                   </div>
                   <div class="col-sm-3 col-xs-3">
                     <h5>SÄLJPERIOD:</h5>
@@ -122,9 +113,6 @@
                     </div>
                     <div class="col-sm-2 col-sm-6 col-xs-2">
                       <t t-esc="salon['price']" />
-                    </div>
-                    <div class="col-sm-2 col-sm-6 col-xs-2">
-                      <t t-esc="salon['price_origin']" />
                     </div>
                     <div class="col-sm-3 col-sm-6 col-xs-3">
                       <t t-esc="salon['period']" />

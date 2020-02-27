@@ -6,7 +6,7 @@ from openerp.exceptions import AccessError
 from openerp.http import request, Controller
 
 from openerp.addons.website_portal_1028.controllers.main import website_account
-from openerp.addons.delivery_unifaun_base import delivery
+#from openerp.addons.delivery_unifaun_base import delivery
 from openerp.addons.web.controllers.main import content_disposition
 
 from openerp import api, exceptions, models
