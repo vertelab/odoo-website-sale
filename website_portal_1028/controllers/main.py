@@ -30,6 +30,7 @@ class website_account(http.Controller):
                 ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id),
                 ('salon', '=', salon)
             ], limit = limit, offset = limit * page)
+        lang = request.env['res.lang'].search([('code', '=', request.env.context.get('lang'))])
         for helper in helpers:
             if helper.variant_id:
                 product = helper.variant_id
@@ -69,7 +70,12 @@ class website_account(http.Controller):
             else:
                 line['period'] = '- %s' % pretty_date(date_stop)
             # Calculate customers price at campaign start
-            line['price'] = phase.pricelist_id.with_context(date=date_start).price_get(variant.id, 1)[phase.pricelist_id.id]
+            line['price'] = '%s %s' % (lang.format(
+                    '%f',
+                    phase.pricelist_id.with_context(date=date_start).price_get(variant.id, 1)[phase.pricelist_id.id],
+                    grouping=True, monetary=True, context=request.env.context)[:-4],
+                phase.pricelist_id.currency_id.name
+                )
         return res
 
     def _prepare_portal_layout_values(self):

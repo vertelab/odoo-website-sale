@@ -535,6 +535,8 @@ class website_account(website_account):
     def info_update(self, home_user=None, **post):
         # update data for main partner
         self.validate_user(home_user)
+        if not self.check_admin_portal(home_user):
+            return request.website.render('website.403', {})
         if home_user == request.env.user:
             home_user = home_user.sudo()
         self.update_info(home_user, post)
@@ -675,7 +677,8 @@ class website_account(website_account):
         #~ _logger.warn(value)
         values = {}
         if request.httprequest.method == 'POST':
-            self.check_admin_portal(home_user)
+            if not self.check_admin_portal(home_user):
+                return request.website.render('website.403', {})
             # Values
             values = {f: post['contact_%s' % f] for f in self.contact_fields() if post.get('contact_%s' % f) and f not in ['attachment','image']}
             if post.get('image'):
@@ -759,7 +762,7 @@ class website_account(website_account):
         user = user or request.env.user
         if user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
             return False
-        if request.env.ref('website_portal_sale_1028.group_portal_admin') not in user.groups_id:
+        if not user.has_group('website_portal_sale_1028.group_portal_admin'):
             return False
         return True
 
@@ -787,7 +790,7 @@ class website_account(website_account):
         user = request.env['res.users'].sudo().search([('partner_id', '=', partner.id)])
         if user:
             # Not allowed to delete admin user
-            if self.check_admin_portal(home_user, user):
+            if not self.check_admin_portal(home_user, user):
                 return request.website.render('website.403', {})
             else:
                 user.active = False
@@ -852,11 +855,6 @@ class website_account(website_account):
                 if partner.parent_id == home_user.partner_id.commercial_partner_id:
                     attachment.unlink()
         return werkzeug.utils.redirect('/my/salon/%s/contact/%s' % (home_user.id, partner.id))
-
-    # ~ def check_document_access(self, report, ids):
-        # ~ """Override to implement access control."""
-        # ~ return False
-
 
 class DummyRecordSet(object):
     def __init__(self, ids):

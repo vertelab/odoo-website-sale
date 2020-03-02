@@ -1,12 +1,74 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from openerp import api, exceptions, models
+from openerp import api, exceptions, models, _
 import math
 
 class SaleOrder(models.Model):
 
     _inherit = 'sale.order'
+
+    @api.multi
+    def order_state_frontend(self):
+        """Get a customer friendly order state."""
+        state = None
+        if self.state == 'cancel':
+            state = _('Cancelled')
+        elif self.state in ('shipping_except', 'invoice_except'):
+            state = _('Exception')
+        elif self.state in ('sent'):
+            state = _('Received')
+        elif self.state in ('draft'):
+            state = _('Cart')
+        else:
+            state = _('Ready for picking')
+            for invoice in self.invoice_ids:
+                if invoice.state == 'open' and invoice.residual == invoice.amount_total:
+                    state = _('Shipped and invoiced')
+                elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
+                    state = _('Partially paid')
+                elif invoice.state == 'paid':
+                    state = _('Paid')
+        return state
+        
+    @api.multi
+    def order_state_per_invoice_frontend(self):
+        """Get a customer friendly order state per invoice."""
+        state = []
+        if self.state == 'cancel':
+            state.append(_('Cancelled'))
+        elif self.state in ('shipping_except', 'invoice_except'):
+            state.append(_('Exception'))
+        elif self.state in ('sent'):
+            state.append(_('Received'))
+        elif self.state in ('draft'):
+            state.append(_('Cart'))
+        else:
+            state.append(_('Ready for picking'))
+            invoices = self.invoice_ids.filtered(lambda i: i.state not in ('draft', 'proforma', 'proforma2'))
+            if invoices:
+                state = []
+                if len(invoices) == 1:
+                    if invoices[0].state == 'open' and invoices[0].residual == invoices[0].amount_total:
+                        state.append(_('Shipped and invoiced'))
+                    elif invoices[0].state == 'open' and invoices[0].residual != invoices[0].amount_total:
+                        state.append(_('Partially paid'))
+                    elif invoices[0].state == 'paid':
+                        state.append(_('Paid'))
+                # only print invoice numbers if there are several
+                else:
+                    # check if all invoices for order are fully paid.
+                    if all([invoice.state == "paid" for invoice in invoices]):
+                        state.append(_('Paid'))
+                    else:
+                        for invoice in invoices:
+                            if invoice.state == 'open' and invoice.residual == invoice.amount_total:
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Shipped and invoiced'))
+                            elif invoice.state == 'open' and invoice.residual != invoice.amount_total:
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Partially paid'))
+                            elif invoice.state == 'paid':
+                                state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Paid'))
+        return state
 
     @api.multi
     def get_access_action(self):

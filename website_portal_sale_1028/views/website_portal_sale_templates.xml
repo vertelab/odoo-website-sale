@@ -11,11 +11,14 @@
       <xpath expr="//ul[contains(@class,'o_portal_submenu')]" position="inside">
         <div class="menu menu-my-pages">
           <div class="row">
+<!--
+TODO: Activate me
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/home">Aktuellt</a>
               </li>
             </div>
+-->
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/salon">Min salong</a>
@@ -26,11 +29,14 @@
                 <a href="/my/orders">Mina beställningar</a>
               </li>
             </div>
+<!--
+TODO: Activate me
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/obsolete">Utgående produkter</a>
               </li>
             </div>
+-->
 <!--               <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/reclaim">Reklamationer</a>
@@ -41,11 +47,14 @@
                 <a href="/my/buyinfo">Buyinfo</a>
               </li>
             </div>
+<!--
+TODO: Activate me
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/mail">Mail &amp; Prenumeranter</a>
               </li>
             </div>
+-->
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li class="dropdown-submenu">
                 <a class="test" href="#">Media</a>
@@ -53,9 +62,12 @@
                   <li>
                     <a href="/my/imagearchive">Bildarkiv</a>
                   </li>
+<!--
+TODO: Activate me
                   <li>
                     <a href="/my/pricelist">Prislistor</a>
                   </li>
+-->
                   <li>
                     <a href="/my/news">Nyheter &amp; erbjudanden</a>
                   </li>
@@ -77,35 +89,47 @@
     </template>
     <template id="my_menu" name="My menu">
       <div class="left_menu col-md-3 hidden-sm hidden-xs">
+<!--
+TODO: Activate me
         <li>
           <a href="/my/home">Aktuellt</a>
         </li>
+-->
         <li t-att-class="'active' if active_menu == 'my_salon' else ''">
           <a href="/my/salon">Min salong</a>
         </li>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
           <a href="/my/orders">Mina beställningar</a>
         </li>
+<!--
+TODO: Activate me
         <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
           <a href="/my/obsolete">Utgående produkter</a>
         </li>
         <li t-att-class="'active' if active_menu == 'my_buyinfo' else ''">
           <a href="/my/buyinfo">Köpinformation</a>
         </li>
+-->
      <!--      <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
           <a href="/my/reclaim">Mina reklamationer</a>
         </li> -->
+<!--
+TODO: Activate me
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
           <a href="/my/mail">Mail &amp; Prenumeranter</a>
         </li>
+-->
         <p>Media</p>
         <ul class="mega_menu_children">
           <li t-att-class="'active' if active_menu == 'my_imagearchive' else ''">
             <a href="/my/imagearchive">Bildarkiv</a>
           </li>
+<!--
+TODO: Activate me
           <li t-att-class="'active' if active_menu == 'my_pricelist' else ''">
             <a href="/my/pricelist">Prislistor</a>
           </li>
+-->
           <li t-att-class="'active' if active_menu == 'my_news' else ''">
             <a href="/my/news">Nyheter &amp; erbjudanden</a>
           </li>
