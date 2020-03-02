@@ -7,18 +7,18 @@
         <script type="text/javascript" src="/website_portal_sale_1028/static/src/js/main.js" />
       </xpath>
     </template>
-    <template id="portal_my_home_menu_sale" name="Portal layout : sales menu entries" inherit_id="website_portal_1028.portal_layout" priority="25">
+   <!--  <template id="portal_my_home_menu_sale" name="Portal layout : sales menu entries" inherit_id="website_portal_1028.portal_layout" priority="25">
       <xpath expr="//ul[contains(@class,'o_portal_submenu')]" position="inside">
         <div class="menu menu-my-pages">
           <div class="row">
-<!--
+
 TODO: Activate me
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/home">Aktuellt</a>
               </li>
             </div>
--->
+
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/salon">Min salong</a>
@@ -29,32 +29,31 @@ TODO: Activate me
                 <a href="/my/orders">Mina beställningar</a>
               </li>
             </div>
-<!--
+
 TODO: Activate me
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/obsolete">Utgående produkter</a>
               </li>
             </div>
--->
-<!--               <div class="col-md-2 col-sm-6 col-xs-4">
+
+               <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/reclaim">Reklamationer</a>
               </li>
-            </div> -->
+            </div> 
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/buyinfo">Buyinfo</a>
               </li>
             </div>
-<!--
 TODO: Activate me
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
                 <a href="/my/mail">Mail &amp; Prenumeranter</a>
               </li>
             </div>
--->
+
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li class="dropdown-submenu">
                 <a class="test" href="#">Media</a>
@@ -62,12 +61,12 @@ TODO: Activate me
                   <li>
                     <a href="/my/imagearchive">Bildarkiv</a>
                   </li>
-<!--
+
 TODO: Activate me
                   <li>
                     <a href="/my/pricelist">Prislistor</a>
                   </li>
--->
+
                   <li>
                     <a href="/my/news">Nyheter &amp; erbjudanden</a>
                   </li>
@@ -86,7 +85,7 @@ TODO: Activate me
           </div>
         </div>
       </xpath>
-    </template>
+    </template> -->
     <template id="my_menu" name="My menu">
       <div class="left_menu col-md-3 hidden-sm hidden-xs">
 <!--
