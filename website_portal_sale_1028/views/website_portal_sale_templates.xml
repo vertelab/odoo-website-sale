@@ -1381,7 +1381,7 @@ TODO: Activate me
                         &amp;nbsp;Download order
                       </a>
                       <t t-foreach="order.invoice_ids" t-as="invoice">
-                        <a t-att-href="'/my/orders/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace'))" target="_blank">
+                        <a t-att-href="'/my/orders/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace') if invoice.name else '')" target="_blank">
                           <i class="fa fa-download" />
                           &amp;nbsp;Download invoice
                           <t t-esc="invoice.number" />
