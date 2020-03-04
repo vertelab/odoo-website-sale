@@ -291,7 +291,7 @@ msgstr "E-post"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.my_menu
 msgid "Events & Treatments"
-msgstr "Events & Behandlingar"
+msgstr "Event & Behandlingar"
 
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/website_sale.py:51
@@ -458,7 +458,7 @@ msgstr "Mina prenumerationer"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_news
 msgid "NEWS & OFFERS"
-msgstr "NEHETER & ERBJUDANDEN"
+msgstr "NYHETER & ERBJUDANDEN"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
