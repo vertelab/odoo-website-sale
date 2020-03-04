@@ -1,0 +1,225 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* website_portal_1028
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-04 13:58+0000\n"
+"PO-Revision-Date: 2020-03-04 13:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "AKTUELLA ERBJUDANDEN"
+msgstr "AKTUELLA ERBJUDANDEN"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_archive_groups
+msgid "Archives"
+msgstr "Arkiv"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "City"
+msgstr "Stad"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Company Name"
+msgstr "Bolagsnamn"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "Compendium"
+msgstr "Kompendium"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Confirm"
+msgstr "Bekräfta"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Contact Details"
+msgstr "Contact Details"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Country"
+msgstr "Land<br>"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Country..."
+msgstr "Land..."
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_layout
+msgid "Custom Panel"
+msgstr "Custom Panel"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "DU HAR VÄL KOLLAT MAILEN?"
+msgstr "DU HAR VÄL KOLLAT MAILEN?"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Details"
+msgstr "Details"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Email"
+msgstr "E-post"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "Events & Treatments"
+msgstr "Events & Behandlingar"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "HÄR FINNS ALLT MATERIAL DU BEHÖVER"
+msgstr "HÄR FINNS ALLT MATERIAL DU BEHÖVER"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "Image Bank"
+msgstr "Bildarkiv"
+
+#. module: website_portal_1028
+#: code:addons/website_portal_1028/controllers/main.py:169
+#, python-format
+msgid "Invalid Email! Please enter a valid email address."
+msgstr "Invalid Email! Please enter a valid email address."
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "KONSUMENTERBJUDANDE:"
+msgstr "KONSUMENTERBJUDANDE:"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "MEDIA"
+msgstr "MEDIA"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "MY ORDERS"
+msgstr "MINA BESTÄLLNINGAR"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "MY SALON"
+msgstr "MIN SALONG"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "Miscellaneous"
+msgstr "Övrigt"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "News & offers"
+msgstr "Nyheter & Erbjudanden"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "Odoo Members"
+msgstr "Odoo Members"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Phone"
+msgstr "Telefon"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_layout
+msgid "Place your content here."
+msgstr "Place your content here."
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "SALONGSERBJUDANDE:"
+msgstr "SALONGSERBJUDANDE:"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "SENASTE NYTT"
+msgstr "SENASTE NYTT"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.contact
+msgid "Salesman"
+msgstr "Salesman"
+
+#. module: website_portal_1028
+#: code:addons/website_portal_1028/controllers/main.py:187
+#, python-format
+msgid "Some required fields are empty."
+msgstr "Some required fields are empty."
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "State / Province"
+msgstr "Län"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Street"
+msgstr "Gata"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "SÄLJPERIOD:"
+msgstr "SÄLJPERIOD:"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "UTPRIS:"
+msgstr "UTPRIS:"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "VAT Number"
+msgstr "Skatteregisteringsnummer"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "Visa alla"
+msgstr "Visa alla"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Your Name"
+msgstr "Ditt namn"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "Zip / Postal Code"
+msgstr "Postnummer"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "my/quotes"
+msgstr "my/quotes"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.details
+msgid "select..."
+msgstr "välj..."
+
+#. module: website_portal_1028
+#: code:addons/website_portal_1028/controllers/main.py:67
+#, python-format
+msgid "until further notice"
+msgstr "Tillsvidare"
+
