@@ -21,12 +21,12 @@ TODO: Activate me
 
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
-                <a href="/my/salon">Min salong</a>
+                <a href="/my/salon">My Salon</a>
               </li>
             </div>
             <div class="col-md-2 col-sm-6 col-xs-4">
               <li>
-                <a href="/my/orders">Mina beställningar</a>
+                <a href="/my/orders">My Orders</a>
               </li>
             </div>
 
@@ -59,7 +59,7 @@ TODO: Activate me
                 <a class="test" href="#">Media</a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a href="/my/imagearchive">Bildarkiv</a>
+                    <a href="/my/imagearchive">Image Bank</a>
                   </li>
 
 TODO: Activate me
@@ -68,16 +68,16 @@ TODO: Activate me
                   </li>
 
                   <li>
-                    <a href="/my/news">Nyheter &amp; erbjudanden</a>
+                    <a href="/my/news">News &amp; Offers</a>
                   </li>
                   <li>
-                    <a href="/my/events">Event &amp; behandlingar</a>
+                    <a href="/my/events">Events &amp; Treatments</a>
                   </li>
                   <li>
-                    <a href="/my/compendium">Kompendium</a>
+                    <a href="/my/compendium">Compendium</a>
                   </li>
                   <li>
-                    <a href="/my/other">Övrigt</a>
+                    <a href="/my/other">Miscellaneous</a>
                   </li>
                 </ul>
               </li>
@@ -95,10 +95,10 @@ TODO: Activate me
         </li>
 -->
         <li t-att-class="'active' if active_menu == 'my_salon' else ''">
-          <a href="/my/salon">Min salong</a>
+          <a href="/my/salon">My salon</a>
         </li>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
-          <a href="/my/orders">Mina beställningar</a>
+          <a href="/my/orders">My orders</a>
         </li>
 <!--
 TODO: Activate me
@@ -121,7 +121,7 @@ TODO: Activate me
         <p>Media</p>
         <ul class="mega_menu_children">
           <li t-att-class="'active' if active_menu == 'my_imagearchive' else ''">
-            <a href="/my/imagearchive">Bildarkiv</a>
+            <a href="/my/imagearchive">Image bank</a>
           </li>
 <!--
 TODO: Activate me
@@ -130,16 +130,16 @@ TODO: Activate me
           </li>
 -->
           <li t-att-class="'active' if active_menu == 'my_news' else ''">
-            <a href="/my/news">Nyheter &amp; erbjudanden</a>
+            <a href="/my/news">News &amp; Offers</a>
           </li>
           <li t-att-class="'active' if active_menu == 'my_events' else ''">
-            <a href="/my/events">Event &amp; behandlingar</a>
+            <a href="/my/events">Events &amp; Treatments</a>
           </li>
           <li t-att-class="'active' if active_menu == 'my_compendium' else ''">
-            <a href="/my/compendium">Kompendium</a>
+            <a href="/my/compendium">Compendium</a>
           </li>
           <li t-att-class="'active' if active_menu == 'my_others' else ''">
-            <a href="/my/other">Övrigt</a>
+            <a href="/my/other">Miscellaneous</a>
           </li>
         </ul>
       </div>
@@ -691,7 +691,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">Min salong</h1>
+            <h1 class="page-header">My Salon</h1>
             <div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-labelledby="delUserModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -894,7 +894,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">Bildarkiv &amp; videos</h1>
+            <h1 class="page-header">IMAGE BANK &amp; VIDEOS</h1>
             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
             <t t-foreach="website.portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
               <t t-if='doc.type == "url"'>
@@ -925,7 +925,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">PRISLISTOR</h1>
+            <h1 class="page-header">PRICELIST</h1>
             <li>
              <i class="fa fa-download"></i>
               <a href="/my/pricelist/pdf">Prislista</a>
@@ -939,7 +939,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">Nyheter</h1>
+            <h1 class="page-header">NEWS &amp; OFFERS</h1>
             <t t-foreach="website.get_portal_documents('news')" t-as="news">
               <a t-att-href="'%s' %(news.url)" t-att-target="'_blank' if news.open_new_window else ''">
                 <i class="fa fa-download" />
@@ -956,7 +956,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">Event</h1>
+            <h1 class="page-header">EVENTS &amp; TREATMENTS</h1>
             <t t-foreach="website.get_portal_documents('event')" t-as="events">
            <a t-att-href="'%s' %(events.url)" t-att-target="'_blank' if events.open_new_window else ''">
                 <i class="fa fa-download" />
@@ -973,7 +973,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">Compendium</h1>
+            <h1 class="page-header">COMPENDIUM</h1>
             <t t-foreach="website.get_portal_documents('compendium')" t-as="compendium">
               <a t-att-href="'%s' %(compendium.url)" t-att-target="'_blank' if compendium.open_new_window else ''">
                 <i class="fa fa-download" />
@@ -990,7 +990,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">Mina reklamationer</h1>
+            <h1 class="page-header">MY RECLAIMS</h1>
 
         <!--     <t t-foreach="request.env['crm.claim'].search([('name', '=', 'name')])" t-as="reclaim">
               <t t-esc="reclaim.display_name" />
@@ -1005,7 +1005,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">Others</h1>
+            <h1 class="page-header">MISCELLANEOUS</h1>
             <t t-foreach="website.get_portal_documents('other')" t-as="other">
              <a t-att-href="'%s' %(other.url)">
                 <i class="fa fa-download" />
@@ -1022,7 +1022,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">KÖPINFORMATION</h1>
+            <h1 class="page-header">BUYINFO</h1>
             <div id="wrap" class="oe_structure oe_empty" />
           </div>
         </div>
@@ -1032,7 +1032,7 @@ TODO: Activate me
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <h1 class="page-header col-md-8">UTGÅENDE PRODUKTER</h1>
+          <h1 class="page-header col-md-8">OBSOLETE PRODUCTS</h1>
           <div class="col-md-9">
             <div class="col-md-12">
               <t t-foreach="request.env['product.product'].search([('state', '=', 'end'), ('sale_ok', '=', True)])" t-as="variant">
@@ -1050,10 +1050,10 @@ TODO: Activate me
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
-          <h1 class="page-header col-md-8">MAIL &amp; PRENUMERATIONER</h1>
+          <h1 class="page-header col-md-8">MAIL &amp; SUBSCRIBERS</h1>
           <div class="col-md-offset-3">
           <div class="col-md-9">
-            <h3 class="">Våra mailutskick</h3>
+            <h3 class="">Sent Mails</h3>
             <t t-if="mails">
               <t t-foreach="mails" t-as="mail">
                 <div class="row mail_lists_lines">
@@ -1086,8 +1086,8 @@ TODO: Activate me
           <div class="col-md-offset-3">
             <div class="col-md-9 my_subscribers">
               <div class="row">
-                <h3 class="col-md-8">Mina prenumerationer</h3>
-                <h4 class="col-md-4">Ja, jag vill ha dessa prenumerationer</h4>
+                <h3 class="col-md-8">My subscribers</h3>
+                <h4 class="col-md-4">Yes, I want this subscriptions</h4>
               </div>
               <t t-if="mailing_lists">
                 <t t-foreach="mailing_lists" t-as="mailing_list">
@@ -1107,7 +1107,7 @@ TODO: Activate me
             <div class="col-md-9">
               <t t-if="is_admin">
                 <div class="row">
-                  <h3 class="col-md-6">Mina anställda</h3>
+                  <h3 class="col-md-6">My Employees</h3>
                 </div>
                 <t t-if="employees">
                   <t t-foreach="employees" t-as="employee">
@@ -1118,7 +1118,7 @@ TODO: Activate me
                         </h2>
                       </div>
                       <div class="col-md-5">
-                        <h4>Ja, jag vill att användaren ska ha dessa prenumerationer</h4>
+                        <h4>Yes, this user should have this subscriptions</h4>
                       </div>
                     </div>
                     <t t-if="employees_mailing_lists">
@@ -1144,9 +1144,8 @@ TODO: Activate me
               <br />
               <div class="col-md-4" />
               <div class="col-md-12">
-                <div class="sucess_message alert alert-success hidden" role="alert">Ändringarna har sparats!</div>
-                <div class="red-alert-message alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
-                <div class="red-alert-message-undefined alert alert-danger hidden" role="alert">Något gick fel, försök igen.</div>
+                <div class="sucess_message alert alert-success hidden" role="alert">Your changes has been saved</div>
+                <div class="red-alert-message alert alert-danger hidden" role="alert">Something went wrong, Try again.</div>
               </div>
             </div>
           </div>
@@ -1158,7 +1157,7 @@ TODO: Activate me
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="order_table col-md-9">
-            <h1 class="page-header">Mina beställningar</h1>
+            <h1 class="page-header">My Orders</h1>
             <br />
             <div class="form-inline col-xs-10 col-sm-4 col-md-4">
               <form t-att-action="'/my/orders'" method="post" style="margin-top: 20px; margin-bottom: 20px;">
@@ -1189,7 +1188,7 @@ TODO: Activate me
               <t t-call="website.pager" />
             </div>
             <t t-if="not orders">
-              <p>Inga ordrar är gjorda ännu</p>
+              <p>No orders yet</p>
             </t>
             <t t-if="orders">
               <table class="table table-responsive table-striped table-hover o_my_status_table">
