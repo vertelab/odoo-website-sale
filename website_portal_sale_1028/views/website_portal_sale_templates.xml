@@ -889,6 +889,35 @@ TODO: Activate me
       </div>
     </template>
 
+	<template id="portal_document_link" name="Document Link">
+	  <t t-if="doc.type == 'url'">
+		<div style="font-size: 24px; font-weight: 500;">
+		  <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
+			<i class="fa fa-link" />
+			&amp;nbsp;
+			<t t-esc="doc.name" />
+		  </a>
+		</div>
+	  </t>
+	  <t t-if="doc.type == 'youtube'">
+		<div style="font-size: 24px; font-weight: 500;">
+		  <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
+			<i class="fa fa-youtube-square" />
+			&amp;nbsp;
+			<t t-esc="doc.name" />
+		  </a>
+		</div>
+	  </t>
+	  <t t-if="doc.type == 'binary'">
+		<div style="font-size: 24px; font-weight: 500;">
+		  <a t-att-href="'/my/documents/%s/document/%s/%s' %(portal_user.id, doc.id, doc.datas_fname or doc.name)">
+			<i class="fa fa-file" />
+			&amp;nbsp;
+			<t t-esc="doc.name" />
+		  </a>
+		</div>
+	  </t>
+	</template>
     <template id="portal_my_image_archive" name="My image archive">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -896,25 +925,8 @@ TODO: Activate me
           <div class="col-md-9">
             <h1 class="page-header">IMAGE BANK &amp; VIDEOS</h1>
             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
-            <t t-foreach="website.portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
-              <t t-if='doc.type == "url"'>
-                <div style='font-size: 24px; font-weight: 500;'>
-                  <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
-                    <i class="fa fa-link" />
-                    &amp;nbsp;
-                    <t t-esc="doc.name" />
-                  </a>
-                </div>
-              </t>
-              <t t-if='doc.type == "youtube"'>
-                <div style='font-size: 24px; font-weight: 500;'>
-                  <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
-                    <i class="{fa fa-youtube-square}" />
-                    &amp;nbsp;
-                    <t t-esc="doc.name" />
-                  </a>
-                </div>
-              </t>
+            <t t-foreach="website.sudo().portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
+              <t t-call="website_portal_sale_1028.portal_document_link"/>
             </t>
           </div>
         </div>
@@ -940,12 +952,8 @@ TODO: Activate me
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">NEWS &amp; OFFERS</h1>
-            <t t-foreach="website.get_portal_documents('news')" t-as="news">
-              <a t-att-href="'%s' %(news.url)" t-att-target="'_blank' if news.open_new_window else ''">
-                <i class="fa fa-download" />
-                &amp;nbsp;
-                <t t-esc="news.name" />
-              </a>
+            <t t-foreach="website.sudo().get_portal_documents('news')" t-as="doc">
+              <t t-call="website_portal_sale_1028.portal_document_link"/>
             </t>
           </div>
         </div>
@@ -957,12 +965,8 @@ TODO: Activate me
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">EVENTS &amp; TREATMENTS</h1>
-            <t t-foreach="website.get_portal_documents('event')" t-as="events">
-           <a t-att-href="'%s' %(events.url)" t-att-target="'_blank' if events.open_new_window else ''">
-                <i class="fa fa-download" />
-                &amp;nbsp;
-                <t t-esc="events.name" />
-              </a>
+            <t t-foreach="website.sudo().get_portal_documents('event')" t-as="doc">
+				<t t-call="website_portal_sale_1028.portal_document_link"/>
             </t>
           </div>
         </div>
@@ -974,12 +978,8 @@ TODO: Activate me
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">COMPENDIUM</h1>
-            <t t-foreach="website.get_portal_documents('compendium')" t-as="compendium">
-              <a t-att-href="'%s' %(compendium.url)" t-att-target="'_blank' if compendium.open_new_window else ''">
-                <i class="fa fa-download" />
-                &amp;nbsp;
-               <t t-esc="compendium.name" />
-             </a>
+            <t t-foreach="website.sudo().get_portal_documents('compendium')" t-as="doc">
+              <t t-call="website_portal_sale_1028.portal_document_link"/>
             </t>
           </div>
         </div>
@@ -1006,12 +1006,8 @@ TODO: Activate me
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">MISCELLANEOUS</h1>
-            <t t-foreach="website.get_portal_documents('other')" t-as="other">
-             <a t-att-href="'%s' %(other.url)">
-                <i class="fa fa-download" />
-                &amp;nbsp;
-                <t t-esc="other.name" />
-              </a>
+            <t t-foreach="website.sudo().get_portal_documents('other')" t-as="doc">
+              <t t-call="website_portal_sale_1028.portal_document_link"/>
             </t>
           </div>
         </div>
@@ -1375,19 +1371,19 @@ TODO: Activate me
                       </t>
                     </div>
                     <div class="order-detail-header-link-box col-xs-12 col-md-7 col-lg-7">
-                      <a t-att-href="'/my/orders/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank">
+                      <a t-att-href="'/my/documents/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank">
                         <i class="fa fa-download" />
                         &amp;nbsp;Download order
                       </a>
                       <t t-foreach="order.invoice_ids" t-as="invoice">
-                        <a t-att-href="'/my/orders/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace') if invoice.name else '')" target="_blank">
+                        <a t-att-href="'/my/documents/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace') if invoice.name else '')" target="_blank">
                           <i class="fa fa-download" />
                           &amp;nbsp;Download invoice
                           <t t-esc="invoice.number" />
                         </a>
                       </t>
                       <t t-foreach="order.picking_ids" t-as="picking">
-                        <a t-att-href="'/my/orders/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank">
+                        <a t-att-href="'/my/documents/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank">
                           <i class="fa fa-download" />
                           &amp;nbsp;Download picking
                           <t t-esc="picking.name" />

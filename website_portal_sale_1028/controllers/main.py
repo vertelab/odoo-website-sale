@@ -99,6 +99,8 @@ class website_account(website_account):
 
     @http.route(['/my/reclaim'], type='http', auth="user", website=True)
     def portal_my_reclaim (self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
             'active_menu': 'my_reclaim',
@@ -108,40 +110,55 @@ class website_account(website_account):
 
     @http.route(['/my/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
+            'portal_user': portal_user,
             'active_menu': 'my_imagearchive'
         })
         return request.render("website_portal_sale_1028.portal_my_image_archive", values)
 
     @http.route(['/my/news'], type='http', auth="user", website=True)
     def portal_my_news(self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
+            'portal_user': portal_user,
             'active_menu': 'my_news'
         })
         return request.render("website_portal_sale_1028.portal_my_news", values)
 
     @http.route(['/my/events'], type='http', auth="user", website=True)
     def portal_my_events(self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
+            'portal_user': portal_user,
             'active_menu': 'my_events'
         })
         return request.render("website_portal_sale_1028.portal_my_events", values)
 
     @http.route(['/my/other'], type='http', auth="user", website=True)
     def portal_my_other(self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
+            'portal_user': portal_user,
             'active_menu': 'my_other',
             })
         return request.render("website_portal_sale_1028.portal_my_other", values)
 
     @http.route(['/my/compendium'], type='http', auth="user", website=True)
     def portal_my_compendium(self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
+            'portal_user': portal_user,
             'active_menu': 'my_compendium',
             })
         return request.render("website_portal_sale_1028.portal_my_compendium", values)
@@ -332,13 +349,15 @@ class website_account(website_account):
         # return request.render('website_sale_home.home_page', value)
 
     def validate_user(self, user):
-        # TODO: This does nothing?
         if request.uid == request.env.ref('base.public_user').id:
             raise AccessError('You are not allowed to administrate this user.')
         if not user:
             raise AccessError('You are not allowed to administrate this user.')
+        # Only allow administration of customers
+        if not user.commercial_partner_id.customer:
+            raise AccessError('You are not allowed to administrate this user.')
         # TODO: Find better group? New one maybe.
-        if user.has_group('base.user'):
+        if request.env.user.has_group('base.group_user'):
             return
         same_company = request.env['res.partner'].search_count([('id', 'child_of', request.env.user.commercial_partner_id.id), ('id', '=', user.partner_id.id)])
         if not same_company:
@@ -607,7 +626,7 @@ class website_account(website_account):
                 })
         return werkzeug.utils.redirect("/shop/cart")
 
-    def check_document_access(self, report, ids):
+    def check_document_access(self, ids, report=None):
         partner = request.env.user.commercial_partner_id
         model = None
         if report == 'sale.report_saleorder':
@@ -629,37 +648,7 @@ class website_account(website_account):
             except:
                 # This check failed. Let it go to super to perform other checks.
                 pass
-        return super(website_portal_sale_1028, self).check_document_access(report, ids)
-
-    @http.route(['/my/orders/<model("res.users"):home_user>/print/<reportname>/<docids>',
-                 '/my/orders/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
-                 ], type='http', auth='user', website=True)
-    
-    def print_document(self, reportname, home_user=None, docids=None, docname=None, **data):
-        """Creates PDF documents with sudo to avoid access rights problems.
-        Implement access control per report type in check_document_access."""
-        home_user = home_user or request.env.user
-        self.validate_user(home_user)
-        if docids:
-            docids = [int(i) for i in docids.split(',')]
-        if not self.check_document_access(reportname, docids):
-            return request.website.render('website.403', {})
-        context = {}
-        options_data = None
-        if data.get('options'):
-            options_data = simplejson.loads(data['options'])
-        if data.get('context'):
-            # Ignore 'lang' here, because the context in data is the one from the webclient *but* if
-            # the user explicitely wants to change the lang, this mechanism overwrites it. 
-            data_context = simplejson.loads(data['context'])
-            if data_context.get('lang'):
-                del data_context['lang']
-            context.update(data_context)
-        # Version 8 of get_pdf takes a recordset but does nothing with it except fetch the ids.
-        dummy = DummyRecordSet(docids)
-        pdf = request.env['report'].sudo().with_context(context).get_pdf(dummy, reportname, data=options_data)
-        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
-        return request.make_response(pdf, headers=pdfhttpheaders)
+        return super(website_account, self).check_document_access(ids, report=report)
 
         # new contact, update contact
     @http.route(['/my/salon/<model("res.users"):home_user>/contact/new', '/my/salon/<model("res.users"):home_user>/contact/<model("res.partner"):partner>'], type='http', auth='user', website=True)
