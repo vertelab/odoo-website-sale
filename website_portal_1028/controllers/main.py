@@ -1,6 +1,23 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution, third party addon
+#    Copyright (C) 2020- Vertel AB (<http://vertel.se>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
 from openerp import http, fields, _
 from openerp.http import request
 from openerp import tools
@@ -8,6 +25,7 @@ from openerp.tools.translate import _
 
 from openerp.fields import Date
 from babel.dates import format_date
+from cStringIO import StringIO
 
 import logging
 _logger = logging.getLogger()
@@ -192,3 +210,74 @@ class website_account(http.Controller):
             error_message.append("Unknown field '%s'" % ','.join(unknown))
 
         return error, error_message
+
+    def check_document_access(self, ids, report=None):
+        """Override to implement access control."""
+        if not report:
+            # Documents are attachments
+            # Check if the attachments are in portal catalogs that this user is allowed to see.
+            allowed_ids = [a['id'] for a in request.env['ir.attachment'].sudo().search_read(
+                [
+                    ('id', 'in', ids),
+                    ('parent_id.portal_publish', '=', True),
+                    ('parent_id.group_ids.users', 'in', request.env.user.id)
+                ], ['id'])]
+            attachment_ids = set(ids) - set(allowed_ids)
+            _logger.warn(attachment_ids)
+            _logger.warn(allowed_ids)
+            if attachment_ids:
+                # Check if we're allowed to access remaining attachments
+                # must include some field other than id to trigger access check
+                allowed_ids = set([a['id'] for a in request.env['ir.attachment'].search_read([('id', 'in', list(attachment_ids))])], ['id', 'name'])
+                if attachment_ids - allowed_ids:
+                    # There are some attachments we're not allowed to read.
+                    return False
+            return True
+        return False
+    
+    @http.route(['/my/documents/<model("res.users"):home_user>/print/<reportname>/<docids>',
+                 '/my/documents/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
+                 ], type='http', auth='user', website=True)
+    def print_document(self, reportname, home_user=None, docids=None, docname=None, **data):
+        """Creates PDF documents with sudo to avoid access rights problems.
+        Implement access control per report type in check_document_access."""
+        self.validate_user(home_user)
+        if docids:
+            docids = [int(i) for i in docids.split(',')]
+        if not self.check_document_access(docids, report=reportname):
+            return request.website.render('website.403', {})
+        context = {}
+        options_data = None
+        if data.get('options'):
+            options_data = simplejson.loads(data['options'])
+        if data.get('context'):
+            # Ignore 'lang' here, because the context in data is the one from the webclient *but* if
+            # the user explicitely wants to change the lang, this mechanism overwrites it. 
+            data_context = simplejson.loads(data['context'])
+            if data_context.get('lang'):
+                del data_context['lang']
+            context.update(data_context)
+        # Version 8 of get_pdf takes a recordset but does nothing with it except fetch the ids.
+        dummy = DummyRecordSet(docids)
+        pdf = request.env['report'].sudo().with_context(context).get_pdf(dummy, reportname, data=options_data)
+        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
+        return request.make_response(pdf, headers=pdfhttpheaders)
+
+    @http.route(['/my/documents/<model("res.users"):home_user>/document/<int:document_id>',
+                 '/my/documents/<model("res.users"):home_user>/document/<int:document_id>/<docname>'
+                 ], type='http', auth="user", website=True)
+    def download_document(self, document_id, home_user=None, docname=None, **post):
+        self.validate_user(home_user)
+        if self.check_document_access([document_id]):
+            document = request.env['ir.attachment'].sudo().search([('id', '=', document_id)]) #TODO better security-check  check:225 ir_attachment.py  check:71 document.py
+            _logger.warn('Try to send %s' % document)
+            fname = (docname or document.datas_fname or document.name).encode('ascii', 'replace')
+            mime = mimetype=document.mimetype or document.file_type or ''
+            write_date=document.write_date
+            data = document.datas.decode('base64')
+            return http.send_file(StringIO(data), filename=fname, mimetype=mime, mtime=write_date, as_attachment=True)
+        return request.website.render('website.403', {})
+
+class DummyRecordSet(object):
+    def __init__(self, ids):
+        self.ids = ids

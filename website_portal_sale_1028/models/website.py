@@ -74,7 +74,7 @@ class website(models.Model):
         domain = self.my_order_search_domain_access(user, search)
         # ~ _logger.warn('\n\ndomain: %s\n' % domain)
         post = post or {}
-        if search and isinstance(search, str):
+        if search:
             search = search.strip()
             # invoices and picking
             orders = self.env['sale.order'].sudo().search_read(domain, ['invoice_ids', 'picking_ids'])
