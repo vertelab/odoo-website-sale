@@ -70,27 +70,28 @@ class SaleOrder(models.Model):
                                 state.append(_('Invoice') + ' ' + invoice.number + ': ' + _('Paid'))
         return state
 
-    @api.multi
-    def get_access_action(self):
+    @api.cr_uid_id_context
+    def get_access_action(self, cr, uid, id, context):
         """ Instead of the classic form view, redirect to the online quote for
         portal users that have access to a confirmed order. """
         # TDE note: read access on sale order to portal users granted to followed sale orders
-        self.ensure_one()
-        if self.state == 'cancel' or (self.state == 'draft' and not self.env.context.get('mark_so_as_sent')):
-            return super(SaleOrder, self).get_access_action()
-        if self.env.user.share or self.env.context.get('force_website'):
+        env = api.Environment(cr, uid, context)
+        record = env[self._name].browse(id)
+        if record.state == 'cancel' or (record.state == 'draft' and not env.context.get('mark_so_as_sent')):
+            return super(SaleOrder, self).get_access_action(cr, uid, id, context)
+        if env.user.share or env.context.get('force_website'):
             try:
-                self.check_access_rule('read')
+                self.check_access_rule(cr, uid, id, 'read', context)
             except exceptions.AccessError:
                 pass
             else:
                 return {
                     'type': 'ir.actions.act_url',
-                    'url': '/my/orders/%s' % self.id,
+                    'url': '/my/orders/%s' % id,
                     'target': 'self',
-                    'res_id': self.id,
+                    'res_id': id,
                 }
-        return super(SaleOrder, self).get_access_action()
+        return super(SaleOrder, self).get_access_action(cr, uid, id, context)
 
     @api.multi
     def _notification_recipients(self, message, groups):
