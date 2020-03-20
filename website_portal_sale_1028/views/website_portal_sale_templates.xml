@@ -910,7 +910,7 @@ TODO: Activate me
 	  </t>
 	  <t t-if="doc.type == 'binary'">
 		<div style="font-size: 24px; font-weight: 500;">
-		  <a t-att-href="'/my/documents/%s/document/%s/%s' %(portal_user.id, doc.id, doc.datas_fname or doc.name)">
+		  <a t-att-href="'/my/documents/%s/document/%s/%s' %(portal_user.id, doc.id, (doc.datas_fname or doc.name).encode('ascii', 'replace'))">
 			<i class="fa fa-file" />
 			&amp;nbsp;
 			<t t-esc="doc.name" />
