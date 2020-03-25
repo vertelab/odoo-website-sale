@@ -223,12 +223,10 @@ class website_account(http.Controller):
                     ('parent_id.group_ids.users', 'in', request.env.user.id)
                 ], ['id'])]
             attachment_ids = set(ids) - set(allowed_ids)
-            _logger.warn(attachment_ids)
-            _logger.warn(allowed_ids)
             if attachment_ids:
                 # Check if we're allowed to access remaining attachments
                 # must include some field other than id to trigger access check
-                allowed_ids = set([a['id'] for a in request.env['ir.attachment'].search_read([('id', 'in', list(attachment_ids))])], ['id', 'name'])
+                allowed_ids = set([a['id'] for a in request.env['ir.attachment'].search_read([('id', 'in', list(attachment_ids))], ['id', 'name'])])
                 if attachment_ids - allowed_ids:
                     # There are some attachments we're not allowed to read.
                     return False

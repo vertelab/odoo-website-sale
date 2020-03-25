@@ -23,7 +23,7 @@ class website(models.Model):
     @api.model
     def portal_sale_document_get(self, user, domain):
         if not domain:
-            domain = "[('parent_id.name', '=', 'public')]"
+            domain = "[('parent_id.name', '=', 'Public')]"
         return self.env['ir.attachment'].sudo().search(eval(domain))
 
     @api.model

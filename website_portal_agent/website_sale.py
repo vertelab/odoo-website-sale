@@ -64,8 +64,8 @@ class website(models.Model):
 
 class website_sale_home(website_account):
 
-    def check_document_access(self, report, ids):
-        res = super(website_sale_home, self).check_document_access(report, ids)
+    def check_document_access(self, ids, report=None):
+        res = super(website_sale_home, self).check_document_access(ids, report=report)
         if res:
             return res
         agent = request.env.user.commercial_partner_id

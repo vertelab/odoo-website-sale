@@ -68,6 +68,7 @@ class website_account(website_account):
         filters = request.website.my_order_get_all_filters(home_user)
         search = post.get('order_search')
         domain = request.website.my_order_search_domain(home_user, search, post)
+        _logger.debug('search_domain: %s' % (domain,))
 
         SaleOrder = request.env['sale.order']
 
@@ -84,8 +85,10 @@ class website_account(website_account):
             step=self._items_per_page,
             scope=7
         )
+        _logger.debug('pager: %s' % (pager,))
         # content according to pager and archive selected
         orders = SaleOrder.sudo().search(domain, limit=self._items_per_page, offset=pager['offset'])
+        _logger.debug('orders: %s' % (orders,))
         values.update({
             'orders': orders,
             'page_name': 'order',
@@ -637,11 +640,11 @@ class website_account(website_account):
             model = 'stock.picking'
         if model:
             try:
-                records = request.env[model].browse(ids)
                 # Check partner_id.
-                if all([r.partner_id.commercial_partner_id == partner for r in records.sudo()]):
+                if not (set(ids) - set([r['id'] for r in request.env[model].sudo().search_read([('partner_id', 'child_of', partner.id)], ['id'])])):
                     return True
                 # Check ordinary access controls
+                records = request.env[model].browse(ids)
                 records.check_access_rights('read')
                 records.check_access_rule('read')
                 return True
