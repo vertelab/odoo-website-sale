@@ -677,7 +677,7 @@ msgstr "Sök..."
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_mail
 msgid "Sent Mails"
-msgstr "Sent Mails"
+msgstr "Senaste mailutskicken"
 
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/website_sale.py:60

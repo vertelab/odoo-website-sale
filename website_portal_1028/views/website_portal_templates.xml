@@ -385,10 +385,11 @@ TODO: Activate me
                 <li>
                     <a href="/my/buyinfo">KÖPINFORMATION</a>
                 </li>
+            -->
                 <li>
                     <a href="/my/mail">MAIL &amp; PRENUMERATIONER</a>
                 </li>
--->
+
                 <li class="dropdown-submenu">
                     <a class="test" href="#">MEDIA</a>
                     <ul class="dropdown-menu">
