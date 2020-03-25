@@ -107,7 +107,6 @@ class website(models.Model):
         for key in post:
             if key.startswith('order_filter_'):
                 domain += self.my_order_filter_domain(user, key, post[key])
-        # ~ _logger.debug('search_domain: %s' % (domain))
         return domain
 
     @api.model

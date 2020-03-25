@@ -11,6 +11,7 @@ Allows your customers to manage their account from a beautiful web interface.
         """,
     'depends': [
         'website',
+        'document',
     ],
     'data': [
         'views/website_portal_templates.xml',

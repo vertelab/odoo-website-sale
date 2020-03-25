@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from openerp import models, fields, api, _
+from openerp.osv import osv
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -40,3 +41,12 @@ class DocumentDirectory(models.Model):
             for directory in self.search(domain):
                 super(DocumentDirectory, directory).write({'portal_publish': values['portal_publish']})
         return super(DocumentDirectory, self).write(values)
+
+class document_directory(osv.osv):
+    _inherit = 'document.directory'
+
+    def name_get(self, cr, uid, ids, context=None):
+        # This solves an issue when clicking the Documents button on the directory form
+        if type(ids) == int:
+            ids = [ids]
+        return super(document_directory, self).name_get(cr, uid, ids, context=context)

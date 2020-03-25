@@ -68,8 +68,7 @@ class website_account(website_account):
         filters = request.website.my_order_get_all_filters(home_user)
         search = post.get('order_search')
         domain = request.website.my_order_search_domain(home_user, search, post)
-        _logger.debug('search_domain: %s' % (domain,))
-
+        _logger.debug('search_domain: %s' % (domain))
         SaleOrder = request.env['sale.order']
 
         archive_groups = "" # DAER: Ugg not understand, Ugg remove.
