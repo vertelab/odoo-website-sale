@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-04 13:58+0000\n"
-"PO-Revision-Date: 2020-03-04 13:58+0000\n"
+"POT-Creation-Date: 2020-03-26 13:01+0000\n"
+"PO-Revision-Date: 2020-03-26 13:01+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "AKTUELLA ERBJUDANDEN"
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_archive_groups
 msgid "Archives"
-msgstr "Arkiv"
+msgstr "Archives"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.details
@@ -53,7 +53,7 @@ msgstr "Contact Details"
 #. module: website_portal_1028
 #: view:website:website_portal_1028.details
 msgid "Country"
-msgstr "Land<br>"
+msgstr "Land"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.details
@@ -76,6 +76,11 @@ msgid "Details"
 msgstr "Details"
 
 #. module: website_portal_1028
+#: model:ir.model,name:website_portal_1028.model_document_directory
+msgid "Document directory"
+msgstr "Document directory"
+
+#. module: website_portal_1028
 #: view:website:website_portal_1028.details
 msgid "Email"
 msgstr "E-post"
@@ -83,7 +88,7 @@ msgstr "E-post"
 #. module: website_portal_1028
 #: view:website:website.layout
 msgid "Events & Treatments"
-msgstr "Events & Behandlingar"
+msgstr "Event & Behandlingar"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_my_home
@@ -96,7 +101,7 @@ msgid "Image Bank"
 msgstr "Bildarkiv"
 
 #. module: website_portal_1028
-#: code:addons/website_portal_1028/controllers/main.py:169
+#: code:addons/website_portal_1028/controllers/main.py:187
 #, python-format
 msgid "Invalid Email! Please enter a valid email address."
 msgstr "Invalid Email! Please enter a valid email address."
@@ -105,6 +110,11 @@ msgstr "Invalid Email! Please enter a valid email address."
 #: view:website:website_portal_1028.portal_my_home
 msgid "KONSUMENTERBJUDANDE:"
 msgstr "KONSUMENTERBJUDANDE:"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "MAIL & SUBSCRIBERS"
+msgstr "MAIL & PRENUMERATIONER"
 
 #. module: website_portal_1028
 #: view:website:website.layout
@@ -139,12 +149,22 @@ msgstr "Odoo Members"
 #. module: website_portal_1028
 #: view:website:website_portal_1028.details
 msgid "Phone"
-msgstr "Telefon"
+msgstr "Telefone"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_layout
 msgid "Place your content here."
 msgstr "Place your content here."
+
+#. module: website_portal_1028
+#: field:document.directory,portal_publish:0
+msgid "Publish In Portal"
+msgstr "Publish In Portal"
+
+#. module: website_portal_1028
+#: help:document.directory,portal_publish:0
+msgid "Publish all content in this catalog to portal users. Will still match groups on the catalog if set."
+msgstr "Publish all content in this catalog to portal users. Will still match groups on the catalog if set."
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_my_home
@@ -162,7 +182,7 @@ msgid "Salesman"
 msgstr "Salesman"
 
 #. module: website_portal_1028
-#: code:addons/website_portal_1028/controllers/main.py:187
+#: code:addons/website_portal_1028/controllers/main.py:205
 #, python-format
 msgid "Some required fields are empty."
 msgstr "Some required fields are empty."
@@ -218,7 +238,7 @@ msgid "select..."
 msgstr "välj..."
 
 #. module: website_portal_1028
-#: code:addons/website_portal_1028/controllers/main.py:67
+#: code:addons/website_portal_1028/controllers/main.py:85
 #, python-format
 msgid "until further notice"
 msgstr "Tillsvidare"
