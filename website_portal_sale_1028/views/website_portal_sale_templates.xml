@@ -118,7 +118,7 @@ TODO: Activate me
 
 
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
-          <a href="/my/mail">Mail &amp; Prenumeranter</a>
+          <a href="/my/mail">Mail &amp; Subscribers</a>
         </li>
 
         <p>Media</p>
