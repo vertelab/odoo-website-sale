@@ -354,3 +354,17 @@ div.row.mail_lists_lines:nth-child(2n+1) {
     border-bottom-width: 1px;
     border-bottom: none;
 }
+
+.dropdown-submenu {
+    position: relative;
+    z-index: 1000;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+}
