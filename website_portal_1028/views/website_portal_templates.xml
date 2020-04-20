@@ -219,7 +219,7 @@
                                     <t t-set="categ_others" t-value="request.env.ref('website_sale.categ_others')" />
                                     <t t-foreach="categ_others.child_id[:8]" t-as="category">
                                         <div class="col-sm-12">
-                                                <t t-field="category.name" />
+                                                <a t-field="category.name" />
                                         </div>
                                     </t>
                                 </div>
