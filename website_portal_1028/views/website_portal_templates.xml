@@ -1,420 +1,426 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
-        <template id="assets_frontend" inherit_id="website.assets_frontend" name="Account Manager">
-            <xpath expr="." position="inside">
-                <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.less' />
-                <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.css' />
-                <script type="text/javascript" src="/website_portal_1028/static/src/js/website_portal_1028.js" />
-            </xpath>
-        </template>
-        <template id="portal_archive_groups" name="Portal Archive Groups">
-            <h3 class="page-header">Archives</h3>
-            <ul class="nav nav-pills nav-stacked">
-                <t t-foreach="archive_groups" t-as="group">
-                    <t t-if="group['date_begin'] == date">
-                        <li class="active">
-                            <a t-att-href="default_url" t-ignore="True">
-                                <t t-esc="group['name']" />
-                                <span class="pull-right badge" t-esc="group['item_count']" />
-                            </a>
-                        </li>
-                    </t>
-                    <t t-if="group['date_begin'] != date">
-                        <li>
-                            <a t-ignore="True" t-attf-href="#{default_url}?date_begin=#{group['date_begin']}&amp;date_end=#{group['date_end']}">
-                                <t t-esc="group['name']" />
-                                <span class="pull-right badge" t-esc="group['item_count']" />
-                            </a>
-                        </li>
-                    </t>
+  <data>
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Account Manager">
+      <xpath expr="." position="inside">
+        <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.less' />
+        <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.css' />
+        <script type="text/javascript" src="/website_portal_1028/static/src/js/website_portal_1028.js" />
+      </xpath>
+    </template>
+    <template id="portal_archive_groups" name="Portal Archive Groups">
+      <h3 class="page-header">Archives</h3>
+      <ul class="nav nav-pills nav-stacked">
+        <t t-foreach="archive_groups" t-as="group">
+          <t t-if="group['date_begin'] == date">
+            <li class="active">
+              <a t-att-href="default_url" t-ignore="True">
+                <t t-esc="group['name']" />
+                <span class="pull-right badge" t-esc="group['item_count']" />
+              </a>
+            </li>
+          </t>
+          <t t-if="group['date_begin'] != date">
+            <li>
+              <a t-ignore="True" t-attf-href="#{default_url}?date_begin=#{group['date_begin']}&amp;date_end=#{group['date_end']}">
+                <t t-esc="group['name']" />
+                <span class="pull-right badge" t-esc="group['item_count']" />
+              </a>
+            </li>
+          </t>
+        </t>
+      </ul>
+    </template>
+    <template id="portal_layout" name="Portal Layout">
+      <t t-call="website.layout">
+        <div class="container mt16">
+          <div class="navbar navbar-light">
+            <div class="navbar-header">
+              <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.css' />
+            </div>
+            <div class="" id="">
+              <ul class="nav navbar-nav o_portal_submenu" />
+            </div>
+          </div>
+        </div>
+        <!--     <div id="wrap" class="oe_structure oe_empty">
+             </div> -->
+        <t t-raw="0" />
+      </t>
+    </template>
+    <template id="portal_my_home" name="My Pages">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="o_my_home_content">
+          <div class="oe_structure" />
+        </div>
+        <div class="col-md-12 oe_structure" />
+        <section>
+          <div class="container black_section_title">
+            <h4>AKTUELLA ERBJUDANDEN</h4>
+          </div>
+        </section>
+        <section class="all">
+          <div class="container">
+            <div class="col-sm-6 offers_table">
+              <div class="first_row row">
+                <div class="col-xs-5">
+                  <h5>KONSUMENTERBJUDANDE:</h5>
+                </div>
+                <div class="col-xs-3">
+                  <h5>UTPRIS:</h5>
+                </div>
+                <div class="col-xs-4">
+                  <h5>SÄLJPERIOD:</h5>
+                </div>
+              </div>
+              <section class="rows">
+                <t t-foreach="offers_consumer" t-as="consumer">
+                  <div class="campaigns_rows row">
+                    <div class="col-xs-5">
+                      <a t-att-href="consumer['url']">
+                        <t t-esc="consumer['product']" />
+                      </a>
+                    </div>
+                    <div class="col-xs-3">
+                      <t t-esc="consumer['price']" />
+                    </div>
+                    <div class="col-xs-4">
+                      <t t-esc="consumer['period']" />
+                    </div>
+                  </div>
                 </t>
-            </ul>
-        </template>
-        <template id="portal_layout" name="Portal Layout">
-            <t t-call="website.layout">
-                <div class="container mt16">
-                    <div class="navbar navbar-light">
-                        <div class="navbar-header">
-                            <link rel='stylesheet' href='/website_portal_1028/static/src/less/website_portal_1028.css' />
-                        </div>
-                        <div class="" id="">
-                            <ul class="nav navbar-nav o_portal_submenu" />
-                        </div>
-                    </div>
+              </section>
+              <section>
+                <div class="first_row row">
+                  <div class="col-xs-5">
+                    <h5>SALONGSERBJUDANDE:</h5>
+                  </div>
+                  <div class="col-xs-3">
+                    <h5>UTPRIS:</h5>
+                  </div>
+                  <div class="col-xs-4">
+                    <h5>SÄLJPERIOD:</h5>
+                  </div>
                 </div>
-                <!--     <div id="wrap" class="oe_structure oe_empty">
-                     </div> -->
-                <t t-raw="0" />
-            </t>
-        </template>
-        <template id="portal_my_home" name="My Pages">
-            <t t-call="website_portal_1028.portal_layout">
-                <div class="o_my_home_content">
-                    <div class="oe_structure" />
-                </div>
-                <div class="col-md-12 oe_structure" />
-                <section>
-                    <div class="container black_section_title">
-                        <h4>AKTUELLA ERBJUDANDEN</h4>
+              </section>
+              <section class="rows">
+                <t t-foreach="offers_salon" t-as="salon">
+                  <div class="campaigns_rows row">
+                    <div class="col-xs-5">
+                      <a t-att-href="salon['url']">
+                        <t t-esc="salon['product']" />
+                      </a>
                     </div>
-                </section>
-                <section class="all">
-                    <div class="container">
-                        <div class="col-sm-6 offers_table">
-                            <div class="first_row row">
-                                <div class="col-xs-5">
-                                    <h5>KONSUMENTERBJUDANDE:</h5>
-                                </div>
-                                <div class="col-xs-3">
-                                    <h5>UTPRIS:</h5>
-                                </div>
-                                <div class="col-xs-4">
-                                    <h5>SÄLJPERIOD:</h5>
-                                </div>
-                            </div>
-                            <section class="rows">
-                                <t t-foreach="offers_consumer" t-as="consumer">
-                                    <div class="campaigns_rows row">
-                                        <div class="col-xs-5">
-                                            <a t-att-href="consumer['url']">
-                                                <t t-esc="consumer['product']" />
-                                            </a>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <t t-esc="consumer['price']" />
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <t t-esc="consumer['period']" />
-                                        </div>
-                                    </div>
-                                </t>
-                            </section>
-                            <section>
-                                <div class="first_row row">
-                                    <div class="col-xs-5">
-                                        <h5>SALONGSERBJUDANDE:</h5>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h5>UTPRIS:</h5>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <h5>SÄLJPERIOD:</h5>
-                                    </div>
-                                </div>
-                            </section>
-                            <section class="rows">
-                                <t t-foreach="offers_salon" t-as="salon">
-                                    <div class="campaigns_rows row">
-                                        <div class="col-xs-5">
-                                            <a t-att-href="salon['url']">
-                                                <t t-esc="salon['product']" />
-                                            </a>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <t t-esc="salon['price']" />
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <t t-esc="salon['period']" />
-                                        </div>
-                                    </div>
-                                </t>
-                            </section>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <section class="para_large">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-12 d-none d-sm-block">
-                                                <div class="o_margin_l pull-right">
-                                                    <div class="o_container">
-                                                        <div class="col-md-12 oe_structure">
-                                                            <section>
-                                                                <div class="carousel slide carousel-fade" data-ride="carousel" id="myCarousel_dermanord_home" style="overflow: hidden;">
-                                                                    <div class="carousel-inner">
-                                                                        <t t-set="first_slide" t-value="True" />
-                                                                        <t t-foreach="offers_salon + offers_consumer" t-as="salon">
-                                                                            <t t-if="salon['image']">
-                                                                                <div t-att-class="'item active' if first_slide else 'item oe_dark'" style="">
-                                                                                    <t t-set="first_slide" t-value="False" />
-                                                                                    <img class="img-responsive" t-att-src="salon['image']" style="position: relative;" />
-                                                                                    <div class="container" style="position: absolute; top: 20%; left: 20%;">
-                                                                                        <div class="row content">
-                                                                                            <div class="col-md-6 col-sm-12" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </t>
-                                                                        </t>
-                                                                    </div>
-                                                                    <a class="left carousel-control" data-slide="prev" href="#myCarousel_dermanord_home">
-                                                                        <i class="fa fa-chevron-left" />
-                                                                    </a>
-                                                                    <a class="right carousel-control" data-slide="next" href="#myCarousel_dermanord_home">
-                                                                        <i class="fa fa-chevron-right" style="" />
-                                                                    </a>
-                                                                </div>
-                                                            </section>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                    <div class="col-xs-3">
+                      <t t-esc="salon['price']" />
+                    </div>
+                    <div class="col-xs-4">
+                      <t t-esc="salon['period']" />
+                    </div>
+                  </div>
+                </t>
+              </section>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <section class="para_large">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-12 d-none d-sm-block">
+                        <div class="o_margin_l pull-right">
+                          <div class="o_container">
+                            <div class="col-md-12 oe_structure">
+                              <section>
+                                <div class="carousel slide carousel-fade" data-ride="carousel" id="myCarousel_dermanord_home" style="overflow: hidden;">
+                                  <div class="carousel-inner">
+                                    <t t-set="first_slide" t-value="True" />
+                                    <t t-foreach="offers_salon + offers_consumer" t-as="salon">
+                                      <t t-if="salon['image']">
+                                        <div t-att-class="'item active' if first_slide else 'item oe_dark'" style="">
+                                          <t t-set="first_slide" t-value="False" />
+                                          <img class="img-responsive" t-att-src="salon['image']" style="position: relative;" />
+                                          <div class="container" style="position: absolute; top: 20%; left: 20%;">
+                                            <div class="row content">
+                                              <div class="col-md-6 col-sm-12" />
                                             </div>
+                                          </div>
                                         </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="container black_section_title">
-                        <h4>SENASTE NYTT</h4>
-                    </div>
-                </section>
-                <section class="all">
-                    <div class="container">
-                        <div class="latest_mail col-sm-6 col-xs-12">
-                            <div class="o_container">
-                                <div class="row mail_first_line">
-                                    <div class="col-sm-3 col-xs-3 p-3">
-                                        <img alt="Odoo Members" class="img img-responsive" src="/website/image/ir.attachment/250848_9618f28/datas" />
-                                    </div>
-                                    <div class="col-sm-9 col-xs-9">
-                                        <h4>DU HAR VÄL KOLLAT MAILEN?</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
-                            <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='sent DESC')" />
-                            <div class="row mail_lists_line">
-                                <div class="col-sm-3 col-xs-3">
-                                    <t t-if="mails">
-                                        <t t-foreach="mails" t-as="mail">
-                                            <li>
-                                                <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                                                    <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
-                                                </a>
-                                            </li>
-                                        </t>
+                                      </t>
                                     </t>
+                                  </div>
+                                  <a class="left carousel-control" data-slide="prev" href="#myCarousel_dermanord_home">
+                                    <i class="fa fa-chevron-left" />
+                                  </a>
+                                  <a class="right carousel-control" data-slide="next" href="#myCarousel_dermanord_home">
+                                    <i class="fa fa-chevron-right" style="" />
+                                  </a>
                                 </div>
-                                <div class="col-sm-9 col-xs-9">
-                                    <t t-if="mails">
-                                        <t t-foreach="mails" t-as="mail">
-                                            <li>
-                                                <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                                                    <t t-esc="mail.mass_mailing_id.name" />
-                                                </a>
-                                            </li>
-                                        </t>
-                                    </t>
-                                </div>
+                              </section>
                             </div>
+                          </div>
                         </div>
-                        <div class="gift_section col-sm-3 col-xs-6 ">
-                            <h4>HÄR FINNS ALLT MATERIAL DU BEHÖVER</h4>
-                            <section class="gift_rows">
-                                <div class="row">
-                                    <t t-set="categ_others" t-value="request.env.ref('website_sale.categ_others')" />
-                                    <t t-foreach="categ_others.child_id[:8]" t-as="category">
-                                        <div class="col-sm-12">
-                                                <p t-field="category.name" />
-                                        </div>
-                                    </t>
-                                </div>
-                                <div class="show_all">
-                                    <li>
-                                        <a t-att-href="'/webshop/category/%s' % categ_others.id">Visa alla</a>
-                                    </li>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="col-sm-3 col-xs-6 ">
-                            <div class="o_container">
-                                <img alt="Odoo Members" class="img img-responsive" src="/website/image/ir.attachment/250831_184c2e1/datas" style="" />
-                            </div>
-                        </div>
+                      </div>
                     </div>
+                  </div>
                 </section>
-                <div id="wrap" class="oe_structure oe_empty" />
-            </t>
-        </template>
-        <template id="custom_panel" inherit_id="portal_layout" customize_show="True" name="Portal Editable Panel" active="False">
-            <xpath expr="//div[@id='o_my_sidebar']" position="inside">
-                <div class="oe_structure">
-                    <h3 class="page-header">Custom Panel</h3>
-                    <p>Place your content here.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="container black_section_title">
+            <h4>SENASTE NYTT</h4>
+          </div>
+        </section>
+        <section class="all">
+          <div class="container">
+            <div class="latest_mail col-sm-6 col-xs-12">
+              <div class="o_container">
+                <div class="row mail_first_line">
+                  <div class="col-sm-3 col-xs-3 p-3">
+                    <img alt="Odoo Members" class="img img-responsive" src="/website/image/ir.attachment/250848_9618f28/datas" />
+                  </div>
+                  <div class="col-sm-9 col-xs-9">
+                    <h4>DU HAR VÄL KOLLAT MAILEN?</h4>
+                  </div>
                 </div>
-            </xpath>
-        </template>
-        <template id="contact" name="Contact">
-            <h3 class="page-header">Salesman</h3>
-            <h5 t-esc="sales_rep.name" />
-            <p>
-                <a t-att-href="'mailto:'+sales_rep.email" t-esc="sales_rep.email" />
-            </p>
-            <p t-esc="sales_rep.phone" />
-            <p t-esc="sales_rep.city" />
-        </template>
-        <template id="details">
-            <t t-call="website.layout">
-                <t t-set="additional_title">Contact Details</t>
-                <div id="wrap">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <ol class="breadcrumb mt8">
-                                    <li>
-                                        <a href="/my/home">
-                                            <i class="fa fa-home" />
-                                        </a>
-                                    </li>
-                                    <li>Details</li>
-                                </ol>
-                            </div>
-                        </div>
-                        <h1>Contact Details</h1>
-                        <form action="/my/account" method="post">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                            <div class="row o_website_portal_details">
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div t-if="error_message" class="alert alert-danger">
-                                                <t t-foreach="error_message" t-as="err">
-                                                    <t t-esc="err" />
-                                                    <br />
-                                                </t>
-                                            </div>
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('name') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="name">Your Name</label>
-                                            <input type="text" name="name" class="form-control" t-att-value="name or partner.name" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('email') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="email">Email</label>
-                                            <input type="email" name="email" class="form-control" t-att-value="email or partner.email" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('phone') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="phone">Phone</label>
-                                            <input type="tel" name="phone" class="form-control" t-att-value="phone or partner.phone" />
-                                        </div>
-                                        <div class="clearfix" />
-                                        <div t-attf-class="form-group #{error.get('company_name') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label label-optional" for="company_name">Company Name</label>
-                                            <p t-if="partner.commercial_partner_id.is_company" class="form-control" t-esc="partner.commercial_company_name" />
-                                            <input t-else="" type="text" name="company_name" class="form-control" t-att-value="company_name or partner.company_name" />
-                                        </div>
-                                        <div t-if="has_check_vat" t-attf-class="form-group #{error.get('vat') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label label-optional" for="vat">VAT Number</label>
-                                            <input type="text" name="vat" class="form-control" t-att-value="vat or partner.vat" />
-                                        </div>
-                                        <div class="clearfix" />
-                                        <div t-attf-class="form-group #{error.get('street') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label label-optional" for="street">Street</label>
-                                            <input type="text" name="street" class="form-control" t-att-value="street or partner.street" />
-                                        </div>
-                                        my/quotes
-                                        <div t-attf-class="form-group #{error.get('city') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="city">City</label>
-                                            <input type="text" name="city" class="form-control" t-att-value="city or partner.city" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="zipcode">Zip / Postal Code</label>
-                                            <input type="text" name="zipcode" class="form-control" t-att-value="zipcode or partner.zip" />
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('country_id') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label" for="country_id">Country</label>
-                                            <select name="country_id" class="form-control">
-                                                <option value="">Country...</option>
-                                                <t t-foreach="countries or []" t-as="country">
-                                                    <option t-att-value="country.id" t-att-selected="country.id == int(country_id) if country_id else country.id == partner.country_id.id">
-                                                        <t t-esc="country.name" />
-                                                    </option>
-                                                </t>
-                                            </select>
-                                        </div>
-                                        <div t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''} col-lg-6">
-                                            <label class="control-label label-optional" for="state_id">State / Province</label>
-                                            <select name="state_id" class="form-control">
-                                                <option value="">select...</option>
-                                                <t t-foreach="states or []" t-as="state">
-                                                    <option t-att-value="state.id" style="display:none;" t-att-data-country_id="state.country_id.id" t-att-selected="state.id == partner.state_id.id">
-                                                        <t t-esc="state.name" />
-                                                    </option>
-                                                </t>
-                                            </select>
-                                        </div>
-                                        <input type="hidden" name="redirect" t-att-value="redirect" />
-                                    </div>
-                                    <div class="clearfix">
-                                        <button type="submit" class="btn btn-default btn-primary pull-right mb32 ">
-                                            Confirm
-                                            <span class="fa fa-long-arrow-right" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+              </div>
+              <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
+              <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='sent DESC')" />
+              <div class="row mail_lists_line">
+                <div class="col-sm-3 col-xs-3">
+                  <t t-if="mails">
+                    <t t-foreach="mails" t-as="mail">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
+                        </a>
+                      </li>
+                    </t>
+                  </t>
                 </div>
-            </t>
-        </template>
-        <template id="website_theme_aktuellt" inherit_id="website.layout" name="Website Theme aktuellt" priority="100">
-            <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
-<!--
-TODO: Activate me
+                <div class="col-sm-9 col-xs-9">
+                  <t t-if="mails">
+                    <t t-foreach="mails" t-as="mail">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.name" />
+                        </a>
+                      </li>
+                    </t>
+                  </t>
+                </div>
+              </div>
+            </div>
+            <div class="gift_section col-sm-3 col-xs-6 ">
+              <h4>HÄR FINNS ALLT MATERIAL DU BEHÖVER</h4>
+              <section class="gift_rows">
+                <div class="row">
+                  <t t-set="categ_others" t-value="request.env.ref('website_sale.categ_others')" />
+                  <t t-foreach="categ_others.child_id[:8]" t-as="category">
+                    <div class="col-sm-12" data-oe-id="category.id">
+                      <a t-esc="category.name" t-att-href="'/webshop/category/%s' % category.id" />
+                    </div>
+                  </t>
+                </div>
+              </section>
+              <div class="show_all">
                 <li>
-                    <a href="/my/home">AKTUELLT</a>
+                  <a t-att-href="'/webshop/category/%s' % categ_others.id">Visa alla</a>
                 </li>
--->
-                <li>
-                    <a href="/my/salon">MY SALON</a>
-                </li>
-                <li>
-                    <a href="/my/orders">MY ORDERS</a>
-                </li>
-<!--
-TODO: Activate me
-                <li>
-                    <a href="/my/obsolete">UTGÅENDE PRODUKTER</a>
-                </li>
-                <li>
-                    <a href="/my/buyinfo">KÖPINFORMATION</a>
-                </li>
+              </div>
+              <section class="gift_rows">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="oe_structure oe_empty" id="oe_height" />
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div class="col-sm-3 col-xs-6 ">
+              <div class="o_container">
+                <img alt="Odoo Members" class="img img-responsive" src="/website/image/ir.attachment/250831_184c2e1/datas" style="" />
+              </div>
+            </div>
+          </div>
+        </section>
+        <div id="wrap" class="oe_structure oe_empty" />
+      </t>
+    </template>
+    <template id="custom_panel" inherit_id="portal_layout" customize_show="True" name="Portal Editable Panel" active="False">
+      <xpath expr="//div[@id='o_my_sidebar']" position="inside">
+        <div class="oe_structure">
+          <h3 class="page-header">Custom Panel</h3>
+          <p>Place your content here.</p>
+        </div>
+      </xpath>
+    </template>
+    <template id="contact" name="Contact">
+      <h3 class="page-header">Salesman</h3>
+      <h5 t-esc="sales_rep.name" />
+      <p>
+        <a t-att-href="'mailto:'+sales_rep.email" t-esc="sales_rep.email" />
+      </p>
+      <p t-esc="sales_rep.phone" />
+      <p t-esc="sales_rep.city" />
+    </template>
+    <template id="details">
+      <t t-call="website.layout">
+        <t t-set="additional_title">Contact Details</t>
+        <div id="wrap">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6">
+                <ol class="breadcrumb mt8">
+                  <li>
+                    <a href="/my/home">
+                      <i class="fa fa-home" />
+                    </a>
+                  </li>
+                  <li>Details</li>
+                </ol>
+              </div>
+            </div>
+            <h1>Contact Details</h1>
+            <form action="/my/account" method="post">
+              <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+              <div class="row o_website_portal_details">
+                <div class="col-md-8">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div t-if="error_message" class="alert alert-danger">
+                        <t t-foreach="error_message" t-as="err">
+                          <t t-esc="err" />
+                          <br />
+                        </t>
+                      </div>
+                    </div>
+                    <div t-attf-class="form-group #{error.get('name') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label" for="name">Your Name</label>
+                      <input type="text" name="name" class="form-control" t-att-value="name or partner.name" />
+                    </div>
+                    <div t-attf-class="form-group #{error.get('email') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label" for="email">Email</label>
+                      <input type="email" name="email" class="form-control" t-att-value="email or partner.email" />
+                    </div>
+                    <div t-attf-class="form-group #{error.get('phone') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label" for="phone">Phone</label>
+                      <input type="tel" name="phone" class="form-control" t-att-value="phone or partner.phone" />
+                    </div>
+                    <div class="clearfix" />
+                    <div t-attf-class="form-group #{error.get('company_name') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label label-optional" for="company_name">Company Name</label>
+                      <p t-if="partner.commercial_partner_id.is_company" class="form-control" t-esc="partner.commercial_company_name" />
+                      <input t-else="" type="text" name="company_name" class="form-control" t-att-value="company_name or partner.company_name" />
+                    </div>
+                    <div t-if="has_check_vat" t-attf-class="form-group #{error.get('vat') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label label-optional" for="vat">VAT Number</label>
+                      <input type="text" name="vat" class="form-control" t-att-value="vat or partner.vat" />
+                    </div>
+                    <div class="clearfix" />
+                    <div t-attf-class="form-group #{error.get('street') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label label-optional" for="street">Street</label>
+                      <input type="text" name="street" class="form-control" t-att-value="street or partner.street" />
+                    </div>
+                    my/quotes
+                    <div t-attf-class="form-group #{error.get('city') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label" for="city">City</label>
+                      <input type="text" name="city" class="form-control" t-att-value="city or partner.city" />
+                    </div>
+                    <div t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label" for="zipcode">Zip / Postal Code</label>
+                      <input type="text" name="zipcode" class="form-control" t-att-value="zipcode or partner.zip" />
+                    </div>
+                    <div t-attf-class="form-group #{error.get('country_id') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label" for="country_id">Country</label>
+                      <select name="country_id" class="form-control">
+                        <option value="">Country...</option>
+                        <t t-foreach="countries or []" t-as="country">
+                          <option t-att-value="country.id" t-att-selected="country.id == int(country_id) if country_id else country.id == partner.country_id.id">
+                            <t t-esc="country.name" />
+                          </option>
+                        </t>
+                      </select>
+                    </div>
+                    <div t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''} col-lg-6">
+                      <label class="control-label label-optional" for="state_id">State / Province</label>
+                      <select name="state_id" class="form-control">
+                        <option value="">select...</option>
+                        <t t-foreach="states or []" t-as="state">
+                          <option t-att-value="state.id" style="display:none;" t-att-data-country_id="state.country_id.id" t-att-selected="state.id == partner.state_id.id">
+                            <t t-esc="state.name" />
+                          </option>
+                        </t>
+                      </select>
+                    </div>
+                    <input type="hidden" name="redirect" t-att-value="redirect" />
+                  </div>
+                  <div class="clearfix">
+                    <button type="submit" class="btn btn-default btn-primary pull-right mb32 ">
+                      Confirm
+                      <span class="fa fa-long-arrow-right" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="website_theme_aktuellt" inherit_id="website.layout" name="Website Theme aktuellt" priority="100">
+      <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
+        <!--
+             TODO: Activate me
+             <li>
+             <a href="/my/home">AKTUELLT</a>
+             </li>
+        -->
+        <li>
+          <a href="/my/salon">MY SALON</a>
+        </li>
+        <li>
+          <a href="/my/orders">MY ORDERS</a>
+        </li>
+        <!--
+             TODO: Activate me
+             <li>
+             <a href="/my/obsolete">UTGÅENDE PRODUKTER</a>
+             </li>
+             <li>
+             <a href="/my/buyinfo">KÖPINFORMATION</a>
+             </li>
+        -->
+        <li>
+          <a href="/my/mail">MAIL &amp; SUBSCRIBERS</a>
+        </li>
+        <li class="dropdown-submenu">
+          <a class="test" href="#">MEDIA</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/my/imagearchive">Image Bank</a>
+            </li>
+            <!--
+                 TODO: Activate me
+                 <li>
+                 <a href="/my/pricelist">Prislicelist</a>
+                 </li>
             -->
-                <li>
-                    <a href="/my/mail">MAIL &amp; SUBSCRIBERS</a>
-                </li>
-
-                <li class="dropdown-submenu">
-                    <a class="test" href="#">MEDIA</a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="/my/imagearchive">Image Bank</a>
-                        </li>
-<!--
-TODO: Activate me
-                        <li>
-                            <a href="/my/pricelist">Prislicelist</a>
-                        </li>
--->
-                        <li>
-                            <a href="/my/news">News &amp; offers</a>
-                        </li>
-                        <li>
-                            <a href="/my/events">Events &amp; Treatments</a>
-                        </li>
-                        <li>
-                            <a href="/my/compendium">Compendium</a>
-                        </li>
-                        <li>
-                            <a href="/my/other">Miscellaneous</a>
-                        </li>
-                    </ul>
-                </li>
-            </xpath>
-        </template>
-    </data>
+            <li>
+              <a href="/my/news">News &amp; offers</a>
+            </li>
+            <li>
+              <a href="/my/events">Events &amp; Treatments</a>
+            </li>
+            <li>
+              <a href="/my/compendium">Compendium</a>
+            </li>
+            <li>
+              <a href="/my/other">Miscellaneous</a>
+            </li>
+          </ul>
+        </li>
+      </xpath>
+    </template>
+  </data>
 </openerp>

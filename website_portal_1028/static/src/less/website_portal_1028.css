@@ -64,7 +64,7 @@ section.gift_rows .row a{
 }
 
 .latest_mail.col-sm-6 {
-    height: 340px;
+    min-height: 420px;
     background-color: #CCD7D8;
     padding: 3%;
 }
@@ -82,7 +82,11 @@ section.gift_rows .row div:nth-child(2n+1) {
 }
 
 .gift_section.col-sm-3 {
-    padding: 2% 3% 2% 3%;
+    padding: 0% 3% 2% 3%;
+}
+
+#oe_height{
+    padding: 0 !important;
 }
 
 .mail_first_line{
