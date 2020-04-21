@@ -93,7 +93,7 @@ section.gift_rows2 .col-sm-12{
     padding: 0;
 }
 section.gift_rows2 a{
-    color: #333333;
+    color: #333333 !important;
     padding-left:3px;
 }
 .mail_first_line{
