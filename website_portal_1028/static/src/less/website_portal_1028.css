@@ -74,7 +74,7 @@ section.all .container {
 }
 
 section.rows .row:nth-child(odd) {
-    background-color: #F2F1EE;;
+    background-color: #F2F1EE;
 }
 
 section.gift_rows .row div:nth-child(2n+1) {
@@ -91,6 +91,10 @@ section.gift_rows .row div:nth-child(2n+1) {
 
 section.gift_rows2 .col-sm-12{
     padding: 0;
+}
+section.gift_rows2 a{
+    color: #333333;
+    padding-left:3px;
 }
 .mail_first_line{
 
