@@ -89,7 +89,11 @@ section.gift_rows .row div:nth-child(2n+1) {
     padding: 0 !important;
 }
 
+section.gift_rows2 .col-sm-12{
+    padding: 0;
+}
 .mail_first_line{
+
 border-bottom: 2px solid black;
 }
 

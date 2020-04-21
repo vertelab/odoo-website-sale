@@ -229,7 +229,7 @@
                   <a t-att-href="'/webshop/category/%s' % categ_others.id">Visa alla</a>
                 </li>
               </div>
-              <section class="gift_rows">
+              <section class="gift_rows2">
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="oe_structure oe_empty" id="oe_height" />
