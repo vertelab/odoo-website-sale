@@ -64,7 +64,7 @@ section.gift_rows .row a{
 }
 
 .latest_mail.col-sm-6 {
-    height: 340px;
+    min-height: 420px;
     background-color: #CCD7D8;
     padding: 3%;
 }
@@ -74,7 +74,7 @@ section.all .container {
 }
 
 section.rows .row:nth-child(odd) {
-    background-color: #F2F1EE;;
+    background-color: #F2F1EE;
 }
 
 section.gift_rows .row div:nth-child(2n+1) {
@@ -82,10 +82,22 @@ section.gift_rows .row div:nth-child(2n+1) {
 }
 
 .gift_section.col-sm-3 {
-    padding: 2% 3% 2% 3%;
+    padding: 0% 3% 2% 3%;
 }
 
+#oe_height{
+    padding: 0 !important;
+}
+
+section.gift_rows2 .col-sm-12{
+    padding: 0;
+}
+section.gift_rows2 a{
+    color: #333333 !important;
+    padding-left:3px;
+}
 .mail_first_line{
+
 border-bottom: 2px solid black;
 }
 
