@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-26 13:01+0000\n"
-"PO-Revision-Date: 2020-03-26 13:01+0000\n"
+"POT-Creation-Date: 2020-04-22 11:43+0000\n"
+"PO-Revision-Date: 2020-04-22 11:43+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,13 +17,43 @@ msgstr ""
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_my_home
+msgid "&nbsp; Länk1"
+msgstr "&nbsp; Länk1"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "&nbsp; Länk2"
+msgstr "&nbsp; Länk2"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "&nbsp; Länk3"
+msgstr "&nbsp; Länk3"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
 msgid "AKTUELLA ERBJUDANDEN"
 msgstr "AKTUELLA ERBJUDANDEN"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "AKTUELLT"
+msgstr "AKTUELLT"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_archive_groups
 msgid "Archives"
 msgstr "Archives"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "BOOSTAD FRESHNER"
+msgstr "BOOSTAD FRESHNER"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "COMPACT FONDATION IS BACK"
+msgstr "COMPACT FONDATION IS BACK"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.details
@@ -112,6 +142,16 @@ msgid "KONSUMENTERBJUDANDE:"
 msgstr "KONSUMENTERBJUDANDE:"
 
 #. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore"
+msgstr "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+msgstr "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+
+#. module: website_portal_1028
 #: view:website:website.layout
 msgid "MAIL & SUBSCRIBERS"
 msgstr "MAIL & PRENUMERATIONER"
@@ -120,6 +160,11 @@ msgstr "MAIL & PRENUMERATIONER"
 #: view:website:website.layout
 msgid "MEDIA"
 msgstr "MEDIA"
+
+#. module: website_portal_1028
+#: view:website:website.layout
+msgid "MY CREDIT INVOICE"
+msgstr "MINA KREDITFAKTUROR"
 
 #. module: website_portal_1028
 #: view:website:website.layout
@@ -134,7 +179,7 @@ msgstr "MIN SALONG"
 #. module: website_portal_1028
 #: view:website:website.layout
 msgid "Miscellaneous"
-msgstr "Övrigt"
+msgstr "Miscellaneous"
 
 #. module: website_portal_1028
 #: view:website:website.layout
@@ -211,6 +256,11 @@ msgstr "UTPRIS:"
 #: view:website:website_portal_1028.details
 msgid "VAT Number"
 msgstr "Skatteregisteringsnummer"
+
+#. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "VI SKA UTBILDA OSS I XXXXX"
+msgstr "VI SKA UTBILDA OSS I XXXXX"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_my_home

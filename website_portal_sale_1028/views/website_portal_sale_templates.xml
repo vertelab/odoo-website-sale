@@ -7,131 +7,131 @@
         <script type="text/javascript" src="/website_portal_sale_1028/static/src/js/main.js" />
       </xpath>
     </template>
-<!--    <template id="portal_my_home_menu_sale" name="Portal layout : sales menu entries" inherit_id="website_portal_1028.portal_layout" priority="25">
-      <xpath expr="//ul[contains(@class,'o_portal_submenu')]" position="inside">
-        <div class="menu menu-my-pages">
-          <div class="row"> -->
-            <!--
-
-TODO: Activate me
-            <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/home">Aktuellt</a>
-              </li>
-            </div>
-
-            <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/salon">My Salon</a>
-              </li>
-            </div>
-            <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/orders">My Orders</a>
-              </li>
-            </div>
-
-TODO: Activate me
-            <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/obsolete">Utgående produkter</a>
-              </li>
-            </div>
-
-               <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/reclaim">Reklamationer</a>
-              </li>
-            </div> 
-            <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/buyinfo">Buyinfo</a>
-              </li>
-            </div>
--->
-   <!--          <div class="col-md-2 col-sm-6 col-xs-4">
-              <li>
-                <a href="/my/mail">Mail &amp; Prenumeranter</a>
-              </li>
-            </div> -->
-<!--
-
-            <div class="col-md-2 col-sm-6 col-xs-4">
-              <li class="dropdown-submenu">
-                <a class="test" href="#">Media</a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="/my/imagearchive">Image Bank</a>
-                  </li>
-
-TODO: Activate me
-                  <li>
-                    <a href="/my/pricelist">Prislistor</a>
-                  </li>
-
-                  <li>
-                    <a href="/my/news">News &amp; Offers</a>
-                  </li>
-                  <li>
-                    <a href="/my/events">Events &amp; Treatments</a>
-                  </li>
-                  <li>
-                    <a href="/my/compendium">Compendium</a>
-                  </li>
-                  <li>
-                    <a href="/my/other">Miscellaneous</a>
-                  </li>
-                </ul>
-              </li>
-            </div>
-          -->
-<!--           </div>
-        </div>
-      </xpath>
-    </template>  -->
+    <!--    <template id="portal_my_home_menu_sale" name="Portal layout : sales menu entries" inherit_id="website_portal_1028.portal_layout" priority="25">
+         <xpath expr="//ul[contains(@class,'o_portal_submenu')]" position="inside">
+         <div class="menu menu-my-pages">
+         <div class="row"> -->
+    <!--
+         
+         TODO: Activate me
+         <div class="col-md-2 col-sm-6 col-xs-4">
+         <li>
+         <a href="/my/home">Aktuellt</a>
+         </li>
+         </div>
+         
+         <div class="col-md-2 col-sm-6 col-xs-4">
+         <li>
+         <a href="/my/salon">My Salon</a>
+         </li>
+         </div>
+         <div class="col-md-2 col-sm-6 col-xs-4">
+         <li>
+         <a href="/my/orders">My Orders</a>
+         </li>
+         </div>
+         
+         TODO: Activate me
+         <div class="col-md-2 col-sm-6 col-xs-4">
+         <li>
+         <a href="/my/obsolete">Utgående produkter</a>
+         </li>
+         </div>
+         
+         <div class="col-md-2 col-sm-6 col-xs-4">
+         <li>
+         <a href="/my/reclaim">Reklamationer</a>
+         </li>
+         </div> 
+         <div class="col-md-2 col-sm-6 col-xs-4">
+         <li>
+         <a href="/my/buyinfo">Buyinfo</a>
+         </li>
+         </div>
+    -->
+    <!--          <div class="col-md-2 col-sm-6 col-xs-4">
+         <li>
+         <a href="/my/mail">Mail &amp; Prenumeranter</a>
+         </li>
+         </div> -->
+    <!--
+         
+         <div class="col-md-2 col-sm-6 col-xs-4">
+         <li class="dropdown-submenu">
+         <a class="test" href="#">Media</a>
+         <ul class="dropdown-menu">
+         <li>
+         <a href="/my/imagearchive">Image Bank</a>
+         </li>
+         
+         TODO: Activate me
+         <li>
+         <a href="/my/pricelist">Prislistor</a>
+         </li>
+         
+         <li>
+         <a href="/my/news">News &amp; Offers</a>
+         </li>
+         <li>
+         <a href="/my/events">Events &amp; Treatments</a>
+         </li>
+         <li>
+         <a href="/my/compendium">Compendium</a>
+         </li>
+         <li>
+         <a href="/my/other">Miscellaneous</a>
+         </li>
+         </ul>
+         </li>
+         </div>
+    -->
+    <!--           </div>
+         </div>
+         </xpath>
+         </template>  -->
     <template id="my_menu" name="My menu">
       <div class="left_menu col-md-3 hidden-sm hidden-xs">
-<!--
-TODO: Activate me
-        <li>
-          <a href="/my/home">Aktuellt</a>
-        </li>
--->
+        <!--
+             TODO: Activate me
+             <li>
+             <a href="/my/home">Aktuellt</a>
+             </li>
+        -->
         <li t-att-class="'active' if active_menu == 'my_salon' else ''">
           <a href="/my/salon">My salon</a>
         </li>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
           <a href="/my/orders">My orders</a>
         </li>
-<!--
-TODO: Activate me
-        <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
-          <a href="/my/obsolete">Utgående produkter</a>
+        <li t-att-class="'active' if active_menu == 'my_credit_invoice' else ''">
+          <a href="/my/credits">My Credit Invoice</a>
         </li>
-        <li t-att-class="'active' if active_menu == 'my_buyinfo' else ''">
-          <a href="/my/buyinfo">Köpinformation</a>
-        </li>
--->
-     <!--      <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
-          <a href="/my/reclaim">Mina reklamationer</a>
-        </li> -->
-
-
+        <!--
+             TODO: Activate me
+             <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
+             <a href="/my/obsolete">Utgående produkter</a>
+             </li>
+             <li t-att-class="'active' if active_menu == 'my_buyinfo' else ''">
+             <a href="/my/buyinfo">Köpinformation</a>
+             </li>
+        -->
+        <!--      <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
+             <a href="/my/reclaim">Mina reklamationer</a>
+             </li> -->
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
           <a href="/my/mail">Mail &amp; Subscribers</a>
         </li>
-
         <p>Media</p>
         <ul class="mega_menu_children">
           <li t-att-class="'active' if active_menu == 'my_imagearchive' else ''">
             <a href="/my/imagearchive">Image bank</a>
           </li>
-<!--
-TODO: Activate me
-          <li t-att-class="'active' if active_menu == 'my_pricelist' else ''">
-            <a href="/my/pricelist">Prislistor</a>
-          </li>
--->
+          <!--
+               TODO: Activate me
+               <li t-att-class="'active' if active_menu == 'my_pricelist' else ''">
+               <a href="/my/pricelist">Prislistor</a>
+               </li>
+          -->
           <li t-att-class="'active' if active_menu == 'my_news' else ''">
             <a href="/my/news">News &amp; Offers</a>
           </li>
@@ -952,36 +952,35 @@ TODO: Activate me
         </div>
       </div>
     </template>
-
-	<template id="portal_document_link" name="Document Link">
-	  <t t-if="doc.type == 'url'">
-		<div style="font-size: 24px; font-weight: 500;">
-		  <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
-			<i class="fa fa-link" />
-			&amp;nbsp;
-			<t t-esc="doc.name" />
-		  </a>
-		</div>
-	  </t>
-	  <t t-if="doc.type == 'youtube'">
-		<div style="font-size: 24px; font-weight: 500;">
-		  <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
-			<i class="fa fa-youtube-square" />
-			&amp;nbsp;
-			<t t-esc="doc.name" />
-		  </a>
-		</div>
-	  </t>
-	  <t t-if="doc.type == 'binary'">
-		<div style="font-size: 24px; font-weight: 500;">
-		  <a t-att-href="'/my/documents/%s/document/%s/%s' %(portal_user.id, doc.id, (doc.datas_fname or doc.name).encode('ascii', 'replace'))">
-			<i class="fa fa-file" />
-			&amp;nbsp;
-			<t t-esc="doc.name" />
-		  </a>
-		</div>
-	  </t>
-	</template>
+    <template id="portal_document_link" name="Document Link">
+      <t t-if="doc.type == 'url'">
+        <div style="font-size: 24px; font-weight: 500;">
+          <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
+            <i class="fa fa-link" />
+            &amp;nbsp;
+            <t t-esc="doc.name" />
+          </a>
+        </div>
+      </t>
+      <t t-if="doc.type == 'youtube'">
+        <div style="font-size: 24px; font-weight: 500;">
+          <a t-att-href="'%s' %(doc.url)" t-att-target="'_blank' if doc.open_new_window else ''">
+            <i class="fa fa-youtube-square" />
+            &amp;nbsp;
+            <t t-esc="doc.name" />
+          </a>
+        </div>
+      </t>
+      <t t-if="doc.type == 'binary'">
+        <div style="font-size: 24px; font-weight: 500;">
+          <a t-att-href="'/my/documents/%s/document/%s/%s' %(portal_user.id, doc.id, (doc.datas_fname or doc.name).encode('ascii', 'replace'))">
+            <i class="fa fa-file" />
+            &amp;nbsp;
+            <t t-esc="doc.name" />
+          </a>
+        </div>
+      </t>
+    </template>
     <template id="portal_my_image_archive" name="My image archive">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -990,20 +989,20 @@ TODO: Activate me
             <h1 class="page-header">IMAGE BANK &amp; VIDEOS</h1>
             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
             <t t-foreach="website.sudo().portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
-              <t t-call="website_portal_sale_1028.portal_document_link"/>
+              <t t-call="website_portal_sale_1028.portal_document_link" />
             </t>
           </div>
         </div>
       </t>
     </template>
-     <template id="portal_my_pricelist" name="My pricelist">
+    <template id="portal_my_pricelist" name="My pricelist">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">PRICELIST</h1>
             <li>
-             <i class="fa fa-download"></i>
+              <i class="fa fa-download" />
               <a href="/my/pricelist/pdf">Prislista</a>
             </li>
           </div>
@@ -1017,7 +1016,7 @@ TODO: Activate me
           <div class="col-md-9">
             <h1 class="page-header">NEWS &amp; OFFERS</h1>
             <t t-foreach="website.sudo().get_portal_documents('news')" t-as="doc">
-              <t t-call="website_portal_sale_1028.portal_document_link"/>
+              <t t-call="website_portal_sale_1028.portal_document_link" />
             </t>
           </div>
         </div>
@@ -1030,7 +1029,7 @@ TODO: Activate me
           <div class="col-md-9">
             <h1 class="page-header">EVENTS &amp; TREATMENTS</h1>
             <t t-foreach="website.sudo().get_portal_documents('event')" t-as="doc">
-				<t t-call="website_portal_sale_1028.portal_document_link"/>
+              <t t-call="website_portal_sale_1028.portal_document_link" />
             </t>
           </div>
         </div>
@@ -1043,7 +1042,7 @@ TODO: Activate me
           <div class="col-md-9">
             <h1 class="page-header">COMPENDIUM</h1>
             <t t-foreach="website.sudo().get_portal_documents('compendium')" t-as="doc">
-              <t t-call="website_portal_sale_1028.portal_document_link"/>
+              <t t-call="website_portal_sale_1028.portal_document_link" />
             </t>
           </div>
         </div>
@@ -1055,11 +1054,9 @@ TODO: Activate me
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header">MY RECLAIMS</h1>
-
-        <!--     <t t-foreach="request.env['crm.claim'].search([('name', '=', 'name')])" t-as="reclaim">
-              <t t-esc="reclaim.display_name" />
-            </t> -->
-            
+            <!--     <t t-foreach="request.env['crm.claim'].search([('name', '=', 'name')])" t-as="reclaim">
+                 <t t-esc="reclaim.display_name" />
+                 </t> -->
           </div>
         </div>
       </t>
@@ -1071,7 +1068,7 @@ TODO: Activate me
           <div class="col-md-9">
             <h1 class="page-header">MISCELLANEOUS</h1>
             <t t-foreach="website.sudo().get_portal_documents('other')" t-as="doc">
-              <t t-call="website_portal_sale_1028.portal_document_link"/>
+              <t t-call="website_portal_sale_1028.portal_document_link" />
             </t>
           </div>
         </div>
@@ -1112,30 +1109,30 @@ TODO: Activate me
           <t t-call="website_portal_sale_1028.my_menu" />
           <h1 class="page-header col-md-8">MAIL &amp; SUBSCRIBERS</h1>
           <div class="col-md-offset-3">
-          <div class="col-md-9">
-            <h3 class="">Sent Mails</h3>
-            <t t-if="mails">
-              <t t-foreach="mails" t-as="mail">
-                <div class="row mail_lists_lines">
-                  <div class="col-sm-2 col-xs-2">
-                    <li>
-                      <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                        <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
-                      </a>
-                    </li>
+            <div class="col-md-9">
+              <h3 class="">Sent Mails</h3>
+              <t t-if="mails">
+                <t t-foreach="mails" t-as="mail">
+                  <div class="row mail_lists_lines">
+                    <div class="col-sm-2 col-xs-2">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
+                        </a>
+                      </li>
+                    </div>
+                    <div class="col-sm-7 col-xs-7">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.name" />
+                        </a>
+                      </li>
+                    </div>
                   </div>
-                  <div class="col-sm-7 col-xs-7">
-                    <li>
-                      <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                        <t t-esc="mail.mass_mailing_id.name" />
-                      </a>
-                    </li>
-                  </div>
-                </div>
+                </t>
               </t>
-            </t>
+            </div>
           </div>
-      </div>
           <div class="col-md-5">
             <div t-if="pager" class="o_portal_pager text-center">
               <t t-call="website.pager" />
@@ -1207,6 +1204,234 @@ TODO: Activate me
                 <div class="sucess_message alert alert-success hidden" role="alert">Your changes has been saved</div>
                 <div class="red-alert-message alert alert-danger hidden" role="alert">Something went wrong, Try again.</div>
               </div>
+            </div>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="my_credit_invoice" name="My Credit Invoice">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="order_table col-md-9">
+            <h1 class="page-header">My Credit Invoices</h1>
+            <t t-if="not invoices">
+              <p>There are currently no credit invoices for your account.</p>
+            </t>
+            <t t-if="invoices">
+              <table class="table table-hover o_my_status_table">
+                <thead>
+                  <tr class="active">
+                    <th>Credit Invoice #</th>
+                    <th>Credit Invoice Date</th>
+                    <th>Expire Date</th>
+                    <th>Status</th>
+                    <th></th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <t t-foreach="invoices" t-as="invoice">
+                  <tr>
+                    <td class="cell_overflow">
+                      <a t-att-href="'/my/credits/%s' % invoice.id" t-att-title="invoice.number">
+                        <t t-esc="invoice.number" />
+                      </a>
+                    </td>
+                    <td>
+                      <span t-field="invoice.date_invoice" />
+                    </td>
+                    <td>
+                      <span t-field="invoice.date_due" />
+                    </td>
+                    <td>
+                      <t t-if="invoice.state == 'open'">
+                        <span class="label label-info">
+                          <i class="fa fa-fw fa-clock-o" />
+                          Waiting for Payment
+                        </span>
+                      </t>
+                      <t t-if="invoice.state == 'paid'">
+                        <span class="label label-default">
+                          <i class="fa fa-fw fa-check" />
+                          Paid
+                        </span>
+                      </t>
+                      <t t-if="invoice.state == 'cancel'">
+                        <span class="label label-default">
+                          <i class="fa fa-fw fa-remove" />
+                          Cancelled
+                        </span>
+                      </t>
+                    </td>
+                    <td>
+                      <span t-field="invoice.amount_total" />
+                      <span t-field="invoice.currency_id.name" />
+                    </td>
+                  </tr>
+                </t>
+              </table>
+              <div t-if="pager" class="o_portal_pager text-center">
+                <t t-call="website.pager" />
+              </div>
+            </t>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="credits_followup" name="Credit Invoice">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <div id="wrap" class="oe_structure oe_empty">
+              <section>
+                <div class="order_detail mt32 mb32" t-if="invoice">
+                  <div class="row">
+                    <form t-att-action="'/my/credits'" method="post">
+                      <input type="hidden" name="tab" value="invoice" />
+                      <button type="submit" class="btn btn-default" style="margin-left: 15px;">
+                        <i class="fa fa-angle-left" />
+                        <t t-set="tab" t-value="'orders'" />
+                        Back To My Account
+                      </button>
+                    </form>
+                    <div>
+                      <div class="col-xs-12 col-md-5 col-lg-5">
+                        <h3>
+                          <!-- TODO -->
+                          <t t-esc="invoice.name" />
+                        </h3>
+                      </div>
+                      <a t-att-href="'/my/documents/%s/print/account.report_invoice/%s/%s.pdf' % (portal_user.id, invoice.id, invoice.name.encode('ascii', 'replace') if invoice.name else '')" target="_blank">
+                        <i class="fa fa-download" />
+                        &amp;nbsp;Download invoice
+                        <t t-esc="invoice.number" />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <h4>Credit Invoice Information</h4>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Credit Invoice Number</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="invoice.number" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Credit Invoice Date</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="invoice.date_invoice" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Credit Invoice Expire Date</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="invoice.date_due" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <h4>Invoice Address</h4>
+                    <div t-field="invoice.partner_id" t-field-options='{
+                      "widget": "contact",
+                      "fields": ["name", "address", "phone", "mobile", "fax", "email"]}' />
+                  </div>
+                  <div class="order_detail mt32 mb32">
+                    <div class="row">
+                      <div class="col-lg-12 col-md-12 col-sm-12">
+                        <h4 class="text-center">
+                          <strong>Products</strong>
+                        </h4>
+                        <table class="table">
+                          <thead>
+                            <th>Quantity</th>
+                            <th>Name</th>
+                            <th class="hidden-xs">Article number</th>
+                            <th class="hidden-xs">Price</th>
+                            <th>Total</th>
+                          </thead>
+                          <tbody>
+                            <t t-foreach="invoice.invoice_line" t-as="line">
+                              <tr>
+                                <td>
+                                  <span t-esc="int(line.quantity)" />
+                                </td>
+                                <td>
+                                  <span t-field="line.name" />
+                                </td>
+                                <td class="hidden-xs">
+                                  <t t-if="line.product_id">
+                                    <span t-field="line.product_id.default_code" />
+                                  </t>
+                                </td>
+                                <td class="hidden-xs">
+                                  <span t-field="line.price_unit" style="white-space: nowrap;" t-field-options='{
+									   "widget": "monetary",
+									   "display_currency": "invoice.currency_id"
+								   }' />
+                                </td>
+                                <td>
+                                  <span t-field="line.price_subtotal" style="white-space: nowrap;" t-field-options='{
+									   "widget": "monetary",
+									   "display_currency": "invoice.currency_id"
+								   }' />
+                                </td>
+                                <td class="invoice_line_buttons" />
+                              </tr>
+                            </t>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="pull-right col-md-4">
+                        <p>
+                          <label>Sum:</label>
+                          <span t-field="invoice.amount_untaxed" style="white-space: nowrap;" t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "invoice.currency_id"
+                         }' />
+                        </p>
+                        <p>
+                          <label>Tax:</label>
+                          <span t-field="invoice.amount_tax" style="white-space: nowrap;" t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "invoice.currency_id"
+                         }' />
+                        </p>
+                        <hr />
+                        <h4>
+                          <label>Total:</label>
+                          <span t-field="invoice.amount_total" style="white-space: nowrap;" t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "invoice.currency_id"
+                         }' />
+                        </h4>
+                        <hr />
+                      </div>
+                      <div class="col-md-4">
+                        <div>
+                          <span t-field="invoice.comment" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
         </div>
@@ -1347,334 +1572,334 @@ TODO: Activate me
                 </thead>
                 <t t-foreach="invoices" t-as="invoice">
                   <tr>
-                    <td class= "cell_overflow">
-                      <a t-att-href="'/my/invoices/pdf/'+str(invoice.id)" t-att-title="invoice.number">
-                      <t t-esc="invoice.number" />
-                    </a>
-                  </td>
-                  <td>
-                    <span t-field="invoice.date_invoice" />
-                  </td>
-                  <td>
-                    <span t-field="invoice.date_due" />
-                  </td>
-                  <td>
-                    <t t-if="invoice.state == 'open'">
-                      <span class="label label-info">
-                        <i class="fa fa-fw fa-clock-o" />
-                        Waiting for Payment
-                      </span>
-                    </t>
-                    <t t-if="invoice.state == 'paid'">
-                      <span class="label label-default">
-                        <i class="fa fa-fw fa-check" />
-                        Paid
-                      </span>
-                    </t>
-                    <t t-if="invoice.state == 'cancel'">
-                      <span class="label label-default">
-                        <i class="fa fa-fw fa-remove" />
-                        Cancelled
-                      </span>
-                    </t>
-                  </td>
-                  <td>
-                    <a t-if="invoice.state == 'open'" t-attf-href="/website_payment/pay?reference=#{invoice.number}&amp;amount=#{invoice.residual}&amp;currency_id=#{invoice.currency_id.id}&amp;country_id=#{invoice.partner_id.country_id.id}" alt="Pay Now" class="btn btn-xs btn-primary">
-                      <i class="fa fa-arrow-circle-right" />
-                      Pay Now
-                    </a>
-                  </td>
-                  <td>
-                    <span t-field="invoice.residual" t-options='{"widget": "monetary", "display_currency": invoice.currency_id}' />
-                  </td>
-                </tr>
-              </t>
-            </table>
-            <div t-if="pager" class="o_portal_pager text-center">
-              <t t-call="website.pager" />
-            </div>
-          </t>
+                    <td class="cell_overflow">
+                      <a t-att-href="'/my/invoices/pdf/%s' % invoice.id" t-att-title="invoice.number">
+                        <t t-esc="invoice.number" />
+                      </a>
+                    </td>
+                    <td>
+                      <span t-field="invoice.date_invoice" />
+                    </td>
+                    <td>
+                      <span t-field="invoice.date_due" />
+                    </td>
+                    <td>
+                      <t t-if="invoice.state == 'open'">
+                        <span class="label label-info">
+                          <i class="fa fa-fw fa-clock-o" />
+                          Waiting for Payment
+                        </span>
+                      </t>
+                      <t t-if="invoice.state == 'paid'">
+                        <span class="label label-default">
+                          <i class="fa fa-fw fa-check" />
+                          Paid
+                        </span>
+                      </t>
+                      <t t-if="invoice.state == 'cancel'">
+                        <span class="label label-default">
+                          <i class="fa fa-fw fa-remove" />
+                          Cancelled
+                        </span>
+                      </t>
+                    </td>
+                    <td>
+                      <a t-if="invoice.state == 'open'" t-attf-href="/website_payment/pay?reference=#{invoice.number}&amp;amount=#{invoice.residual}&amp;currency_id=#{invoice.currency_id.id}&amp;country_id=#{invoice.partner_id.country_id.id}" alt="Pay Now" class="btn btn-xs btn-primary">
+                        <i class="fa fa-arrow-circle-right" />
+                        Pay Now
+                      </a>
+                    </td>
+                    <td>
+                      <span t-field="invoice.residual" t-options='{"widget": "monetary", "display_currency": invoice.currency_id}' />
+                    </td>
+                  </tr>
+                </t>
+              </table>
+              <div t-if="pager" class="o_portal_pager text-center">
+                <t t-call="website.pager" />
+              </div>
+            </t>
+          </div>
         </div>
-      </div>
-    </t>
-  </template>
-  <template id="orders_followup" name="Sales Order">
-    <t t-call="website_portal_1028.portal_layout">
-      <div class="container">
-        <t t-call="website_portal_sale_1028.my_menu" />
-        <div class="col-md-9">
-          <div id="wrap" class="oe_structure oe_empty">
-            <section>
-              <div class="order_detail mt32 mb32" t-if="order">
-                <div class="row">
-                  <form t-att-action="'/my/orders'" method="post">
-                    <input type="hidden" name="tab" value="orders" />
-                    <button type="submit" class="btn btn-default" style="margin-left: 15px;">
-                      <i class="fa fa-angle-left" />
-                      <t t-set="tab" t-value="'orders'" />
-                      Back To My Account
-                    </button>
-                  </form>
-                  <div>
-                    <div class="col-xs-12 col-md-5 col-lg-5">
-                      <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />
-                      <h3>
-                        <!-- TODO -->
-                        <t t-esc="order.name" />
-                        <t t-if="len(invoice_list) == 1">
-                          -
-                          <span t-esc="invoice_list[0]" />
+      </t>
+    </template>
+    <template id="orders_followup" name="Sales Order">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <div id="wrap" class="oe_structure oe_empty">
+              <section>
+                <div class="order_detail mt32 mb32" t-if="order">
+                  <div class="row">
+                    <form t-att-action="'/my/orders'" method="post">
+                      <input type="hidden" name="tab" value="orders" />
+                      <button type="submit" class="btn btn-default" style="margin-left: 15px;">
+                        <i class="fa fa-angle-left" />
+                        <t t-set="tab" t-value="'orders'" />
+                        Back To My Account
+                      </button>
+                    </form>
+                    <div>
+                      <div class="col-xs-12 col-md-5 col-lg-5">
+                        <t t-set="invoice_list" t-value="order.order_state_per_invoice_frontend()" />
+                        <h3>
+                          <!-- TODO -->
+                          <t t-esc="order.name" />
+                          <t t-if="len(invoice_list) == 1">
+                            -
+                            <span t-esc="invoice_list[0]" />
+                          </t>
+                        </h3>
+                        <t t-if="len(invoice_list) > 1">
+                          <t t-foreach="invoice_list" t-as="invoice_status">
+                            &amp;emsp;
+                            <span t-esc="invoice_status" />
+                            <br />
+                          </t>
                         </t>
-                      </h3>
-                      <t t-if="len(invoice_list) > 1">
-                        <t t-foreach="invoice_list" t-as="invoice_status">
-                          &amp;emsp;
-                          <span t-esc="invoice_status" />
-                          <br />
+                      </div>
+                      <div class="order-detail-header-link-box col-xs-12 col-md-7 col-lg-7">
+                        <a t-att-href="'/my/documents/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank">
+                          <i class="fa fa-download" />
+                          &amp;nbsp;Download order
+                        </a>
+                        <t t-foreach="order.invoice_ids" t-as="invoice">
+                          <a t-att-href="'/my/documents/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace') if invoice.name else '')" target="_blank">
+                            <i class="fa fa-download" />
+                            &amp;nbsp;Download invoice
+                            <t t-esc="invoice.number" />
+                          </a>
                         </t>
-                      </t>
-                    </div>
-                    <div class="order-detail-header-link-box col-xs-12 col-md-7 col-lg-7">
-                      <a t-att-href="'/my/documents/%s/print/sale.report_saleorder/%s/%s.pdf' % (home_user.id, order.id, order.name)" target="_blank">
-                        <i class="fa fa-download" />
-                        &amp;nbsp;Download order
-                      </a>
-                      <t t-foreach="order.invoice_ids" t-as="invoice">
-                        <a t-att-href="'/my/documents/%s/print/account.report_invoice/%s/%s.pdf' % (home_user.id, invoice.id, invoice.name.encode('ascii', 'replace') if invoice.name else '')" target="_blank">
-                          <i class="fa fa-download" />
-                          &amp;nbsp;Download invoice
-                          <t t-esc="invoice.number" />
+                        <t t-foreach="order.picking_ids" t-as="picking">
+                          <a t-att-href="'/my/documents/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank">
+                            <i class="fa fa-download" />
+                            &amp;nbsp;Download picking
+                            <t t-esc="picking.name" />
+                          </a>
+                        </t>
+                        <a t-att-href="'/my/orders/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_portal_sale_copy_order" target="_blank">
+                          <i class="fa fa-plus" />
+                          &amp;nbsp;Copy to cart
                         </a>
-                      </t>
-                      <t t-foreach="order.picking_ids" t-as="picking">
-                        <a t-att-href="'/my/documents/%s/print/stock_delivery_slip.stock_delivery_slip/%s/%s.pdf' % (home_user.id, picking.id, picking.name)" target="_blank">
-                          <i class="fa fa-download" />
-                          &amp;nbsp;Download picking
-                          <t t-esc="picking.name" />
-                        </a>
-                      </t>
-                      <a t-att-href="'/my/orders/%s/order/%s/copy' % (home_user.id, order.id)" id="oe_portal_sale_copy_order" target="_blank">
-                        <i class="fa fa-plus" />
-                        &amp;nbsp;Copy to cart
-                      </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <h4>Order information</h4>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <h4>Order information</h4>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <strong>Customer number</strong>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Customer number</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="order.partner_id.customer_no or ''" />
+                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <t t-esc="order.partner_id.customer_no or ''" />
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Order number</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="order.name" />
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <strong>Order number</strong>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Order date</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="order.date_order" />
+                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <t t-esc="order.name" />
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Payment method</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="order.payment_acquirer_id.name" />
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <strong>Order date</strong>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Delivery method</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-esc="order.carrier_id.name" />
+                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <t t-esc="order.date_order" />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <strong>Payment method</strong>
-                        </div>
-                        <div class="col-md-6">
-                          <t t-esc="order.payment_acquirer_id.name" />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <strong>Delivery method</strong>
-                        </div>
-                        <div class="col-md-6">
-                          <t t-esc="order.carrier_id.name" />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <strong>Tracking number</strong>
-                        </div>
-                        <div class="col-md-6">
-                          <t t-foreach="order.picking_ids" t-as="picking">
-                            <t t-if="picking.unifaun_track_and_trace_url()">
-                              <a t-att-href="picking.unifaun_track_and_trace_url()" t-att-title="picking.name" target="_blank">
-                                <span class="text-center fa fa-map-marker" />
-                              </a>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <strong>Tracking number</strong>
+                          </div>
+                          <div class="col-md-6">
+                            <t t-foreach="order.picking_ids" t-as="picking">
+                              <t t-if="picking.unifaun_track_and_trace_url()">
+                                <a t-att-href="picking.unifaun_track_and_trace_url()" t-att-title="picking.name" target="_blank">
+                                  <span class="text-center fa fa-map-marker" />
+                                </a>
+                              </t>
                             </t>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <h4>Delivery Address</h4>
+                      <div t-field="order.partner_shipping_id" t-field-options='{
+                      "widget": "contact",
+                      "fields": ["name", "address", "phone", "mobile", "fax", "email"]}' />
+                    </div>
+                    <div class="col-md-4">
+                      <h4>Invoice Address</h4>
+                      <div t-field="order.partner_invoice_id" t-field-options='{
+                      "widget": "contact",
+                      "fields": ["name", "address", "phone", "mobile", "fax", "email"]}' />
+                    </div>
+                  </div>
+                  <div id="order_buttons" class="mt32 mb32" />
+                </div>
+                <div class="order_detail mt32 mb32">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <h4 class="text-center">
+                        <strong>Products</strong>
+                      </h4>
+                      <table class="table">
+                        <thead>
+                          <th>Quantity</th>
+                          <th>Name</th>
+                          <th class="hidden-xs">Article number</th>
+                          <th class="hidden-xs">Price</th>
+                          <th>Total</th>
+                        </thead>
+                        <tbody>
+                          <t t-foreach="order.order_line" t-as="line">
+                            <tr>
+                              <td>
+                                <span t-esc="int(line.product_uom_qty)" />
+                              </td>
+                              <td>
+                                <span t-field="line.name" />
+                              </td>
+                              <td class="hidden-xs">
+                                <span t-field="line.product_id.default_code" />
+                              </td>
+                              <td class="hidden-xs">
+                                <span t-field="line.price_unit" style="white-space: nowrap;" t-field-options='{
+                                   "widget": "monetary",
+                                   "display_currency": "order.currency_id"
+                               }' />
+                              </td>
+                              <td>
+                                <span t-field="line.price_subtotal" style="white-space: nowrap;" t-field-options='{
+                                   "widget": "monetary",
+                                   "display_currency": "order.currency_id"
+                               }' />
+                              </td>
+                              <td class="order_line_buttons" />
+                            </tr>
+                          </t>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="pull-right col-md-4">
+                        <p>
+                          <label>Sum:</label>
+                          <span t-field="order.amount_untaxed" style="white-space: nowrap;" t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }' />
+                        </p>
+                        <p>
+                          <label>Shipping:</label>
+                          <span t-field="order.carrier_id.normal_price" style="white-space: nowrap;" t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }' />
+                        </p>
+                        <p>
+                          <label>Tax:</label>
+                          <span t-field="order.amount_tax" style="white-space: nowrap;" t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }' />
+                        </p>
+                        <hr />
+                        <h4>
+                          <label>Total:</label>
+                          <span t-field="order.amount_total" style="white-space: nowrap;" t-field-options='{
+                             "widget": "monetary",
+                             "display_currency": "order.currency_id"
+                         }' />
+                        </h4>
+                        <hr />
+                      </div>
+                      <div class="col-md-4">
+                        <div>
+                          <span t-field="order.note" />
+                        </div>
+                        <div>
+                          <t t-foreach="order.picking_ids" t-as="picking">
+                            <span t-field="picking.note" />
                           </t>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4">
-                    <h4>Delivery Address</h4>
-                    <div t-field="order.partner_shipping_id" t-field-options='{
-                      "widget": "contact",
-                      "fields": ["name", "address", "phone", "mobile", "fax", "email"]}' />
-                  </div>
-                  <div class="col-md-4">
-                    <h4>Invoice Address</h4>
-                    <div t-field="order.partner_invoice_id" t-field-options='{
-                      "widget": "contact",
-                      "fields": ["name", "address", "phone", "mobile", "fax", "email"]}' />
-                  </div>
                 </div>
-                <div id="order_buttons" class="mt32 mb32" />
-              </div>
-              <div class="order_detail mt32 mb32">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <h4 class="text-center">
-                      <strong>Products</strong>
-                    </h4>
-                    <table class="table">
-                      <thead>
-                        <th>Quantity</th>
-                        <th>Name</th>
-                        <th class="hidden-xs">Article number</th>
-                        <th class="hidden-xs">Price</th>
-                        <th>Total</th>
-                      </thead>
-                      <tbody>
-                        <t t-foreach="order.order_line" t-as="line">
-                          <tr>
-                            <td>
-                              <span t-esc="int(line.product_uom_qty)" />
-                            </td>
-                            <td>
-                              <span t-field="line.name" />
-                            </td>
-                            <td class="hidden-xs">
-                              <span t-field="line.product_id.default_code" />
-                            </td>
-                            <td class="hidden-xs">
-                              <span t-field="line.price_unit" style="white-space: nowrap;" t-field-options='{
-                                   "widget": "monetary",
-                                   "display_currency": "order.currency_id"
-                               }' />
-                            </td>
-                            <td>
-                              <span t-field="line.price_subtotal" style="white-space: nowrap;" t-field-options='{
-                                   "widget": "monetary",
-                                   "display_currency": "order.currency_id"
-                               }' />
-                            </td>
-                            <td class="order_line_buttons" />
-                          </tr>
-                        </t>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="pull-right col-md-4">
-                      <p>
-                        <label>Sum:</label>
-                        <span t-field="order.amount_untaxed" style="white-space: nowrap;" t-field-options='{
-                             "widget": "monetary",
-                             "display_currency": "order.currency_id"
-                         }' />
-                      </p>
-                      <p>
-                        <label>Shipping:</label>
-                        <span t-field="order.carrier_id.normal_price" style="white-space: nowrap;" t-field-options='{
-                             "widget": "monetary",
-                             "display_currency": "order.currency_id"
-                         }' />
-                      </p>
-                      <p>
-                        <label>Tax:</label>
-                        <span t-field="order.amount_tax" style="white-space: nowrap;" t-field-options='{
-                             "widget": "monetary",
-                             "display_currency": "order.currency_id"
-                         }' />
-                      </p>
-                      <hr />
-                      <h4>
-                        <label>Total:</label>
-                        <span t-field="order.amount_total" style="white-space: nowrap;" t-field-options='{
-                             "widget": "monetary",
-                             "display_currency": "order.currency_id"
-                         }' />
-                      </h4>
-                      <hr />
-                    </div>
-                    <div class="col-md-4">
-                      <div>
-                        <span t-field="order.note" />
-                      </div>
-                      <div>
-                        <t t-foreach="order.picking_ids" t-as="picking">
-                          <span t-field="picking.note" />
-                        </t>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+              </section>
+            </div>
           </div>
         </div>
-      </div>
-    </t>
-  </template>
-  <!--      <template id="layout" inherit_id="website.layout">
-       <xpath expr="//a[@href='/home']" position="replace">
-       <a href="/my/home" role="menuitem">My Account</a>
-       </xpath>
-       </template> 
-
-  -->
-<!-- 
-      <record model="ir.ui.view" id="view_document_directory_form">
-      <field name="name">document.directory</field>
-      <field name="model">document.directory</field>
-      <field name="inherit_id" ref="document.view_document_directory_form" />
-      <field name="arch" type="xml">
-        <form string="Contents" position="inside">
-          <group>
-            <field name="domain" />
-          </group>
-        </form>
-      </field>
-    </record>
-    <record id="view_knowledge_configuration" model="ir.ui.view">
-      <field name="name">Configure Knowledge Inherited website_portal_sale_1028</field>
-      <field name="model">knowledge.config.settings</field>
-      <field name="inherit_id" ref="knowledge.view_knowledge_configuration" />
-      <field name="arch" type="xml">
-        <group position="inside">
-          <field name="document_directory" />
-        </group>
-      </field>
-    </record>
-
-    <record id="view_attachment_form" model="ir.ui.view">
-      <field name="name">ir.attachment.form.home</field>
-      <field name="model">ir.attachment</field>
-      <field name="inherit_id" ref="base.view_attachment_form" />
-      <field name="arch" type="xml">
-        <field name="datas_fname" position="after">
-          <field name="mimetype" attrs="{'invisible':[('type','!=','binary')]}"/>
-        </field>
-      </field>
-    </record> -->
-</data>
+      </t>
+    </template>
+    <!--      <template id="layout" inherit_id="website.layout">
+         <xpath expr="//a[@href='/home']" position="replace">
+         <a href="/my/home" role="menuitem">My Account</a>
+         </xpath>
+         </template> 
+         
+    -->
+    <!-- 
+         <record model="ir.ui.view" id="view_document_directory_form">
+         <field name="name">document.directory</field>
+         <field name="model">document.directory</field>
+         <field name="inherit_id" ref="document.view_document_directory_form" />
+         <field name="arch" type="xml">
+         <form string="Contents" position="inside">
+         <group>
+         <field name="domain" />
+         </group>
+         </form>
+         </field>
+         </record>
+         <record id="view_knowledge_configuration" model="ir.ui.view">
+         <field name="name">Configure Knowledge Inherited website_portal_sale_1028</field>
+         <field name="model">knowledge.config.settings</field>
+         <field name="inherit_id" ref="knowledge.view_knowledge_configuration" />
+         <field name="arch" type="xml">
+         <group position="inside">
+         <field name="document_directory" />
+         </group>
+         </field>
+         </record>
+         
+         <record id="view_attachment_form" model="ir.ui.view">
+         <field name="name">ir.attachment.form.home</field>
+         <field name="model">ir.attachment</field>
+         <field name="inherit_id" ref="base.view_attachment_form" />
+         <field name="arch" type="xml">
+         <field name="datas_fname" position="after">
+         <field name="mimetype" attrs="{'invisible':[('type','!=','binary')]}"/>
+         </field>
+         </field>
+         </record> -->
+  </data>
 </openerp>
