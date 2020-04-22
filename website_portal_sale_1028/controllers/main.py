@@ -98,6 +98,54 @@ class website_account(website_account):
             'active_menu': 'my_orders'
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
+    
+    
+    
+    @http.route(['/my/credits', '/my/credits/page/<int:page>'], type='http', auth="user", website=True)
+    def my_credit_invoice(self, page=1, **post):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
+        values = self._prepare_portal_layout_values()
+        invoice_obj = request.env['account.invoice']
+        domain = [('type', '=', 'out_refund'), ('partner_id', 'child_of', portal_user.commercial_partner_id.id)]
+        pager = request.website.pager(
+            url="/my/credits",
+            url_args={},
+            total=invoice_obj.search_count(domain),
+            page=page,
+            step=self._items_per_page,
+            scope=7
+        )
+        values.update({
+            'invoices': invoice_obj.search(domain, limit=self._items_per_page, offset=pager['offset']),
+            'pager': pager,
+            'active_menu': 'my_credit_invoice'
+        })
+        
+        return request.render("website_portal_sale_1028.my_credit_invoice", values)
+    
+    @http.route(['/my/credits/<int:invoice_id>'], type='http', auth="user", website=True)
+    def credits_followup(self, portal_user=None, invoice_id=None, tab='credits', **post):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
+        invoice = request.env['account.invoice'].sudo().browse(invoice_id)
+        if not invoice:
+            html = request.website._render(
+                    'website.403',
+                    {
+                        'status_code': 403,
+                        'status_message': werkzeug.http.HTTP_STATUS_CODES[403]
+                    })
+            return werkzeug.wrappers.Response(html, status=403, content_type='text/html;charset=utf-8')
+
+        return request.render("website_portal_sale_1028.credits_followup", {
+            'portal_user': request.env.user,
+            'invoice': invoice,
+            'tab': tab
+        })
+        
+        
+    
 
     @http.route(['/my/reclaim'], type='http', auth="user", website=True)
     def portal_my_reclaim (self, **kw):
