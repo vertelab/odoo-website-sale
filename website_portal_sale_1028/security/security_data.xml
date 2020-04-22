@@ -4,8 +4,11 @@
         <record id="group_portal_admin" model="res.groups">
             <field name="name">Portal Admin</field>
         </record>
-          <record id="group_portal_consumer" model="res.groups">
-            <field name="name">Consumer</field>
+         <record id="consumer_template" model="res.users">
+            <field name="name">Consumer Template</field>
+            <field name="login">consumertemplate</field>
+            <field name="active" eval="False"/>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_portal'), ref('group_portal_admin'), ref('webshop_dermanord.group_dn_sk')])]"/>
         </record>
     </data>
 </openerp> 
