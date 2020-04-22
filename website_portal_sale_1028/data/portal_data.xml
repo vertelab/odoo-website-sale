@@ -30,5 +30,9 @@
             <field name="name">Momsfritt</field>
         </record>
 
+        <record model="res.partner.category" id="partner_tag_delete">
+            <field name="name">Delete</field>
+        </record>  
+
     </data>
 </openerp>
