@@ -331,7 +331,7 @@ msgstr "Exception"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.my_credit_invoice
 msgid "Expire Date"
-msgstr "Expire Date"
+msgstr "Utgångsdatum"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
