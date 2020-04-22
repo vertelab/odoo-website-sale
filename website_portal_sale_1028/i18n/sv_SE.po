@@ -876,7 +876,7 @@ msgstr "Use Company Address"
 #: view:website:website_portal_sale_1028.my_credit_invoice
 #: view:website:website_portal_sale_1028.portal_my_invoices
 msgid "Waiting for Payment"
-msgstr "Waiting for Payment"
+msgstr "Väntar på utbetalning"
 
 #. module: website_portal_sale_1028
 #: model:ir.model,name:website_portal_sale_1028.model_website
