@@ -399,14 +399,12 @@ class website_account(website_account):
         # return request.render('website_sale_home.home_page', value)
 
     def validate_user(self, user):
+        """Check if logged in user is allowed to look at this account page."""
         if request.uid == request.env.ref('base.public_user').id:
             raise AccessError('You are not allowed to administrate this user.')
         if not user:
             raise AccessError('You are not allowed to administrate this user.')
-        # Only allow administration of customers
-        if not user.commercial_partner_id.customer:
-            raise AccessError('You are not allowed to administrate this user.')
-        # TODO: Find better group? New one maybe.
+        # All employees should be allowed to see all customers.
         if request.env.user.has_group('base.group_user'):
             return
         same_company = request.env['res.partner'].search_count([('id', 'child_of', request.env.user.commercial_partner_id.id), ('id', '=', user.partner_id.id)])
@@ -526,6 +524,7 @@ class website_account(website_account):
     # can be overridden with more address type
     def save_children(self, partner_id, post):
         address_type = set(self.get_address_type()) - set(self.get_address_types_readonly())
+        _logger.warn('sandra %s %s %s' % (address_type, self.get_address_type(), self.get_address_types_readonly()))
         children = {}
         validations = {}
         for at in address_type:
@@ -610,6 +609,19 @@ class website_account(website_account):
             home_user = home_user.sudo()
         self.update_info(home_user, post)
         return werkzeug.utils.redirect("/my/salon")
+
+    @http.route(['/my/salon/<model("res.users"):home_user>/add_tags'], type='http', auth="user", website=True)
+    def add_tags(self, home_user=None, **post):
+        self.validate_user(home_user)
+        if home_user == request.env.user:
+            home_user = home_user.sudo()
+        if not self.check_admin_portal(home_user):
+            return request.website.render('website.403', {})
+
+        tag = request.env.ref('website_portal_sale_1028.partner_tag_delete')
+        home_user.category_id |= tag
+        
+        return request.render("website_portal_sale_1028.portal_my_tags")
 
     def create_contact_user_portal(self, values):
         template = request.env.ref('website_portal_sale_1028.contact_template2').sudo()
@@ -798,6 +810,7 @@ class website_account(website_account):
 
 
     def check_admin_portal(self, home_user, user=False):
+        """Check if the active user is allowed to administrate this account."""
         user = user or request.env.user
         if user.partner_id.commercial_partner_id != home_user.commercial_partner_id:
             return False
