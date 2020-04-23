@@ -820,7 +820,7 @@
                   <form class="delUserModalForm" t-att-action="'/my/salon/%s/add_tags' % (home_user.id if home_user else user_id.id)" method="post">
                     <div class="modal-footer">
                       <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
-                        <button type="submit" class="btn btn-primary delUserModalButton delete_users">Delete Contact</button>
+                        <button type="submit" class="btn btn-primary delUserModalButton delete_users">Delete Customer</button>
                       </t>
                     </div>
                   </form>

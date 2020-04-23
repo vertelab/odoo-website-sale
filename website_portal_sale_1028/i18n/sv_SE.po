@@ -274,7 +274,7 @@ msgstr "Radera"
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
 msgid "Delete Contact"
-msgstr "Ta bort kontakt"
+msgstr "Ta bort konto"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.children_info
