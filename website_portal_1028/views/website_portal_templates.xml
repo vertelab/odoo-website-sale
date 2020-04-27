@@ -412,6 +412,7 @@
              <a href="/my/buyinfo">KÖPINFORMATION</a>
              </li>
         -->
+      <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
         <li>
           <a href="/my/mail">MAIL &amp; SUBSCRIBERS</a>
         </li>
@@ -441,6 +442,7 @@
             </li>
           </ul>
         </li>
+    </t>
       </xpath>
     </template>
   </data>

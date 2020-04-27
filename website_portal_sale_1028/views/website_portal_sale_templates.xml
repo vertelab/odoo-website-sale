@@ -106,6 +106,7 @@
         <li t-att-class="'active' if active_menu == 'my_credit_invoice' else ''">
           <a href="/my/credits">My Credit Invoice</a>
         </li>
+
         <!--
              TODO: Activate me
              <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
@@ -118,6 +119,7 @@
         <!--      <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
              <a href="/my/reclaim">Mina reklamationer</a>
              </li> -->
+      <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
           <a href="/my/mail">Mail &amp; Subscribers</a>
         </li>
@@ -145,6 +147,7 @@
             <a href="/my/other">Miscellaneous</a>
           </li>
         </ul>
+    </t> 
       </div>
     </template>
     <template id="contact_form" name="Website Home Contact Form">
