@@ -74,7 +74,7 @@ class website_account(website_account):
         archive_groups = "" # DAER: Ugg not understand, Ugg remove.
         # archive_groups = self._get_archive_groups('sale.order', domain)
         # count for pager
-        order_count = SaleOrder.search_count(domain)
+        order_count = SaleOrder.sudo().search_count(domain)
         # pager
         pager = request.website.pager(
             url="/my/orders",
@@ -144,8 +144,6 @@ class website_account(website_account):
             'tab': tab
         })
         
-        
-    
 
     @http.route(['/my/reclaim'], type='http', auth="user", website=True)
     def portal_my_reclaim (self, **kw):
@@ -161,6 +159,8 @@ class website_account(website_account):
     @http.route(['/my/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
         portal_user = request.env.user
+        if portal_user.has_group('webshop_dermanord.group_dn_sk'):
+            return request.website.render('website.403', {})
         self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
@@ -172,6 +172,8 @@ class website_account(website_account):
     @http.route(['/my/news'], type='http', auth="user", website=True)
     def portal_my_news(self, **kw):
         portal_user = request.env.user
+        if portal_user.has_group('webshop_dermanord.group_dn_sk'):
+            return request.website.render('website.403', {})
         self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
@@ -183,6 +185,8 @@ class website_account(website_account):
     @http.route(['/my/events'], type='http', auth="user", website=True)
     def portal_my_events(self, **kw):
         portal_user = request.env.user
+        if portal_user.has_group('webshop_dermanord.group_dn_sk'):
+            return request.website.render('website.403', {})
         self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
@@ -194,6 +198,8 @@ class website_account(website_account):
     @http.route(['/my/other'], type='http', auth="user", website=True)
     def portal_my_other(self, **kw):
         portal_user = request.env.user
+        if portal_user.has_group('webshop_dermanord.group_dn_sk'):
+            return request.website.render('website.403', {})
         self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
@@ -205,6 +211,8 @@ class website_account(website_account):
     @http.route(['/my/compendium'], type='http', auth="user", website=True)
     def portal_my_compendium(self, **kw):
         portal_user = request.env.user
+        if portal_user.has_group('webshop_dermanord.group_dn_sk'):
+            return request.website.render('website.403', {})
         self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
         values.update({
@@ -216,6 +224,8 @@ class website_account(website_account):
     @http.route(['/my/pricelist/pdf'], type='http', auth="user", website=True)
     def portal_my_pricelist_print(self, **kw):
         home_user = request.env.user
+        if home_user.has_group('webshop_dermanord.group_dn_sk'):
+           return request.website.render('website.403', {})
         self.validate_user(home_user)
         partner = request.env.user.commercial_partner_id
         report = request.env['product.pricelist.dermanord'].sudo()
@@ -292,6 +302,8 @@ class website_account(website_account):
         #/my/mail?page=3
         mpp = 8 # mails per page
         home_user = request.env.user
+        if home_user.has_group('webshop_dermanord.group_dn_sk'):
+            return request.website.render('website.403', {})
         self.validate_user(home_user)
         values = self._prepare_portal_layout_values()
         email = request.env.user.email

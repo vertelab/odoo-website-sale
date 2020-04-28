@@ -106,6 +106,7 @@
         <li t-att-class="'active' if active_menu == 'my_credit_invoice' else ''">
           <a href="/my/credits">My Credit Invoice</a>
         </li>
+
         <!--
              TODO: Activate me
              <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
@@ -118,6 +119,7 @@
         <!--      <li t-att-class="'active' if active_menu == 'my_reclaim' else ''">
              <a href="/my/reclaim">Mina reklamationer</a>
              </li> -->
+      <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
         <li t-att-class="'active' if active_menu == 'my_mail' else ''">
           <a href="/my/mail">Mail &amp; Subscribers</a>
         </li>
@@ -145,6 +147,7 @@
             <a href="/my/other">Miscellaneous</a>
           </li>
         </ul>
+    </t> 
       </div>
     </template>
     <template id="contact_form" name="Website Home Contact Form">
@@ -820,7 +823,7 @@
                   <form class="delUserModalForm" t-att-action="'/my/salon/%s/add_tags' % (home_user.id if home_user else user_id.id)" method="post">
                     <div class="modal-footer">
                       <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
-                        <button type="submit" class="btn btn-primary delUserModalButton delete_users">Delete Contact</button>
+                        <button type="submit" class="btn btn-primary delUserModalButton delete_users">Delete Customer</button>
                       </t>
                     </div>
                   </form>
