@@ -40,7 +40,7 @@ class website_account(http.Controller):
 
     def get_campaign_products(self, salon=True, limit=8, page=0):
         def pretty_date(date):
-            return format_date(fields.Date.from_string(date), 'D MMM', locale=request.env.context.get('lang')).replace('.', '')
+            return format_date(fields.Date.from_string(date), 'd MMM', locale=request.env.context.get('lang')).replace('.', '')
         name = 'Produkt %s'
         res = []
         helpers = request.env['crm.tracking.campaign.helper'].sudo().search([
@@ -52,8 +52,10 @@ class website_account(http.Controller):
         for helper in helpers:
             if helper.variant_id:
                 product = helper.variant_id
+                variant = helper.variant_id
             elif helper.product_id:
                 product = helper.product_id
+                variant = product.get_default_variant()
             else:
                 # This should never happen. Lets pretend like it didn't.
                 continue
@@ -67,32 +69,32 @@ class website_account(http.Controller):
             if helper.campaign_id.image:
                 line['image'] = '/web/binary/image?id=%s&field=image&model=crm.tracking.campaign' % helper.campaign_id.id
             if product._name == 'product.template':
-                variant = product.get_default_variant()
                 line['url'] = '/dn_shop/product/%s' % product.id
             else:
-                variant = product
                 line['url'] = '/dn_shop/variant/%s' % product.id
             # Find the relevant phase
             if helper.salon:
                 # Campaign aimed at salons
                 phase = helper.campaign_phase_id
+                price = variant.pricelist_chart_ids.filtered(lambda c: c.pricelist_chart_id.pricelist == phase.pricelist_id).rec_price
             else:
                 # Campaign aimed at consumers
-                phase = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
+                phase = helper.campaign_id.phase_ids.filtered(lambda p: p.reseller_pricelist)[0]
+                price = variant.pricelist_chart_ids.filtered(lambda c: c.pricelist_chart_id.pricelist == phase.pricelist_id).rec_price
             date_start = phase.start_date
             date_stop = phase.end_date
             if not date_stop:
                 line['period'] = _('until further notice')
             elif date_start:
-                line['period'] = '%s - %s' % (pretty_date(date_start), pretty_date(date_stop))
+                line['period'] = '%s - %s' % (pretty_date(date_start),pretty_date(date_stop))
             else:
                 line['period'] = '- %s' % pretty_date(date_stop)
             # Calculate customers price at campaign start
             line['price'] = '%s %s' % (lang.format(
                     '%f',
-                    phase.pricelist_id.with_context(date=date_start).price_get(variant.id, 1)[phase.pricelist_id.id],
+                    price,
                     grouping=True, monetary=True, context=request.env.context)[:-4],
-                phase.pricelist_id.currency_id.name
+                    phase.pricelist_id.currency_id.name
                 )
         return res
 
@@ -131,7 +133,7 @@ class website_account(http.Controller):
             })
         return groups
 
-    @http.route(['/my', '/my/home'], type='http', auth="user", website=True)
+    @http.route(['/my/home'], type='http', auth="user", website=True)
     def account(self, **kw):
         values = self._prepare_portal_layout_values()
         values['offers_salon'] = self.get_campaign_products(salon=True, limit=8)
