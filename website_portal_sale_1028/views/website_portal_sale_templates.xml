@@ -778,11 +778,6 @@
                   </div>
                 </div>
 
-<!-- webshop_dermanord._compute_purchase_type   -->
-               
-
-                <!-- <t t-if="request.env['res.users'].search([('access_group_ids', '=', 'in_group_286')])"> -->
-
                 <t t-if="not home_user.has_group('webshop_dermanord.group_dn_sk')">
 
                 <div class="form-group">
@@ -821,10 +816,8 @@
 
                <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
                   <form class="delUserModalForm" t-att-action="'/my/salon/%s/add_tags' % (home_user.id if home_user else user_id.id)" method="post">
-                    <div class="modal-footer">
-                      <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
+                    <div class="modal-footer">        
                         <button type="submit" class="btn btn-primary delUserModalButton delete_users">Delete Customer</button>
-                      </t>
                     </div>
                   </form>
                 </t>
@@ -1441,9 +1434,19 @@
     </template>
     <template id="portal_my_orders" name="My Sales Orders">
       <t t-call="website_portal_1028.portal_layout">
+
         <div class="container">
+
           <t t-call="website_portal_sale_1028.my_menu" />
-          <div class="order_table col-md-9">
+
+      <ul class="nav nav-tabs col-sm-9">
+    <li class="active"><a data-toggle="tab" href="#orders">My orders</a></li>
+    <li><a data-toggle="tab" href="#followup">My follow-ups</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="orders" class="tab-pane fade in active">
+         <div class="order_table col-md-9">
             <h1 class="page-header">My Orders</h1>
             <br />
             <div class="form-inline col-xs-10 col-sm-4 col-md-4">
@@ -1548,8 +1551,55 @@
               </table>
             </t>
           </div>
-        </div>
-      </t>
+    </div>
+
+    <div id="followup" class="tab-pane fade">
+       <div class="col-md-9 order_table">
+       <h1 class="page-header">My followups</h1>
+              <table class="table table-responsive table-striped table-hover o_my_status_table">
+                <thead>
+                  <tr class="active">
+                    <th>Effektivt datum</th>
+                    <th>Bolag</th>
+                    <th>Verifikat</th>
+                    <th>Förfallodatum</th>
+                    <th>Delvis avstämt</th>
+                    <th>Balans</th>
+                  </tr>
+                </thead>
+        
+              <t t-foreach="move_line_table" t-as="follow">
+                <tr>
+                     <td class="cell_overflow">
+                  <t t-esc="follow.date"/>
+                    </td>
+                <td class="cell_overflow">
+                  <span t-field="follow.company_id"/>
+                  </td>
+                 <td class="cell_overflow">
+                  <span t-field="follow.move_id"/>
+                  </td>
+            
+                <td class="cell_overflow">
+                  <span t-field="follow.date_maturity"/>
+                  </td>
+                     <td class="cell_overflow">
+                  <span t-field="follow.reconcile_partial_id"/>
+                  </td>
+                  <td class="cell_overflow">
+                  <t t-esc="follow.result"/>
+                   <span t-field="follow.currency_id.name" />
+                  </td>
+                </tr>
+                  </t>
+              </table>
+
+           </div>
+         </div>
+       </div>
+     </div>
+   </t>
+
     </template>
     <template id="portal_my_invoices" name="My Invoices and Payments">
       <t t-call="website_portal_1028.portal_layout">

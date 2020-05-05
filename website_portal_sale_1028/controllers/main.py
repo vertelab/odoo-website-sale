@@ -6,6 +6,7 @@ from openerp.exceptions import AccessError
 from openerp.http import request, Controller
 
 from openerp.addons.website_portal_1028.controllers.main import website_account
+# from openerp.addons.account_followup.report import website_followup
 #from openerp.addons.delivery_unifaun_base import delivery
 from openerp.addons.web.controllers.main import content_disposition
 
@@ -64,17 +65,24 @@ class website_account(website_account):
         home_user = request.env.user
         self.validate_user(home_user)
         values = self._prepare_portal_layout_values()
-        partner = request.env.user.partner_id
+        partner = request.env.user.commercial_partner_id
         filters = request.website.my_order_get_all_filters(home_user)
         search = post.get('order_search')
         domain = request.website.my_order_search_domain(home_user, search, post)
         _logger.debug('search_domain: %s' % (domain))
         SaleOrder = request.env['sale.order']
-
+        move_line_table = request.env['account.move.line'].sudo().search([
+            ('partner_id', '=', partner.id),
+            ('reconcile_id', '=', False),
+            ('account_id.active','=', True),
+            ('account_id.type', '=', 'receivable'),
+            ('state', '!=', 'draft')])
+                                                                                                        
         archive_groups = "" # DAER: Ugg not understand, Ugg remove.
         # archive_groups = self._get_archive_groups('sale.order', domain)
         # count for pager
         order_count = SaleOrder.sudo().search_count(domain)
+        move_line_count = move_line_table.sudo().search_count(domain)
         # pager
         pager = request.website.pager(
             url="/my/orders",
@@ -84,10 +92,18 @@ class website_account(website_account):
             step=self._items_per_page,
             scope=7
         )
+        # pager2 = request.website.pager(
+        #     url="/my/orders",
+        #     url_args={},
+        #     total=move_line_count,
+        #     page=page,
+        #     step=self._items_per_page,
+        #     scope=7
+        # )
         _logger.debug('pager: %s' % (pager,))
         # content according to pager and archive selected
         orders = SaleOrder.sudo().search(domain, limit=self._items_per_page, offset=pager['offset'])
-        _logger.debug('orders: %s' % (orders,))
+        # lines2 = move_line_table.sudo().search(domain, limit=self._items_per_page, offset=pager2['offset'])
         values.update({
             'orders': orders,
             'page_name': 'order',
@@ -95,10 +111,10 @@ class website_account(website_account):
             'archive_groups': archive_groups,
             'default_url': '/my/orders',
             'order_filters': filters,
-            'active_menu': 'my_orders'
+            'active_menu': 'my_orders',
+            'move_line_table': move_line_table,
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
-    
     
     
     @http.route(['/my/credits', '/my/credits/page/<int:page>'], type='http', auth="user", website=True)
@@ -655,7 +671,6 @@ class website_account(website_account):
     @http.route(['/my/orders/<int:order_id>'], type='http', auth="user", website=True)
     def orders_followup(self, home_user=None, order_id=None, tab='orders', **post):
         home_user = request.env.user
-
         self.validate_user(home_user)
         order = request.env['sale.order'].sudo().search(request.website.my_order_search_domain(home_user, post=post) + [('id', '=', order_id)])
         if not order:
