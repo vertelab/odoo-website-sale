@@ -703,6 +703,14 @@
       </div>
     </template>
 
+    <template id="redirect_to_startpage" inherit_id="web.login" name="login redirect">
+      <xpath expr="//input[@type='hidden']" position="replace">
+      <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
+        <input type="hidden" name="redirect" value="/"/>
+      </t>
+      </xpath>
+    </template>
+
     <template id="portal_my_salon" name="My salon">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -1604,6 +1612,12 @@
    </t>
 
     </template>
+
+
+
+
+
+
     <template id="portal_my_invoices" name="My Invoices and Payments">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
