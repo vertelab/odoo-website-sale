@@ -1441,7 +1441,9 @@
 
       <ul class="nav nav-tabs col-sm-9">
     <li class="active"><a data-toggle="tab" href="#orders">My orders</a></li>
+  <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
     <li><a data-toggle="tab" href="#followup">My follow-ups</a></li>
+  </t>
   </ul>
 
   <div class="tab-content">
@@ -1553,6 +1555,8 @@
           </div>
     </div>
 
+  <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
+
     <div id="followup" class="tab-pane fade">
        <div class="col-md-9 order_table">
        <h1 class="page-header">My followups</h1>
@@ -1567,19 +1571,17 @@
                     <th>Balans</th>
                   </tr>
                 </thead>
-        
               <t t-foreach="move_line_table" t-as="follow">
                 <tr>
-                     <td class="cell_overflow">
+                  <td class="cell_overflow">
                   <t t-esc="follow.date"/>
-                    </td>
+                  </td>
                 <td class="cell_overflow">
                   <span t-field="follow.company_id"/>
                   </td>
                  <td class="cell_overflow">
                   <span t-field="follow.move_id"/>
                   </td>
-            
                 <td class="cell_overflow">
                   <span t-field="follow.date_maturity"/>
                   </td>
@@ -1596,6 +1598,7 @@
 
            </div>
          </div>
+       </t>
        </div>
      </div>
    </t>

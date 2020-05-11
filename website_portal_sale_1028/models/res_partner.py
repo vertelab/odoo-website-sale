@@ -23,7 +23,6 @@ from openerp import models, fields, api, _
 import logging
 _logger = logging.getLogger(__name__)
 
-
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
