@@ -29,6 +29,23 @@
     text-decoration: none;
 }
 
+.left_menu_col{
+    float:left;
+    height:0px;
+    margin:0;
+    z-index: 100;
+}
+
+@media (max-width: 1763px) {
+
+
+.start_page_home{
+width:80%;
+float:right;
+}
+
+}
+
 .campaigns_rows.row.col-md-8 {
     margin: 2%;
     }
