@@ -36,8 +36,7 @@
     z-index: 100;
 }
 
-@media (max-width: 1763px) {
-
+@media screen and (max-width: 1763px) and (min-width: 990px) {
 
 .start_page_home{
 width:80%;
@@ -46,6 +45,11 @@ float:right;
 
 }
 
+@media screen and (max-width: 900px){
+.left_menu_col{
+    display:none;
+}
+}
 .campaigns_rows.row.col-md-8 {
     margin: 2%;
     }
