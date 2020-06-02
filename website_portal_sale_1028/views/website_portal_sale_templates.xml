@@ -704,7 +704,7 @@
         </t>
       </xpath>
     </template>
-    <template id="mass_mailing_design" inherit_id="website_mass_mailing.mail" name="mass_maing_design">
+    <template id="mass_mailing_design" inherit_id="website_mass_mailing.mail" name="mass mailing design">
       <xpath expr="//div[@class='row']" position="replace">
         <t t-set="home_user" t-value="request.env.user" />
         <div class="row">
@@ -719,6 +719,9 @@
             </div>
           </div>
         </div>
+      </xpath>
+      <xpath expr="//t[@t-call='website.layout']" position="before">
+          <t t-set="mail" t-value="mail" />
       </xpath>
     </template>
     <template id="portal_my_salon" name="My salon">
