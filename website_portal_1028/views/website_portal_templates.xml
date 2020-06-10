@@ -224,7 +224,8 @@
                 <section class="gift_rows">
                   <div class="row">
                     <t t-set="categ_others" t-value="request.env.ref('website_sale.categ_others')" />
-                    <t t-foreach="categ_others.child_id[:8]" t-as="category">
+                    <t t-set="my_categs" t-value="request.env['product.public.category'].search([('website_published', '=', True), ('show_on_my_home', '=', True)])" />
+                    <t t-foreach="my_categs[:8]" t-as="category">
                       <div class="col-sm-12" data-oe-id="category.id">
                         <a t-esc="category.display_name" t-att-href="'/webshop/category/%s' % category.id" />
                       </div>
