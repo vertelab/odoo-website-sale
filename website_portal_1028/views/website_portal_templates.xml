@@ -192,29 +192,29 @@
                     </div>
                   </div>
                 </div>
-                <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
-                <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='sent DESC')" />
-                <div class="row mail_lists_line">
-                  <div class="col-sm-3 col-xs-3">
-                    <t t-if="mails">
-                      <t t-foreach="mails" t-as="mail">
-                        <li>
-                          <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                            <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
-                          </a>
-                        </li>
-                      </t>
+              </div>
+              <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
+              <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='sent DESC')" />
+              <div class="row mail_lists_line">
+                <div class="col-sm-2 col-xs-3">
+                  <t t-if="mails">
+                    <t t-foreach="mails" t-as="mail">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
+                        </a>
+                      </li>
                     </t>
-                  </div>
-                  <div class="col-sm-9 col-xs-9">
-                    <t t-if="mails">
-                      <t t-foreach="mails" t-as="mail">
-                        <li>
-                          <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                            <t t-esc="mail.mass_mailing_id.name" />
-                          </a>
-                        </li>
-                      </t>
+                  </t>
+                </div>
+                <div class="col-sm-10 col-xs-9">
+                  <t t-if="mails">
+                    <t t-foreach="mails" t-as="mail">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.name" />
+                        </a>
+                      </li>
                     </t>
                   </div>
                 </div>

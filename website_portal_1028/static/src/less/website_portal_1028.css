@@ -312,10 +312,12 @@ ul.mega_menu_children {
 
 div.row.mail_lists_lines:nth-child(2n+1) {
     background-color: #F2F1EE;
+
 }
 
 .row.mail_lists_lines {
     padding: 5px;
+    
 }
 
 .mega_menu_children li{

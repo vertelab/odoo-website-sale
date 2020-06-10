@@ -1104,6 +1104,33 @@
         </div>
       </t>
     </template>
+    <template id="mail" inherit_id="website_mass_mailing.mail" name="Mail page">
+      <xpath expr="//t[@t-call='website.layout']" position="replace">
+            <t t-call="website.layout">
+                <div id="email_designer" class="mb32">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div>
+                                    <p />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="email_body_html" class="o_mail_body">
+                                    <div t-raw="mail.body_html.replace('#website_token#', '')" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div>
+                                    <p />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+          </xpath>
+        </template>
     <template id="portal_my_mail" name="My mail">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
