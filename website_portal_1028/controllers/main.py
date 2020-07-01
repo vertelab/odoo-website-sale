@@ -135,8 +135,8 @@ class website_account(http.Controller):
     @http.route(['/my/home'], type='http', auth="user", website=True)
     def account(self, **kw):
         values = self._prepare_portal_layout_values()
-        values['offers_salon'] = self.get_campaign_products(salon=True, limit=15)
-        values['offers_consumer'] = self.get_campaign_products(salon=False, limit=15)
+        values['offers_salon'] = self.get_campaign_products(salon=True, limit=50)
+        values['offers_consumer'] = self.get_campaign_products(salon=False, limit=50)
         values['my_categs'] = request.env['product.public.category'].search([('show_on_my_home', '=', True)])
 
         return request.render("website_portal_1028.portal_my_home", values)
