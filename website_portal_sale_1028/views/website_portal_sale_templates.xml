@@ -106,6 +106,9 @@
         <li t-att-class="'active' if active_menu == 'my_credit_invoice' else ''">
           <a href="/my/credits">My Credit Invoice</a>
         </li>
+          <li t-att-class="'active' if active_menu == 'my_products' else ''">
+            <a href="/my/products">My Products</a>
+          </li>
         <!--
              TODO: Activate me
              <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
@@ -987,6 +990,20 @@
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
+            <h1 class="page-header">export </h1>
+            <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
+            <t t-foreach="website.sudo().portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
+              <t t-call="website_portal_sale_1028.portal_document_link" />
+            </t>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="portal_my_image_archive" name="My image archive">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
             <h1 class="page-header">IMAGE BANK &amp; VIDEOS</h1>
             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
             <t t-foreach="website.sudo().portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
@@ -1006,6 +1023,20 @@
               <i class="fa fa-download" />
               <a href="/my/pricelist/pdf">Prislista</a>
             </li>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="portal_export_data" name="Export portal data">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <h1 class="page-header">EXPORT DATA</h1>
+            <li>
+               <i class="fa fa-download" />
+               <a href="/my/products/xls">Products.xls</a>
+             </li>
           </div>
         </div>
       </t>
