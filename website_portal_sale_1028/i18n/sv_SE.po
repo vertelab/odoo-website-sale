@@ -549,6 +549,11 @@ msgid "My salon"
 msgstr "Min Salong"
 
 #. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.my_menu
+msgid "News"
+msgstr "Aktuellt"
+
+#. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_mail
 msgid "My subscribers"
 msgstr "Mina prenumerationer"
