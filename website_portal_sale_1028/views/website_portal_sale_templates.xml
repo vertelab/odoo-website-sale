@@ -91,12 +91,9 @@
          </template>  -->
     <template id="my_menu" name="My menu">
       <div class="left_menu col-md-3 hidden-sm hidden-xs">
-        <!--
-             TODO: Activate me
-             <li>
-             <a href="/my/home">Aktuellt</a>
-             </li>
-        -->
+        <li>
+          <a href="/my/home">Aktuellt</a>
+        </li>
         <li t-att-class="'active' if active_menu == 'my_salon' else ''">
           <a href="/my/salon">My salon</a>
         </li>
@@ -106,9 +103,9 @@
         <li t-att-class="'active' if active_menu == 'my_credit_invoice' else ''">
           <a href="/my/credits">My Credit Invoice</a>
         </li>
-          <li t-att-class="'active' if active_menu == 'my_products' else ''">
+   <!--        <li t-att-class="'active' if active_menu == 'my_products' else ''">
             <a href="/my/products">My Products</a>
-          </li>
+          </li> -->
         <!--
              TODO: Activate me
              <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
