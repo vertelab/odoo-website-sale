@@ -92,7 +92,7 @@
     <template id="my_menu" name="My menu">
       <div class="left_menu col-md-3 hidden-sm hidden-xs">
         <li>
-          <a href="/my/home">Aktuellt</a>
+          <a href="/my/home">News</a>
         </li>
         <li t-att-class="'active' if active_menu == 'my_salon' else ''">
           <a href="/my/salon">My salon</a>
