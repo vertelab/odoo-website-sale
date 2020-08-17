@@ -75,13 +75,15 @@ class website_account(http.Controller):
             if helper.salon:
                 # Campaign aimed at salons
                 phase = helper.campaign_phase_id
-                price = variant.pricelist_chart_ids.filtered(lambda c: (c.pricelist_chart_id.pricelist == phase.pricelist_id)).rec_price    
+                phase_date = helper.campaign_phase_id
+                price = variant.pricelist_chart_ids.filtered(lambda c: (c.pricelist_chart_id.pricelist == phase.pricelist_id)).rec_price   
             else:
                 # Campaign aimed at consumers
-                phase = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
+                phase = helper.campaign_id.phase_ids.filtered(lambda p: p.reseller_pricelist)[0]
+                phase_date = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
                 price = variant.pricelist_chart_ids.filtered(lambda c: c.pricelist_chart_id.pricelist == phase.pricelist_id).rec_price
-            date_start = phase.start_date
-            date_stop = phase.end_date
+            date_start = phase_date.start_date
+            date_stop = phase_date.end_date
             if not date_stop:
                 line['period'] = _('until further notice')
             elif date_start:
@@ -89,7 +91,7 @@ class website_account(http.Controller):
             else:
                 line['period'] = '- %s' % pretty_date(date_stop)
             # Calculate customers price at campaign start
-            if not price:
+            if not price or price < 1:
                 line['price'] = _(' ')
             else:
                 line['price'] = '%s %s' % (lang.format(
