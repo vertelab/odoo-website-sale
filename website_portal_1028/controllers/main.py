@@ -75,10 +75,10 @@ class website_account(http.Controller):
             if helper.salon:
                 # Campaign aimed at salons
                 phase = helper.campaign_phase_id
-                price = variant.pricelist_chart_ids.filtered(lambda c: c.pricelist_chart_id.pricelist == phase.pricelist_id).rec_price
+                price = variant.pricelist_chart_ids.filtered(lambda c: (c.pricelist_chart_id.pricelist == phase.pricelist_id)).rec_price    
             else:
                 # Campaign aimed at consumers
-                phase = helper.campaign_id.phase_ids.filtered(lambda p: p.reseller_pricelist)[0]
+                phase = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
                 price = variant.pricelist_chart_ids.filtered(lambda c: c.pricelist_chart_id.pricelist == phase.pricelist_id).rec_price
             date_start = phase.start_date
             date_stop = phase.end_date
@@ -89,12 +89,15 @@ class website_account(http.Controller):
             else:
                 line['period'] = '- %s' % pretty_date(date_stop)
             # Calculate customers price at campaign start
-            line['price'] = '%s %s' % (lang.format(
-                    '%f',
-                    price,
-                    grouping=True, monetary=True, context=request.env.context)[:-4],
-                    phase.pricelist_id.currency_id.name
-                )
+            if not price:
+                line['price'] = _(' ')
+            else:
+                line['price'] = '%s %s' % (lang.format(
+                            '%f',
+                            price,
+                            grouping=True, monetary=True, context=request.env.context)[:-4],
+                            phase.pricelist_id.currency_id.name
+                    )
         return res
 
     def _prepare_portal_layout_values(self):
