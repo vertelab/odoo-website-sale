@@ -236,7 +236,8 @@ class website_account(website_account):
 
         workbook.close()
         output.seek(0)
-        return http.send_file(output, filename='export.xlsx', as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        return http.send_file(output, filename='export.xlsx', as_attachment=True, cache_timeout=0, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
 
     @http.route(['/my/imagearchive'], type='http', auth="user", website=True)
     def portal_my_image_archive(self, **kw):
