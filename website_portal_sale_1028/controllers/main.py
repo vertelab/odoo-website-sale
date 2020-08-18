@@ -225,7 +225,7 @@ class website_account(website_account):
             product.volume,
             product.weight,
             ', '.join(product.facet_line_ids.mapped('value_ids.display_name')),
-            product.qty_available,
+            product.packaging_ids.qty,
             product.get_pricelist_chart_line(pricelist).price,
             product.get_pricelist_chart_line(pricelist).rec_price,
             ]
