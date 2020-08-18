@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <template id="home_page_gdpr" inherit_id="website_sale_home.home_page" name="Home Page GDPR">
+      <xpath expr="//ul[@id='home_tab_nav']" position="inside">
+        <li t-att-class="'active' if tab == 'gdpr' else ''">
+          <a href="#gdpr" data-toggle="tab" class="list-group-item text-center">
+            <h4>
+              <i class="fa fa-newspaper-o col-sm-12" />
+              GDPR
+            </h4>
+          </a>
+        </li>
+      </xpath>
+      <xpath expr="//div[@id='home_tab_content']" position="inside">
+        <div id="gdpr" t-att-class="'tab-pane %s' %('active' if tab == 'gdpr' else '')">
+          <div class="container">
+            <t t-foreach="consent_ids" t-as="consent">
+              <div style="display: flex; justify-content: center; align-items: center" class="col-md-12 col-xs-md-12">
+                <div class="consent_div col-md-5 col-xs-md-12">
+					<form id="" t-att-action="'/home/%s/??' % (home_user.id if home_user else user_id.id) method="post" class="form-horizontal mt32" enctype="multipart/form-data" onsubmit="">
+						<input type="hidden" name="home_user" t-att-value="home_user.id" />
+						<div>
+							<field name="" t-field="" />
+						</div>
+					</form>
+                </div>
+              </div>
+            </t>
+          </div>
+        </div>
+      </xpath>
+    </template>
+  </data>
+</openerp>

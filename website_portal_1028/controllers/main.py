@@ -32,8 +32,8 @@ _logger = logging.getLogger()
 
 class website_account(http.Controller):
 
-    MANDATORY_BILLING_FIELDS = ["name", "phone", "email", "street", "city", "country_id"]
-    OPTIONAL_BILLING_FIELDS = ["zipcode", "state_id", "vat", "company_name"]
+    MANDATORY_BILLING_FIELDS = ["name", "phone", "email", "street", "city", "country_id", "vat"]
+    OPTIONAL_BILLING_FIELDS = ["zipcode", "state_id", "company_name"]
 
     _items_per_page = 20
 

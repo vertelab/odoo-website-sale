@@ -25,8 +25,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-
-
 class pricelist_chart_type(models.Model):
     """
         Key -> pricelist
@@ -46,6 +44,7 @@ class pricelist_chart_type(models.Model):
     rec_pricelist = fields.Many2one(comodel_name='product.pricelist')
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included. (unless Use product Tax is checked)')
     rec_price_product_tax  = fields.Boolean(string="Use Product Tax (Rec)",comodel_name='account.tax',help='Use product tax for rec price instread of tax for rec price in this record')
+    
 
     @api.multi
     def calc(self, product_id):
@@ -90,15 +89,23 @@ class product_product(models.Model):
 
     pricelist_chart_ids = fields.One2many(comodel_name='product.pricelist_chart',inverse_name='product_id')
 
+
+
     @api.multi
     def calc_pricelist_chart(self):
         for product in self:
             self.env['pricelist_chart.type'].search([]).calc(product.id)
+        
+    
+    
+        
 
     @api.model
     def calc_pricelist_chart_all(self):
         for product in self.env['product.product'].search([('sale_ok','=',True)]):
             self.env['pricelist_chart.type'].search([]).calc(product.id)
+            
+            
 
 
     @api.multi
@@ -127,6 +134,8 @@ class product_pricelist_chart(models.Model):
     pricelist_chart_id = fields.Many2one(comodel_name='pricelist_chart.type')
     price      = fields.Float()
     price_tax  = fields.Boolean()
+    
+
 
     def _price_txt_format(self,price,currency):
         return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(

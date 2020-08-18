@@ -20,19 +20,20 @@
 ##############################################################################
 
 {
-    'name': 'Portal Sale Purchase',
-    'version': '0.2',
+    'name': 'Website My Home Page GDPR',
+    'version': '0.1',
     'category': 'website_sale',
-    'description': """Fixes access rights errors and removes the Purchase button for Portal users.
+    'description': """
+Form for claims
+===============
+
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['portal_sale', 'purchase'],
+    'depends': ['website_sale_home', 'gdpr_inventory'],
     'data': [
-        'security/portal_security.xml',
-        'security/ir.model.access.csv',
-        # ~ 'portal_view.xml',
+        'website_sale_template.xml',
     ],
     'installable': True,
 }
