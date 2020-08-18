@@ -91,12 +91,9 @@
          </template>  -->
     <template id="my_menu" name="My menu">
       <div class="left_menu col-md-3 hidden-sm hidden-xs">
-        <!--
-             TODO: Activate me
-             <li>
-             <a href="/my/home">Aktuellt</a>
-             </li>
-        -->
+        <li>
+          <a href="/my/home">News</a>
+        </li>
         <li t-att-class="'active' if active_menu == 'my_salon' else ''">
           <a href="/my/salon">My salon</a>
         </li>
@@ -106,6 +103,9 @@
         <li t-att-class="'active' if active_menu == 'my_credit_invoice' else ''">
           <a href="/my/credits">My Credit Invoice</a>
         </li>
+   <!--        <li t-att-class="'active' if active_menu == 'my_products' else ''">
+            <a href="/my/products">My Products</a>
+          </li> -->
         <!--
              TODO: Activate me
              <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
@@ -704,7 +704,7 @@
         </t>
       </xpath>
     </template>
-    <template id="mass_mailing_design" inherit_id="website_mass_mailing.mail" name="mass_maing_design">
+    <template id="mass_mailing_design" inherit_id="website_mass_mailing.mail" name="mass mailing design">
       <xpath expr="//div[@class='row']" position="replace">
         <t t-set="home_user" t-value="request.env.user" />
         <div class="row">
@@ -719,6 +719,9 @@
             </div>
           </div>
         </div>
+      </xpath>
+      <xpath expr="//t[@t-call='website.layout']" position="before">
+          <t t-set="mail" t-value="mail" />
       </xpath>
     </template>
     <template id="portal_my_salon" name="My salon">
@@ -984,6 +987,20 @@
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
+            <h1 class="page-header">export </h1>
+            <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
+            <t t-foreach="website.sudo().portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
+              <t t-call="website_portal_sale_1028.portal_document_link" />
+            </t>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="portal_my_image_archive" name="My image archive">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
             <h1 class="page-header">IMAGE BANK &amp; VIDEOS</h1>
             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
             <t t-foreach="website.sudo().portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
@@ -1003,6 +1020,20 @@
               <i class="fa fa-download" />
               <a href="/my/pricelist/pdf">Prislista</a>
             </li>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="portal_export_data" name="Export portal data">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <h1 class="page-header">EXPORT DATA</h1>
+            <li>
+               <i class="fa fa-download" />
+               <a href="/my/products/xls">Products.xls</a>
+             </li>
           </div>
         </div>
       </t>
@@ -1101,6 +1132,33 @@
         </div>
       </t>
     </template>
+    <template id="mail" inherit_id="website_mass_mailing.mail" name="Mail page">
+      <xpath expr="//t[@t-call='website.layout']" position="replace">
+            <t t-call="website.layout">
+                <div id="email_designer" class="mb32">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div>
+                                    <p />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="email_body_html" class="o_mail_body">
+                                    <div t-raw="mail.body_html.replace('#website_token#', '')" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div>
+                                    <p />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+          </xpath>
+        </template>
     <template id="portal_my_mail" name="My mail">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">

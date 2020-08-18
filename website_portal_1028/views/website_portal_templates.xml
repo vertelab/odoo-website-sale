@@ -89,7 +89,7 @@
                         </a>
                       </div>
                       <div class="col-xs-3">
-                        <t t-esc="consumer['price']" />
+                              <t t-esc="consumer['price']" />
                       </div>
                       <div class="col-xs-4">
                         <t t-esc="consumer['period']" />
@@ -192,31 +192,31 @@
                     </div>
                   </div>
                 </div>
-                <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
-                <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='sent DESC')" />
-                <div class="row mail_lists_line">
-                  <div class="col-sm-3 col-xs-3">
-                    <t t-if="mails">
-                      <t t-foreach="mails" t-as="mail">
-                        <li>
-                          <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                            <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
-                          </a>
-                        </li>
-                      </t>
+              </div>
+              <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
+              <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='sent DESC')" />
+              <div class="row mail_lists_line">
+                <div class="col-sm-2 col-xs-3">
+                  <t t-if="mails">
+                    <t t-foreach="mails" t-as="mail">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.sent_date[2:10].replace('-', '')" />
+                        </a>
+                      </li>
                     </t>
-                  </div>
-                  <div class="col-sm-9 col-xs-9">
-                    <t t-if="mails">
-                      <t t-foreach="mails" t-as="mail">
-                        <li>
-                          <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
-                            <t t-esc="mail.mass_mailing_id.name" />
-                          </a>
-                        </li>
-                      </t>
+                  </t>
+                </div>
+                <div class="col-sm-10 col-xs-9">
+                  <t t-if="mails">
+                    <t t-foreach="mails" t-as="mail">
+                      <li>
+                        <a t-att-data-value="mail.id" class="oe_mails" t-att-href="'/mass_mailing/%s/token/%s' % (mail.mass_mailing_id.id, mail.mass_mailing_id.token)">
+                          <t t-esc="mail.mass_mailing_id.name" />
+                        </a>
+                      </li>
                     </t>
-                  </div>
+                   </t>
                 </div>
               </div>
               <div class="gift_section col-sm-3 col-xs-6 ">
@@ -224,7 +224,8 @@
                 <section class="gift_rows">
                   <div class="row">
                     <t t-set="categ_others" t-value="request.env.ref('website_sale.categ_others')" />
-                    <t t-foreach="categ_others.child_id[:8]" t-as="category">
+                    <t t-set="my_categs" t-value="request.env['product.public.category'].search([('website_published', '=', True), ('show_on_my_home', '=', True)])" />
+                    <t t-foreach="my_categs[:8]" t-as="category">
                       <div class="col-sm-12" data-oe-id="category.id">
                         <a t-esc="category.display_name" t-att-href="'/webshop/category/%s' % category.id" />
                       </div>
@@ -275,12 +276,9 @@
     </template>
     <template id="website_theme_aktuellt" inherit_id="website.layout" name="Website Theme aktuellt" priority="100">
       <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
-        <!--
-             TODO: Activate me
-             <li>
-             <a href="/my/home">AKTUELLT</a>
-             </li>
-        -->
+        <li>
+            <a href="/my/home">NEWS</a>
+        </li>
         <li>
           <a href="/my/salon">MY SALON</a>
         </li>
@@ -290,9 +288,12 @@
         <li>
           <a href="/my/credits">MY CREDIT INVOICE</a>
         </li>
+    <!--  <li>
+          <a href="/my/products">MY PRODUCTS</a>
+        </li> -->
         <!--
              TODO: Activate me
-             <li>§
+             <li>
              <a href="/my/obsolete">UTGÅENDE PRODUKTER</a>
              </li>
              <li>

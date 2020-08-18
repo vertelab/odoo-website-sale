@@ -21,12 +21,17 @@ from math import ceil
 import logging
 _logger = logging.getLogger(__name__)
 
+from cStringIO import StringIO
+
+from openerp.report.report_sxw import report_sxw
+from openerp.api import Environment
+
+try:
+    import xlsxwriter
+except ImportError:
+    _logger.debug('Can not import xlsxwriter`.')
+
 PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
-
-
-import logging
-_logger = logging.getLogger(__name__)
-
 
 class website_account(website_account):
 
@@ -158,8 +163,7 @@ class website_account(website_account):
             'portal_user': request.env.user,
             'invoice': invoice,
             'tab': tab
-        })
-        
+        })   
 
     @http.route(['/my/reclaim'], type='http', auth="user", website=True)
     def portal_my_reclaim (self, **kw):
@@ -170,6 +174,69 @@ class website_account(website_account):
             'active_menu': 'my_reclaim',
             })
         return request.render("website_portal_sale_1028.portal_my_reclaim", values)
+
+
+    @http.route(['/my/products'], type='http', auth="user", website=True)
+    def portal_my_reclaim (self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
+        values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'my_products',
+            })
+
+        return request.render("website_portal_sale_1028.portal_export_data", values)
+
+    @http.route(['/my/products/xls'], type='http', auth="user", website=True)
+    def print_product_details(self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
+        import xlsxwriter
+
+        output = StringIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet()
+        row = 0
+        col = 0
+
+        header = [u'Artikelnr','Produkt','Variantattribut','EAN-kod','Publik beskrivning','Anvandarbeskrivning','Inci','Bredd',u'Höjd','Djup','Volym','Vikt','Taggning/Egenskaper',u'Antal per hel låda',u'Kundens inköpspris','Kundens rek.pris']
+        for data in header:
+            worksheet.write(row, col, data)
+            col += 1
+        col = 0
+            
+        products = request.env['product.product'].sudo().search([('website_published','=',True), ('sale_ok','=',True), ('active','=',True)])
+        partner = request.env.user.partner_id.commercial_partner_id
+        pricelist = partner.property_product_pricelist
+
+        for product in products:
+            row += 1
+
+            item = [product.default_code,
+            product.name,
+            ', '.join(product.attribute_value_ids.mapped('display_name')),
+            product.ean13,
+            product.public_desc,
+            product.use_desc,
+            product.ingredients,
+            product.width,
+            product.height,
+            product.depth,
+            product.volume,
+            product.weight,
+            ', '.join(product.facet_line_ids.mapped('value_ids.display_name')),
+            product.packaging_ids.qty,
+            product.get_pricelist_chart_line(pricelist).price,
+            product.get_pricelist_chart_line(pricelist).rec_price,
+            ]
+            for data in item:
+                worksheet.write(row, col, data)
+                col += 1
+            col = 0
+
+        workbook.close()
+        output.seek(0)
+        return http.send_file(output, filename='export.xlsx', as_attachment=True, cache_timeout=0, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
     @http.route(['/my/imagearchive'], type='http', auth="user", website=True)
@@ -401,7 +468,6 @@ class website_account(website_account):
             return True
         except:
             return False
-
 
     #Min salong
 

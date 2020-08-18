@@ -37,7 +37,7 @@ msgstr "AKTUELLA ERBJUDANDEN"
 
 #. module: website_portal_1028
 #: view:website:website_portal_1028.portal_my_home
-msgid "AKTUELLT"
+msgid "NEWS"
 msgstr "AKTUELLT"
 
 #. module: website_portal_1028
