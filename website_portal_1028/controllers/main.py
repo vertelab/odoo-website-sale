@@ -71,6 +71,10 @@ class website_account(http.Controller):
                 line['url'] = '/dn_shop/product/%s' % product.id
             else:
                 line['url'] = '/dn_shop/variant/%s' % product.id
+            products = request.env['product.product'].sudo().search([('website_published','=',True), ('sale_ok','=',True), ('active','=',True)])
+            partner = request.env.user.partner_id.commercial_partner_id
+            pricelist = partner.property_product_pricelist
+
             # Find the relevant phase
             if helper.salon:
                 # Campaign aimed at salons
@@ -82,10 +86,7 @@ class website_account(http.Controller):
                 phase = helper.campaign_id.phase_ids.filtered(lambda p: p.reseller_pricelist)[0]
                 phase_date = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
                 price = variant.pricelist_chart_ids.filtered(lambda c: c.pricelist_chart_id.pricelist == phase.pricelist_id).rec_price
-                products = request.env['product.product'].sudo().search([('website_published','=',True), ('sale_ok','=',True), ('active','=',True)])
-                partner = request.env.user.partner_id.commercial_partner_id
-                pricelist = partner.property_product_pricelist
-
+                
             date_start = phase_date.start_date
             date_stop = phase_date.end_date
             if not date_stop:
