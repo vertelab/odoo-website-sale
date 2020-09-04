@@ -87,7 +87,11 @@ class website_account(website_account):
         # archive_groups = self._get_archive_groups('sale.order', domain)
         # count for pager
         order_count = SaleOrder.sudo().search_count(domain)
-        move_line_count = move_line_table.sudo().search_count(domain)
+
+        # The `domain` has the field invoice_ids, which does not exists
+        # The line below crashes the site
+        # move_line_count = move_line_table.sudo().search_count(domain)
+
         # pager
         pager = request.website.pager(
             url="/my/orders",
