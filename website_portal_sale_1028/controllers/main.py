@@ -191,9 +191,8 @@ class website_account(website_account):
 
         return request.render("website_portal_sale_1028.portal_export_data", values)
 
-    @http.route(['/my/products/xls'], auth="user", website=True)
+    @http.route(['/my/products/xls'], type='http', auth="user", website=True)
     def print_product_details(self, **kw):
-        setCookie("downloadStarted", 1, time() + 20, '/', "", False, False);
         portal_user = request.env.user
         self.validate_user(portal_user)
         import xlsxwriter
@@ -241,8 +240,6 @@ class website_account(website_account):
 
         workbook.close()
         output.seek(0)
-
-
         return http.send_file(output, filename='export.xlsx', as_attachment=True, cache_timeout=0, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
