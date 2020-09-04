@@ -42,7 +42,7 @@ class website_account(website_account):
         partner = request.env.user.partner_id
 
         SaleOrder = request.env['sale.order']
-        # Invoice = request.env['account.invoice']
+        Invoice = request.env['account.invoice']
         # quotation_count = SaleOrder.search_count([
         #     ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
         #     ('state', 'in', ['sent', 'cancel'])
