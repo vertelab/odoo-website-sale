@@ -43,14 +43,14 @@ class website_account(website_account):
 
         SaleOrder = request.env['sale.order']
         Invoice = request.env['account.invoice']
-        quotation_count = SaleOrder.search_count([
-            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
-            ('state', 'in', ['sent', 'cancel'])
-        ])
-        order_count = SaleOrder.search_count([
-            ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
-            ('state', 'in', ['sale', 'done'])
-        ])
+        # quotation_count = SaleOrder.search_count([
+        #     ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
+        #     ('state', 'in', ['sent', 'cancel'])
+        # ])
+        # order_count = SaleOrder.search_count([
+        #     ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
+        #     ('state', 'in', ['sale', 'done'])
+        # ])
         invoice_count = Invoice.search_count([
             ('type', 'in', ['out_invoice', 'out_refund']),
             ('message_follower_ids', 'child_of', [partner.commercial_partner_id.id]),
@@ -58,8 +58,8 @@ class website_account(website_account):
         ])
 
         response.qcontext.update({
-            'quotation_count': quotation_count,
-            'order_count': order_count,
+            # 'quotation_count': quotation_count,
+            # 'order_count': order_count,
             'invoice_count': invoice_count,
         })
         return response
@@ -87,7 +87,11 @@ class website_account(website_account):
         # archive_groups = self._get_archive_groups('sale.order', domain)
         # count for pager
         order_count = SaleOrder.sudo().search_count(domain)
-        move_line_count = move_line_table.sudo().search_count(domain)
+
+        # The `domain` has the field invoice_ids, which does not exists
+        # The line below crashes the site
+        # move_line_count = move_line_table.sudo().search_count(domain)
+
         # pager
         pager = request.website.pager(
             url="/my/orders",

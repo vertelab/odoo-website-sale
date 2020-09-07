@@ -71,17 +71,21 @@ class website_account(http.Controller):
                 line['url'] = '/dn_shop/product/%s' % product.id
             else:
                 line['url'] = '/dn_shop/variant/%s' % product.id
+            products = request.env['product.product'].sudo().search([('website_published','=',True), ('sale_ok','=',True), ('active','=',True)])
+            partner = request.env.user.partner_id.commercial_partner_id
+            pricelist = partner.property_product_pricelist
+
             # Find the relevant phase
             if helper.salon:
                 # Campaign aimed at salons
                 phase = helper.campaign_phase_id
                 phase_date = helper.campaign_phase_id
-                price = variant.pricelist_chart_ids.filtered(lambda c: (c.pricelist_chart_id.pricelist == phase.pricelist_id)).rec_price   
             else:
                 # Campaign aimed at consumers
                 phase = helper.campaign_id.phase_ids.filtered(lambda p: p.reseller_pricelist)[0]
                 phase_date = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
-                price = variant.pricelist_chart_ids.filtered(lambda c: c.pricelist_chart_id.pricelist == phase.pricelist_id).rec_price
+
+            price = product.get_pricelist_chart_line(pricelist).rec_price 
             date_start = phase_date.start_date
             date_stop = phase_date.end_date
             if not date_stop:
@@ -93,14 +97,16 @@ class website_account(http.Controller):
             # Calculate customers price at campaign start
             if not price or price < 1:
                 line['price'] = _(' ')
+
             else:
                 line['price'] = '%s %s' % (lang.format(
                             '%f',
                             price,
                             grouping=True, monetary=True, context=request.env.context)[:-4],
-                            phase.pricelist_id.currency_id.name
+                            pricelist.currency_id.name
                     )
         return res
+
 
     def _prepare_portal_layout_values(self):
         """ prepare the values to render portal layout """
