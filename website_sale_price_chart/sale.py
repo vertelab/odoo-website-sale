@@ -114,10 +114,13 @@ class product_product(models.Model):
         if isinstance(pricelist,int):
             pricelist = self.env['product.pricelist'].browse(pricelist)
         pl_ids = self.env['product.pricelist_chart'].browse()
+        pl_type = self.env['pricelist_chart.type'].sudo().search([('pricelist','=',pricelist.id)])
+        if not pl_type:
+            pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
+        # ~ return pl_ids
+        #TODO: Code here should be tested 
         for product in self:
-            pl_type = self.env['pricelist_chart.type'].sudo().search([('pricelist','=',pricelist.id)])
-            if not pl_type:
-                pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
+            
             pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
             if not pl:
                 pl = pl_type.calc(product.id)
@@ -138,18 +141,21 @@ class product_pricelist_chart(models.Model):
 
 
     def _price_txt_format(self,price,currency):
-        return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
-                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
-                pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
-                post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
-            ).format(
-                symbol=currency.symbol,
-            )
+        lang = self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price, grouping=True, monetary=True)
+        text = u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
+            lang,
+            pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
+            post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
+        )
+        res = text.format(
+            symbol=currency.symbol,
+        )
+        return res
 
     @api.one
     def _price_txt(self):
 
-        self.price_txt_short = self._price_txt_format(self.price,self.pricelist_chart_id.pricelist.currency_id)
+        self.price_txt_short = self._price_txt_format(self.price, self.pricelist_chart_id.pricelist.currency_id)
         self.price_txt       = '%s %s' % (self.price_txt_short + _('your price') if self.price_tax else _('your price excl. tax')  )
 
         self.rec_price_txt_short = self._price_txt_format(self.rec_price,self.pricelist_chart_id.rec_pricelist.currency_id)
@@ -187,13 +193,19 @@ class product_pricelist_chart(models.Model):
                 dp = dp and dp[0]['decimal_point'] or '.'
             return ('%.2f' %price).replace('.', dp)
         def price_txt_format(self,price,currency):
-            return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
-                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
+            lang = self.env['res.lang'].format([self._context.get('lang') or 'en_US'], lang,'.2f', price, grouping=True, monetary=True)
+           
+            text = u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
+                lang,
                 pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
                 post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
-            ).format(
+            )
+            
+            res = text.format(
                 symbol=currency.symbol,
             )
+            
+            return res
 
         # ~ if isinstance(pricelist,int):
             # ~ pricelist = self.env['product.pricelist'].browse(pricelist)
@@ -248,7 +260,7 @@ class product_pricelist_chart(models.Model):
             return ('%.2f' %price).replace('.', dp)
         def price_txt_format(self,price,currency):
             return u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
-                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price,grouping=True, monetary=True),
+                self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'.2f', price,grouping=True, monetary=True),
                 pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
                 post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
             ).format(
