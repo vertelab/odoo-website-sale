@@ -194,7 +194,7 @@
                 </div>
               </div>
               <t t-set="mass_mailing_partners" t-value="[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', request.env.user.email)], ['id'])]" />
-              <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='sent DESC')" />
+              <t t-set="mails" t-value="request.env['mail.mail.statistics'].sudo().search([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)], limit=7, order='DESC')" />
               <div class="row mail_lists_line">
                 <div class="col-sm-2 col-xs-3">
                   <t t-if="mails">

@@ -380,7 +380,7 @@ class website_account(website_account):
             mailing_lists.append({
                 'name': mailing_list.name,
                 'id': mailing_list.id,
-                'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id), ('opt_out', '=', False)]) > 0,
+                'subscribed': request.env['mail.mass_mailing.contact'].sudo().search_count([('email', '=', email), ('list_id', '=', mailing_list.id)]) > 0,
             })
         return mailing_lists
 
