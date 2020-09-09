@@ -276,12 +276,19 @@
     </template>
     <template id="website_theme_aktuellt" inherit_id="website.layout" name="Website Theme aktuellt" priority="100">
       <xpath expr="//ul[@class='dropdown-menu js_usermenu']/li" position="inside">
-        <li>
-            <a href="/my/home">NEWS</a>
-        </li>
-        <li>
-          <a href="/my/salon">MY SALON</a>
-        </li>
+        <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
+            <li>
+                <a href="/my/home">NEWS</a>
+            </li>
+            <li>
+              <a href="/my/salon">MY SALON</a>
+            </li>
+        </t>
+        <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
+            <li>
+              <a href="/my/salon">MY INFORMATION</a>
+            </li>
+        </t>
         <li>
           <a href="/my/orders">MY ORDERS</a>
         </li>
