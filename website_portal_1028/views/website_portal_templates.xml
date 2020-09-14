@@ -89,7 +89,7 @@
                         </a>
                       </div>
                       <div class="col-xs-3">
-                              <t t-esc="consumer['price']" />
+                        <t t-esc="consumer['price']" />
                       </div>
                       <div class="col-xs-4">
                         <t t-esc="consumer['period']" />
@@ -97,6 +97,7 @@
                     </div>
                   </t>
                 </section>
+              <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
                 <section>
                   <div class="first_row row">
                     <div class="col-xs-5">
@@ -110,6 +111,7 @@
                     </div>
                   </div>
                 </section>
+              </t>
                 <section class="rows">
                   <t t-foreach="offers_salon" t-as="salon">
                     <div class="campaigns_rows row">
@@ -216,7 +218,7 @@
                         </a>
                       </li>
                     </t>
-                   </t>
+                  </t>
                 </div>
               </div>
               <div class="gift_section col-sm-3 col-xs-6 ">
@@ -295,9 +297,9 @@
         <li>
           <a href="/my/credits">MY CREDIT INVOICE</a>
         </li>
-    <!--  <li>
-          <a href="/my/products">MY PRODUCTS</a>
-        </li> -->
+        <!--  <li>
+             <a href="/my/products">MY PRODUCTS</a>
+             </li> -->
         <!--
              TODO: Activate me
              <li>
