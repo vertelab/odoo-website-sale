@@ -31,15 +31,21 @@
         </t>
       </ul>
     </template>
-    <template id="campaigne_page" name="Campaign page">
+    <template id="campaign_page" name="Campaign page">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <h1 class="page-header" t-field="campaign.name"/>
-            <img class="page-image" t-if="campaign.image" itemprop="image" t-att-src="website.imagemagick_url(campaign, 'image', 'website_blog_simple.im_blog_single')"/>
-            <p class="page-description" t-field="campaign.description"/>
-    
+
+             <img class="img-responsive" t-att-src="campaign.image" style="position: relative;" />
+            <p t-field="campaign.website_description"/>
+
+              <t t-raw="request.env['product.template'].get_thumbnail_default_variant(
+                [('id', 'in', campaign.campaign_product_ids.mapped('id'))],
+                campaign.get_current_phase(True).pricelist_id)"/>
+
+
             <div id="wrap" class="oe_structure oe_empty"/>
         </div>
       </div>

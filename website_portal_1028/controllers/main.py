@@ -72,11 +72,11 @@ class website_account(http.Controller):
             })
         return groups
 
-    # @http.route(['/campaigns', '/campaign/<int:campaign_id'], type='http', website=True)
-    # def consumer(self, campaign_id, **kw):
-    #     campaign = request.env['crm.tracking.campaign'].sudo().browse(campaign_id)
+    @http.route(['/campaigns', '/campaign/<int:campaign_id>'], type='http', website=True)
+    def consumer(self, campaign_id, **kw):
+        campaign = request.env['crm.tracking.campaign'].sudo().browse(campaign_id)
 
-    #     return request.render("website_portal_1028.campaigne_page", {"campaign": campaign})
+        return request.render("website_portal_1028.campaign_page", {"campaign": campaign})
 
 
     @http.route(['/my/home'], type='http', auth="user", website=True)
