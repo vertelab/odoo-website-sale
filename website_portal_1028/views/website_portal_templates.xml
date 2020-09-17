@@ -31,6 +31,20 @@
         </t>
       </ul>
     </template>
+    <template id="campaigne_page" name="Campaign page">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="col-md-9">
+            <h1 class="page-header" t-field="campaign.name"/>
+            <img class="page-image" t-if="campaign.image" itemprop="image" t-att-src="website.imagemagick_url(campaign, 'image', 'website_blog_simple.im_blog_single')"/>
+            <p class="page-description" t-field="campaign.description"/>
+    
+            <div id="wrap" class="oe_structure oe_empty"/>
+        </div>
+      </div>
+      </t>
+    </template> 
     <template id="portal_layout" name="Portal Layout">
       <t t-call="website.layout">
         <div class="container mt16">
@@ -74,7 +88,7 @@
                     <h5>KONSUMENTERBJUDANDE:</h5>
                   </div>
                   <div class="col-xs-3">
-                    <h5>UTPRIS:</h5>
+
                   </div>
                   <div class="col-xs-4">
                     <h5>SÄLJPERIOD:</h5>
@@ -85,11 +99,8 @@
                     <div class="campaigns_rows row">
                       <div class="col-xs-5">
                         <a t-att-href="consumer['url']">
-                          <t t-esc="consumer['product']" />
+                          <t t-esc="consumer['name']" />
                         </a>
-                      </div>
-                      <div class="col-xs-3">
-                              <t t-esc="consumer['price']" />
                       </div>
                       <div class="col-xs-4">
                         <t t-esc="consumer['period']" />
@@ -97,13 +108,14 @@
                     </div>
                   </t>
                 </section>
+              <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
                 <section>
                   <div class="first_row row">
                     <div class="col-xs-5">
                       <h5>SALONGSERBJUDANDE:</h5>
                     </div>
                     <div class="col-xs-3">
-                      <h5>UTPRIS:</h5>
+
                     </div>
                     <div class="col-xs-4">
                       <h5>SÄLJPERIOD:</h5>
@@ -115,11 +127,11 @@
                     <div class="campaigns_rows row">
                       <div class="col-xs-5">
                         <a t-att-href="salon['url']">
-                          <t t-esc="salon['product']" />
+                          <t t-esc="salon['name']" />
                         </a>
                       </div>
                       <div class="col-xs-3">
-                        <t t-esc="salon['price']" />
+
                       </div>
                       <div class="col-xs-4">
                         <t t-esc="salon['period']" />
@@ -127,6 +139,7 @@
                     </div>
                   </t>
                 </section>
+              </t>
               </div>
               <div class="row">
                 <div class="col-sm-6">
@@ -216,7 +229,7 @@
                         </a>
                       </li>
                     </t>
-                   </t>
+                  </t>
                 </div>
               </div>
               <div class="gift_section col-sm-3 col-xs-6 ">
@@ -295,9 +308,9 @@
         <li>
           <a href="/my/credits">MY CREDIT INVOICE</a>
         </li>
-    <!--  <li>
-          <a href="/my/products">MY PRODUCTS</a>
-        </li> -->
+        <!--  <li>
+             <a href="/my/products">MY PRODUCTS</a>
+             </li> -->
         <!--
              TODO: Activate me
              <li>

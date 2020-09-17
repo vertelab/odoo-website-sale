@@ -24,7 +24,6 @@ from openerp import tools
 from openerp.tools.translate import _
 
 from openerp.fields import Date
-from babel.dates import format_date
 from cStringIO import StringIO
 
 import logging
@@ -32,80 +31,10 @@ _logger = logging.getLogger()
 
 class website_account(http.Controller):
 
-    MANDATORY_BILLING_FIELDS = ["name", "phone", "email", "street", "city", "country_id", "vat"]
-    OPTIONAL_BILLING_FIELDS = ["zipcode", "state_id", "company_name"]
+    MANDATORY_BILLING_FIELDS = ["name", "phone", "email", "street", "city", "country_id"]
+    OPTIONAL_BILLING_FIELDS = ["zipcode", "state_id", "vat", "company_name"]
 
     _items_per_page = 20
-
-
-    def get_campaign_products(self, salon=True, limit=8, page=0):
-        def pretty_date(date):
-            return format_date(fields.Date.from_string(date), 'd MMM', locale=request.env.context.get('lang')).replace('.', '')
-        name = 'Produkt %s'
-        res = []
-        helpers = request.env['crm.tracking.campaign.helper'].sudo().search([
-                ('for_reseller', '=', True),
-                ('country_id', '=', request.env.user.partner_id.commercial_partner_id.country_id.id),
-                ('salon', '=', salon),
-            ], limit = limit, offset = limit * page)
-        lang = request.env['res.lang'].search([('code', '=', request.env.context.get('lang'))])
-        for helper in helpers:
-            if helper.variant_id:
-                product = helper.variant_id
-                variant = helper.variant_id
-            elif helper.product_id:
-                product = helper.product_id
-                variant = product.get_default_variant()
-            else:
-                # This should never happen. Lets pretend like it didn't.
-                continue
-            line = {
-                'product': helper.campaign_id.name,
-                'image': '',
-                'price_origin':''
-            }
-            res.append(line)
-            if helper.campaign_id.image:
-                line['image'] = '/web/binary/image?id=%s&field=image&model=crm.tracking.campaign' % helper.campaign_id.id
-            if product._name == 'product.template':
-                line['url'] = '/dn_shop/product/%s' % product.id
-            else:
-                line['url'] = '/dn_shop/variant/%s' % product.id
-            products = request.env['product.product'].sudo().search([('website_published','=',True), ('sale_ok','=',True), ('active','=',True)])
-            partner = request.env.user.partner_id.commercial_partner_id
-            pricelist = partner.property_product_pricelist
-
-            # Find the relevant phase
-            if helper.salon:
-                # Campaign aimed at salons
-                phase = helper.campaign_phase_id
-                phase_date = helper.campaign_phase_id
-            else:
-                # Campaign aimed at consumers
-                phase = helper.campaign_id.phase_ids.filtered(lambda p: p.reseller_pricelist)[0]
-                phase_date = helper.campaign_id.phase_ids.filtered(lambda p: not p.reseller_pricelist)[0]
-
-            price = product.get_pricelist_chart_line(pricelist).rec_price 
-            date_start = phase_date.start_date
-            date_stop = phase_date.end_date
-            if not date_stop:
-                line['period'] = _('until further notice')
-            elif date_start:
-                line['period'] = '%s - %s' % (pretty_date(date_start),pretty_date(date_stop))
-            else:
-                line['period'] = '- %s' % pretty_date(date_stop)
-            # Calculate customers price at campaign start
-            if not price or price < 1:
-                line['price'] = _(' ')
-
-            else:
-                line['price'] = '%s %s' % (lang.format(
-                            '%f',
-                            price,
-                            grouping=True, monetary=True, context=request.env.context)[:-4],
-                            pricelist.currency_id.name
-                    )
-        return res
 
 
     def _prepare_portal_layout_values(self):
@@ -143,48 +72,57 @@ class website_account(http.Controller):
             })
         return groups
 
+    # @http.route(['/campaigns', '/campaign/<int:campaign_id'], type='http', website=True)
+    # def consumer(self, campaign_id, **kw):
+    #     campaign = request.env['crm.tracking.campaign'].sudo().browse(campaign_id)
+
+    #     return request.render("website_portal_1028.campaigne_page", {"campaign": campaign})
+
+
     @http.route(['/my/home'], type='http', auth="user", website=True)
     def account(self, **kw):
         values = self._prepare_portal_layout_values()
-        values['offers_salon'] = self.get_campaign_products(salon=True, limit=50)
-        values['offers_consumer'] = self.get_campaign_products(salon=False, limit=50)
+        values['offers_salon'] = request.env['crm.tracking.campaign'].get_campaign_lines(campaign_type='salon', limit=50)
+        values['offers_consumer'] = request.env['crm.tracking.campaign'].get_campaign_lines(campaign_type='consumer', limit=50)
         values['my_categs'] = request.env['product.public.category'].search([('show_on_my_home', '=', True)])
+
+        _logger.warning('sandra %s' % values['offers_salon'])
 
         return request.render("website_portal_1028.portal_my_home", values)
 
-    @http.route(['/my/account'], type='http', auth='user', website=True)
-    def details(self, redirect=None, **post):
-        partner = request.env.user.partner_id
-        values = {
-            'error': {},
-            'error_message': []
-        }
+    # @http.route(['/my/account'], type='http', auth='user', website=True)
+    # def details(self, redirect=None, **post):
+    #     partner = request.env.user.partner_id
+    #     values = {
+    #         'error': {},
+    #         'error_message': []
+    #     }
 
-        if post:
-            error, error_message = self.details_form_validate(post)
-            values.update({'error': error, 'error_message': error_message})
-            values.update(post)
-            if not error:
-                values = {key: post[key] for key in self.MANDATORY_BILLING_FIELDS}
-                values.update({key: post[key] for key in self.OPTIONAL_BILLING_FIELDS if key in post})
-                values.update({'zip': values.pop('zipcode', '')})
-                partner.sudo().write(values)
-                if redirect:
-                    return request.redirect(redirect)
-                return request.redirect('/my/home')
+    #     if post:
+    #         error, error_message = self.details_form_validate(post)
+    #         values.update({'error': error, 'error_message': error_message})
+    #         values.update(post)
+    #         if not error:
+    #             values = {key: post[key] for key in self.MANDATORY_BILLING_FIELDS}
+    #             values.update({key: post[key] for key in self.OPTIONAL_BILLING_FIELDS if key in post})
+    #             values.update({'zip': values.pop('zipcode', '')})
+    #             partner.sudo().write(values)
+    #             if redirect:
+    #                 return request.redirect(redirect)
+    #             return request.redirect('/my/home')
 
-        countries = request.env['res.country'].sudo().search([])
-        states = request.env['res.country.state'].sudo().search([])
+    #     countries = request.env['res.country'].sudo().search([])
+    #     states = request.env['res.country.state'].sudo().search([])
 
-        values.update({
-            'partner': partner,
-            'countries': countries,
-            'states': states,
-            'has_check_vat': hasattr(request.env['res.partner'], 'check_vat'),
-            'redirect': redirect,
-        })
+    #     values.update({
+    #         'partner': partner,
+    #         'countries': countries,
+    #         'states': states,
+    #         'has_check_vat': hasattr(request.env['res.partner'], 'check_vat'),
+    #         'redirect': redirect,
+    #     })
 
-        return request.render("website_portal_1028.details", values)
+    #     return request.render("website_portal_1028.details", values)
 
     def details_form_validate(self, data):
         error = dict()

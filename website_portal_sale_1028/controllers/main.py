@@ -34,7 +34,6 @@ except ImportError:
 PARTNER_FIELDS = ['name', 'street', 'street2', 'zip', 'city', 'phone', 'email']
 
 class website_account(website_account):
-
     @http.route()
     def account(self, **kw):
         """ Add sales documents to main account page """
@@ -181,7 +180,7 @@ class website_account(website_account):
 
 
     @http.route(['/my/products'], type='http', auth="user", website=True)
-    def portal_my_reclaim (self, **kw):
+    def portal_xport (self, **kw):
         portal_user = request.env.user
         self.validate_user(portal_user)
         values = self._prepare_portal_layout_values()
