@@ -25,6 +25,24 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class crm_tracking_campaign(models.Model):
+    _inherit = 'crm.tracking.campaign'
+
+    @api.model
+    def get_campaign_lines(self, campaign_type='salon', limit=8, page=0):
+        res = []
+        for campaign in self.env['crm.tracking.campaign'].sudo().get_campaign_current_type(campaign_type):
+            line = {
+                'name': campaign.name,
+                'image': '/web/binary/image?id=%s&field=image&model=crm.tracking.campaign' % campaign.id,
+                'url': '/campaign/%s' % campaign.id,
+                'period': campaign.get_period(True)[0] if len(campaign.get_period(True)) > 0 else "",
+            }
+            res.append(line)
+        
+        return res 
+
+
 class DocumentDirectory(models.Model):
     _inherit = 'document.directory'
 
