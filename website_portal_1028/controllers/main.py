@@ -72,11 +72,10 @@ class website_account(http.Controller):
             })
         return groups
 
-    @http.route(['/campaigns', '/campaign/<int:campaign_id>'], type='http', website=True)
-    def consumer(self, campaign_id, **kw):
-        campaign = request.env['crm.tracking.campaign'].sudo().browse(campaign_id)
-
-        return request.render("website_portal_1028.campaign_page", {"campaign": campaign})
+    @http.route(['/dn_shop/search'], type='json', auth="public", website=True)
+    def search(self, **kw):
+        raise Warning(kw)
+        return value
 
 
     @http.route(['/my/home'], type='http', auth="user", website=True)
@@ -85,8 +84,6 @@ class website_account(http.Controller):
         values['offers_salon'] = request.env['crm.tracking.campaign'].get_campaign_lines(campaign_type='salon', limit=50)
         values['offers_consumer'] = request.env['crm.tracking.campaign'].get_campaign_lines(campaign_type='consumer', limit=50)
         values['my_categs'] = request.env['product.public.category'].search([('show_on_my_home', '=', True)])
-
-        _logger.warning('sandra %s' % values['offers_salon'])
 
         return request.render("website_portal_1028.portal_my_home", values)
 
