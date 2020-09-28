@@ -30,8 +30,20 @@ class crm_tracking_campaign(models.Model):
 
     @api.model
     def get_campaign_lines(self, campaign_type='salon', limit=8, page=0):
+        campaigns = self.env['crm.tracking.campaign'].search([
+            ('date_start', '<=',fields.Date.today()),
+            ('website_published', '=', True),
+            ('state', '=', 'open'),
+            "|", 
+            ('date_stop', '>=', fields.Date.today()),
+            ('date_stop', '=', False)
+            ])
+
+        campaigns = campaigns.filtered(lambda c: c.campaign_type == campaign_type)
+        campaigns = campaigns.filtered(lambda c: self.env.user.partner_id.country_id in c.country_ids)
+
         res = []
-        for campaign in self.env['crm.tracking.campaign'].sudo().get_campaign_current_type(campaign_type):
+        for campaign in campaigns:
             line = {
                 'name': campaign.name,
                 'image': '/web/binary/image?id=%s&field=image&model=crm.tracking.campaign' % campaign.id,
@@ -39,7 +51,6 @@ class crm_tracking_campaign(models.Model):
                 'period': campaign.get_period(True)[0] if len(campaign.get_period(True)) > 0 else "",
             }
             res.append(line)
-        
         return res 
 
 
