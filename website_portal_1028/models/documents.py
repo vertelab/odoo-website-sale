@@ -32,7 +32,6 @@ class crm_tracking_campaign(models.Model):
     def get_campaign_lines(self, campaign_type='salon', limit=8, page=0):
         campaigns = self.env['crm.tracking.campaign'].search([
             ('date_start', '<=',fields.Date.today()),
-            ('website_published', '=', True),
             ('state', '=', 'open'),
             "|", 
             ('date_stop', '>=', fields.Date.today()),
