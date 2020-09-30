@@ -375,7 +375,7 @@ class website_account(website_account):
 
     def get_mailing_lists(self, email):
         mailing_lists = []
-        for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True)]):
+        for mailing_list in request.env['mail.mass_mailing.list'].sudo().search([('website_published', '=', True),('country_ids','in',request.env.user.partner_id.commercial_partner_id.country_id.id)]):
             mailing_lists.append({
                 'name': mailing_list.name,
                 'id': mailing_list.id,
@@ -394,6 +394,7 @@ class website_account(website_account):
         values = self._prepare_portal_layout_values()
         email = request.env.user.email
         mailing_lists = self.get_mailing_lists(email)
+        _logger.warn("%s haze" %mailing_lists)
         mass_mailing_partners =[mmc['id'] for mmc in request.env['mail.mass_mailing.contact'].sudo().search_read([('email', '=', email)], ['id'])]
         mail_count = request.env['mail.mail.statistics'].sudo().search_count([('model', '=', 'mail.mass_mailing.contact'), ('res_id', 'in', mass_mailing_partners)])
         page_count = int(ceil(mail_count / mpp))
@@ -422,6 +423,7 @@ class website_account(website_account):
             'employees_mailing_lists': employees_mailing_lists,
             'active_menu': 'my_mail',
             })
+            
 
         return request.render("website_portal_sale_1028.portal_my_mail", values)
 
@@ -1008,6 +1010,8 @@ class DummyRecordSet(object):
     def __init__(self, ids):
         self.ids = ids
 
-
-
+class MailMassMailingList(models.Model):
+    _inherit = 'mail.mass_mailing.list'
+    
+    country_ids = fields.Many2many(comodel_name='res.country',string='Country') 
 

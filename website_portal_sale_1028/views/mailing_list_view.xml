@@ -9,6 +9,7 @@
             <div class="oe_title" position="after">
                 <group>
                     <field name="website_published"/>
+                    <field name="country_ids" widget="many2many_tags"/>
                 </group>
             </div>
         </field>
