@@ -13,7 +13,7 @@
                         <field name="price_tax" attrs="{'invisible': [('price_product_tax', '=', True)]}" />
                         <field name="rec_pricelist" />
                         <field name="rec_price_product_tax" />
-                        <field name="rec_price_tax" attrs="{'invisible': [('rec_price_product_tax', '=', True)]}" />
+                        <field name="rec_price_tax" attrs="{'invisible': [('rec_price_product_tax', '=', True)]}" groups="webshop_dermanord.group_dn_sk,base.public_user"/>
                     </group>
                 </form>
             </field>
