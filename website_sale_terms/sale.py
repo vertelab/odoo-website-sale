@@ -34,10 +34,7 @@ class sale_order(models.Model):
     accepted_terms_and_conditions = fields.Boolean('Terms & Conditions accepted')
     accepted_educational_purchase = fields.Boolean('Educational Purchase Terms accepted')
     
-    
-    
 class website_sale(http.Controller):
-
     @http.route(['/shop/order/terms_and_conditions'], type='json', auth="public", website=True)
     def terms_and_conditions(self, accepted, **post):
         order = request.website.sudo().sale_get_order()
@@ -49,3 +46,9 @@ class website_sale(http.Controller):
         order = request.website.sudo().sale_get_order()
         if order:
             order.sudo().accepted_educational_purchase = accepted
+
+    @http.route(['/shop/order/terms_and_conditions_reseller'], type='json', auth="public", website=True)
+    def terms_and_conditions_reseller(self, accepted, **post):
+        order = request.website.sudo().sale_get_order()
+        if order:
+            order.sudo().accepted_terms_and_conditions = accepted
