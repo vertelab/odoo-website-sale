@@ -47,8 +47,8 @@ class website_sale(http.Controller):
         if order:
             order.sudo().accepted_educational_purchase = accepted
 
-    @http.route(['/shop/order/terms_and_conditions_reseller'], type='json', auth="public", website=True)
-    def terms_and_conditions_reseller(self, accepted, **post):
+    @http.route(['/shop/order/terms_and_conditions_consumer'], type='json', auth="public", website=True)
+    def terms_and_conditions_consumer(self, accepted, **post):
         order = request.website.sudo().sale_get_order()
         if order:
             order.sudo().accepted_terms_and_conditions = accepted

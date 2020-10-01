@@ -29,8 +29,7 @@
       </t>
     </template>
 
-  <template id="website.terms-and-conditions-reseller" name="Terms and Conditions Reseller">
-    <t t-call="website.layout">
+  <template id="website.terms-and-conditions-consumer" name="Terms and Conditions Consumer">
       <t t-call="website_sale_terms.popup-layout">
         <div id="wrap" class="oe_structure oe_empty">
           <section class="mt16 mb16">
@@ -142,7 +141,6 @@
             </div>
           </section>
         </div>
-      </t>
       </t>
     </template>
 
