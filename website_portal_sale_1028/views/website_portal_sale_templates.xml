@@ -92,17 +92,17 @@
     <template id="my_menu" name="My menu">
       <div class="left_menu col-md-3 hidden-sm hidden-xs">
         <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
-            <li>
-              <a href="/my/home">News</a>
-            </li>
-            <li t-att-class="'active' if active_menu == 'my_salon' else ''">
-              <a href="/my/salon">My salon</a>
-            </li>
+          <li>
+            <a href="/my/home">News</a>
+          </li>
+          <li t-att-class="'active' if active_menu == 'my_salon' else ''">
+            <a href="/my/salon">My salon</a>
+          </li>
         </t>
         <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
-            <li t-att-class="'active' if active_menu == 'my_salon' else ''">
-              <a href="/my/salon">My Information</a>
-            </li>
+          <li t-att-class="'active' if active_menu == 'my_salon' else ''">
+            <a href="/my/salon">My Information</a>
+          </li>
         </t>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
           <a href="/my/orders">My orders</a>
@@ -110,9 +110,9 @@
         <li t-att-class="'active' if active_menu == 'my_credit_invoice' else ''">
           <a href="/my/credits">My Credit Invoice</a>
         </li>
-   <!--        <li t-att-class="'active' if active_menu == 'my_products' else ''">
-            <a href="/my/products">My Products</a>
-          </li> -->
+        <!--        <li t-att-class="'active' if active_menu == 'my_products' else ''">
+             <a href="/my/products">My Products</a>
+             </li> -->
         <!--
              TODO: Activate me
              <li t-att-class="'active' if active_menu == 'my_obsolete' else ''">
@@ -294,8 +294,6 @@
         </div>
       </t>
     </template>
-    
-    
     <template id="company_info_form" name="Website Home Company Info Form">
       <div class="col-md-12 mt32 mb32" style="padding: 0px;">
         <ul class="nav nav-tabs">
@@ -730,7 +728,7 @@
         </div>
       </xpath>
       <xpath expr="//t[@t-call='website.layout']" position="before">
-          <t t-set="mail" t-value="mail" />
+        <t t-set="mail" t-value="mail" />
       </xpath>
     </template>
     <template id="portal_my_salon" name="My salon">
@@ -739,12 +737,11 @@
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
             <t t-if="request.env.user.partner_id.parent_id">
-            <h1 class="page-header">My Salon</h1>
+              <h1 class="page-header">My Salon</h1>
             </t>
             <t t-if="not request.env.user.partner_id.parent_id">
-            <h1 class="page-header">My Information</h1>
+              <h1 class="page-header">My Information</h1>
             </t>
-            
             <div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-labelledby="delUserModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -805,10 +802,10 @@
                 </div>
                 <div t-att-class="'form-group'">
                   <t t-if="request.env.user.partner_id.parent_id">
-                      <label class="col-md-3 col-sm-4 control-label" for="company_name">Company Name</label>
-                      <div class="col-md-7 col-sm-8">
-                        <input type="text" class="form-control" name="company_name" readonly="" t-att-value="home_user.partner_id.commercial_partner_id.name" placeholder="" />
-                      </div>
+                    <label class="col-md-3 col-sm-4 control-label" for="company_name">Company Name</label>
+                    <div class="col-md-7 col-sm-8">
+                      <input type="text" class="form-control" name="company_name" readonly="" t-att-value="home_user.partner_id.commercial_partner_id.name" placeholder="" />
+                    </div>
                   </t>
                 </div>
                 <t t-if="not home_user.has_group('webshop_dermanord.group_dn_sk')">
@@ -858,8 +855,6 @@
         </div>
       </t>
     </template>
-    
-    
     <template id="portal_my_tags" name="my delete tags">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -1006,7 +1001,7 @@
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
           <div class="col-md-9">
-            <h1 class="page-header">export </h1>
+            <h1 class="page-header">export</h1>
             <t t-set="document_search_domain" t-value="request.env['ir.config_parameter'].get_param('website_portal_sale_1028.document_directory')" />
             <t t-foreach="website.sudo().portal_sale_document_get(home_user, document_search_domain or None)" t-as="doc">
               <t t-call="website_portal_sale_1028.portal_document_link" />
@@ -1050,9 +1045,9 @@
           <div class="col-md-9">
             <h1 class="page-header">EXPORT DATA</h1>
             <li>
-               <i class="fa fa-download" />
-               <a href="/my/products/xls">Products.xls</a>
-             </li>
+              <i class="fa fa-download" />
+              <a href="/my/products/xls">Products.xls</a>
+            </li>
           </div>
         </div>
       </t>
@@ -1153,31 +1148,31 @@
     </template>
     <template id="mail" inherit_id="website_mass_mailing.mail" name="Mail page">
       <xpath expr="//t[@t-call='website.layout']" position="replace">
-            <t t-call="website.layout">
-                <div id="email_designer" class="mb32">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div>
-                                    <p />
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div id="email_body_html" class="o_mail_body">
-                                    <div t-raw="mail.body_html.replace('#website_token#', '')" />
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div>
-                                    <p />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <t t-call="website.layout">
+          <div id="email_designer" class="mb32">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-3">
+                  <div>
+                    <p />
+                  </div>
                 </div>
-            </t>
-          </xpath>
-        </template>
+                <div class="col-sm-6">
+                  <div id="email_body_html" class="o_mail_body">
+                    <div t-raw="mail.body_html.replace('#website_token#', '')" />
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div>
+                    <p />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </t>
+      </xpath>
+    </template>
     <template id="portal_my_mail" name="My mail">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
@@ -1223,16 +1218,16 @@
               </div>
               <t t-if="mailing_lists">
                 <t t-foreach="mailing_lists" t-as="mailing_list">
-                  <div class="row mail_lists_lines">
-                    <div class="col-sm-10 col-xs-10">
-                      <li>
-                        <t t-esc="mailing_list['name']" />
-                      </li>
+                    <div class="row mail_lists_lines">
+                      <div class="col-sm-10 col-xs-10">
+                          <li>
+                            <t t-esc="mailing_list['name']" />
+                          </li>
+                      </div>
+                      <div class="col-md-2">
+                          <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box" t-att-data-value="mailing_list['id']" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
+                      </div>
                     </div>
-                    <div class="col-md-2">
-                      <input type="checkbox" t-att-data-mailing-list-id="mailing_list['id']" class="subscribe_for_mail" name="subscription box" t-att-data-value="mailing_list['id']" data-oe-id="" data-oe-model="ir.ui.view" t-att="{'checked': mailing_list['subscribed']}" />
-                    </div>
-                  </div>
                 </t>
               </t>
             </div>

@@ -22,12 +22,129 @@
         </div>
       </xpath>
     </template>
+
     <template id="website.terms-and-conditions-edit" name="Terms and Conditions Edit">
       <t t-call="website.layout">
         <t t-call='website.terms-and-conditions' />
       </t>
     </template>
-    <template id="website.terms-and-conditions" name="Terms and Conditions">
+
+  <template id="website.terms-and-conditions-consumer" name="Terms and Conditions Consumer">
+      <t t-call="website_sale_terms.popup-layout">
+        <div id="wrap" class="oe_structure oe_empty">
+          <section class="mt16 mb16">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12 text-center mt16 mb32">
+                  <h1>General</h1>
+                  <p>
+                    These Terms &amp;amp; Conditions shall apply to all sales through COMPANY
+                    and will exclude application of any deviating general or specific conditions or terms of buyer. No waiver or modification of these Conditions of Sale shall be binding upon
+                    COMPANY
+                    , unless approved in writing by an authorized representative of
+                    COMPANY
+                    .
+                  </p>
+                </div>
+                <div class="col-md-12 text-center mt16 mb32">
+                  <h3>Price and Payment</h3>
+                  <p>Every product is shown including tax. In the shopping cart you can see the total price including all fees, taxes, shipping and method of payment.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="mt16 mb16">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12 text-center mt16 mb32">
+                  <h3>Delivery</h3>
+                  <p>
+                    The delivery time is stated in the shopping cart next to the various ways of delivery. If a service/product has another delivery time than expressed in the shopping cart, this delivery time will be stated in connection to the individual services/products.
+                    <br />
+                    In case
+                    COMPANY
+                    has reason to question buyer's solvency or ability to pay for delivered products,
+                    COMPANY
+                    have no obligation to make delivery, and shall be entitled to stop products under carriage, unless buyer makes advance payment for the delivery and other claims arising from the business relation or grants security which can reasonably be accepted by
+                    COMPANY
+                    .
+                  </p>
+                </div>
+                <div class="col-md-12 text-center mt16 mb32">
+                  <h3>Unclaimed packages</h3>
+                  <p>If you have chosen to pay by COD (Cash on Delivery) your delivery will be held for you by the local post office for four weeks. Unclaimed packages will be returned to us. For all unclaimed packages you will be debited all fees in connection with the return delivery</p>
+                </div>
+                <div class="col-md-12 text-center mt16 mb32">
+                  <h3>Returning products/services</h3>
+                  <p>
+                    Returning a service/product is to be done on your expense, unless the product/service is faulty or damaged upon delivery. Returned products/services are to be sent as letters or postal packages, and not for COD. In case of a trade,
+                    COMPANY
+                    will pay for the delivery of the replacement product/service. When you have applied the return policy you shall: -in the case of a product: return the product personally or by mail to us. -in the case of a service: make the material available to us, unless this poses significant stress to your person.
+                  </p>
+                </div>
+                <div class="col-md-12 text-center mt16 mb32">
+                  <h3>Return Policy</h3>
+                  <p>
+                    COMPANY
+                    return period is 14 days.
+                  </p>
+                  <p>
+                    COMPANY
+                    shall, if under the jurisdiction of our return policy, refund you what you have paid for the product and/or service as soon as possible, but latest within 30 days of the product being returned or you informing us of wanting to return a service. You are oblige to pay for the return delivery of the product.
+                    COMPANY
+                    will pay to send replacement products and/or services.
+                  </p>
+                  <p>
+                    In your message to us you must clearly state that you regret your purchase. The return period is counted from the day you received the purchased the full, or a significant part of the product. If you have purchased a customized product -or a product with a significant personal customization, the return period is counted from the day
+                    COMPANY
+                    have informed you about the product.
+                  </p>
+                  <p>
+                    <strong>You do not qualify for our return policy if:</strong>
+                  </p>
+                  <ul style="margin-left: 60px;">
+                    <li style="text-align: left;">The service you have bought was commenced with your consent during the return period.</li>
+                    <li style="text-align: left;">The price of the service purchased fluctuates with the financial market (ie Stock options).</li>
+                    <li style="text-align: left;">Due to the physical nature of the service, it is not returnable.</li>
+                    <li style="text-align: left;">The seal of authentication of the product has been broken/opened.</li>
+                  </ul>
+                  <p>
+                    <strong>When returning a product/service:</strong>
+                  </p>
+                  <ul style="margin-left: 60px;">
+                    <li style="text-align: left;">You are obliged to keep the product/service in the same condition as when delivered.</li>
+                    <li style="text-align: left;">You must not have used the product/service, however you have the right to investigate the condition the product was in when delivered. If damage or harm is caused to a product while investigated the product does not qualify for the return policy.</li>
+                  </ul>
+                  <p>&amp;nbsp;</p>
+                  <h3>Guarantees and Services</h3>
+                  <p>Please fill in this space with your Guarantee and Service policy.</p>
+                  <h3>Privacy Policy</h3>
+                  <p>
+                    When ordering a product/service you will be asked to fill in you personal information. Upon purchase you agree to this information is stored in accordance with
+                    COMPANY
+                    's privacy policy in order to fulfill our agreement to you as our customer. In accordance to the Swedish law of Personuppgiftslagen (198:204) you have the right to know the information
+                    COMPANY
+                    have registered about your person. If the information is erroneous, incomplete or irrelevant, you may ask to have your information corrected and/or removed. If this is the case please contact us by e-mail.
+                  </p>
+                  <h3>Force Majeure</h3>
+                  <p>
+                    COMPANY
+                    is not liable for any non-performance caused by circumstances beyond our control, which directly or indirectly prevents, obstructs or renders production, delivery or freight uneconomical until such obstacle has been removed (force majeure). Such circumstances shall be deemed to include difficulties to procure raw materials as well as other difficulties and disturbances, including but not limited to war, riot, labour conflicts, fire, flood, storm, accident, fuel or power shortages, transportation shortages, obstacles or interruptions regarding transportation at sea and breakdowns or interruptions of any kind as regards to our equipment or facilities, which are deemed necessary for the performance of our agreements' obligations.
+                  </p>
+                  <p>
+                    Also read at EU's website for Online Dispute Resolution
+                    <a href="http://ec.europa.eu/odr" target="_blank">http://ec.europa.eu/odr</a>
+                    .
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </t>
+    </template>
+
+  <template id="website.terms-and-conditions" name="Terms and Conditions">
       <t t-call="website_sale_terms.popup-layout">
         <div id="wrap" class="oe_structure oe_empty">
           <section class="mt16 mb16">
