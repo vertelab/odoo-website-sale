@@ -42,11 +42,17 @@ class crm_tracking_campaign(models.Model):
 
         res = []
         for campaign in campaigns:
+
+            if campaign.campaign_type == 'consumer':
+                period = campaign.get_period(True)[0] 
+            else: 
+                period = campaign.get_period(True)[0]
+
             line = {
                 'name': campaign.name,
                 'image': '/web/binary/image?id=%s&field=image&model=crm.tracking.campaign' % campaign.id,
                 'url': '/campaign/%s' % campaign.id,
-                'period': campaign.get_period(True)[0] if len(campaign.get_period(True)) > 0 else "",
+                'period': period,
             }
             res.append(line)
         return res 
