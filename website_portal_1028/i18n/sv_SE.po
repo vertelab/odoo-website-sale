@@ -41,6 +41,11 @@ msgid "NEWS"
 msgstr "AKTUELLT"
 
 #. module: website_portal_1028
+#: view:website:website_portal_1028.portal_my_home
+msgid "MY RESELLER"
+msgstr "MIN ÅTERFÖRSÄLJARE"
+
+#. module: website_portal_1028
 #: view:website:website_portal_1028.portal_archive_groups
 msgid "Archives"
 msgstr "Archives"

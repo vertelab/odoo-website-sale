@@ -293,7 +293,7 @@
           <t t-set="parent" t-value="request.env.user.commercial_partner_id" />
           <t t-if="parent.agent">
           <li t-att-class="'active' if active_menu == 'my_reseller' else ''">
-            <a t-att-href="'/my/reseller/%s' % (parent.id)">My Reseller</a>
+            <a t-att-href="'/my/reseller/%s' % (parent.id)">MY RESELLER</a>
           </li>
           </t>
         </t>
