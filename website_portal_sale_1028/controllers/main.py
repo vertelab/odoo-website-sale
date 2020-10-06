@@ -123,6 +123,18 @@ class website_account(website_account):
             'move_line_table': move_line_table,
         })
         return request.render("website_portal_sale_1028.portal_my_orders", values)
+
+
+    @http.route(['/my/reseller/<int:partner_id>'], type='http', website=True)
+    def my_resellers(self, partner_id=None, **post):
+        partner = request.env['res.partner'].sudo().search([('id', '=', partner_id), ('is_reseller', '=', True), ('child_ids.type', '=', 'visit')])
+        values = self._prepare_portal_layout_values()
+
+        values.update({
+            'active_menu': 'my_reseller',
+            'reseller': partner,
+        })
+        return request.render("website_portal_sale_1028.my_reseller", values)
     
     
     @http.route(['/my/credits', '/my/credits/page/<int:page>'], type='http', auth="user", website=True)
@@ -147,6 +159,7 @@ class website_account(website_account):
         })
         
         return request.render("website_portal_sale_1028.my_credit_invoice", values)
+
     
     @http.route(['/my/credits/<int:invoice_id>'], type='http', auth="user", website=True)
     def credits_followup(self, portal_user=None, invoice_id=None, tab='credits', **post):

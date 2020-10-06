@@ -104,6 +104,14 @@
             <a href="/my/salon">My Information</a>
           </li>
         </t>
+        <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
+          <t t-set="parent" t-value="request.env.user.commercial_partner_id" />
+          <t t-if="parent.agent">
+          <li t-att-class="'active' if active_menu == 'my_reseller' else ''">
+            <a t-att-href="'/my/reseller/%s' % (parent.id)">My Reseller</a>
+          </li>
+          </t>
+        </t>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
           <a href="/my/orders">My orders</a>
         </li>
@@ -1275,6 +1283,236 @@
                 <div class="red-alert-message alert alert-danger hidden" role="alert">Something went wrong, Try again.</div>
               </div>
             </div>
+          </div>
+        </div>
+      </t>
+    </template>
+    <template id="my_reseller" name="My reseller">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+          <div class="order_table col-md-9">
+            <h1 class="page-header">My Reseller</h1>
+
+            <t t-set="additional_title" t-value="reseller.brand_name or reseller.name" />
+                <div id="wrap">
+                    <div class="oe_structure" />
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="background-color: #000;">
+                        <span itemprop="image" t-field="reseller.top_image" t-field-options='{"widget": "image", "class": "css_non_editable_mode_hidden", "alt-field": "name"}' />
+                        <img class="img img-responsive css_editable_mode_hidden" t-att-src="'/imagefield/res.partner/top_image/%s/ref/reseller_dermanord.reseller_top_image' %reseller.id if reseller.top_image else '/imagefield/ir.attachment/datas/%s/ref/reseller_dermanord.reseller_top_image' %request.env.ref('reseller_dermanord.find_reseller_top_img').id" style="margin: auto;" />
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 mt32 mb16 hidden-xs">
+                                <div id="reseller_description_div">
+                                    <t t-if="reseller.website_short_description">
+                                        <h3 style="margin-top: 12px;">Welcome</h3>
+                                        <t t-foreach="reseller.website_short_description.split('\n')" t-as="r">
+                                            <p>
+                                                <t t-esc="r" />
+                                            </p>
+                                        </t>
+                                    </t>
+                                    <!--
+                                         <p class="read-more hidden"><a href="#" class="button">Read More</a></p>
+                                    -->
+                                </div>
+                                <t t-if="reseller.child_competence_ids">
+                                    <h3>Our competences</h3>
+                                    <ul t-foreach="reseller.child_competence_ids" t-as="categ">
+                                        <li>
+                                            <span t-esc="categ.name" />
+                                        </li>
+                                    </ul>
+                                </t>
+                                <t t-if="reseller.webshop_category_ids">
+                                    <h3>Our Product Categories</h3>
+                                    <ul t-foreach="reseller.webshop_category_ids" t-as="wcateg">
+                                        <li>
+                                            <span t-esc="wcateg.name" />
+                                        </li>
+                                    </ul>
+                                </t>
+                                <t t-if="reseller.website">
+                                    <h3>Our Webshop</h3>
+                                    <a t-att-href="'/goto/%s/website' %reseller.id">
+                                        <span t-esc="reseller.website.replace('http://', '')" />
+                                    </a>
+                                </t>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12 mt16 mb16">
+                                <h1>
+                                    <t t-esc="reseller.brand_name if reseller.brand_name else reseller.name" />
+                                </h1>
+                                <t t-set="visit" t-value="reseller.child_ids.filtered(lambda c: c.type == 'visit') if reseller.is_company else None" />
+                                <t t-if="not visit">
+                                    <t t-set="visit" t-value="reseller.commercial_partner_id" />
+                                </t>
+                                <div class="col-xs-12 mb16 hidden-lg hidden-md hidden-sm" style="padding: 0px;">
+                                    <div id="reseller_description_div">
+                                        <h3 style="margin-top: 12px;">Welcome</h3>
+                                        <t t-if="reseller.website_short_description">
+                                            <t t-foreach="reseller.website_short_description.split('\n')" t-as="r">
+                                                <p>
+                                                    <t t-esc="r" />
+                                                </p>
+                                            </t>
+                                        </t>
+                                        <p class="read-more hidden">
+                                            <a href="#" class="button">Read More</a>
+                                        </p>
+                                    </div>
+                                    <t t-if="reseller.child_competence_ids">
+                                        <h3>Our competences</h3>
+                                        <ul t-foreach="reseller.child_competence_ids" t-as="categ">
+                                            <li>
+                                                <span t-esc="categ.name" />
+                                            </li>
+                                        </ul>
+                                    </t>
+                                    <t t-if="reseller.webshop_category_ids">
+                                        <h3>Our Product Categories</h3>
+                                        <ul t-foreach="reseller.webshop_category_ids" t-as="wcateg">
+                                            <li>
+                                                <span t-esc="wcateg.name" />
+                                            </li>
+                                        </ul>
+                                    </t>
+                                    <t t-if="reseller.website">
+                                        <h3>Our Webshop</h3>
+                                        <a t-att-href="'/goto/%s/website' %reseller.id">
+                                            <span t-esc="reseller.website.replace('http://', '')" />
+                                        </a>
+                                    </t>
+                                </div>
+                                <!-- Google maps -->
+                                <t t-if="visit and visit.partner_latitude &gt; 0.0">
+                                    <t t-call="website_partner_google_maps.google_maps">
+                                        <t t-set="div_class" t-value="'mt16'" />
+                                        <t t-set="width" t-value="'100%'" />
+                                        <t t-set="height" t-value="'400px'" />
+                                        <t t-set="zoom" t-value="12" />
+                                        <t t-set="center" t-value="visit" />
+                                        <t t-set="partners" t-value="visit" />
+                                        <t t-set="icon" t-value="'/reseller_dermanord/static/src/img/dn_maps_marker.png'" />
+                                        <t t-set="api_key" t-value="request.env['ir.config_parameter'].get_param('google_maps_api')" />
+                                    </t>
+                                </t>
+                                <hr />
+                                <h4 class="dn_uppercase">Address</h4>
+                                <p>
+                                    <t t-if="visit.street">
+                                        <span t-esc="visit.street" />
+                                        <br />
+                                    </t>
+                                    <t t-if="visit.street2">
+                                        <span t-esc="visit.street2" />
+                                        <br />
+                                    </t>
+                                    <t t-if="visit.zip">
+                                        <span t-esc="visit.zip" />
+                                    </t>
+                                    <t t-if="visit.city">
+                                        <span t-esc="visit.city" />
+                                        <br />
+                                    </t>
+                                    <t t-if="reseller.country_id">
+                                        <span t-esc="reseller.country_id.name" />
+                                    </t>
+                                </p>
+                                <hr />
+                                <h4 class="dn_uppercase">Opening hours</h4>
+                                <t t-foreach="range(7)" t-as="oh_day">
+                                    <t t-if="reseller.opening_hours_ids and (reseller.opening_hours_ids[oh_day].open_time != 0.0 and reseller.opening_hours_ids[oh_day].close_time != 0.0 or reseller.opening_hours_ids[oh_day].close)">
+                                        <p>
+                                            <span t-field="reseller.opening_hours_ids[oh_day].dayofweek_short" />
+                                            :
+                                            <span t-esc="reseller.opening_hours_ids[oh_day].opening_hours" />
+                                        </p>
+                                    </t>
+                                </t>
+                                <t t-if="reseller.opening_hours_exceptions">
+                                    <div>
+                                        <h4>Exceptions</h4>
+                                        <t t-foreach="reseller.opening_hours_exceptions.split('\n')" t-as="opening_hour_line">
+                                            <p t-esc="opening_hour_line" />
+                                        </t>
+                                    </div>
+                                </t>
+                                <hr />
+                                <h4 class="dn_uppercase">Contact</h4>
+                                <p>
+                                    <t t-if="visit.phone">
+                                        Telephone:
+                                        <a t-att-href="'tel:%s' %visit.phone">
+                                            <span t-esc="visit.phone" />
+                                        </a>
+                                        <br />
+                                    </t>
+                                    <t t-if="visit.email">
+                                        Email:
+                                        <a t-att-href="'mailto:%s' %visit.email">
+                                            <span t-esc="visit.email" />
+                                        </a>
+                                        <br />
+                                    </t>
+                                    <t t-if="reseller.website">
+                                        Website:
+                                        <a t-att-href="'/goto/%s/website' %reseller.id">
+                                            <span t-esc="reseller.website.replace('http://', '')" />
+                                        </a>
+                                    </t>
+                                </p>
+                                <div>
+                                    <!-- [1593] Hitta ÅF - Länkar till sociala medier -->
+                                    <!-- ## SOCIAL MEDIA ** PUBLIC RESELLER WEBPAGE -->
+                                    <!-- ## https://mariaakerberg.com/sv_SE/reseller/5522-->
+                                    <t t-if="reseller.social_facebook">
+                                        <a t-att-href="'/goto/%s/social_facebook' %reseller.id" target="_blank">
+                                            <i style="margin: 5px;" class="fa fa-facebook-square fa-2x" />
+                                        </a>
+                                    </t>
+                                    <t t-if="reseller.social_instagram">
+                                        <a t-att-href="'/goto/%s/social_instagram' %reseller.id" target="_blank">
+                                            <i style="margin: 5px;" class="fa fa-instagram fa-2x" />
+                                        </a>
+                                    </t>
+                                    <t t-if="reseller.social_youtube">
+                                        <a t-att-href="'/goto/%s/social_youtube' %reseller.id" target="_blank">
+                                            <i style="margin: 5px;" class="fa fa-youtube-square fa-2x" />
+                                        </a>
+                                    </t>
+                                    <t t-if="reseller.social_twitter">
+                                        <a t-att-href="'/goto/%s/social_twitter' %reseller.id" target="_blank">
+                                            <i style="margin: 5px;" class="fa fa-twitter-square fa-2x" />
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure" />
+                <!--
+                     <script>
+                     function initMap() {
+                     var sweden = {lat: 59.6144081, lng: 17.7168579};
+                     var map = new google.maps.Map(document.getElementById('map'), {
+                     zoom: 4,
+                     center: sweden
+                     });
+                     <t t-foreach="resellers_geo" t-as="geo"><t t-raw="geo"/></t>
+                     }
+                     </script>
+                -->
+         
+            <script>// added 2019-08-05. Code from main.js
+                if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(setPosition);
+                }</script>
+              
+          
+
           </div>
         </div>
       </t>
