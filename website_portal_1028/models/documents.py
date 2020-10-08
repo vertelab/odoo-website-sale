@@ -44,7 +44,7 @@ class crm_tracking_campaign(models.Model):
         for campaign in campaigns:
 
             if campaign.campaign_type == 'consumer':
-                period = campaign.get_period(True)[0] 
+                period = campaign.get_period(False)[0] 
             else: 
                 period = campaign.get_period(True)[0]
 
