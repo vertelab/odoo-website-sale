@@ -105,12 +105,12 @@
           </li>
         </t>
         <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
-          <t t-set="parent" t-value="request.env.user.commercial_partner_id" />
-          <t t-if="parent.agents">
+          <t t-set="parent" t-value="request.env.user.partner_id.commercial_partner_id" />
+
           <li t-att-class="'active' if active_menu == 'my_reseller' else ''">
             <a t-att-href="'/my/reseller/%s' % (parent.id)">My Reseller</a>
           </li>
-          </t>
+
         </t>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
           <a href="/my/orders">My orders</a>
@@ -1288,6 +1288,7 @@
       </t>
     </template>
     <template id="my_reseller" name="My reseller">
+    <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
@@ -1516,6 +1517,7 @@
           </div>
         </div>
       </t>
+    </t>
     </template>
     <template id="my_credit_invoice" name="My Credit Invoice">
       <t t-call="website_portal_1028.portal_layout">
