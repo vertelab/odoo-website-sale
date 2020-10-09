@@ -1288,7 +1288,7 @@
       </t>
     </template>
     <template id="my_reseller" name="My reseller">
-    <t t-if="not request.env.user.has_group('webshop_dermanord.group_dn_sk')">
+    <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
       <t t-call="website_portal_1028.portal_layout">
         <div class="container">
           <t t-call="website_portal_sale_1028.my_menu" />
