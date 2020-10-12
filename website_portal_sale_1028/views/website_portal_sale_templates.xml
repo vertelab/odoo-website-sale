@@ -105,9 +105,9 @@
           </li>
         </t>
         <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
-          <t t-set="parent" t-value="request.env.user.agents[0] if len(request.env.user.agents[0]) > 0 else None" />
+          <t t-set="parent" t-value="request.env.user.agents[0] if len(request.env.user.agents) > 0 else ''" />
             <li t-att-class="'active' if parent and active_menu == 'my_reseller' else ''">
-              <a t-att-href="'/my/reseller/%s' % (parent.id if parent else None)">MY RESELLER</a>
+              <a t-att-href="'/my/reseller/%s' % (parent.id if parent else '')">MY RESELLER</a>
             </li>
         </t>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
@@ -826,7 +826,7 @@
                   <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
                     <label class="col-md-3 col-sm-4 control-label" for="my_reseller">My Reseller</label>
                     <div class="col-md-7 col-sm-8">
-                      <input type="text" class="form-control" name="my_reseller" readonly="" t-att-value="home_user.agents[0].name" placeholder="" />
+                      <input type="text" class="form-control" name="my_reseller" readonly="" t-att-value="home_user.agents[0].name if len(home_user.agents) > 0 else ''"/>
                     </div>
 <!--
                     <div class="col-md-7 col-sm-8">
