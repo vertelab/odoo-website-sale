@@ -105,12 +105,10 @@
           </li>
         </t>
         <t t-if="request.env.user.has_group('webshop_dermanord.group_dn_sk')">
-          <t t-set="parent" t-value="request.env.user.partner_id.commercial_partner_id" />
-
+          <t t-set="parent" t-value="request.env.user.agents[0]" />
           <li t-att-class="'active' if active_menu == 'my_reseller' else ''">
             <a t-att-href="'/my/reseller/%s' % (parent.id)">My Reseller</a>
           </li>
-
         </t>
         <li t-att-class="'active' if active_menu == 'my_orders' else ''">
           <a href="/my/orders">My orders</a>
@@ -807,6 +805,41 @@
                       )
                     </p>
                   </div>
+                </div>
+                <div t-att-class="'form-group'">
+                  <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
+                    <label class="col-md-3 col-sm-4 control-label" for="first_name">First Name</label>
+                    <div class="col-md-7 col-sm-8">
+                      <input type="text" class="form-control" name="first_name"  placeholder="First Name" />
+                    </div>
+                  </t>
+                </div>
+                <div t-att-class="'form-group'">
+                  <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
+                    <label class="col-md-3 col-sm-4 control-label" for="sur_name">Surname</label>
+                    <div class="col-md-7 col-sm-8">
+                      <input type="text" class="form-control" name="sur_name"  placeholder="Surname" />
+                    </div>
+                  </t>
+                </div>
+                <div t-att-class="'form-group'">
+                  <t t-if="home_user.has_group('webshop_dermanord.group_dn_sk')">
+                    <label class="col-md-3 col-sm-4 control-label" for="my_reseller">My Reseller</label>
+                    <div class="col-md-7 col-sm-8">
+                      <input type="text" class="form-control" name="my_reseller" readonly="" t-att-value="home_user.agents[0].name" placeholder="" />
+                    </div>
+<!--
+                    <div class="col-md-7 col-sm-8">
+                      <select class="form-control" t-att-name="'%s_agent_ids' % agent.id">
+                        <t t-foreach="agents_selection" t-as="agent">
+                          <option t-att-value="agentss[0]" t-att="{'selected': '1'}">
+                            <t t-esc="agent[1]" />
+                          </option>
+                        </t>
+                      </select>
+                    </div>
+-->
+                  </t>
                 </div>
                 <div t-att-class="'form-group'">
                   <t t-if="request.env.user.partner_id.parent_id">
