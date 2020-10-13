@@ -125,9 +125,12 @@ class website_account(website_account):
         return request.render("website_portal_sale_1028.portal_my_orders", values)
 
 
-    @http.route(['/my/reseller/<int:partner_id>'], type='http', website=True)
+    @http.route(['/my/reseller/<int:partner_id>','/my/reseller'], type='http', website=True)
     def my_resellers(self, partner_id=None, **post):
-        partner = request.env['res.partner'].sudo().search([('id', '=', partner_id), ('is_reseller', '=', True), ('child_ids.type', '=', 'visit')])
+        if not partner_id:
+            partner = request.env.user.agents[0] if len(request.env.user.agents) >0 else None
+        else:
+            partner = request.env['res.partner'].sudo().search([('id', '=', partner_id), ('is_reseller', '=', True), ('child_ids.type', '=', 'visit')])
         values = self._prepare_portal_layout_values()
 
         values.update({
