@@ -95,17 +95,17 @@ class product_product(models.Model):
     def calc_pricelist_chart(self):
         for product in self:
             self.env['pricelist_chart.type'].search([]).calc(product.id)
-        
-    
-    
-        
+
+
+
+
 
     @api.model
     def calc_pricelist_chart_all(self):
         for product in self.env['product.product'].search([('sale_ok','=',True)]):
             self.env['pricelist_chart.type'].search([]).calc(product.id)
-            
-            
+
+
 
 
     @api.multi
@@ -118,15 +118,15 @@ class product_product(models.Model):
         if not pl_type:
             pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
         # ~ return pl_ids
-        #TODO: Code here should be tested 
+        #TODO: Code here should be tested
         for product in self:
-            
-            pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
-            if not pl:
-                pl = pl_type.calc(product.id)
-            if len(pl) > 1:
-                pl = pl[0]
-            pl_ids |= pl
+            if product.sale_ok:
+                pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
+                if not pl:
+                    pl = pl_type.calc(product.id)
+                if len(pl) > 1:
+                    pl = pl[0]
+                pl_ids |= pl
         return pl_ids
 
 
@@ -137,7 +137,7 @@ class product_pricelist_chart(models.Model):
     pricelist_chart_id = fields.Many2one(comodel_name='pricelist_chart.type')
     price      = fields.Float()
     price_tax  = fields.Boolean()
-    
+
 
 
     def _price_txt_format(self,price,currency):
@@ -194,17 +194,17 @@ class product_pricelist_chart(models.Model):
             return ('%.2f' %price).replace('.', dp)
         def price_txt_format(self,price,currency):
             lang = self.env['res.lang'].format([self._context.get('lang') or 'en_US'], lang,'.2f', price, grouping=True, monetary=True)
-           
+
             text = u'{pre}<span class="oe_currency_value">{0}</span>{post}'.format(
                 lang,
                 pre=u'{symbol}\N{NO-BREAK SPACE}' if currency.position == 'before' else '',
                 post=u'\N{NO-BREAK SPACE}{symbol}' if not currency.position == 'before' else '',
             )
-            
+
             res = text.format(
                 symbol=currency.symbol,
             )
-            
+
             return res
 
         # ~ if isinstance(pricelist,int):
