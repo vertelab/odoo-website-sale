@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
     @api.multi
     def get_minimum_order_value(self):
         self.ensure_one()
-        if request.env.user.has_group('webshop_dermanord.group_dn_sk'):
+        if self.env.ref('webshop_dermanord.group_dn_sk'):
             return self.env['sale.order.minvalue'].search([('destination_ids', 'in', [self.partner_shipping_id.country_id.id or self.env.ref('base.se').id]), ('pricelist_ids', 'in', [self.pricelist_id.id]), ('payment_term_ids', 'in', self.payment_term.id)], limit=1)
         else:
             return self.env['sale.order.minvalue'].search([('destination_ids', 'in', [self.partner_shipping_id.country_id.id or self.env.ref('base.se').id]), ('pricelist_ids', 'in', [self.pricelist_id.id]), ('payment_term_ids', 'not in', self.payment_term.id)], limit=1)
@@ -190,8 +190,7 @@ class SaleOrder(models.Model):
         if add_qty or set_qty is not None:
             for sale_order in self.browse(cr, uid, ids, context=context):
                 sale_order.minimum_order_value_set()
-
-        return values
+        return values 
 
 class SaleOrderMinvalueDialog(models.TransientModel):
     _name = 'sale.order.minvalue.dialog'
