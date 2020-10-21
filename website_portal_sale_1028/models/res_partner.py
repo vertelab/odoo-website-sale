@@ -28,7 +28,7 @@ class res_partner(models.Model):
 
     has_account = fields.Boolean(compute='_has_account', help='This partner has an account')
     is_home_admin = fields.Boolean(compute='_is_home_admin', help='This partner has home admin right')
-    # ~ consume_name = fields.Char(string='Name')
+    
 
     @api.one
     def _has_account_portal(self):
@@ -38,15 +38,3 @@ class res_partner(models.Model):
     def _is_home_admin_portal(self):
         self.is_home_admin = True if self in self.env.ref('website_sale_home.group_home_admin').users.mapped('partner_id') else False
 
-# ~ class website_sale_home(website_sale_home):   
-	# ~ _inherit='website.sale.home'     
-        
-	# ~ @http.route(['/my/salon/<model("res.users"):home_user>/info_update'], type='http', auth="user", website=True)
-    # ~ def info_update(self, home_user=None, **post):
-		# ~ _logger.warn("Haze %s" %s home_user.name)
-        # ~ # update data for main partner
-		# ~ res = super(website_sale_home,self).info_update(home_user,post)
-        # ~ if home_user.has_group('webshop_dermanord.group_dn_sk'):
-           # ~ home_user.name = post.get('consume_name')
-           # ~ _logger.warn("Haze %s" %s home_user.name)
-        # ~ return res
