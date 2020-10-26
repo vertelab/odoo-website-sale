@@ -115,7 +115,11 @@ class product_product(models.Model):
             pricelist = self.env['product.pricelist'].browse(pricelist)
         pl_ids = self.env['product.pricelist_chart'].browse()
         pl_type = self.env['pricelist_chart.type'].sudo().search([('pricelist','=',pricelist.id)])
+        # start = time.clock()
+        # if time.clock() - start > 1:
+             
         if not pl_type:
+            _logger.warn('could not find sandra')
             pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
         # ~ return pl_ids
         #TODO: Code here should be tested
@@ -128,6 +132,22 @@ class product_product(models.Model):
                     pl = pl[0]
                 pl_ids |= pl
         return pl_ids
+        
+    @api.multi
+    def get_pricelist_chart_line_type(self, pl_type):
+        """ returns pricelist line-object  """
+        for product in self:
+            if product.sale_ok:
+                pl = product.pricelist_chart_ids.filtered(
+                    lambda t: t.pricelist_chart_id == pl_type)
+                if not pl:
+                    pl = pl_type.calc(product.id)
+                if len(pl) > 1:
+                    pl = pl[0]
+                pl_ids |= pl
+        return pl_ids
+
+
 
 
 class product_pricelist_chart(models.Model):
@@ -207,11 +227,17 @@ class product_pricelist_chart(models.Model):
 
             return res
 
+
         # ~ if isinstance(pricelist,int):
             # ~ pricelist = self.env['product.pricelist'].browse(pricelist)
         # ~ chart_line = self.env['product.template'].browse(product_id).get_pricelist_chart_line(pricelist)
         price = '<!-- pre rec price -->'
         if self.pricelist_chart_id.rec_pricelist:
+            if self.env.has_group('webshop_dermanord.group_dn_sk'):
+                tax=_('(price incl. tax)') if self.price_tax else _('(price excl. tax)')
+            if not self.env.has_group('webshop_dermanord.group_dn_sk'):
+                tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
+
             price = """
                 <div style="white-space: nowrap"><!-- rec price -->
                     <span style="white-space: nowrap;" >{name}</span>
@@ -220,8 +246,9 @@ class product_pricelist_chart(models.Model):
                 </div>
             """.format(name=self.pricelist_chart_id.rec_pricelist.currency_id.name,
                        price=price_format(self.rec_price),
-                       tax=_('(ca price incl. tax)') if self.rec_price_tax else _('(ca price excl. tax)')
+                       tax= tax
                        )
+
         if self.pricelist_chart_id.pricelist and self.pricelist_chart_id.pricelist.for_reseller:
             price += """
                 <div style="white-space: nowrap"><!-- price -->
@@ -234,7 +261,13 @@ class product_pricelist_chart(models.Model):
                        price_float=self.price,
                        tax=_('(your price incl. tax)') if self.price_tax else _('(your price excl. tax)')
                        )
+            
         if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
+            if self.env.has_group('webshop_dermanord.group_dn_sk'):
+                tax=_('(price incl. tax)') if self.price_tax else _('(price excl. tax)')
+            if not self.env.has_group('webshop_dermanord.group_dn_sk'):
+                tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
+
             price += """
                 <div style="white-space: nowrap"><!-- public price -->
                     <span style="white-space: nowrap;" >{name}</span>
@@ -243,7 +276,7 @@ class product_pricelist_chart(models.Model):
                 </div>
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(self.price),
-                       tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
+                       tax=tax
                        )
         return """
             <div>
