@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * website_sale_price_chart
+#	* website_sale_price_chart
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-27 10:52+0000\n"
-"PO-Revision-Date: 2018-09-27 10:52+0000\n"
+"POT-Creation-Date: 2020-10-26 10:00+0000\n"
+"PO-Revision-Date: 2020-10-26 10:00+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,73 +16,51 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:194
-#: code:addons/website_sale_price_chart/sale.py:216
+#: code:addons/website_sale_price_chart/sale.py:252
+#: code:addons/website_sale_price_chart/sale.py:282
 #, python-format
 msgid "(ca price excl. tax)"
 msgstr "(ca pris exkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:194
-#: code:addons/website_sale_price_chart/sale.py:216
+#: code:addons/website_sale_price_chart/sale.py:252
+#: code:addons/website_sale_price_chart/sale.py:282
 #, python-format
 msgid "(ca price incl. tax)"
 msgstr "(ca pris inkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:143
+#: code:addons/website_sale_price_chart/sale.py:250
+#: code:addons/website_sale_price_chart/sale.py:280
 #, python-format
-msgid "(rec excl. tax)"
-msgstr "(rek exkl. moms)"
+msgid "(price excl. tax)"
+msgstr "(pris exkl. tax)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:143
+#: code:addons/website_sale_price_chart/sale.py:250
+#: code:addons/website_sale_price_chart/sale.py:280
 #, python-format
-msgid "(rec incl. tax)"
-msgstr "(rek inkl. moms)"
+msgid "(price incl. tax)"
+msgstr "(pris inkl. tax)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:205
+#: code:addons/website_sale_price_chart/sale.py:275
 #, python-format
 msgid "(your price excl. tax)"
 msgstr "(ditt pris exkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:205
+#: code:addons/website_sale_price_chart/sale.py:275
 #, python-format
 msgid "(your price incl. tax)"
 msgstr "(ditt pris inkl. moms)"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:139
-#, python-format
-msgid "ca price incl. tax"
-msgstr "ca pris inkl. moms"
-
-#. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:139
-#, python-format
-msgid "ca price excl. tax"
-msgstr "ca pris exkl. moms"
-
-#. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:136
-#, python-format
-msgid "your price"
-msgstr "ditt pris"
-
-#. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:136
-#, python-format
-msgid "your price excl. tax"
-msgstr "ditt pris exkl. moms"
-
-#. module: website_sale_price_chart
 #: model:ir.actions.act_window,help:website_sale_price_chart.pricelist_chart_type_action
 msgid "<p class=\"oe_view_nocontent_create\">Add pricelist chart type</p>\n"
-"     "
-msgstr "<p class=\"oe_view_nocontent_create\">Lägg till prislistetyp</p>\n"
-"     "
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">Add pricelist chart type</p>\n"
+"            "
 
 #. module: website_sale_price_chart
 #: model:ir.actions.server,name:website_sale_price_chart.pricelist_chart_calc_action
@@ -98,7 +76,7 @@ msgstr "Beräkna"
 #: field:pricelist_chart.type,create_uid:0
 #: field:product.pricelist_chart,create_uid:0
 msgid "Created by"
-msgstr "Skapad av"
+msgstr "Created by"
 
 #. module: website_sale_price_chart
 #: field:pricelist_chart.type,create_date:0
@@ -122,7 +100,7 @@ msgstr "ID"
 #: field:pricelist_chart.type,__last_update:0
 #: field:product.pricelist_chart,__last_update:0
 msgid "Last Modified on"
-msgstr "Senast ändrad"
+msgstr "Last Modified on"
 
 #. module: website_sale_price_chart
 #: field:pricelist_chart.type,write_uid:0
@@ -142,12 +120,6 @@ msgid "Name"
 msgstr "Namn"
 
 #. module: website_sale_price_chart
-#: code:addons/website_sale_price_chart/sale.py:288
-#, python-format
-msgid "No price available"
-msgstr "Pris saknas"
-
-#. module: website_sale_price_chart
 #: field:product.pricelist_chart,price:0
 msgid "Price"
 msgstr "Pris"
@@ -156,17 +128,17 @@ msgstr "Pris"
 #: field:pricelist_chart.type,price_tax:0
 #: field:product.pricelist_chart,price_tax:0
 msgid "Price tax"
-msgstr "Pris med moms"
+msgstr "Pris moms"
 
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,price_txt:0
 msgid "Price txt"
-msgstr "Pristext"
+msgstr "Pris txt"
 
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,price_txt_short:0
 msgid "Price txt short"
-msgstr "Kort pristext"
+msgstr "Pris txt förkortning"
 
 #. module: website_sale_price_chart
 #: field:pricelist_chart.type,pricelist:0
@@ -176,22 +148,22 @@ msgstr "Prislista"
 #. module: website_sale_price_chart
 #: model:ir.model,name:website_sale_price_chart.model_pricelist_chart_type
 msgid "Pricelist Chart Type"
-msgstr "Prislistetyp"
+msgstr "Pricelist Chart Type"
 
 #. module: website_sale_price_chart
 #: model:ir.ui.menu,name:website_sale_price_chart.pricelist_chart_type_menu
 msgid "Pricelist Types"
-msgstr "Prislistetyper"
+msgstr "Pricelist Types"
 
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,pricelist_chart_id:0
 msgid "Pricelist chart id"
-msgstr "Prisarkid"
+msgstr "Prislista diagram id"
 
 #. module: website_sale_price_chart
 #: field:product.product,pricelist_chart_ids:0
 msgid "Pricelist chart ids"
-msgstr "Prisarkidn"
+msgstr "Prislista diagram ids"
 
 #. module: website_sale_price_chart
 #: view:product.product:website_sale_price_chart.product_normal_form_view
@@ -211,7 +183,7 @@ msgstr "Produktmall"
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,product_id:0
 msgid "Product id"
-msgstr "Produktid"
+msgstr "Produkt id"
 
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,rec_price:0
@@ -221,44 +193,89 @@ msgstr "Rek pris"
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,rec_price_tax:0
 msgid "Rec price tax"
-msgstr "Rek pris m moms"
+msgstr "Rek pris moms"
 
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,rec_price_txt:0
 msgid "Rec price txt"
-msgstr "Rek pristext"
+msgstr "Rek pris txt"
 
 #. module: website_sale_price_chart
 #: field:product.pricelist_chart,rec_price_txt_short:0
 msgid "Rec price txt short"
-msgstr "Rek pris kort text"
+msgstr "Rek pris txt förkortning"
 
 #. module: website_sale_price_chart
 #: field:pricelist_chart.type,rec_pricelist:0
 msgid "Rec pricelist"
-msgstr "Rekprislista"
+msgstr "Rek prislista"
 
 #. module: website_sale_price_chart
 #: field:pricelist_chart.type,rec_price_tax:0
 msgid "Tax for rec price"
-msgstr "Moms för rekpris"
+msgstr "Moms för rek pris"
 
 #. module: website_sale_price_chart
 #: help:pricelist_chart.type,pricelist:0
 msgid "This pricelist is used to choose price-listing"
-msgstr "This pricelist is used to choose price-listing"
+msgstr "Denna prislista används för att välja prisnotering"
+
+#. module: website_sale_price_chart
+#: field:pricelist_chart.type,price_product_tax:0
+msgid "Use Product Tax"
+msgstr "Use Product Tax"
+
+#. module: website_sale_price_chart
+#: field:pricelist_chart.type,rec_price_product_tax:0
+msgid "Use Product Tax (Rec)"
+msgstr "Use Product Tax (Rec)"
+
+#. module: website_sale_price_chart
+#: help:pricelist_chart.type,price_product_tax:0
+msgid "Use product tax for price instread of tax for price in this record"
+msgstr "Use product tax for price instread of tax for price in this record"
+
+#. module: website_sale_price_chart
+#: help:pricelist_chart.type,rec_price_product_tax:0
+msgid "Use product tax for rec price instread of tax for rec price in this record"
+msgstr "Use product tax for rec price instread of tax for rec price in this record"
 
 #. module: website_sale_price_chart
 #: help:pricelist_chart.type,price_tax:0
 msgid "Use this tax for price calculatopon, none if tax is not included."
-msgstr "Use this tax for price calculatopon, none if tax is not included."
+msgstr "Använd denna moms till priset calculatopon, ingen om moms ingår inte."
 
 #. module: website_sale_price_chart
 #: help:pricelist_chart.type,rec_price_tax:0
-msgid "Use this tax for rec price, none if tax is not included"
-msgstr "Use this tax for rec price, none if tax is not included"
+msgid "Use this tax for rec price, none if tax is not included. (unless Use product Tax is checked)"
+msgstr "Use this tax for rec price, none if tax is not included. (unless Use product Tax is checked)"
+
+#. module: website_sale_price_chart
+#: code:addons/website_sale_price_chart/sale.py:195
+#, python-format
+msgid "ca price excl. tax"
+msgstr "ca pris exkl. moms"
+
+#. module: website_sale_price_chart
+#: code:addons/website_sale_price_chart/sale.py:195
+#, python-format
+msgid "ca price incl. tax"
+msgstr "ca pris inkl. moms"
 
 #. module: website_sale_price_chart
 #: model:ir.actions.act_window,name:website_sale_price_chart.pricelist_chart_type_action
 msgid "pricelist_chart_type_action"
 msgstr "pricelist_chart_type_action"
+
+#. module: website_sale_price_chart
+#: code:addons/website_sale_price_chart/sale.py:192
+#, python-format
+msgid "your price"
+msgstr "ditt pris"
+
+#. module: website_sale_price_chart
+#: code:addons/website_sale_price_chart/sale.py:192
+#, python-format
+msgid "your price excl. tax"
+msgstr "ditt pris exkl. moms"
+

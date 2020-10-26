@@ -233,9 +233,9 @@ class product_pricelist_chart(models.Model):
         # ~ chart_line = self.env['product.template'].browse(product_id).get_pricelist_chart_line(pricelist)
         price = '<!-- pre rec price -->'
         if self.pricelist_chart_id.rec_pricelist:
-            if self.env.has_group('webshop_dermanord.group_dn_sk'):
+            if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
                 tax=_('(price incl. tax)') if self.price_tax else _('(price excl. tax)')
-            if not self.env.has_group('webshop_dermanord.group_dn_sk'):
+            if not self.env.user.has_group('webshop_dermanord.group_dn_sk'):
                 tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
 
             price = """
@@ -261,11 +261,11 @@ class product_pricelist_chart(models.Model):
                        price_float=self.price,
                        tax=_('(your price incl. tax)') if self.price_tax else _('(your price excl. tax)')
                        )
-            
+
         if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
-            if self.env.has_group('webshop_dermanord.group_dn_sk'):
+            if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
                 tax=_('(price incl. tax)') if self.price_tax else _('(price excl. tax)')
-            if not self.env.has_group('webshop_dermanord.group_dn_sk'):
+            if not self.user.env.has_group('webshop_dermanord.group_dn_sk'):
                 tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
 
             price += """
