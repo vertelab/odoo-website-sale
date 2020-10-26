@@ -4,7 +4,7 @@
     
     <template id="page_order" inherit_id="website_portal_sale_1028.orders_followup" name="Page Order Agent">
       <xpath expr="//a[@id='oe_portal_sale_copy_order']" position="attributes">
-        <attribute name="t-if">not request.website.sale_home_check_if_agent(order.partner_id, home_user.commercial_partner_id)</attribute>
+        <attribute name="t-if">not request.website.sale_home_check_if_agent(order.partner_id, home_user.commercial_partner_id) and home_user[0] not in request.env.ref('webshop_dermanord.group_dn_sk').sudo().mapped('users')</attribute>
       </xpath>
     </template>
     

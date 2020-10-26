@@ -28,6 +28,7 @@ class res_partner(models.Model):
 
     has_account = fields.Boolean(compute='_has_account', help='This partner has an account')
     is_home_admin = fields.Boolean(compute='_is_home_admin', help='This partner has home admin right')
+    
 
     @api.one
     def _has_account_portal(self):
@@ -36,3 +37,4 @@ class res_partner(models.Model):
     @api.one
     def _is_home_admin_portal(self):
         self.is_home_admin = True if self in self.env.ref('website_sale_home.group_home_admin').users.mapped('partner_id') else False
+
