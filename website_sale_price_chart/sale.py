@@ -270,7 +270,7 @@ class product_pricelist_chart(models.Model):
         if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
             if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
                 tax=_('(price incl. tax)') if self.price_tax else _('(price excl. tax)')
-            if not self.user.env.has_group('webshop_dermanord.group_dn_sk'):
+            if not self.env.user.has_group('webshop_dermanord.group_dn_sk'):
                 tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
 
             price += """
