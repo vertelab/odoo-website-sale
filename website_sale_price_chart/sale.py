@@ -179,7 +179,12 @@ class product_pricelist_chart(models.Model):
         self.price_txt       = '%s %s' % (self.price_txt_short + _('your price') if self.price_tax else _('your price excl. tax')  )
 
         self.rec_price_txt_short = self._price_txt_format(self.rec_price,self.pricelist_chart_id.rec_pricelist.currency_id)
-        self.rec_price_txt       = '%s %s' % (self.rec_price_txt_short + _('ca price incl. tax') if self.rec_price_tax else _('ca price excl. tax')  )
+
+        if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
+            self.rec_price_txt =_('(price incl. tax)') if self.price_tax else _('(price excl. tax)')
+        if not self.env.user.has_group('webshop_dermanord.group_dn_sk'):
+            self.rec_price_txt =_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
+
         self.rec_price_txt_short = '(%s)' % self.rec_price_txt_short
 
     price_txt  = fields.Char(compute='_price_txt')
