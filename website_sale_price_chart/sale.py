@@ -179,9 +179,13 @@ class product_pricelist_chart(models.Model):
     def _price_txt(self):
         if not self.env.user.has_group('webshop_dermanord.group_dn_sk'):
             self.rec_price_txt =_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
-            self.price_txt_short = self._price_txt_format(self.price, self.pricelist_chart_id.pricelist.currency_id)
-            self.price_txt       = '%s %s' % (self.price_txt_short + _('your price') if self.price_tax else _('your price excl. tax')  )
-            self.rec_price_txt_short = self._price_txt_format(self.rec_price,self.pricelist_chart_id.rec_pricelist.currency_id)
+        else:
+            self.rec_price_txt =_('(price incl. tax)')
+            self.price_tax = True
+
+        self.price_txt_short = self._price_txt_format(self.price, self.pricelist_chart_id.pricelist.currency_id)
+        self.price_txt       = '%s %s' % (self.price_txt_short + _('your price') if self.price_tax else _('your price excl. tax')  )
+        self.rec_price_txt_short = self._price_txt_format(self.rec_price,self.pricelist_chart_id.rec_pricelist.currency_id)
 
         self.rec_price_txt_short = '(%s)' % self.rec_price_txt_short
 
@@ -210,7 +214,7 @@ class product_pricelist_chart(models.Model):
         price = '<!-- pre rec price -->'
         if self.pricelist_chart_id.rec_pricelist:
             if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
-                tax=""
+                tax=_('(price incl. tax)')
             else:
                 tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
 
@@ -239,11 +243,9 @@ class product_pricelist_chart(models.Model):
                        )
 
         if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
-            if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
-                tax=""
-                _logger.warn("~ (2) you are end consumer. %s " % self.env.user.name)
+            if self.env.user.has_group('webshop_dermanord.group_dn_sk') or self.env.user.has_group('base.group_erp_manager'):
+                tax=_('(price incl. tax)')
             else:
-                _logger.warn("~ (2) YOU ARE NOT END CONSUMER!! %s " % self.env.user.name)
                 tax = _('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
 
             price += """
