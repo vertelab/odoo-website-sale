@@ -44,7 +44,7 @@ class pricelist_chart_type(models.Model):
     rec_pricelist = fields.Many2one(comodel_name='product.pricelist')
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included. (unless Use product Tax is checked)')
     rec_price_product_tax  = fields.Boolean(string="Use Product Tax (Rec)",comodel_name='account.tax',help='Use product tax for rec price instread of tax for rec price in this record')
-    
+
 
     @api.multi
     def calc(self, product_id):
@@ -117,7 +117,7 @@ class product_product(models.Model):
         pl_type = self.env['pricelist_chart.type'].sudo().search([('pricelist','=',pricelist.id)])
         # start = time.clock()
         # if time.clock() - start > 1:
-             
+
         if not pl_type:
             _logger.warn('could not find sandra')
             pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
@@ -132,7 +132,7 @@ class product_product(models.Model):
                     pl = pl[0]
                 pl_ids |= pl
         return pl_ids
-        
+
     @api.multi
     def get_pricelist_chart_line_type(self, pl_type):
         """ returns pricelist line-object  """
@@ -152,7 +152,7 @@ class product_pricelist_chart(models.Model):
 
     product_id = fields.Many2one(comodel_name='product.product')
     pricelist_chart_id = fields.Many2one(comodel_name='pricelist_chart.type')
-    
+
     price      = fields.Float()
     price_tax  = fields.Boolean()
     price_txt  = fields.Char(default="", compute='_price_txt')
@@ -196,7 +196,7 @@ class product_pricelist_chart(models.Model):
                 dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
                 dp = dp and dp[0]['decimal_point'] or '.'
             return ('%.2f' %price).replace('.', dp)
-            
+
         def price_txt_format(self,price,currency):
             lang = self.env['res.lang'].format([self._context.get('lang') or 'en_US'], lang,'.2f', price, grouping=True, monetary=True)
 
@@ -216,8 +216,7 @@ class product_pricelist_chart(models.Model):
             if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
                 tax=_('(price incl. tax)')
             else:
-                tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
-
+                tax=_('(ca price incl. tax)') if self.rec_price_tax else _('(ca price excl. tax)')
             price = """
                 <div style="white-space: nowrap"><!-- rec price -->
                     <span style="white-space: nowrap;" >{name}</span>
