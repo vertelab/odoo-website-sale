@@ -44,7 +44,7 @@ class pricelist_chart_type(models.Model):
     rec_pricelist = fields.Many2one(comodel_name='product.pricelist')
     rec_price_tax  = fields.Many2one(string="Tax for rec price",comodel_name='account.tax',help='Use this tax for rec price, none if tax is not included. (unless Use product Tax is checked)')
     rec_price_product_tax  = fields.Boolean(string="Use Product Tax (Rec)",comodel_name='account.tax',help='Use product tax for rec price instread of tax for rec price in this record')
-    
+
 
     @api.multi
     def calc(self, product_id):
@@ -115,7 +115,11 @@ class product_product(models.Model):
             pricelist = self.env['product.pricelist'].browse(pricelist)
         pl_ids = self.env['product.pricelist_chart'].browse()
         pl_type = self.env['pricelist_chart.type'].sudo().search([('pricelist','=',pricelist.id)])
+        # start = time.clock()
+        # if time.clock() - start > 1:
+
         if not pl_type:
+            _logger.warn('could not find sandra')
             pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
         # ~ return pl_ids
         #TODO: Code here should be tested
@@ -129,16 +133,35 @@ class product_product(models.Model):
                 pl_ids |= pl
         return pl_ids
 
+    @api.multi
+    def get_pricelist_chart_line_type(self, pl_type):
+        """ returns pricelist line-object  """
+        for product in self:
+            if product.sale_ok:
+                pl = product.pricelist_chart_ids.filtered(
+                    lambda t: t.pricelist_chart_id == pl_type)
+                if not pl:
+                    pl = pl_type.calc(product.id)
+                if len(pl) > 1:
+                    pl = pl[0]
+                pl_ids |= pl
+        return pl_ids
 
 class product_pricelist_chart(models.Model):
     _name = 'product.pricelist_chart'
 
     product_id = fields.Many2one(comodel_name='product.product')
     pricelist_chart_id = fields.Many2one(comodel_name='pricelist_chart.type')
+
     price      = fields.Float()
     price_tax  = fields.Boolean()
+    price_txt  = fields.Char(default="", compute='_price_txt')
+    price_txt_short  = fields.Char(default="", compute='_price_txt')
 
-
+    rec_price  = fields.Float()
+    rec_price_tax = fields.Boolean()
+    rec_price_txt  = fields.Char(default="", compute='_price_txt')
+    rec_price_txt_short  = fields.Char(default="", compute='_price_txt')
 
     def _price_txt_format(self,price,currency):
         lang = self.env['res.lang'].format([self._context.get('lang') or 'en_US'],'%.2f', price, grouping=True, monetary=True)
@@ -154,36 +177,17 @@ class product_pricelist_chart(models.Model):
 
     @api.one
     def _price_txt(self):
+        if not self.env.user.has_group('webshop_dermanord.group_dn_sk'):
+            self.rec_price_txt =_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
+        else:
+            self.rec_price_txt =_('(price incl. tax)')
+            self.price_tax = True
 
         self.price_txt_short = self._price_txt_format(self.price, self.pricelist_chart_id.pricelist.currency_id)
         self.price_txt       = '%s %s' % (self.price_txt_short + _('your price') if self.price_tax else _('your price excl. tax')  )
-
         self.rec_price_txt_short = self._price_txt_format(self.rec_price,self.pricelist_chart_id.rec_pricelist.currency_id)
-        self.rec_price_txt       = '%s %s' % (self.rec_price_txt_short + _('ca price incl. tax') if self.rec_price_tax else _('ca price excl. tax')  )
+
         self.rec_price_txt_short = '(%s)' % self.rec_price_txt_short
-
-    price_txt  = fields.Char(compute='_price_txt')
-    price_txt_short  = fields.Char(compute='_price_txt')
-    rec_price  = fields.Float()
-    rec_price_tax = fields.Boolean()
-    rec_price_txt  = fields.Char(compute='_price_txt')
-    rec_price_txt_short  = fields.Char(compute='_price_txt')
-
-
-    # ~ @api.model
-    # ~ def get_pricelist_chart_html(self,product_id,pricelist_id):
-        # ~ """ returns pricelist html  """
-
-        # ~ pl_ids = self.env['product.pricelist_chart'].browse()
-        # ~ for product in self:
-            # ~ pl_type = self.env['pricelist_chart.type'].search([('pricelist','=',pricelist.id)])
-            # ~ if not pl_type:
-                # ~ pl_type = self.env['pricelist_chart.type'].sudo().create({'name': pricelist.name,'pricelist': pricelist.id})
-            # ~ pl = product.pricelist_chart_ids.filtered(lambda t: t.pricelist_chart_id == pl_type)
-            # ~ if not pl:
-                # ~ pl = pl_type.calc(product.id)
-            # ~ pl_ids |= pl
-        # ~ return pl_ids
 
     @api.multi
     def get_html_price_long(self):
@@ -192,6 +196,7 @@ class product_pricelist_chart(models.Model):
                 dp = self.env['res.lang'].search_read([('code', '=', self.env.lang)], ['decimal_point'])
                 dp = dp and dp[0]['decimal_point'] or '.'
             return ('%.2f' %price).replace('.', dp)
+
         def price_txt_format(self,price,currency):
             lang = self.env['res.lang'].format([self._context.get('lang') or 'en_US'], lang,'.2f', price, grouping=True, monetary=True)
 
@@ -204,14 +209,14 @@ class product_pricelist_chart(models.Model):
             res = text.format(
                 symbol=currency.symbol,
             )
-
             return res
 
-        # ~ if isinstance(pricelist,int):
-            # ~ pricelist = self.env['product.pricelist'].browse(pricelist)
-        # ~ chart_line = self.env['product.template'].browse(product_id).get_pricelist_chart_line(pricelist)
         price = '<!-- pre rec price -->'
         if self.pricelist_chart_id.rec_pricelist:
+            if self.env.user.has_group('webshop_dermanord.group_dn_sk'):
+                tax=_('(price incl. tax)')
+            else:
+                tax=_('(ca price incl. tax)') if self.rec_price_tax else _('(ca price excl. tax)')
             price = """
                 <div style="white-space: nowrap"><!-- rec price -->
                     <span style="white-space: nowrap;" >{name}</span>
@@ -220,8 +225,9 @@ class product_pricelist_chart(models.Model):
                 </div>
             """.format(name=self.pricelist_chart_id.rec_pricelist.currency_id.name,
                        price=price_format(self.rec_price),
-                       tax=_('(ca price incl. tax)') if self.rec_price_tax else _('(ca price excl. tax)')
+                       tax = tax
                        )
+
         if self.pricelist_chart_id.pricelist and self.pricelist_chart_id.pricelist.for_reseller:
             price += """
                 <div style="white-space: nowrap"><!-- price -->
@@ -232,9 +238,15 @@ class product_pricelist_chart(models.Model):
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(self.price),
                        price_float=self.price,
-                       tax=_('(your price incl. tax)') if self.price_tax else _('(your price excl. tax)')
+                       tax = _('(your price incl. tax)') if self.price_tax else _('(your price excl. tax)')
                        )
+
         if self.pricelist_chart_id.pricelist and not self.pricelist_chart_id.pricelist.for_reseller:
+            if self.env.user.has_group('webshop_dermanord.group_dn_sk') or self.env.user.has_group('base.group_erp_manager'):
+                tax=_('(price incl. tax)')
+            else:
+                tax = _('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
+
             price += """
                 <div style="white-space: nowrap"><!-- public price -->
                     <span style="white-space: nowrap;" >{name}</span>
@@ -243,7 +255,7 @@ class product_pricelist_chart(models.Model):
                 </div>
             """.format(name=self.pricelist_chart_id.pricelist.currency_id.name,
                        price=price_format(self.price),
-                       tax=_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
+                       tax=tax
                        )
         return """
             <div>
@@ -288,7 +300,6 @@ class product_pricelist_chart(models.Model):
                        )
 
         return price
-
 
 class product_template(models.Model):
     _inherit = 'product.template'

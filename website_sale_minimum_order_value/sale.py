@@ -46,7 +46,7 @@ class sale_order_minvalue(models.Model):
     info_text = fields.Text(translate=True)
     info_html = fields.Html(translate=True)
     sample_order = fields.Boolean(string="Sample order",help="Allow a sample order (first one) without any fee or block.")
-    payment_term_ids = fields.Many2many(comodel_name='account.payment.term', string='Payment Term', help='Payment terms excluded.')
+    payment_term_ids = fields.Many2many(comodel_name='account.payment.term', string='Payment Term Excluded', help='Payment terms excluded.')
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
