@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<openerp>
-    <data>
-        <!-- [2223] Nyhetsbrev - Arkiv under Mitt konto till webbaserade nyhetsbrev -->
-        <record model="mail.mass_mailing.category" id="reseller_news_letter">
-            <field name="name">Reseller news letter</field>
-        </record>
-    </data>
-</openerp>
