@@ -46,7 +46,7 @@ class pricelist_chart_type(models.Model):
     rec_price_product_tax  = fields.Boolean(string="Use Product Tax (Rec)",comodel_name='account.tax',help='Use product tax for rec price instread of tax for rec price in this record')
     
 
-    @api.multi
+    @api.model
     def calc(self, product_id):
         for pl_type in self:
             self.env['product.pricelist_chart'].search([('product_id','=',product_id), ('pricelist_chart_id','=',pl_type.id)]).unlink()
@@ -76,7 +76,7 @@ class pricelist_chart_type(models.Model):
                 pl.rec_price = None
         return pl
 
-    @api.multi
+    @api.model
     def price_get(self, product):
         price = product.pricelist_chart_ids.filtered(lambda p: p.pricelist_chart_id in self).mapped('price')
         if len(price)>0:
@@ -91,7 +91,7 @@ class product_product(models.Model):
 
 
 
-    @api.multi
+    @api.model
     def calc_pricelist_chart(self):
         for product in self:
             self.env['pricelist_chart.type'].search([]).calc(product.id)
@@ -108,7 +108,7 @@ class product_product(models.Model):
 
 
 
-    @api.multi
+    @api.model
     def get_pricelist_chart_line(self, pricelist):
         """ returns pricelist line-object  """
         if isinstance(pricelist,int):
@@ -133,7 +133,7 @@ class product_product(models.Model):
                 pl_ids |= pl
         return pl_ids
         
-    @api.multi
+    @api.model
     def get_pricelist_chart_line_type(self, pl_type):
         """ returns pricelist line-object  """
         for product in self:
@@ -175,7 +175,7 @@ class product_pricelist_chart(models.Model):
         )
         return res
 
-    @api.one
+    @api.model
     def _price_txt(self):
         if not self.env.user.has_group('webshop_dermanord.group_dn_sk'):
             self.rec_price_txt =_('(ca price incl. tax)') if self.price_tax else _('(ca price excl. tax)')
@@ -189,7 +189,7 @@ class product_pricelist_chart(models.Model):
 
         self.rec_price_txt_short = '(%s)' % self.rec_price_txt_short
 
-    @api.multi
+    @api.model
     def get_html_price_long(self):
         def price_format(price, dp=None):
             if not dp:
@@ -264,7 +264,7 @@ class product_pricelist_chart(models.Model):
             </div>
         """.format(price=price)
 
-    @api.multi
+    @api.model
     def get_html_price_short(self):
         def price_format(price, dp=None):
             if not dp:
@@ -305,7 +305,7 @@ class product_pricelist_chart(models.Model):
 class product_template(models.Model):
     _inherit = 'product.template'
 
-    @api.multi
+    @api.model
     def get_pricelist_chart_line(self, pricelist):
         """ returns cheapest pricelist line  """
         pl_ids = self.env['product.pricelist_chart'].browse()
