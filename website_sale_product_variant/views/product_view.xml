@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
-
         <record id="product_normal_form_view" model="ir.ui.view">
             <field name="name">product.product.common.form.inherited.website_sale_product_variant</field>
             <field name="model">product.product</field>
@@ -15,16 +14,5 @@
                 </xpath>
             </field>
         </record>
-        <record id="product_product_tree_view" model="ir.ui.view">
-            <field name="name">product.product.tree.inherited.website_sale_product_variant</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_product_tree_view"/>
-            <field name="arch" type="xml">
-                <field name="ean13" position="after">
-                    <field name="default_variant"/>
-                </field>
-            </field>
-        </record>
-
     </data>
-</openerp>
+</odoo>
