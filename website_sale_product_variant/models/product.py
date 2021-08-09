@@ -15,14 +15,16 @@ class ProductTemplate(models.Model):
         if not self.product_variant_ids:
             _logger.warn('%s has not variant' %self)
         else:
-            return self.product_variant_ids.filtered(lambda v: v.default_variant == True) or (self.product_variant_ids[0] if self and len(self.product_variant_ids) > 0 else None)
+            return (self.product_variant_ids.filtered(lambda v: v.default_variant == True) or
+                    (self.product_variant_ids[0] if self and
+                     len(self.product_variant_ids) > 0 else None))
         return None
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     default_variant = fields.Boolean(string='Default Variant')
-    
+
     @api.constrains('default_variant')
     def _constrain_default_variant(self):
         for variant in self:
