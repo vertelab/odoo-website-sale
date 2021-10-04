@@ -135,6 +135,9 @@
           <li t-att-class="'active' if active_menu == 'my_mail' else ''">
             <a href="/my/mail">Mail &amp; Subscribers</a>
           </li>
+          <li t-att-class="'active' if active_menu == 'my_products' else ''">
+            <a href="/my/products">Export product data</a>
+          </li>
           <p>Media</p>
           <ul class="mega_menu_children">
             <li t-att-class="'active' if active_menu == 'my_imagearchive' else ''">
