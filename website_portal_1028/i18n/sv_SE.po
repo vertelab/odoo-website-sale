@@ -163,6 +163,11 @@ msgstr "MAIL & PRENUMERATIONER"
 
 #. module: website_portal_1028
 #: view:website:website.layout
+msgid "Export product data"
+msgstr "Exportera produktinformation"
+
+#. module: website_portal_1028
+#: view:website:website.layout
 msgid "MEDIA"
 msgstr "MEDIA"
 

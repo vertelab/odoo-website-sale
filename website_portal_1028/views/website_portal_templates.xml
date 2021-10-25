@@ -317,6 +317,9 @@
           <li>
             <a href="/my/mail">MAIL &amp; SUBSCRIBERS</a>
           </li>
+          <li>
+            <a href="/my/products">Export product data</a>
+          </li>
           <li class="dropdown-submenu">
             <a class="test" href="#">MEDIA</a>
             <ul class="dropdown-menu">

@@ -5,7 +5,7 @@
     'name': 'Website Portal for Sales',
     'category': 'Website',
     'summary': 'Add your sales document in the frontend portal (sales order, quotations, invoices)',
-    'version': '1.0',
+    'version': '8.0.1.0.1',
     'description': """
 Add your sales document in the frontend portal. Your customers will be able to connect to their portal to see the list (and the state) of their invoices (pdf report), sales orders and quotations (web pages).
         """,
