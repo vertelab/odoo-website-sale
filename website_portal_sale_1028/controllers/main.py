@@ -5,6 +5,8 @@ from openerp import http, _, fields
 from openerp.exceptions import AccessError
 from openerp.http import request, Controller
 
+#from openerp.tools.translate import _
+
 from openerp.addons.website_portal_1028.controllers.main import website_account
 # from openerp.addons.account_followup.report import website_followup
 #from openerp.addons.delivery_unifaun_base import delivery
@@ -218,12 +220,12 @@ class website_account(website_account):
         row = 0
         col = 0
 
-        header = [u'Artikelnr','Produkt','Variantattribut','EAN-kod','Publik beskrivning','Anvandarbeskrivning','Inci','Bredd',u'Höjd','Djup','Volym','Vikt','Taggning/Egenskaper',u'Antal per hel låda',u'Kundens inköpspris','Kundens rek.pris']
+        header = list(map(_,['Product code','Product','Variant attribute','EAN code','Public description',u'User description','Inci','Width','Height','Depth','Volume','Weight','Tags/Properties','Quantity per box','Distributors price','Retail price']))
         for data in header:
             worksheet.write(row, col, data)
             col += 1
         col = 0
-            
+
         products = request.env['product.product'].sudo().search([('website_published','=',True), ('sale_ok','=',True), ('active','=',True)])
         partner = request.env.user.partner_id.commercial_partner_id
         pricelist = partner.property_product_pricelist
