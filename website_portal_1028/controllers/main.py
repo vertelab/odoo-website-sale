@@ -210,11 +210,14 @@ class website_account(http.Controller):
         pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf))]
         return request.make_response(pdf, headers=pdfhttpheaders)
 
-    @http.route(['/my/documents/<model("res.users"):home_user>/document/<int:document_id>',
-                 '/my/documents/<model("res.users"):home_user>/document/<int:document_id>/<docname>'
+    @http.route(['/my/documents/<int:home_user>/document/<int:document_id>',
+                 '/my/documents/<int:home_user>/document/<int:document_id>/<docname>'
                  ], type='http', auth="user", website=True)
     def download_document(self, document_id, home_user=None, docname=None, **post):
-        self.validate_user(home_user)
+        huser = request.env["res.users"].browse(home_user)
+        if not huser.exists():
+            return request.website.render('website.403', {})
+        self.validate_user(huser)
         if self.check_document_access([document_id]):
             document = request.env['ir.attachment'].sudo().search([('id', '=', document_id)]) #TODO better security-check  check:225 ir_attachment.py  check:71 document.py
             _logger.warn('Try to send %s' % document)
