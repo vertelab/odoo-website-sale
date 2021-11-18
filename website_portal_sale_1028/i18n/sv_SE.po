@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-05 07:16+0000\n"
-"PO-Revision-Date: 2020-05-05 07:16+0000\n"
+"PO-Revision-Date: 2021-11-02 07:16+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -733,7 +733,7 @@ msgstr "Antal"
 #: code:addons/website_portal_sale_1028/models/sale_order.py:47
 #, python-format
 msgid "Ready for picking"
-msgstr "REdo att plockas"
+msgstr "Redo att plockas"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.portal_my_salon
@@ -983,7 +983,7 @@ msgstr "Din e-postadress kommer också användas som inloggningnamn"
 #: code:addons/website_portal_sale_1028/controllers/main.py:262
 #, python-format
 msgid "Your price (excl. tax)"
-msgstr "Ditt pris (excl. tax)"
+msgstr "Ditt pris (exkl. moms)"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.company_info_form
@@ -1011,3 +1011,98 @@ msgstr "t.ex. 0709-99 99 99"
 msgid "e.g. masseur"
 msgstr "t.ex. massör"
 
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Product code"
+msgstr "Artikelnr"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Product"
+msgstr "Produkt"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Variant"
+msgstr "Variant"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "EAN code"
+msgstr "EAN-kod"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Description"
+msgstr "Beskrivning"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Use description"
+msgstr "Användarbeskrivning"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "INCI"
+msgstr "INCI"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Width"
+msgstr "Bredd"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Height"
+msgstr "Höjd"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Depth"
+msgstr "Djup"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Volume"
+msgstr "Volym"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Weight"
+msgstr "Vikt"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Tags/Properties"
+msgstr "Taggar/Egenskaper"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Quantity per box"
+msgstr "Antal per låda"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Distributors price"
+msgstr "Kundens inköpspris"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Retail price"
+msgstr "Kundens rek.pris"
