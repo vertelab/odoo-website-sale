@@ -333,3 +333,99 @@ msgstr "Uw orders"
 #: model:ir.ui.view,arch_db:website_portal_sale.portal_my_quotations
 msgid "Your Quotes"
 msgstr "Uw offertes"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Product code"
+msgstr "Artikelnr"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Product"
+msgstr "Product"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Variant"
+msgstr "Variant"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "EAN code"
+msgstr "EAN-code"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Description"
+msgstr "Beschrijving"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Use description"
+msgstr "Gebruiksaanwijzing"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "INCI"
+msgstr "INCI"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Width"
+msgstr "Breedte"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Height"
+msgstr "Hoogte"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Depth"
+msgstr "Diepte"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Volume"
+msgstr "Volume"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Weight"
+msgstr "Gewicht"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Tags/Properties"
+msgstr "Tags/Eigenschappen "
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Quantity per box"
+msgstr "Aantal per doos"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Distributors price"
+msgstr "Jouw inkoopprijs"
+
+#. module: website_portal_sale_1028
+#: code:addons/website_portal_sale_1028/controllers/main.py:223
+#, python-format
+msgid "Retail price"
+msgstr "Adviesprijs"
