@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * website_portal_sale
-# 
+#
 # Translators:
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2016
 # Martin Trigaux <mat@odoo.com>, 2016
@@ -337,7 +337,7 @@ msgstr "Uw offertes"
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "Product code"
+msgid "Item number"
 msgstr "Artikelnr"
 
 #. module: website_portal_sale_1028
@@ -349,7 +349,7 @@ msgstr "Product"
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "Variant"
+msgid "Variant attribute"
 msgstr "Variant"
 
 #. module: website_portal_sale_1028
@@ -373,7 +373,7 @@ msgstr "Gebruiksaanwijzing"
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "INCI"
+msgid "INCI Ingredients"
 msgstr "INCI"
 
 #. module: website_portal_sale_1028
@@ -421,7 +421,7 @@ msgstr "Aantal per doos"
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "Distributors price"
+msgid "Cost price"
 msgstr "Jouw inkoopprijs"
 
 #. module: website_portal_sale_1028

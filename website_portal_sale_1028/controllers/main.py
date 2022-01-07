@@ -83,7 +83,7 @@ class website_account(website_account):
             ('account_id.active','=', True),
             ('account_id.type', '=', 'receivable'),
             ('state', '!=', 'draft')])
-                                                                                                        
+
         archive_groups = "" # DAER: Ugg not understand, Ugg remove.
         # archive_groups = self._get_archive_groups('sale.order', domain)
         # count for pager
@@ -140,8 +140,8 @@ class website_account(website_account):
             'reseller': partner,
         })
         return request.render("website_portal_sale_1028.my_reseller", values)
-    
-    
+
+
     @http.route(['/my/credits', '/my/credits/page/<int:page>'], type='http', auth="user", website=True)
     def my_credit_invoice(self, page=1, **post):
         portal_user = request.env.user
@@ -162,10 +162,10 @@ class website_account(website_account):
             'pager': pager,
             'active_menu': 'my_credit_invoice'
         })
-        
+
         return request.render("website_portal_sale_1028.my_credit_invoice", values)
 
-    
+
     @http.route(['/my/credits/<int:invoice_id>'], type='http', auth="user", website=True)
     def credits_followup(self, portal_user=None, invoice_id=None, tab='credits', **post):
         portal_user = request.env.user
@@ -184,7 +184,7 @@ class website_account(website_account):
             'portal_user': request.env.user,
             'invoice': invoice,
             'tab': tab
-        })   
+        })
 
     @http.route(['/my/reclaim'], type='http', auth="user", website=True)
     def portal_my_reclaim (self, **kw):
@@ -220,7 +220,7 @@ class website_account(website_account):
         row = 0
         col = 0
 
-        header = list(map(_,['Product code','Product','Variant attribute','EAN code','Public description',u'User description','Inci','Width','Height','Depth','Volume','Weight','Tags/Properties','Quantity per box','Distributors price','Retail price']))
+        header = list(map(_,['Item number','Product','Variant attribute','EAN code','Description',u'Use description','INCI Ingredients','Width','Height','Depth','Volume','Weight','Tags/Properties','Quantity per box','Cost price','Retail price']))
         for data in header:
             worksheet.write(row, col, data)
             col += 1
@@ -361,7 +361,7 @@ class website_account(website_account):
         filename = _("Pricelist Maria Åkerberg")
         pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf)), ('Content-Disposition', content_disposition('%s.pdf' % filename))]
         return request.make_response(pdf, headers=pdfhttpheaders)
-        
+
     @http.route(['/my/pricelist'], type='http', auth="user", website=True)
     def portal_my_pricelist(self, **kw):
         home_user = request.env.user
@@ -436,12 +436,12 @@ class website_account(website_account):
             'mailing_lists': mailing_lists,
             'mass_mailing_partners': mass_mailing_partners,
             'mails': mails,
-            'page_count': page_count, 
+            'page_count': page_count,
             'pager': pager,
             'employees_mailing_lists': employees_mailing_lists,
             'active_menu': 'my_mail',
             })
-            
+
 
         return request.render("website_portal_sale_1028.portal_my_mail", values)
 
@@ -451,7 +451,7 @@ class website_account(website_account):
         home_user = request.env.user
         self.validate_user(home_user)
         if partner_id:
-            
+
             same_company = request.env['res.partner'].search_count([
                 ('id', 'child_of', home_user.commercial_partner_id.id),
                 ('id', '=', partner_id)
@@ -527,7 +527,7 @@ class website_account(website_account):
         same_company = request.env['res.partner'].search_count([('id', 'child_of', request.env.user.commercial_partner_id.id), ('id', '=', user.partner_id.id)])
         if not same_company:
             raise AccessError('You are not allowed to administrate this user.')
-            
+
     def update_info(self, home_user, post):
         if not self.check_admin_portal(home_user):
             return request.website.render('website.403', {})
@@ -542,10 +542,10 @@ class website_account(website_account):
                     translated_text.write({'value': post.get('website_short_description')})
             # ~ if post.get('invoicetype'):
                 # ~ company.write({'property_invoice_type': int(post.get('invoicetype'))})
-            
+
             address_types = self.get_children_by_address_type(company)
             if len(address_types['delivery']) == 0:
-                # Create new delivery address if email is updated 
+                # Create new delivery address if email is updated
                 # without an existing delivery address
                 if post.get('delivery_email'):
                     delivery_params = {
@@ -556,7 +556,7 @@ class website_account(website_account):
                         'type': 'delivery',
                     }
                     request.env['res.partner'].sudo().create(delivery_params)
-                    
+
             elif len(address_types['delivery']) == 1:
                 # Update email for delivery address if only one
                 if post.get('delivery_email'):
@@ -566,7 +566,7 @@ class website_account(website_account):
                 for deliv in address_types['delivery']:
                     if post.get('delivery_id%s_email' % deliv.id):
                         deliv.email = post.get('delivery_id%s_email' % deliv.id)
-                          
+
             company.write(self.get_company_post(post))
             children_dict = self.save_children(company, post)
             children = children_dict['children']
@@ -737,7 +737,7 @@ class website_account(website_account):
 
         tag = request.env.ref('website_portal_sale_1028.partner_tag_delete')
         home_user.category_id |= tag
-        
+
         return request.render("website_portal_sale_1028.portal_my_tags")
 
     def create_contact_user_portal(self, values):
@@ -776,7 +776,7 @@ class website_account(website_account):
             'order': order,
             'tab': tab,
         })
- 
+
     @http.route(['/my/orders/<model("res.users"):home_user>/order/<model("sale.order"):order>/copy',], type='http', auth="user", website=True)
     def my_order_copy(self, home_user=None, order=None, **post):
         self.validate_user(home_user)
@@ -1030,6 +1030,5 @@ class DummyRecordSet(object):
 
 class MailMassMailingList(models.Model):
     _inherit = 'mail.mass_mailing.list'
-    
-    country_ids = fields.Many2many(comodel_name='res.country',string='Country') 
 
+    country_ids = fields.Many2many(comodel_name='res.country',string='Country')

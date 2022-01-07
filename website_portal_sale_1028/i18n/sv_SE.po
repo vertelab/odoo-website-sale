@@ -1014,7 +1014,7 @@ msgstr "t.ex. massör"
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "Product code"
+msgid "Item number"
 msgstr "Artikelnr"
 
 #. module: website_portal_sale_1028
@@ -1026,8 +1026,8 @@ msgstr "Produkt"
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "Variant"
-msgstr "Variant"
+msgid "Variant attribute"
+msgstr "Variantattribut"
 
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
@@ -1045,13 +1045,13 @@ msgstr "Beskrivning"
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
 msgid "Use description"
-msgstr "Användarbeskrivning"
+msgstr "Användningsanvisning"
 
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "INCI"
-msgstr "INCI"
+msgid "INCI Ingredients"
+msgstr "INCI Ingredienser"
 
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
@@ -1098,8 +1098,8 @@ msgstr "Antal per låda"
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
 #, python-format
-msgid "Distributors price"
-msgstr "Kundens inköpspris"
+msgid "Cost price"
+msgstr "Inköpspris"
 
 #. module: website_portal_sale_1028
 #: code:addons/website_portal_sale_1028/controllers/main.py:223
