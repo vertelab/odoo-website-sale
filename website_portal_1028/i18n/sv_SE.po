@@ -168,6 +168,11 @@ msgstr "Exportera produktinformation"
 
 #. module: website_portal_1028
 #: view:website:website.layout
+msgid "FAQ Reseller"
+msgstr "FAQ Återförsäljare"
+
+#. module: website_portal_1028
+#: view:website:website.layout
 msgid "MEDIA"
 msgstr "MEDIA"
 
@@ -302,4 +307,3 @@ msgstr "välj..."
 #, python-format
 msgid "until further notice"
 msgstr "Tillsvidare"
-

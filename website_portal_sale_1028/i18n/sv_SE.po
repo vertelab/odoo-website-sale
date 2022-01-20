@@ -487,6 +487,11 @@ msgstr "Exportera produktinformation"
 
 #. module: website_portal_sale_1028
 #: view:website:website_portal_sale_1028.my_menu
+msgid "FAQ Reseller"
+msgstr "FAQ Återförsäljare"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.my_menu
 msgid "Media"
 msgstr "Media"
 

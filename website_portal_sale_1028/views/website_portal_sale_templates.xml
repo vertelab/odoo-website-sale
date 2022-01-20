@@ -12,14 +12,14 @@
          <div class="menu menu-my-pages">
          <div class="row"> -->
     <!--
-         
+
          TODO: Activate me
          <div class="col-md-2 col-sm-6 col-xs-4">
          <li>
          <a href="/my/home">Aktuellt</a>
          </li>
          </div>
-         
+
          <div class="col-md-2 col-sm-6 col-xs-4">
          <li>
          <a href="/my/salon">My Salon</a>
@@ -30,19 +30,19 @@
          <a href="/my/orders">My Orders</a>
          </li>
          </div>
-         
+
          TODO: Activate me
          <div class="col-md-2 col-sm-6 col-xs-4">
          <li>
          <a href="/my/obsolete">Utgående produkter</a>
          </li>
          </div>
-         
+
          <div class="col-md-2 col-sm-6 col-xs-4">
          <li>
          <a href="/my/reclaim">Reklamationer</a>
          </li>
-         </div> 
+         </div>
          <div class="col-md-2 col-sm-6 col-xs-4">
          <li>
          <a href="/my/buyinfo">Buyinfo</a>
@@ -55,7 +55,7 @@
          </li>
          </div> -->
     <!--
-         
+
          <div class="col-md-2 col-sm-6 col-xs-4">
          <li class="dropdown-submenu">
          <a class="test" href="#">Media</a>
@@ -63,12 +63,12 @@
          <li>
          <a href="/my/imagearchive">Image Bank</a>
          </li>
-         
+
          TODO: Activate me
          <li>
          <a href="/my/pricelist">Prislistor</a>
          </li>
-         
+
          <li>
          <a href="/my/news">News &amp; Offers</a>
          </li>
@@ -162,6 +162,9 @@
               <a href="/my/other">Miscellaneous</a>
             </li>
           </ul>
+          <li>
+            <a href="/page/faq-reseller">FAQ Reseller</a>
+          </li>
         </t>
       </div>
     </template>
@@ -1533,13 +1536,13 @@
                      }
                      </script>
                 -->
-         
+
             <script>// added 2019-08-05. Code from main.js
                 if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(setPosition);
                 }</script>
-              
-          
+
+
 
           </div>
         </div>
@@ -2256,10 +2259,10 @@
          <xpath expr="//a[@href='/home']" position="replace">
          <a href="/my/home" role="menuitem">My Account</a>
          </xpath>
-         </template> 
-         
+         </template>
+
     -->
-    <!-- 
+    <!--
          <record model="ir.ui.view" id="view_document_directory_form">
          <field name="name">document.directory</field>
          <field name="model">document.directory</field>
@@ -2282,7 +2285,7 @@
          </group>
          </field>
          </record>
-         
+
          <record id="view_attachment_form" model="ir.ui.view">
          <field name="name">ir.attachment.form.home</field>
          <field name="model">ir.attachment</field>

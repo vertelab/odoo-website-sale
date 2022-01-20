@@ -346,6 +346,9 @@
               </li>
             </ul>
           </li>
+          <li>
+              <a href="/page/faq-reseller">FAQ Reseller</a>
+          </li>
         </t>
       </xpath>
     </template>
