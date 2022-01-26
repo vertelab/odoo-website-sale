@@ -181,7 +181,7 @@ class website_account(http.Controller):
                     return False
             return True
         return False
-    
+
     @http.route(['/my/documents/<model("res.users"):home_user>/print/<reportname>/<docids>',
                  '/my/documents/<model("res.users"):home_user>/print/<reportname>/<docids>/<docname>',
                  ], type='http', auth='user', website=True)
@@ -199,7 +199,7 @@ class website_account(http.Controller):
             options_data = simplejson.loads(data['options'])
         if data.get('context'):
             # Ignore 'lang' here, because the context in data is the one from the webclient *but* if
-            # the user explicitely wants to change the lang, this mechanism overwrites it. 
+            # the user explicitely wants to change the lang, this mechanism overwrites it.
             data_context = simplejson.loads(data['context'])
             if data_context.get('lang'):
                 del data_context['lang']
@@ -224,6 +224,24 @@ class website_account(http.Controller):
             data = document.datas.decode('base64')
             return http.send_file(StringIO(data), filename=fname, mimetype=mime, mtime=write_date, as_attachment=True)
         return request.website.render('website.403', {})
+
+    @http.route(["/page/faq-reseller"],type="http", auth="user" ,website=True )
+    def faq_reseller(self, **opt):
+        ''''
+        Only let resellers of authorized groups to see the reseller FAQ
+
+        Overloading default /page/-controller
+        '''
+        valid_groups = request.env.ref("webshop_dermanord.group_dn_af")
+        valid_groups |= request.env.ref("webshop_dermanord.group_dn_ht")
+        valid_groups |= request.env.ref("webshop_dermanord.group_dn_spa")
+
+        urs = request.env["res.users"].browse(request.uid)
+        if not (urs.groups_id & valid_groups):
+            return request.website.render('website.403', {})
+
+        return request.website.render('website_portal_1028.faq_reseller', {})
+
 
 class DummyRecordSet(object):
     def __init__(self, ids):
