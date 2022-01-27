@@ -235,6 +235,7 @@ class website_account(http.Controller):
         valid_groups = request.env.ref("webshop_dermanord.group_dn_af")
         valid_groups |= request.env.ref("webshop_dermanord.group_dn_ht")
         valid_groups |= request.env.ref("webshop_dermanord.group_dn_spa")
+        valid_groups |= request.env.ref("base.group_website_publisher")
 
         urs = request.env["res.users"].browse(request.uid)
         if not (urs.groups_id & valid_groups):
