@@ -162,8 +162,8 @@
               <a href="/my/other">Miscellaneous</a>
             </li>
           </ul>
-          <li>
-            <a href="/page/faq-reseller">FAQ Reseller</a>
+          <li t-att-class="'active' if active_menu == 'faq_reseller' else ''">
+            <a href="/my/faq-reseller">FAQ Reseller</a>
           </li>
         </t>
       </div>
@@ -1087,6 +1087,21 @@
               <a href="/my/products/xls">Products.xls</a>
             </li>
           </div>
+        </div>
+      </t>
+    </template>
+    <template id="portal_faq_reseller" name="Reseller FAQ">
+      <t t-call="website_portal_1028.portal_layout">
+        <div class="container">
+          <t t-call="website_portal_sale_1028.my_menu" />
+              <div class="col-md-9">
+                <h1 class="page-header">FAQ Reseller</h1>
+                    <div id="wrap" class="oe_structure oe_empty">
+                        <li>
+                            Edit this page with the desired FAQ.
+                        </li>
+                    </div>
+              </div>
         </div>
       </t>
     </template>

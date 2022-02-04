@@ -208,6 +208,17 @@ class website_account(website_account):
 
         return request.render("website_portal_sale_1028.portal_export_data", values)
 
+    @http.route(['/my/faq-reseller'], type='http', auth="user", website=True)
+    def portal_faq_reseller(self, **kw):
+        portal_user = request.env.user
+        self.validate_user(portal_user)
+        values = self._prepare_portal_layout_values()
+        values.update({
+            'active_menu': 'faq_reseller',
+            })
+
+        return request.render("website_portal_sale_1028.portal_faq_reseller", values)
+
     @http.route(['/my/products/xls'], type='http', auth="user", website=True)
     def print_product_details(self, **kw):
         portal_user = request.env.user

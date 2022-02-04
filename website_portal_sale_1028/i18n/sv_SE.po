@@ -1111,3 +1111,8 @@ msgstr "Inköpspris"
 #, python-format
 msgid "Retail price"
 msgstr "Kundens rek.pris"
+
+#. module: website_portal_sale_1028
+#: view:website:website_portal_sale_1028.portal_faq_reseller
+msgid "FAQ Reseller"
+msgstr "FAQ Återförsäljare"
