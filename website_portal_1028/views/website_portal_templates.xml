@@ -352,14 +352,5 @@
         </t>
       </xpath>
     </template>
-    <template id="faq_reseller" name="FAQ Reseller">
-      <t t-call="website.layout">
-          <div id="wrap" class="oe_structure oe_empty">
-            <li>
-                Edit this page with the desired FAQ.
-            </li>
-        </div>
-      </t>
-    </template>
   </data>
 </openerp>
