@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 2004-2017 Vertel AB (<http://vertel.se>).
+#    Odoo SA, Open Source Management Solution, third party addon
+#    Copyright (C) 2022- Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -15,27 +15,36 @@
 #    GNU Affero General Public License for more details.
 #
 #    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 
 {
-    'name': 'Pricelist Chart',
-    'version': '0.3',
-    'category': 'account',
-    'summary': 'Adds price types to products',
+    'name': 'Website Sale: Website Sale Price Chart',
+    'version': '14.0.0.0.0',
+    # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
+    'summary': 'Adds price types to products.',
+    # Categories can be used to filter modules in modules listing
+    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
+    # for the full list
+    'category': 'Website',
     'description': """
-Prices pre calculated for products
-
-""",
+    Prices pre calculated for products.
+    """,
+    #'sequence': '1',
     'author': 'Vertel AB',
+    'website': 'https://vertel.se/apps/odoo-website-sale/website_sale_price_chart',
+    'images': ['static/description/banner.png'], # 560x280 px.
     'license': 'AGPL-3',
-    'website': 'http://www.vertel.se',
+    'contributor': '',
+    'maintainer': 'Vertel AB',
+    'repository': 'https://github.com/vertelab/odoo-website-sale',
+    # Any module necessary for this one to work correctly
+
     'depends': ['website_sale',],
     'data': ['sale_view.xml','sale_data.xml', 'security/ir.model.access.csv'],
     'application': False,
     'installable': True,
     'auto_install': False,
-
 }
-# vim:expandtab:smartindent:tabstop=4s:softtabstop=4:shiftwidth=4:
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
