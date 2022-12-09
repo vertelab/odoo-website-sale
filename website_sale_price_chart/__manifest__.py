@@ -20,22 +20,20 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale: Website Sale Product Variant',
+    'name': 'Website Sale: Website Sale Price Chart',
     'version': '14.0.0.0.0',
     # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
-    'summary': 'Use product variant in webshop.',
+    'summary': 'Adds price types to products.',
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Website',
     'description': """
-Use product variant in webshop
-==============================
-Use controller to specifie a variant or use default variant
+    Prices pre calculated for products.
     """,
     #'sequence': '1',
     'author': 'Vertel AB',
-    'website': 'https://vertel.se/apps/odoo-website-sale/website_sale_product_variant',
+    'website': 'https://vertel.se/apps/odoo-website-sale/website_sale_price_chart',
     'images': ['static/description/banner.png'], # 560x280 px.
     'license': 'AGPL-3',
     'contributor': '',
@@ -43,9 +41,10 @@ Use controller to specifie a variant or use default variant
     'repository': 'https://github.com/vertelab/odoo-website-sale',
     # Any module necessary for this one to work correctly
 
-    'depends': ['website_sale', 'product'],
-    'data': ['views/product_view.xml',],
+    'depends': ['website_sale',],
+    'data': ['sale_view.xml','sale_data.xml', 'security/ir.model.access.csv'],
     'application': False,
     'installable': True,
+    'auto_install': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
