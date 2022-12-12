@@ -54,7 +54,5 @@
     ],
     'installable': True,
     'application': True,
-    'author': "Vertel AB",
-    'website': "www.vertel.se",
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
