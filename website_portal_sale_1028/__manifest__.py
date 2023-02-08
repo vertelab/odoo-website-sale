@@ -42,12 +42,7 @@ the list (and the state) of their invoices (pdf report), sales orders and quotat
     'repository': 'https://github.com/vertelab/odoo-website-sale',
     # Any module necessary for this one to work correctly
 
-    'depends': [
-        'website_portal_1028',
-        'website_payment',
-        'product_pricelist_dermanord', 
-        'sale_journal',
-    ],
+    'depends': ['website_portal_1028','website_payment','product_pricelist_dermanord','sale_journal',],
     'data': [
         'views/website_portal_sale_templates.xml',
         'views/mailing_list_view.xml',
