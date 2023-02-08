@@ -41,11 +41,7 @@
     'repository': 'https://github.com/vertelab/odoo-website-sale',
     # Any module necessary for this one to work correctly
 
-    'depends': [
-        "sale",
-        "product",
-        "website_sale",
-    ],
+    'depends': ['sale','product','website_sale',],
     'data': [
         "views/templates.xml",
     ],
