@@ -63,7 +63,6 @@ class DocumentDirectory(models.Model):
 
     portal_publish = fields.Boolean(string='Publish In Portal', help="Publish all content in this catalog to portal users. Will still match groups on the catalog if set.")
 
-    @api.multi
     def write(self, values):
         if 'portal_publish' in values:
             # Update portal_publish on children

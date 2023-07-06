@@ -8,7 +8,6 @@ class SaleOrder(models.Model):
 
     _inherit = 'sale.order'
 
-    @api.multi
     def order_state_frontend(self):
         """Get a customer friendly order state."""
         state = None

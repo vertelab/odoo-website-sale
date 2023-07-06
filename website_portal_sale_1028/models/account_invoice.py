@@ -7,7 +7,6 @@ from openerp import api, exceptions, models
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
-    @api.multi
     def _notification_recipients(self, message, groups):
         groups = super(AccountInvoice, self)._notification_recipients(message, groups)
 
