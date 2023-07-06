@@ -20,22 +20,21 @@
 ##############################################################################
 
 {
-    'name': 'Website Sale: Product Variant',
+    'name': 'Website Sale: Website Portal Sale 1028',
     'version': '14.0.0.0.0',
     # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
-    'summary': 'Use product variant in webshop.',
+    'summary': 'Add your sales document in the frontend portal (sales order, quotations, invoices)',
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Website',
     'description': """
-Use product variant in webshop
-==============================
-Use controller to specifie a variant or use default variant
+Add your sales document in the frontend portal. Your customers will be able to connect to their portal to see 
+the list (and the state) of their invoices (pdf report), sales orders and quotations (web pages).
     """,
     #'sequence': '1',
     'author': 'Vertel AB',
-    'website': 'https://vertel.se/apps/odoo-website-sale/website_sale_product_variant',
+    'website': 'https://vertel.se/apps/odoo-website-sale/website_portal_sale_1028',
     'images': ['static/description/banner.png'], # 560x280 px.
     'license': 'AGPL-3',
     'contributor': '',
@@ -43,9 +42,16 @@ Use controller to specifie a variant or use default variant
     'repository': 'https://github.com/vertelab/odoo-website-sale',
     # Any module necessary for this one to work correctly
 
-    'depends': ['website_sale', 'product'],
-    'data': ['views/product_view.xml',],
-    'application': False,
+    'depends': ['website_portal_1028','website_payment','product_pricelist_dermanord','sale_journal',],
+    'data': [
+        'views/website_portal_sale_templates.xml',
+        'views/mailing_list_view.xml',
+        'views/website_sale_data.xml',
+        #'views/res_partner_view.xml',
+        'security/ir.model.access.csv',
+        'data/portal_data.xml',
+        'security/security_data.xml',
+    ],
     'installable': True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
